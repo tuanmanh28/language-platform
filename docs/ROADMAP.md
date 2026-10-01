@@ -37,8 +37,8 @@ keeps original samples and original tips.
 
 | Priority | Feature |
 | --- | --- |
-| P1 | Reading/Listening practice with explanations · save words while reading · FSRS vocabulary review · streak + progress |
-| P2 | Writing room with AI grading · "Ask AI" inside lessons |
+| P1 | Reading/Listening practice with detailed explanations and evidence · intensive listening (section/sentence replay) · dictation · Quizlet-style flashcards with full FSRS · streak + progress |
+| P2 | Writing room with detailed AI grading (per criterion, sentence by sentence, upgrades) · "Ask AI" inside lessons |
 | P3 | Speaking room · entry test + study plan · full mock tests |
 | Skipped | Video lessons (too costly to produce solo) — replaced by short tips per question type |
 

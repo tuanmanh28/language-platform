@@ -420,10 +420,98 @@
       "lane": "android",
       "deps": [
         "AND-11",
+        "AND-15",
         "BE-15"
       ],
       "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/AND-12.md"
+    },
+    {
+      "id": "BE-17",
+      "type": "feat",
+      "slug": "transcript-alignment",
+      "title": "Sentence and word timestamps for Listening transcripts",
+      "lane": "be",
+      "deps": [
+        "BE-11"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-17.md"
+    },
+    {
+      "id": "AND-13",
+      "type": "feat",
+      "slug": "intensive-listening",
+      "title": "Intensive listening: replay section by section and sentence by sentence",
+      "lane": "android",
+      "deps": [
+        "AND-09",
+        "BE-17"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-13.md"
+    },
+    {
+      "id": "AND-14",
+      "type": "feat",
+      "slug": "dictation",
+      "title": "Dictation practice (chép chính tả) like Study4",
+      "lane": "android",
+      "deps": [
+        "AND-13"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-14.md"
+    },
+    {
+      "id": "BE-18",
+      "type": "feat",
+      "slug": "dictionary-lookup",
+      "title": "Dictionary lookup for flashcards",
+      "lane": "be",
+      "deps": [
+        "BE-04"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-18.md"
+    },
+    {
+      "id": "AND-15",
+      "type": "feat",
+      "slug": "flashcard-decks",
+      "title": "Flashcard decks like Quizlet",
+      "lane": "android",
+      "deps": [
+        "AND-05",
+        "BE-18"
+      ],
+      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-15.md"
+    },
+    {
+      "id": "AND-16",
+      "type": "feat",
+      "slug": "flashcard-study-modes",
+      "title": "Flashcard study modes with spaced repetition",
+      "lane": "android",
+      "deps": [
+        "AND-15"
+      ],
+      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-16.md"
+    },
+    {
+      "id": "AND-17",
+      "type": "feat",
+      "slug": "srs-settings-and-stats",
+      "title": "Spaced repetition settings and statistics",
+      "lane": "android",
+      "deps": [
+        "AND-16",
+        "AND-06"
+      ],
+      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-17.md"
     }
   ]
 }

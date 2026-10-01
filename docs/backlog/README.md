@@ -42,7 +42,14 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [BE-15](BE-15.md) | Detailed AI grading for Writing | be | BE-14 |
 | [BE-16](BE-16.md) | Calibrate AI grading against examiner scores | be | BE-15, BE-11 |
 | [AND-11](AND-11.md) | Writing room | android | AND-03, AND-07, BE-14 |
-| [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, BE-15 |
+| [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, BE-15, AND-15 |
+| [BE-17](BE-17.md) | Sentence and word timestamps for Listening transcripts | be | BE-11 |
+| [AND-13](AND-13.md) | Intensive listening: replay section by section and sentence by sentence | android | AND-09, BE-17 |
+| [AND-14](AND-14.md) | Dictation practice (chép chính tả) like Study4 | android | AND-13 |
+| [BE-18](BE-18.md) | Dictionary lookup for flashcards | be | BE-04 |
+| [AND-15](AND-15.md) | Flashcard decks like Quizlet | android | AND-05, BE-18 |
+| [AND-16](AND-16.md) | Flashcard study modes with spaced repetition | android | AND-15 |
+| [AND-17](AND-17.md) | Spaced repetition settings and statistics | android | AND-16, AND-06 |
 
 ```
 F-01 ─ U-01 ─ S-01 ─ S-02 ─ R-01
@@ -85,7 +92,19 @@ BE-16  ← BE-15, BE-11               grading calibration
 AND-09 ← AND-04, AND-08, BE-10      answer review with evidence
 AND-10 ← AND-06, AND-09, BE-13      accuracy by question type + tips
 AND-11 ← AND-03, AND-07, BE-14      Writing room
-AND-12 ← AND-11, BE-15              Writing feedback
+AND-12 ← AND-11, BE-15, AND-15      Writing feedback (sentence by sentence)
+```
+
+### Study tools: intensive listening, dictation, flashcards (Study4 / Quizlet style)
+
+```
+BE-17  ← BE-11                      transcript sentence/word timestamps (whisper.cpp alignment)
+AND-13 ← AND-09, BE-17              intensive listening: section / sentence replay, A–B loop
+AND-14 ← AND-13                     dictation like Study4
+BE-18  ← BE-04                      dictionary lookup (IPA, audio, meanings, AI enrichment)
+AND-15 ← AND-05, BE-18              flashcard decks like Quizlet
+AND-16 ← AND-15                     study modes with FSRS
+AND-17 ← AND-16, AND-06             SRS settings and statistics
 ```
 Real IELTS/Cambridge material is personal study content: it lives only in `CONTENT_DIR` outside the repo and is served
 to the owner's account only (BE-09). The repo keeps original samples.
