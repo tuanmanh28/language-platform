@@ -67,6 +67,12 @@ AUTO_RETRIES = 1
 LIMIT_WAIT_SECONDS = 30 * 60
 LIMIT_PATTERN = re.compile(r"usage limit|limit reached|rate.?limit|overloaded|resets? at", re.IGNORECASE)
 CONFLICT_ROUNDS = 2
+CI_ROUNDS = 2
+CI_NO_CHECKS_SECONDS = 20 * 60
+BASE_REF = f"origin/{MAIN_BRANCH}"
+CI_FIX_PROMPT = ("\n\nYour branch passed review, but CI on GitHub failed. Reproduce the failure locally, fix the cause "
+                 "(never weaken or skip a check), run the verify command and commit the fix (`fix: …`). "
+                 "Failed job logs:\n\n")
 
 REVIEW_FIX_PROMPT = ("\n\nThe mandatory code review rejected your previous attempt. Fix every finding below, "
                      "run the verify command again and commit the fixes (`fix: …` or `refactor: …`).\n\n")
@@ -75,7 +81,7 @@ CONFLICT_PROMPT = (f"\n\nYour work passed review, but {MAIN_BRANCH} moved on and
                    f"new {MAIN_BRANCH} work are kept, run the verify command, then `git add` the files and "
                    f"`git commit --no-edit`. Change nothing else.")
 
-STATUS_ORDER = ["running", "verifying", "reviewing", "review", "blocked", "failed", "pending", "merged"]
+STATUS_ORDER = ["running", "verifying", "reviewing", "review", "ci", "blocked", "failed", "pending", "merged"]
 
 
 def sh(cmd: list[str], cwd: Path, check: bool = True, capture: bool = True) -> subprocess.CompletedProcess:
@@ -370,7 +376,7 @@ class Orchestrator:
                            stderr=subprocess.DEVNULL)
 
     def run(self, parallel: int, lanes: set[str] | None, only: set[str] | None, watch: bool,
-            auto: bool = False, push: bool = False) -> None:
+            auto: bool = False, push: bool = False, ci: bool = False) -> None:
         def eligible(tid: str) -> bool:
             return (lanes is None or self.tasks[tid]["lane"] in lanes) and (only is None or tid in only)
 
@@ -378,7 +384,9 @@ class Orchestrator:
             for e in self.state.values():
                 if e.get("status") == "failed":
                     e.update(auto_retries=0, notified=False)
-        mode = "auto-merge" + (" + push" if push else "") if auto else "manual merge"
+        if ci:
+            self.sync_main()
+        mode = ("merge after green CI" if ci else "auto-merge" + (" + push" if push else "")) if auto else "manual merge"
         print(f"Worktrees: {self.worktrees}   parallel={parallel}   {mode}   Ctrl+C stops the loop (agents keep running)")
         try:
             while True:
@@ -393,7 +401,7 @@ class Orchestrator:
                         e.pop("not_before")
                         self.start_review(tid)
                 if auto:
-                    self.auto_advance(eligible, push)
+                    self.auto_advance(eligible, push, ci)
                 running = [t for t, e in self.state.items() if e.get("status") in ACTIVE]
                 for tid in self.tasks:
                     if len(running) >= parallel:
@@ -416,12 +424,19 @@ class Orchestrator:
         except KeyboardInterrupt:
             print("\nLoop stopped. Running agents continue; run `status` or `run` again later.")
 
-    def auto_advance(self, eligible, push: bool) -> None:
+    def auto_advance(self, eligible, push: bool, ci: bool = False) -> None:
+        if ci:
+            self.sync_main()
+            self.ship_queue()
         for tid in self.tasks:
             if not eligible(tid):
                 continue
             e = self.entry(tid)
-            if e.get("status") == "review":
+            if e.get("status") == "review" and ci:
+                self.open_pr(tid)
+            elif e.get("status") == "ci":
+                self.check_ci(tid)
+            elif e.get("status") == "review":
                 self.auto_merge(tid, push)
             elif e.get("status") == "failed" and not e.get("notified"):
                 if e.get("auto_retries", 0) < AUTO_RETRIES:
@@ -440,13 +455,8 @@ class Orchestrator:
             self.merge(task_id, force=False)
         except MergeError as err:
             e = self.entry(task_id)
-            if err.conflict and e.get("conflict_rounds", 0) < CONFLICT_ROUNDS:
-                e["conflict_rounds"] = e.get("conflict_rounds", 0) + 1
-                print(f"↻ {task_id} conflicts with {MAIN_BRANCH} — agent merges {MAIN_BRANCH} and resolves it")
-                self.start(task_id, extra=CONFLICT_PROMPT)
-            elif err.conflict:
-                e.update(status="failed", note=f"Merge conflict after {CONFLICT_ROUNDS} resolve rounds", notified=True)
-                notify(f"{task_id}: merge conflict persists — resolve it manually")
+            if err.conflict:
+                self.handle_conflict(task_id)
             elif e.get("note") != str(err):
                 e["note"] = str(err)
                 print(f"⏸ {task_id} waits: {err}")
@@ -503,29 +513,174 @@ class Orchestrator:
         if sh(["git", "status", "--porcelain", "--untracked-files=no"], self.root).stdout.strip():
             raise MergeError("Main checkout has uncommitted changes.")
         br = self.branch(task_id)
-        task = self.tasks[task_id]
-        subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
-        subjects = [x for x in subjects if x.strip()]
-        summary = self.fit_subject(task.get("type", "feat"), self.summary_from(subjects, task), task)
+        subject, body = self.commit_message(task_id)
         res = sh(["git", "merge", "--squash", br], self.root, check=False)
         if res.returncode != 0:
             sh(["git", "merge", "--abort"], self.root, check=False)
             sh(["git", "reset", "--merge"], self.root, check=False)
             raise MergeError(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
                              f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}", conflict=True)
-        details = [self.strip_prefix(x) for x in subjects if not x.startswith("Merge ")]
-        details = [x for x in details if x and x != summary]
-        body = "\n".join(f"- {x}" for x in details)
         if sh(["git", "diff", "--cached", "--quiet"], self.root, check=False).returncode == 0:
             print(f"{task_id} made no file changes — nothing to commit, marking it merged.")
         else:
-            msg = ["-m", f"{task.get('type', 'feat')}: {summary}"] + (["-m", body] if body else [])
+            msg = ["-m", subject] + (["-m", body] if body else [])
             sh(["git", "commit", "-q", *msg], self.root)
         self.remove_worktree(task_id)
         sh(["git", "branch", "-D", br], self.root, check=False)
         e.update(status="merged", merged_at=now(), note=None)
         self.save()
         print(f"✔ {task_id} merged into {MAIN_BRANCH}")
+
+    def commit_message(self, task_id: str) -> tuple[str, str]:
+        task, br = self.tasks[task_id], self.branch(task_id)
+        log = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout
+        subjects = [x for x in log.split("\n") if x.strip()]
+        kind = task.get("type", "feat")
+        summary = self.fit_subject(kind, self.summary_from(subjects, task), task)
+        details = [self.strip_prefix(x) for x in subjects if not x.startswith("Merge ")]
+        details = [x for x in details if x and x != summary]
+        return f"{kind}: {summary}", "\n".join(f"- {x}" for x in details)
+
+    def gh(self, *args: str) -> subprocess.CompletedProcess:
+        return sh(["gh", *args], self.root, check=False)
+
+    def sync_main(self) -> None:
+        sh(["git", "fetch", "-q", "origin", MAIN_BRANCH], self.root, check=False)
+        on_main = sh(["git", "rev-parse", "--abbrev-ref", "HEAD"], self.root).stdout.strip() == MAIN_BRANCH
+        clean = not sh(["git", "status", "--porcelain", "--untracked-files=no"], self.root).stdout.strip()
+        if on_main and clean:
+            sh(["git", "merge", "-q", "--ff-only", BASE_REF], self.root, check=False)
+        else:
+            sh(["git", "branch", "-f", MAIN_BRANCH, BASE_REF], self.root, check=False)
+
+    def open_pr(self, task_id: str) -> None:
+        e, br = self.entry(task_id), self.branch(task_id)
+        subject, body = self.commit_message(task_id)
+        push = sh(["git", "push", "-q", "--force", "origin", f"{br}:refs/heads/{br}"], self.root, check=False)
+        if push.returncode != 0:
+            e["note"] = f"Push failed, retrying: {push.stdout.strip()[-200:]}"
+            return
+        if self.gh("pr", "view", br, "--json", "number").returncode != 0:
+            res = self.gh("pr", "create", "--base", MAIN_BRANCH, "--head", br, "--title", subject,
+                          "--body", body or subject)
+            if res.returncode != 0:
+                e["note"] = f"Could not open the pull request, retrying: {res.stdout.strip()[-200:]}"
+                return
+        e.update(status="ci", ci_since=time.time(), notified=False, note="Pull request open — waiting for CI")
+        print(f"⇡ {task_id} pushed to {br}, waiting for CI")
+
+    def ci_checks(self, branch: str) -> list[dict]:
+        res = self.gh("pr", "checks", branch, "--json", "name,bucket")
+        try:
+            checks = json.loads(res.stdout)
+        except json.JSONDecodeError:
+            return []
+        return checks if isinstance(checks, list) else []
+
+    def ci_failure_logs(self, branch: str) -> str:
+        sha = sh(["git", "rev-parse", branch], self.root).stdout.strip()
+        runs = self.gh("run", "list", "--branch", branch, "--limit", "20",
+                       "--json", "databaseId,conclusion,headSha,workflowName")
+        try:
+            runs = json.loads(runs.stdout)
+        except json.JSONDecodeError:
+            runs = []
+        parts = []
+        for run in runs:
+            if run.get("headSha") == sha and run.get("conclusion") in ("failure", "cancelled", "timed_out"):
+                log = self.gh("run", "view", str(run["databaseId"]), "--log-failed").stdout.splitlines()
+                parts.append(f"### {run.get('workflowName')}\n" + "\n".join(log[-150:]))
+        text = "\n\n".join(parts)
+        return text[-15000:] if text else "CI failed but its logs could not be fetched; run the CI steps locally."
+
+    def check_ci(self, task_id: str) -> None:
+        e, br = self.entry(task_id), self.branch(task_id)
+        wt = Path(e["worktree"])
+        if sh(["git", "merge-base", "--is-ancestor", BASE_REF, br], self.root, check=False).returncode != 0:
+            res = sh(["git", "merge", "--no-edit", BASE_REF], wt, check=False)
+            if res.returncode != 0:
+                sh(["git", "merge", "--abort"], wt, check=False)
+                self.handle_conflict(task_id)
+                return
+            self.open_pr(task_id)
+            e["note"] = f"Updated with {MAIN_BRANCH} — CI running again"
+            return
+        checks = self.ci_checks(br)
+        buckets = {c.get("bucket") for c in checks}
+        if not checks or "pending" in buckets:
+            if not checks and time.time() - e.get("ci_since", time.time()) > CI_NO_CHECKS_SECONDS and not e.get("notified"):
+                e["notified"] = True
+                notify(f"{task_id}: no CI checks reported on its pull request after 20 minutes")
+            return
+        if buckets & {"fail", "cancel"}:
+            rounds = e.get("ci_round", 0) + 1
+            e["ci_round"] = rounds
+            if rounds <= CI_ROUNDS:
+                print(f"✖ {task_id} CI failed — sending the logs to the agent (round {rounds})")
+                self.start(task_id, extra=CI_FIX_PROMPT + self.ci_failure_logs(br))
+            else:
+                e.update(status="failed", note=f"CI still failing after {CI_ROUNDS} fix rounds", notified=True)
+                notify(f"{task_id}: CI still failing after {CI_ROUNDS} fix rounds")
+            return
+        subject, body = self.commit_message(task_id)
+        res = self.gh("pr", "merge", br, "--squash", "--subject", subject, "--body", body)
+        if res.returncode != 0:
+            if '"CONFLICTING"' in self.gh("pr", "view", br, "--json", "mergeable").stdout:
+                self.handle_conflict(task_id)
+            else:
+                e["note"] = f"GitHub refused the merge, retrying: {res.stdout.strip()[-200:]}"
+            return
+        sh(["git", "push", "-q", "origin", "--delete", br], self.root, check=False)
+        self.sync_main()
+        self.remove_worktree(task_id)
+        sh(["git", "branch", "-D", br], self.root, check=False)
+        e.update(status="merged", merged_at=now(), note="Merged on GitHub after green CI")
+        print(f"✔ {task_id} merged into {MAIN_BRANCH} after green CI")
+
+    def handle_conflict(self, task_id: str) -> None:
+        e = self.entry(task_id)
+        if e.get("conflict_rounds", 0) < CONFLICT_ROUNDS:
+            e["conflict_rounds"] = e.get("conflict_rounds", 0) + 1
+            print(f"↻ {task_id} conflicts with {MAIN_BRANCH} — agent merges {MAIN_BRANCH} and resolves it")
+            self.start(task_id, extra=CONFLICT_PROMPT)
+        else:
+            e.update(status="failed", note=f"Merge conflict after {CONFLICT_ROUNDS} resolve rounds", notified=True)
+            notify(f"{task_id}: merge conflict persists — resolve it manually")
+
+    def ship_queue(self) -> None:
+        """Branches queued by hand (`ship`) go through the same pull request + CI gate."""
+        path = self.state_dir / "ship-queue.json"
+        if not path.exists():
+            return
+        queue = json.loads(path.read_text())
+        for item in queue:
+            br, status = item["branch"], item.get("status", "pending")
+            if status == "pending":
+                push = sh(["git", "push", "-q", "--force", "origin", f"{br}:refs/heads/{br}"], self.root, check=False)
+                if push.returncode == 0 and (self.gh("pr", "view", br, "--json", "number").returncode == 0 or
+                                             self.gh("pr", "create", "--base", MAIN_BRANCH, "--head", br, "--title",
+                                                     item["title"], "--body", item.get("body") or item["title"]).returncode == 0):
+                    item.update(status="ci", since=time.time())
+                    print(f"⇡ {br} pushed, waiting for CI")
+            elif status == "ci":
+                if sh(["git", "merge-base", "--is-ancestor", BASE_REF, br], self.root, check=False).returncode != 0:
+                    self.gh("pr", "update-branch", br)
+                    sh(["git", "fetch", "-q", "origin", f"{br}:{br}"], self.root, check=False)
+                    continue
+                buckets = {c.get("bucket") for c in self.ci_checks(br)}
+                if not buckets or "pending" in buckets:
+                    continue
+                if buckets & {"fail", "cancel"}:
+                    item.update(status="failed")
+                    notify(f"{br}: CI failed on its pull request")
+                elif self.gh("pr", "merge", br, "--squash", "--subject", item["title"],
+                             "--body", item.get("body", "")).returncode == 0:
+                    sh(["git", "push", "-q", "origin", "--delete", br], self.root, check=False)
+                    self.sync_main()
+                    sh(["git", "branch", "-D", br], self.root, check=False)
+                    item.update(status="merged")
+                    print(f"✔ {br} merged into {MAIN_BRANCH} after green CI")
+        path.write_text(json.dumps(queue, indent=2, ensure_ascii=False))
 
     @staticmethod
     def strip_prefix(subject: str) -> str:
@@ -604,6 +759,12 @@ def main() -> None:
     r.add_argument("--auto", action="store_true",
                    help="Merge tasks that pass verify + review automatically; retry failures once (implies --watch)")
     r.add_argument("--push", action="store_true", help="With --auto: git push main after every merge")
+    r.add_argument("--ci", action="store_true",
+                   help="With --auto: open a pull request per task and merge on GitHub only after CI is green")
+    sp = sub.add_parser("ship", help="Queue a branch to merge through a pull request once CI is green")
+    sp.add_argument("branch")
+    sp.add_argument("--title", required=True, help="Squash commit subject, e.g. 'docs: update the roadmap'")
+    sub.add_parser("setup-github", help="Protect main: pull requests only, squash merge, required 'CI passed' check")
 
     sub.add_parser("status", help="Show task states")
     lg = sub.add_parser("logs", help="Readable agent log")
@@ -635,7 +796,9 @@ def main() -> None:
         if shutil.which("claude") is None:
             sys.exit("`claude` CLI not found. Install Claude Code and run `claude` once to sign in.")
         split = lambda s: {x.strip() for x in s.split(",") if x.strip()} if s else None
-        o.run(a.parallel, split(a.lanes), split(a.only), a.watch or a.auto, a.auto, a.push)
+        if a.ci and o.gh("auth", "status").returncode != 0:
+            sys.exit("GitHub CLI is not signed in. Run: brew install gh && gh auth login")
+        o.run(a.parallel, split(a.lanes), split(a.only), a.watch or a.auto, a.auto, a.push, a.ci)
     elif a.cmd == "status":
         o.print_status()
     elif a.cmd == "logs":
@@ -660,6 +823,26 @@ def main() -> None:
             sys.exit(str(err))
     elif a.cmd == "retry":
         o.retry(task, a.fresh)
+    elif a.cmd == "ship":
+        path = o.state_dir / "ship-queue.json"
+        queue = json.loads(path.read_text()) if path.exists() else []
+        queue.append({"branch": a.branch, "title": a.title, "status": "pending"})
+        path.write_text(json.dumps(queue, indent=2, ensure_ascii=False))
+        print(f"{a.branch} queued; autopilot opens its pull request and merges it after green CI")
+    elif a.cmd == "setup-github":
+        repo = o.gh("repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner").stdout.strip()
+        protection = json.dumps({"required_status_checks": {"strict": False, "checks": [{"context": "CI passed"}]},
+                                 "enforce_admins": True, "required_pull_request_reviews": None, "restrictions": None})
+        steps = [
+            subprocess.run(["gh", "api", "-X", "PUT", f"repos/{repo}/branches/{MAIN_BRANCH}/protection", "--input", "-"],
+                           input=protection, text=True, capture_output=True),
+            subprocess.run(["gh", "api", "-X", "PATCH", f"repos/{repo}", "-F", "allow_squash_merge=true",
+                            "-F", "allow_merge_commit=false", "-F", "allow_rebase_merge=false",
+                            "-F", "delete_branch_on_merge=true"], text=True, capture_output=True),
+        ]
+        for step in steps:
+            print(step.stdout.strip()[:300] or "ok", step.stderr.strip()[:300])
+        print(f"{repo}: main now accepts only squash-merged pull requests with a green 'CI passed' check")
     elif a.cmd == "clean":
         o.remove_worktree(task)
         sh(["git", "branch", "-D", o.branch(task)], o.root, check=False)

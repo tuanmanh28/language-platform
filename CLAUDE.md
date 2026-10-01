@@ -53,6 +53,8 @@ IELTS practice platform: Kotlin Multiplatform shared core, native UI per platfor
 - `shared` must keep compiling for iOS/macOS: no JVM-only APIs in `commonMain`.
 - **Tests** for all new logic at the level the `testing` skill prescribes.
 - UI uses only design-system components and tokens; user-facing strings come from resources (Vietnamese).
+- **CI covers your change:** a new module, test task or build artifact is added to `.github/workflows/ci.yml` in the
+  same task. Nothing merges into `main` until CI is green on the pull request.
 - Database changes only through new Flyway migrations (backend) or `.sqm` migrations (app).
 
 ## Commands

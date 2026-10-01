@@ -76,3 +76,17 @@ jobs:
           xcodebuild -project app-apple/LanguagePlatform.xcodeproj -scheme LanguagePlatformMac \
             -configuration Debug -destination 'platform=macOS,arch=arm64' \
             CODE_SIGNING_ALLOWED=NO build
+
+  # The single required check for merging into main (branch protection).
+  ci-passed:
+    name: CI passed
+    if: always()
+    needs: [ jvm-android, apple ]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Every CI job succeeded
+        run: |
+          if [ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}" = "true" ]; then
+            echo "::error::A CI job did not succeed"
+            exit 1
+          fi

@@ -65,18 +65,14 @@ through a squash merge. `.githooks/pre-commit` rejects any commit made on `main`
 
 ## Merging
 
-- Backlog tasks: the orchestrator squash-merges the task branch into one `main` commit `<type>: <summary>` (other
-  commit subjects become the body), then deletes the branch and worktree. Autopilot also pushes. A branch that conflicts
-  with `main` goes back to its agent, which merges `main` into the branch and resolves the conflict.
-- Changes outside the backlog follow the same path by hand, in a separate worktree so the main checkout stays on `main`:
-
-  ```bash
-  git worktree add .worktrees/<slug> -b <type>/<slug> main
-  # work and commit inside .worktrees/<slug>
-  git merge --squash <type>/<slug>        # from the main checkout
-  git commit -m "<type>: <summary>"
-  git worktree remove .worktrees/<slug> && git branch -D <type>/<slug>
-  ```
+- `main` is protected on GitHub: changes arrive only as squash-merged pull requests whose `CI passed` check is green.
+  Direct pushes to `main` are rejected.
+- Backlog tasks: autopilot pushes the task branch, opens the pull request titled `<type>: <summary>` (other commit
+  subjects become the body) and merges it only after CI is green. Red CI goes back to the agent with the failed logs; a
+  branch behind `main` is updated and re-tested; a conflict goes back to the agent, which merges `main` and resolves it.
+- Changes outside the backlog follow the same path: work on a branch (a worktree in `.worktrees/<slug>` keeps the main
+  checkout on `main`), commit, then `python3 scripts/agents/orchestrator.py ship <type>/<slug> --title "<type>: <summary>"`.
+- Never merge a pull request with a red or pending check, and never bypass the protection.
 
 ## Releases
 

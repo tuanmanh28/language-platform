@@ -23,12 +23,27 @@ backlog ──► ready tasks ──► agent per worktree ──► verify ─�
 ./scripts/agents/autopilot.sh            # PARALLEL=3 ./scripts/agents/autopilot.sh for 3 agents
 ```
 
-Runs the whole backlog unattended: starts ready tasks, verifies, runs the mandatory review (agents fix findings), then
-squash-merges into `main` and pushes. A branch that conflicts with a newer `main` goes back to its agent to merge `main`
-and resolve. A failed task is retried once from a fresh branch; re-running the command retries failed tasks again.
+Runs the whole backlog unattended: starts ready tasks, verifies, runs the mandatory reviews (agents fix findings), then
+pushes the task branch and opens a pull request. It merges (squash, on GitHub) **only when every CI check is green**:
+a failing CI sends the failed job logs back to the agent (up to 2 rounds); a branch that fell behind `main` is updated
+and CI runs again, so `main` only ever receives combinations that CI has built and tested; a conflict goes back to the
+agent. A failed task is retried once from a fresh branch; re-running the command retries failed tasks again.
 When Claude's usage limit is reached, the task waits 30 minutes and continues on the same branch (a review waits the
-same way) instead of failing, so an overnight run resumes on its own. It stops when everything is merged and sends a macOS notification for blocked or failed tasks. Keeps the Mac awake
-(`caffeinate`). Leave the main checkout alone while it runs; merges wait while it has uncommitted changes.
+same way) instead of failing, so an overnight run resumes on its own. It stops when everything is merged and sends a
+macOS notification for blocked or failed tasks. Keeps the Mac awake (`caffeinate`). Leave the main checkout alone while
+it runs.
+
+One-time GitHub setup:
+
+```bash
+brew install gh
+gh auth login                                            # personal account tuanmanh28, SSH
+python3 scripts/agents/orchestrator.py setup-github      # main: PRs only, squash merge, required "CI passed"
+```
+
+Changes made by hand go through the same gate: commit on a `<type>/<slug>` branch, then
+`python3 scripts/agents/orchestrator.py ship <branch> --title "<type>: <summary>"`; autopilot opens the pull request
+and merges it after green CI.
 
 ## Daily use
 
