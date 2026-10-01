@@ -62,6 +62,7 @@ private struct ReadyList: View {
             .foregroundStyle(.secondary)
         }
       }
+
       Section("reading_list_section_title") {
         ForEach(ready.tests, id: \.id) { test in
           NavigationLink(value: test.id) {
@@ -80,6 +81,7 @@ private struct TestRow: View {
     VStack(alignment: .leading, spacing: 4) {
       Text(test.title)
         .font(.headline)
+
       Text(
         String(
           format: String(localized: "reading_list_test_details"),

@@ -71,6 +71,7 @@ internal fun ReadingResultContent(
       item(key = "summary") {
         ResultSummary(state, onRestart, onExit, Modifier.fillMaxWidth())
       }
+
       item(key = "details-title") {
         Text(
           stringResource(Res.string.reading_result_details),
@@ -78,6 +79,7 @@ internal fun ReadingResultContent(
           modifier = Modifier.padding(top = 8.dp),
         )
       }
+
       items(state.result.questionResults, key = { it.questionId }) { item ->
         QuestionResultRow(item, Modifier.fillMaxWidth())
       }
@@ -93,21 +95,29 @@ private fun ResultSummary(
   modifier: Modifier = Modifier,
 ) {
   val result = state.result
+
   Card(modifier) {
     Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
       Text(stringResource(Res.string.reading_result_estimated_band), style = MaterialTheme.typography.labelLarge)
+
       Text(result.band.toString(), style = MaterialTheme.typography.displayLarge)
+
       Text(
         stringResource(Res.string.reading_result_correct_count, result.correctCount, result.totalQuestions),
         style = MaterialTheme.typography.titleMedium,
       )
+
       if (state.isTimeExpired) {
         Spacer(Modifier.height(8.dp))
+
         Text(stringResource(Res.string.reading_result_time_expired), color = MaterialTheme.colorScheme.error)
       }
+
       Spacer(Modifier.height(16.dp))
+
       Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         OutlinedButton(onClick = onExit) { Text(stringResource(Res.string.reading_result_back_to_list)) }
+
         Button(onClick = onRestart) { Text(stringResource(Res.string.reading_result_restart)) }
       }
     }
@@ -121,6 +131,7 @@ private fun QuestionResultRow(
 ) {
   val verdict =
     stringResource(if (item.isCorrect) Res.string.reading_result_correct else Res.string.reading_result_wrong)
+
   Row(modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
     Text(
       text =
@@ -131,12 +142,15 @@ private fun QuestionResultRow(
       style = MaterialTheme.typography.titleMedium,
       modifier = Modifier.semantics { contentDescription = verdict },
     )
+
     Spacer(Modifier.width(12.dp))
+
     Column {
       Text(
         stringResource(Res.string.reading_result_question_number, item.number),
         style = MaterialTheme.typography.titleSmall,
       )
+
       Text(
         stringResource(
           Res.string.reading_result_your_answer,
@@ -144,6 +158,7 @@ private fun QuestionResultRow(
         ),
         style = MaterialTheme.typography.bodyMedium,
       )
+
       if (!item.isCorrect) {
         Text(
           stringResource(

@@ -58,9 +58,11 @@ private fun ScopedViewModels(
         override val viewModelStore: ViewModelStore = ViewModelStore()
       }
     }
+
   DisposableEffect(owner) {
     onDispose { owner.viewModelStore.clear() }
   }
+
   CompositionLocalProvider(LocalViewModelStoreOwner provides owner) {
     content()
   }

@@ -46,6 +46,7 @@ internal fun ReadingTestListScreen(
   viewModel: ReadingTestListViewModel = koinViewModel(),
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
+
   ReadingTestListScreen(state = state, onRefresh = viewModel::refresh, onOpenTest = onOpenTest)
 }
 
@@ -88,9 +89,11 @@ private fun ReadyContent(
     if (state.isOffline) {
       item(key = "offline-banner") { OfflineBanner(Modifier.fillMaxWidth()) }
     }
+
     item(key = "section-title") {
       Text(stringResource(Res.string.reading_list_section_title), style = MaterialTheme.typography.titleSmall)
     }
+
     items(state.tests, key = { it.id }) { test ->
       TestCard(test = test, onClick = { onOpenTest(test.id) }, modifier = Modifier.fillMaxWidth())
     }
@@ -107,7 +110,9 @@ private fun TestCard(
   Card(onClick = onClick, modifier = modifier) {
     Column(Modifier.padding(16.dp)) {
       Text(test.title, style = MaterialTheme.typography.titleMedium)
+
       Spacer(Modifier.height(4.dp))
+
       Text(
         text =
           stringResource(

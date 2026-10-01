@@ -9,8 +9,10 @@ struct ReadingErrorView: View {
       Image(systemName: "exclamationmark.triangle")
         .font(.largeTitle)
         .foregroundStyle(.orange)
+
       Text(message)
         .multilineTextAlignment(.center)
+
       Button("common_retry", action: onRetry)
         .buttonStyle(.borderedProminent)
     }

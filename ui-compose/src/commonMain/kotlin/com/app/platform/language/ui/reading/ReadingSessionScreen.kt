@@ -82,11 +82,14 @@ internal fun ReadingSessionScreen(
   viewModel: ReadingSessionViewModel = koinViewModel(key = "reading-session-$testId") { parametersOf(testId) },
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
+
   DisposableEffect(viewModel) {
     viewModel.start()
     onDispose { viewModel.stop() }
   }
+
   PlatformBackHandler(onBack = onExit)
+
   ReadingSessionScreen(
     state = state,
     onRetry = viewModel::retry,
@@ -137,7 +140,9 @@ private fun FailedContent(
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(error.toUserMessage(), style = MaterialTheme.typography.bodyLarge)
+
     Spacer(Modifier.height(12.dp))
+
     Button(onClick = onRetry) { Text(stringResource(Res.string.common_retry)) }
   }
 }
@@ -169,8 +174,11 @@ private fun InProgressContent(
         },
         actions = {
           Text(text = state.remainingLabel, style = MaterialTheme.typography.titleMedium, color = timerColor)
+
           Spacer(Modifier.width(12.dp))
+
           Button(onClick = { isConfirmingSubmit = true }) { Text(stringResource(Res.string.reading_session_submit)) }
+
           Spacer(Modifier.width(8.dp))
         },
       )
@@ -183,6 +191,7 @@ private fun InProgressContent(
             modifier = Modifier.weight(1f).fillMaxHeight(),
             contentPadding = PaddingValues(24.dp),
           ) { passages(state.test.passages) }
+
           LazyColumn(
             modifier = Modifier.weight(1f).fillMaxHeight(),
             contentPadding = PaddingValues(24.dp),
@@ -196,7 +205,9 @@ private fun InProgressContent(
           verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
           passages(state.test.passages)
+
           item(key = "divider") { HorizontalDivider() }
+
           questions(state, onAnswer)
         }
       }
@@ -229,6 +240,7 @@ private fun SubmitDialog(
     } else {
       stringResource(Res.string.reading_session_submit_all_answered, total)
     }
+
   AlertDialog(
     onDismissRequest = onDismiss,
     title = { Text(stringResource(Res.string.reading_session_submit_title)) },
@@ -251,6 +263,7 @@ private fun LazyListScope.passages(passages: List<Passage>) {
         modifier = Modifier.padding(bottom = 12.dp),
       )
     }
+
     items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
       ParagraphText(paragraph, Modifier.padding(bottom = 12.dp))
     }
@@ -288,6 +301,7 @@ private fun LazyListScope.questions(
         color = MaterialTheme.colorScheme.primary,
       )
     }
+
     items(group.questions, key = { "question-${it.id}" }) { question ->
       QuestionItem(
         group = group,
@@ -313,6 +327,7 @@ private fun QuestionItem(
       stringResource(Res.string.reading_session_question, question.number, question.prompt),
       style = MaterialTheme.typography.bodyLarge,
     )
+
     Spacer(Modifier.height(8.dp))
 
     when (group.type) {
@@ -355,6 +370,7 @@ private fun MultipleChoiceAnswer(
   Column(modifier) {
     question.options.forEach { option ->
       val isSelected = answer == option.key
+
       Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier =
@@ -363,6 +379,7 @@ private fun MultipleChoiceAnswer(
             .selectable(selected = isSelected, onClick = { onAnswer(option.key) }, role = Role.RadioButton),
       ) {
         RadioButton(selected = isSelected, onClick = null)
+
         Text(
           stringResource(Res.string.reading_session_option, option.key, option.text),
           style = MaterialTheme.typography.bodyMedium,

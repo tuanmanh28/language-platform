@@ -66,14 +66,18 @@ private struct InProgressView: View {
       if proxy.size.width >= twoPaneMinWidth {
         HStack(alignment: .top, spacing: 0) {
           ScrollView { PassagesView(passages: session.test.passages).padding(24) }
+
           Divider()
+
           ScrollView { QuestionsView(session: session, onAnswer: onAnswer).padding(24) }
         }
       } else {
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             PassagesView(passages: session.test.passages)
+
             Divider()
+
             QuestionsView(session: session, onAnswer: onAnswer)
           }
           .padding()
@@ -90,6 +94,7 @@ private struct InProgressView: View {
           Text(session.remainingLabel)
             .monospacedDigit()
             .foregroundStyle(session.remainingSeconds <= timeRunningOutSeconds ? Color.red : Color.primary)
+
           Button("reading_session_submit") { isConfirmingSubmit = true }
             .buttonStyle(.borderedProminent)
         }
@@ -97,6 +102,7 @@ private struct InProgressView: View {
     }
     .alert("reading_session_submit_title", isPresented: $isConfirmingSubmit) {
       Button("reading_session_continue", role: .cancel) {}
+
       Button("reading_session_submit", action: onSubmit)
     } message: {
       Text(submitMessage)
@@ -121,6 +127,7 @@ private struct PassagesView: View {
       ForEach(passages, id: \.id) { passage in
         Text(passage.title)
           .font(.title2.bold())
+
         ForEach(Array(passage.paragraphs.enumerated()), id: \.offset) { _, paragraph in
           paragraphText(paragraph)
             .font(.body)
@@ -147,6 +154,7 @@ private struct QuestionsView: View {
         Text(group.instruction)
           .font(.subheadline.weight(.semibold))
           .foregroundStyle(Color.accentColor)
+
         ForEach(group.questions, id: \.id) { question in
           QuestionItemView(
             group: group,
@@ -176,6 +184,7 @@ private struct QuestionItemView: View {
         HStack(spacing: 8) {
           ForEach(group.type.fixedChoices, id: \.self) { choice in
             let isSelected = answer.caseInsensitiveCompare(choice) == .orderedSame
+
             Button(choice) { onAnswer(choice) }
               .buttonStyle(.bordered)
               .tint(isSelected ? Color.accentColor : Color.secondary)
@@ -191,6 +200,7 @@ private struct QuestionItemView: View {
             } label: {
               HStack(alignment: .top) {
                 Image(systemName: answer == option.key ? "largecircle.fill.circle" : "circle")
+
                 Text(String(format: String(localized: "reading_session_option"), option.key, option.text))
                   .multilineTextAlignment(.leading)
               }
