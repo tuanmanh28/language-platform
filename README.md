@@ -138,6 +138,7 @@ Running on a real device requires setting your Team under *Signing & Capabilitie
 
 ```bash
 ./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test
+./gradlew :ui-compose:screenshots   # every Compose @Preview → ui-compose/build/screenshots/<Preview>_<variant>.png
 ```
 
 ## Planning and AI agents

@@ -17,8 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.theme.LanguagePlatformTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -86,7 +86,7 @@ private fun TabRail(
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun AppNavigationShellPreview() {
   LanguagePlatformTheme {
@@ -94,10 +94,10 @@ private fun AppNavigationShellPreview() {
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
-private fun AppNavigationShellDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
+private fun AppNavigationShellVocabularyPreview() {
+  LanguagePlatformTheme {
     AppNavigationShell(selectedRoute = VocabularyRoute, onSelectTab = {}) {}
   }
 }

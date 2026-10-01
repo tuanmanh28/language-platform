@@ -36,7 +36,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.platform.language.core.model.Paragraph
@@ -51,6 +50,7 @@ import com.app.platform.language.ui.components.LpAnswerChip
 import com.app.platform.language.ui.components.LpErrorState
 import com.app.platform.language.ui.components.LpGapField
 import com.app.platform.language.ui.components.LpOptionRow
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.components.LpPrimaryButton
 import com.app.platform.language.ui.components.LpProgressRing
 import com.app.platform.language.ui.components.LpTextButton
@@ -373,7 +373,7 @@ private fun MultipleChoiceAnswer(
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingSessionLoadingPreview() {
   LanguagePlatformTheme {
@@ -381,15 +381,7 @@ private fun ReadingSessionLoadingPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingSessionLoadingDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingSessionScreen(ReadingSessionUiState.Loading, {}, { _, _ -> }, {}, {}, {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingSessionFailedPreview() {
   LanguagePlatformTheme {
@@ -397,15 +389,7 @@ private fun ReadingSessionFailedPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingSessionFailedDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingSessionScreen(ReadingPreviewData.sessionFailed, {}, { _, _ -> }, {}, {}, {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingSessionInProgressPreview() {
   LanguagePlatformTheme {
@@ -413,26 +397,10 @@ private fun ReadingSessionInProgressPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingSessionInProgressDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingSessionScreen(ReadingPreviewData.sessionInProgress, {}, { _, _ -> }, {}, {}, {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingSessionFinishedPreview() {
   LanguagePlatformTheme {
-    ReadingSessionScreen(ReadingPreviewData.sessionFinished, {}, { _, _ -> }, {}, {}, {})
-  }
-}
-
-@Preview
-@Composable
-private fun ReadingSessionFinishedDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
     ReadingSessionScreen(ReadingPreviewData.sessionFinished, {}, { _, _ -> }, {}, {}, {})
   }
 }

@@ -48,10 +48,32 @@ kotlin {
       implementation(kotlin("test"))
       implementation(libs.compose.ui.test)
       implementation(compose.desktop.currentOs)
+      implementation(libs.roborazzi.compose.desktop)
+      implementation(libs.composable.preview.scanner.android)
     }
   }
 }
 
 compose.resources {
   packageOfResClass = "com.app.platform.language.ui.resources"
+}
+
+val screenshotTest = "*.PreviewScreenshotTest"
+
+tasks.named<Test>("jvmTest") {
+  filter.excludeTestsMatching(screenshotTest)
+}
+
+tasks.register<Test>("screenshots") {
+  description = "Renders every @Preview to build/screenshots."
+  group = "verification"
+  val jvmTestCompilation = kotlin.jvm().compilations.getByName("test")
+  testClassesDirs = jvmTestCompilation.output.classesDirs
+  classpath = files(jvmTestCompilation.output.allOutputs, jvmTestCompilation.runtimeDependencyFiles)
+  filter.includeTestsMatching(screenshotTest)
+  systemProperty("roborazzi.test.record", "true")
+  val screenshotsDir = layout.buildDirectory.dir("screenshots")
+  outputs.dir(screenshotsDir)
+  // Removed previews must not leave stale images behind.
+  doFirst { screenshotsDir.get().asFile.deleteRecursively() }
 }

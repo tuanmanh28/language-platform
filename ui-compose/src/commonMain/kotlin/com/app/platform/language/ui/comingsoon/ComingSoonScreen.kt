@@ -8,8 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.app.platform.language.ui.components.LpEmptyState
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.resources.Res
 import com.app.platform.language.ui.resources.common_coming_soon
 import com.app.platform.language.ui.resources.common_coming_soon_message
@@ -33,18 +33,10 @@ internal fun ComingSoonScreen(title: StringResource) {
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun ComingSoonPreview() {
   LanguagePlatformTheme {
-    ComingSoonScreen(title = Res.string.navigation_tab_vocabulary)
-  }
-}
-
-@Preview
-@Composable
-private fun ComingSoonDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
     ComingSoonScreen(title = Res.string.navigation_tab_vocabulary)
   }
 }

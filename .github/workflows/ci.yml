@@ -37,6 +37,16 @@ jobs:
       - name: Build desktop
         run: ./gradlew :app-desktop:compileKotlin
 
+      - name: Render Compose previews
+        run: ./gradlew :ui-compose:screenshots
+
+      - name: Upload preview screenshots
+        uses: actions/upload-artifact@v7
+        with:
+          name: compose-screenshots
+          path: ui-compose/build/screenshots
+          if-no-files-found: error
+
       - name: Build backend jar
         run: ./gradlew :backend:shadowJar
 

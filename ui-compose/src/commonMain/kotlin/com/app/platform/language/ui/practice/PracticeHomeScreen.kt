@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.components.LpTestCard
 import com.app.platform.language.ui.components.TestCardState
 import com.app.platform.language.ui.resources.Res
@@ -74,18 +74,10 @@ internal fun PracticeHomeScreen(onOpenReading: () -> Unit) {
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun PracticeHomePreview() {
   LanguagePlatformTheme {
-    PracticeHomeScreen(onOpenReading = {})
-  }
-}
-
-@Preview
-@Composable
-private fun PracticeHomeDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
     PracticeHomeScreen(onOpenReading = {})
   }
 }

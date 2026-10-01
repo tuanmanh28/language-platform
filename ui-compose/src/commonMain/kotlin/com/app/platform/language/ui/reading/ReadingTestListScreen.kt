@@ -18,11 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.platform.language.core.model.ReadingTestSummary
 import com.app.platform.language.shared.reading.ReadingTestListUiState
 import com.app.platform.language.shared.reading.ReadingTestListViewModel
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.components.LpProgressRing
 import com.app.platform.language.ui.components.LpTestCard
 import com.app.platform.language.ui.components.LpTextButton
@@ -135,7 +135,7 @@ private fun OfflineBanner(modifier: Modifier = Modifier) {
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingTestListLoadingPreview() {
   LanguagePlatformTheme {
@@ -143,15 +143,7 @@ private fun ReadingTestListLoadingPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingTestListLoadingDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {}, onBack = {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingTestListReadyPreview() {
   LanguagePlatformTheme {
@@ -159,15 +151,7 @@ private fun ReadingTestListReadyPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingTestListReadyDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {}, onBack = {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingTestListEmptyPreview() {
   LanguagePlatformTheme {
@@ -175,26 +159,10 @@ private fun ReadingTestListEmptyPreview() {
   }
 }
 
-@Preview
-@Composable
-private fun ReadingTestListEmptyDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {}, onBack = {})
-  }
-}
-
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingTestListOfflinePreview() {
   LanguagePlatformTheme {
-    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {}, onBack = {})
-  }
-}
-
-@Preview
-@Composable
-private fun ReadingTestListOfflineDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
     ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }

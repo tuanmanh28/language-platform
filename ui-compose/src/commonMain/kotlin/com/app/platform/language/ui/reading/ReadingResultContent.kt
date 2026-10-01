@@ -23,11 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import com.app.platform.language.core.model.QuestionResult
 import com.app.platform.language.shared.reading.ReadingSessionUiState
 import com.app.platform.language.ui.components.BandBadgeSize
 import com.app.platform.language.ui.components.LpBandBadge
+import com.app.platform.language.ui.components.LpPreviews
 import com.app.platform.language.ui.components.LpPrimaryButton
 import com.app.platform.language.ui.components.LpSecondaryButton
 import com.app.platform.language.ui.resources.Res
@@ -177,18 +177,10 @@ private fun QuestionResultRow(
   }
 }
 
-@Preview
+@LpPreviews
 @Composable
 private fun ReadingResultContentPreview() {
   LanguagePlatformTheme {
-    ReadingResultContent(ReadingPreviewData.sessionFinished, onRestart = {}, onExit = {})
-  }
-}
-
-@Preview
-@Composable
-private fun ReadingResultContentDarkPreview() {
-  LanguagePlatformTheme(darkTheme = true) {
     ReadingResultContent(ReadingPreviewData.sessionFinished, onRestart = {}, onExit = {})
   }
 }
