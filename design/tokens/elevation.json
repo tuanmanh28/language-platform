@@ -1,0 +1,11 @@
+{
+  "elevation": {
+    "$type": "dimension",
+    "level0": { "$value": "0px" },
+    "level1": { "$value": "1px" },
+    "level2": { "$value": "3px" },
+    "level3": { "$value": "6px" },
+    "level4": { "$value": "8px" },
+    "level5": { "$value": "12px" }
+  }
+}

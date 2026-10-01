@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.app.platform.language.core.model.QuestionResult
 import com.app.platform.language.shared.reading.ReadingSessionUiState
 import com.app.platform.language.ui.resources.Res
@@ -46,7 +45,6 @@ import com.app.platform.language.ui.resources.reading_result_wrong
 import com.app.platform.language.ui.resources.reading_result_wrong_mark
 import com.app.platform.language.ui.resources.reading_result_your_answer
 import com.app.platform.language.ui.theme.LanguagePlatformTheme
-import com.app.platform.language.ui.theme.ResultColors
 import org.jetbrains.compose.resources.stringResource
 
 private const val ACCEPTED_ANSWERS_SEPARATOR = " / "
@@ -65,8 +63,8 @@ internal fun ReadingResultContent(
   ) { padding ->
     LazyColumn(
       modifier = Modifier.fillMaxSize().padding(padding),
-      contentPadding = PaddingValues(16.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
+      contentPadding = PaddingValues(LanguagePlatformTheme.spacing.lg),
+      verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm),
     ) {
       item(key = "summary") {
         ResultSummary(state, onRestart, onExit, Modifier.fillMaxWidth())
@@ -76,7 +74,7 @@ internal fun ReadingResultContent(
         Text(
           stringResource(Res.string.reading_result_details),
           style = MaterialTheme.typography.titleSmall,
-          modifier = Modifier.padding(top = 8.dp),
+          modifier = Modifier.padding(top = LanguagePlatformTheme.spacing.sm),
         )
       }
 
@@ -97,7 +95,10 @@ private fun ResultSummary(
   val result = state.result
 
   Card(modifier) {
-    Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+      Modifier.fillMaxWidth().padding(LanguagePlatformTheme.spacing.xl),
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
       Text(stringResource(Res.string.reading_result_estimated_band), style = MaterialTheme.typography.labelLarge)
 
       Text(result.band.toString(), style = MaterialTheme.typography.displayLarge)
@@ -108,14 +109,14 @@ private fun ResultSummary(
       )
 
       if (state.isTimeExpired) {
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(LanguagePlatformTheme.spacing.sm))
 
         Text(stringResource(Res.string.reading_result_time_expired), color = MaterialTheme.colorScheme.error)
       }
 
-      Spacer(Modifier.height(16.dp))
+      Spacer(Modifier.height(LanguagePlatformTheme.spacing.lg))
 
-      Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+      Row(horizontalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.md)) {
         OutlinedButton(onClick = onExit) { Text(stringResource(Res.string.reading_result_back_to_list)) }
 
         Button(onClick = onRestart) { Text(stringResource(Res.string.reading_result_restart)) }
@@ -132,18 +133,18 @@ private fun QuestionResultRow(
   val verdict =
     stringResource(if (item.isCorrect) Res.string.reading_result_correct else Res.string.reading_result_wrong)
 
-  Row(modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
+  Row(modifier.padding(vertical = LanguagePlatformTheme.spacing.xs), verticalAlignment = Alignment.Top) {
     Text(
       text =
         stringResource(
           if (item.isCorrect) Res.string.reading_result_correct_mark else Res.string.reading_result_wrong_mark,
         ),
-      color = if (item.isCorrect) ResultColors.correct else ResultColors.wrong,
+      color = if (item.isCorrect) LanguagePlatformTheme.colors.correct else LanguagePlatformTheme.colors.wrong,
       style = MaterialTheme.typography.titleMedium,
       modifier = Modifier.semantics { contentDescription = verdict },
     )
 
-    Spacer(Modifier.width(12.dp))
+    Spacer(Modifier.width(LanguagePlatformTheme.spacing.md))
 
     Column {
       Text(

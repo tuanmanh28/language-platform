@@ -1,48 +1,140 @@
 package com.app.platform.language.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
+import com.app.platform.language.ui.theme.generated.ColorTokens
+import com.app.platform.language.ui.theme.generated.DarkColorTokens
+import com.app.platform.language.ui.theme.generated.LightColorTokens
+import com.app.platform.language.ui.theme.generated.RadiusTokens
+import com.app.platform.language.ui.theme.generated.SpacingTokens
+import com.app.platform.language.ui.theme.generated.TypographyTokens
 
-// Placeholder colors until the design system defines real tokens.
-private val Brand = Color(0xFF2457C5)
-private val BrandDark = Color(0xFFB3C5FF)
-
-private val LightColors =
-  lightColorScheme(
-    primary = Brand,
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFFDBE1FF),
-    onPrimaryContainer = Color(0xFF00174B),
-    secondary = Color(0xFF00687A),
-    error = Color(0xFFBA1A1A),
-  )
-
-private val DarkColors =
-  darkColorScheme(
-    primary = BrandDark,
-    onPrimary = Color(0xFF002A78),
-    primaryContainer = Color(0xFF003EA8),
-    onPrimaryContainer = Color(0xFFDBE1FF),
-    secondary = Color(0xFF55D6F4),
-    error = Color(0xFFFFB4AB),
-  )
-
-object ResultColors {
-  val correct = Color(0xFF1B7F3B)
-  val wrong = Color(0xFFBA1A1A)
-}
+internal val LocalColors = staticCompositionLocalOf { LightColorTokens }
+internal val LocalSpacing = staticCompositionLocalOf { SpacingTokens }
+internal val LocalRadius = staticCompositionLocalOf { RadiusTokens }
 
 @Composable
 fun LanguagePlatformTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   content: @Composable () -> Unit,
 ) {
-  MaterialTheme(
-    colorScheme = if (darkTheme) DarkColors else LightColors,
-    content = content,
+  val colors = if (darkTheme) DarkColorTokens else LightColorTokens
+  CompositionLocalProvider(
+    LocalColors provides colors,
+    LocalSpacing provides SpacingTokens,
+    LocalRadius provides RadiusTokens,
+  ) {
+    MaterialTheme(
+      colorScheme = colors.toColorScheme(isDark = darkTheme),
+      typography = TokenTypography,
+      shapes = TokenShapes,
+      content = content,
+    )
+  }
+}
+
+internal object LanguagePlatformTheme {
+  val colors: ColorTokens
+    @Composable @ReadOnlyComposable
+    get() = LocalColors.current
+
+  val spacing: SpacingTokens
+    @Composable @ReadOnlyComposable
+    get() = LocalSpacing.current
+
+  val radius: RadiusTokens
+    @Composable @ReadOnlyComposable
+    get() = LocalRadius.current
+}
+
+private val TokenTypography =
+  Typography(
+    displayLarge = TypographyTokens.displayLarge,
+    displayMedium = TypographyTokens.displayMedium,
+    displaySmall = TypographyTokens.displaySmall,
+    headlineLarge = TypographyTokens.headlineLarge,
+    headlineMedium = TypographyTokens.headlineMedium,
+    headlineSmall = TypographyTokens.headlineSmall,
+    titleLarge = TypographyTokens.titleLarge,
+    titleMedium = TypographyTokens.titleMedium,
+    titleSmall = TypographyTokens.titleSmall,
+    bodyLarge = TypographyTokens.bodyLarge,
+    bodyMedium = TypographyTokens.bodyMedium,
+    bodySmall = TypographyTokens.bodySmall,
+    labelLarge = TypographyTokens.labelLarge,
+    labelMedium = TypographyTokens.labelMedium,
+    labelSmall = TypographyTokens.labelSmall,
+  )
+
+private val TokenShapes =
+  Shapes(
+    extraSmall = RoundedCornerShape(RadiusTokens.xs),
+    small = RoundedCornerShape(RadiusTokens.sm),
+    medium = RoundedCornerShape(RadiusTokens.md),
+    large = RoundedCornerShape(RadiusTokens.lg),
+    extraLarge = RoundedCornerShape(RadiusTokens.xl),
+  )
+
+private fun ColorTokens.toColorScheme(isDark: Boolean): ColorScheme {
+  val baseline = if (isDark) darkColorScheme() else lightColorScheme()
+  return baseline.copy(
+    primary = primary,
+    onPrimary = onPrimary,
+    primaryContainer = primaryContainer,
+    onPrimaryContainer = onPrimaryContainer,
+    inversePrimary = inversePrimary,
+    secondary = secondary,
+    onSecondary = onSecondary,
+    secondaryContainer = secondaryContainer,
+    onSecondaryContainer = onSecondaryContainer,
+    tertiary = tertiary,
+    onTertiary = onTertiary,
+    tertiaryContainer = tertiaryContainer,
+    onTertiaryContainer = onTertiaryContainer,
+    background = background,
+    onBackground = onBackground,
+    surface = surface,
+    onSurface = onSurface,
+    surfaceVariant = surfaceVariant,
+    onSurfaceVariant = onSurfaceVariant,
+    surfaceTint = primary,
+    inverseSurface = inverseSurface,
+    inverseOnSurface = inverseOnSurface,
+    error = error,
+    onError = onError,
+    errorContainer = errorContainer,
+    onErrorContainer = onErrorContainer,
+    outline = outline,
+    outlineVariant = outlineVariant,
+    scrim = scrim,
+    surfaceBright = surfaceBright,
+    surfaceDim = surfaceDim,
+    surfaceContainer = surfaceContainer,
+    surfaceContainerHigh = surfaceContainerHigh,
+    surfaceContainerHighest = surfaceContainerHighest,
+    surfaceContainerLow = surfaceContainerLow,
+    surfaceContainerLowest = surfaceContainerLowest,
+    primaryFixed = primaryFixed,
+    primaryFixedDim = primaryFixedDim,
+    onPrimaryFixed = onPrimaryFixed,
+    onPrimaryFixedVariant = onPrimaryFixedVariant,
+    secondaryFixed = secondaryFixed,
+    secondaryFixedDim = secondaryFixedDim,
+    onSecondaryFixed = onSecondaryFixed,
+    onSecondaryFixedVariant = onSecondaryFixedVariant,
+    tertiaryFixed = tertiaryFixed,
+    tertiaryFixedDim = tertiaryFixedDim,
+    onTertiaryFixed = onTertiaryFixed,
+    onTertiaryFixedVariant = onTertiaryFixedVariant,
   )
 }

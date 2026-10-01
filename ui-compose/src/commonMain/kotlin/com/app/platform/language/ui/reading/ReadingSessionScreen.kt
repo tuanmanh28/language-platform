@@ -135,13 +135,13 @@ private fun FailedContent(
   modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = modifier.padding(24.dp),
+    modifier = modifier.padding(LanguagePlatformTheme.spacing.xl),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(error.toUserMessage(), style = MaterialTheme.typography.bodyLarge)
 
-    Spacer(Modifier.height(12.dp))
+    Spacer(Modifier.height(LanguagePlatformTheme.spacing.md))
 
     Button(onClick = onRetry) { Text(stringResource(Res.string.common_retry)) }
   }
@@ -175,11 +175,11 @@ private fun InProgressContent(
         actions = {
           Text(text = state.remainingLabel, style = MaterialTheme.typography.titleMedium, color = timerColor)
 
-          Spacer(Modifier.width(12.dp))
+          Spacer(Modifier.width(LanguagePlatformTheme.spacing.md))
 
           Button(onClick = { isConfirmingSubmit = true }) { Text(stringResource(Res.string.reading_session_submit)) }
 
-          Spacer(Modifier.width(8.dp))
+          Spacer(Modifier.width(LanguagePlatformTheme.spacing.sm))
         },
       )
     },
@@ -189,20 +189,20 @@ private fun InProgressContent(
         Row(Modifier.fillMaxSize()) {
           LazyColumn(
             modifier = Modifier.weight(1f).fillMaxHeight(),
-            contentPadding = PaddingValues(24.dp),
+            contentPadding = PaddingValues(LanguagePlatformTheme.spacing.xl),
           ) { passages(state.test.passages) }
 
           LazyColumn(
             modifier = Modifier.weight(1f).fillMaxHeight(),
-            contentPadding = PaddingValues(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(LanguagePlatformTheme.spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.lg),
           ) { questions(state, onAnswer) }
         }
       } else {
         LazyColumn(
           modifier = Modifier.fillMaxSize(),
-          contentPadding = PaddingValues(16.dp),
-          verticalArrangement = Arrangement.spacedBy(16.dp),
+          contentPadding = PaddingValues(LanguagePlatformTheme.spacing.lg),
+          verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.lg),
         ) {
           passages(state.test.passages)
 
@@ -260,12 +260,12 @@ private fun LazyListScope.passages(passages: List<Passage>) {
       Text(
         text = passage.title,
         style = MaterialTheme.typography.titleLarge,
-        modifier = Modifier.padding(bottom = 12.dp),
+        modifier = Modifier.padding(bottom = LanguagePlatformTheme.spacing.md),
       )
     }
 
     items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
-      ParagraphText(paragraph, Modifier.padding(bottom = 12.dp))
+      ParagraphText(paragraph, Modifier.padding(bottom = LanguagePlatformTheme.spacing.md))
     }
   }
 }
@@ -328,7 +328,7 @@ private fun QuestionItem(
       style = MaterialTheme.typography.bodyLarge,
     )
 
-    Spacer(Modifier.height(8.dp))
+    Spacer(Modifier.height(LanguagePlatformTheme.spacing.sm))
 
     when (group.type) {
       QuestionType.TRUE_FALSE_NOT_GIVEN,
@@ -349,7 +349,7 @@ private fun FixedChoiceAnswer(
   onAnswer: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+  Row(modifier, horizontalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm)) {
     choices.forEach { choice ->
       FilterChip(
         selected = answer.equals(choice, ignoreCase = true),

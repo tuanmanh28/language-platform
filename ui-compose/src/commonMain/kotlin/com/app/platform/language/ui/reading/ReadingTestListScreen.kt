@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.platform.language.core.model.ReadingTestSummary
 import com.app.platform.language.shared.reading.ReadingTestListUiState
@@ -83,8 +82,8 @@ private fun ReadyContent(
 ) {
   LazyColumn(
     modifier = modifier,
-    contentPadding = PaddingValues(16.dp),
-    verticalArrangement = Arrangement.spacedBy(12.dp),
+    contentPadding = PaddingValues(LanguagePlatformTheme.spacing.lg),
+    verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.md),
   ) {
     if (state.isOffline) {
       item(key = "offline-banner") { OfflineBanner(Modifier.fillMaxWidth()) }
@@ -108,10 +107,10 @@ private fun TestCard(
   modifier: Modifier = Modifier,
 ) {
   Card(onClick = onClick, modifier = modifier) {
-    Column(Modifier.padding(16.dp)) {
+    Column(Modifier.padding(LanguagePlatformTheme.spacing.lg)) {
       Text(test.title, style = MaterialTheme.typography.titleMedium)
 
-      Spacer(Modifier.height(4.dp))
+      Spacer(Modifier.height(LanguagePlatformTheme.spacing.xs))
 
       Text(
         text =
@@ -138,7 +137,7 @@ private fun OfflineBanner(modifier: Modifier = Modifier) {
     Text(
       text = stringResource(Res.string.reading_list_offline_banner),
       style = MaterialTheme.typography.bodyMedium,
-      modifier = Modifier.padding(12.dp),
+      modifier = Modifier.padding(LanguagePlatformTheme.spacing.md),
     )
   }
 }
