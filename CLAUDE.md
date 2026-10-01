@@ -46,9 +46,9 @@ Your task spec lists the exact verification command. **It must pass before you c
 7. **Do not touch:** `_reference/`, generated files, other tasks' areas, CI secrets.
 8. **Git:**
    - Work only on the branch you were started on. Never push, never rebase or rewrite `main`.
-   - Branches follow `<type>/<task-id>-<slug>` (e.g. `feat/be-01-backend-config`); the orchestrator creates them.
+   - Branches follow `<type>/<slug>` (e.g. `feat/backend-config`); the orchestrator creates them.
    - Commit messages follow Conventional Commits: `feat: …`, `fix: …`, `refactor: …`, `update: …`, `test: …`, `docs: …`, `chore: …`
-     (lowercase, imperative, no trailing period), with `Task: <TASK-ID>` in the body.
+     (lowercase, imperative, no trailing period). Never put task ids (BE-01, AND-03…) in commit messages or branch names.
    - **Do not add `Co-Authored-By`, "Generated with Claude", or any AI attribution** to commits or files.
    - Do not change git config.
 9. **If blocked** (missing secret, ambiguous requirement, failing build you cannot fix), stop. Write `BLOCKED.md` at the repo root explaining what you need, commit it, and finish.

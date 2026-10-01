@@ -1,6 +1,6 @@
 # AND-02 — Core component library
 
-- **Type / branch:** `feat` / `feat/and-02-component-library`
+- **Type / branch:** `feat` / `feat/component-library`
 - **Lane:** android
 - **Depends on:** AND-01
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -19,4 +19,4 @@ Reusable Compose components every screen is built from.
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on branch `feat/and-02-component-library` as `feat: <summary>` with `Task: AND-02` in the commit body.
+- Committed on branch `feat/component-library` as `feat: <summary>` (no task id in the message).

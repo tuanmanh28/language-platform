@@ -14,7 +14,8 @@ reasonable decisions within the task's scope and note them in your final summary
    ```
 
 6. Commit your work on the current branch. Subject: `{type}: <short imperative summary>` (Conventional Commits;
-   use `fix:`/`refactor:`/`update:`/`test:`/`docs:`/`chore:` for commits that are not features). Body: `Task: {id}`.
+   use `fix:`/`refactor:`/`update:`/`test:`/`docs:`/`chore:` for commits that are not features).
+   Never put the task id ({id}) in commit messages.
    No `Co-Authored-By`, no "Generated with" lines, no AI attribution. Do not push.
 7. If you are blocked (missing secret, unclear requirement, build issue outside your scope), write `BLOCKED.md`
    explaining exactly what you need, commit it, and stop.

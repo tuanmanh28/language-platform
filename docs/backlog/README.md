@@ -42,7 +42,8 @@ F-01 ─┬─ BE-01 ─ BE-02 ─┬─ BE-03 ─┬─ BE-05 (also BE-04)
 ## Naming
 
 Each task has a `type` (`feat`, `fix`, `refactor`, `update`…) and a `slug` in `tasks.json`.
-Branch: `<type>/<id>-<slug>` (e.g. `feat/be-01-backend-config`). Merged into `main` as one commit `<type>: <summary>`.
+Branch: `<type>/<slug>` (e.g. `feat/backend-config`). Merged into `main` as one commit `<type>: <summary>`.
+Task ids are only for planning — they never appear in branch names or commit messages.
 
 ## Adding a task
 

@@ -1,6 +1,6 @@
 # AND-08 — Listening player and practice
 
-- **Type / branch:** `feat` / `feat/and-08-listening-player`
+- **Type / branch:** `feat` / `feat/listening-player`
 - **Lane:** android
 - **Depends on:** AND-02, AND-03, BE-08
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -19,4 +19,4 @@ Listening practice on Android.
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on branch `feat/and-08-listening-player` as `feat: <summary>` with `Task: AND-08` in the commit body.
+- Committed on branch `feat/listening-player` as `feat: <summary>` (no task id in the message).

@@ -1,6 +1,6 @@
 # AND-05 — Vocabulary: save words and FSRS review
 
-- **Type / branch:** `feat` / `feat/and-05-vocabulary-fsrs`
+- **Type / branch:** `feat` / `feat/vocabulary-fsrs`
 - **Lane:** android
 - **Depends on:** AND-03
 - **Verify:** `./gradlew :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -20,4 +20,4 @@ Save words while practising and review them with spaced repetition.
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on branch `feat/and-05-vocabulary-fsrs` as `feat: <summary>` with `Task: AND-05` in the commit body.
+- Committed on branch `feat/vocabulary-fsrs` as `feat: <summary>` (no task id in the message).

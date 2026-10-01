@@ -111,13 +111,13 @@ class Orchestrator:
         return self.state.setdefault(task_id, {"status": "pending"})
 
     def branch(self, task_id: str) -> str:
-        """Conventional branch name, e.g. feat/be-01-backend-config (kept stable once a task started)."""
+        """Conventional branch name, e.g. feat/backend-config (kept stable once a task started)."""
         known = self.state.get(task_id, {}).get("branch")
         if known:
             return known
         t = self.tasks[task_id]
         slug = t.get("slug") or re.sub(r"[^a-z0-9]+", "-", t["title"].lower()).strip("-")[:40]
-        return f"{t.get('type', 'feat')}/{task_id.lower()}-{slug}"
+        return f"{t.get('type', 'feat')}/{slug}"
 
     def worktree(self, task_id: str) -> Path:
         return self.worktrees / task_id
@@ -322,7 +322,7 @@ class Orchestrator:
             sys.exit("Main checkout has uncommitted changes.")
         br = self.branch(task_id)
         task = self.tasks[task_id]
-        # One clean conventional commit per task: "<type>: <summary>" + "Task: <ID>" in the body.
+        # One clean conventional commit per task: "<type>: <summary>"; no task ids in commits.
         subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
         subjects = [x for x in subjects if x.strip()]
         summary = self.summary_from(subjects, task)
@@ -332,11 +332,14 @@ class Orchestrator:
             sh(["git", "reset", "--merge"], self.root, check=False)
             sys.exit(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
                      f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}")
-        body = f"Task: {task_id}\n\n" + "\n".join(f"- {x}" for x in subjects)
+        details = [self.strip_prefix(x) for x in subjects]
+        details = [x for x in details if x and x != summary]
+        body = "\n".join(f"- {x}" for x in details)
         if sh(["git", "diff", "--cached", "--quiet"], self.root, check=False).returncode == 0:
             print(f"{task_id} made no file changes — nothing to commit, marking it merged.")
         else:
-            sh(["git", "commit", "-q", "-m", f"{task.get('type', 'feat')}: {summary}", "-m", body], self.root)
+            msg = ["-m", f"{task.get('type', 'feat')}: {summary}"] + (["-m", body] if body else [])
+            sh(["git", "commit", "-q", *msg], self.root)
         self.remove_worktree(task_id)
         sh(["git", "branch", "-D", br], self.root, check=False)
         e.update(status="merged", merged_at=now(), note=None)
@@ -344,10 +347,17 @@ class Orchestrator:
         print(f"✔ {task_id} merged into {MAIN_BRANCH}. Push when you are ready: git push")
 
     @staticmethod
-    def summary_from(subjects: list[str], task: dict) -> str:
-        """Use the agent's first commit subject without any 'type:' / 'ID:' prefix, else the task title."""
+    def strip_prefix(subject: str) -> str:
+        """Drop 'type(scope):' / 'TASK-ID:' prefixes and any task ids from a commit subject."""
+        text = re.sub(r"^(\w+(\([^)]*\))?!?|[A-Z]+-\d+):\s*", "", subject).strip()
+        text = re.sub(r"\s*[\[(]?\b[A-Z]{1,5}-\d{1,3}\b[\])]?", "", text).strip()
+        return text
+
+    @classmethod
+    def summary_from(cls, subjects: list[str], task: dict) -> str:
+        """Use the agent's first commit subject (prefixes and ids removed), else the task title."""
         for subj in subjects:
-            text = re.sub(r"^(\w+(\([^)]*\))?!?|[A-Z]+-\d+):\s*", "", subj).strip()
+            text = cls.strip_prefix(subj)
             if text and not text.lower().startswith("merge"):
                 return text[0].lower() + text[1:] if text[:2] != text[:2].upper() else text
         return task["title"][0].lower() + task["title"][1:]
