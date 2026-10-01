@@ -18,8 +18,11 @@ References:
 
 | Branch | Use |
 | --- | --- |
-| `main` | Always releasable; only the orchestrator's squash merges or the owner's commits land here |
-| `<type>/<slug>` | One per task: `feat/backend-config`, `fix/timer-restart`, `refactor/align-with-skills` |
+| `main` | Always releasable; receives **only merges**, never direct commits |
+| `<type>/<slug>` | One per change: `feat/backend-config`, `fix/timer-restart`, `update/branch-only-workflow` |
+
+**Every change starts on a branch** — features, fixes, docs, skills, config, one-line tweaks — and reaches `main` only
+through a squash merge. `.githooks/pre-commit` rejects any commit made on `main` that is not a merge.
 
 - `<type>` is one of the commit types below; `<slug>` is kebab-case, 2–4 English words, describing the outcome.
 - Never a task id, ticket number, date or person's name in a branch name.
@@ -62,10 +65,18 @@ References:
 
 ## Merging
 
-- `python3 scripts/agents/orchestrator.py merge <ID>` squashes the branch into one `main` commit
-  `<type>: <summary>`, with the other commit subjects as the body, and deletes the branch and worktree.
-- Conflicts: `retry <ID> --fresh` so the agent redoes the work on top of the current `main`.
-- The owner pushes `main` manually after reviewing.
+- Backlog tasks: the orchestrator squash-merges the task branch into one `main` commit `<type>: <summary>` (other
+  commit subjects become the body), then deletes the branch and worktree. Autopilot also pushes. A branch that conflicts
+  with `main` goes back to its agent, which merges `main` into the branch and resolves the conflict.
+- Changes outside the backlog follow the same path by hand, in a separate worktree so the main checkout stays on `main`:
+
+  ```bash
+  git worktree add .worktrees/<slug> -b <type>/<slug> main
+  # work and commit inside .worktrees/<slug>
+  git merge --squash <type>/<slug>        # from the main checkout
+  git commit -m "<type>: <summary>"
+  git worktree remove .worktrees/<slug> && git branch -D <type>/<slug>
+  ```
 
 ## Releases
 
@@ -74,6 +85,6 @@ References:
 
 ## Checklist
 
-- [ ] Branch `<type>/<slug>`, no ids.
+- [ ] Work done on a `<type>/<slug>` branch (no ids), never directly on `main`.
 - [ ] Every subject passes `.githooks/commit-msg`.
 - [ ] No secrets, generated files or large binaries staged (`git diff --cached --stat`).

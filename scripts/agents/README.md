@@ -78,9 +78,10 @@ You can also edit the task spec (`docs/backlog/BE-01.md`), commit it on `main`, 
 
 ## Git hooks
 
-The orchestrator sets `git config core.hooksPath .githooks` for this repo (worktrees share it). `.githooks/commit-msg`
-rejects commits whose subject is not `<type>: <summary>`, that mention task ids or AI attribution, or that are made on
-a branch not named `<type>/<slug>`. To use it without the orchestrator: `git config core.hooksPath .githooks`.
+The orchestrator sets `git config core.hooksPath .githooks` for this repo (worktrees share it).
+`.githooks/pre-commit` rejects direct commits on `main` (only merges land there). `.githooks/commit-msg` rejects
+commits whose subject is not `<type>: <summary>`, that mention task ids or AI attribution, or that are made on a branch
+not named `<type>/<slug>`. To use the hooks without the orchestrator: `git config core.hooksPath .githooks`.
 
 ## Code review
 

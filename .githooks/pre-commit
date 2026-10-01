@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Work happens on branches; main only receives merges (see .claude/skills/git-workflow).
+set -euo pipefail
+
+if [[ "$(git symbolic-ref --quiet --short HEAD || true)" != "main" ]]; then
+  exit 0
+fi
+git_dir="$(git rev-parse --git-dir)"
+if [[ -f "$git_dir/MERGE_HEAD" || -f "$git_dir/SQUASH_MSG" ]]; then
+  exit 0
+fi
+echo "pre-commit: never commit directly on main. Create a branch first: git switch -c <type>/<slug>" >&2
+exit 1
