@@ -2,7 +2,7 @@
 
 - **Type / branch:** `feat` / `feat/design-tokens`
 - **Lane:** android
-- **Depends on:** F-01
+- **Depends on:** R-01
 - **Verify:** `npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal

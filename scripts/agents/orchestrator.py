@@ -34,14 +34,12 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-# ---------------------------------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------------------------------
-
 MAIN_BRANCH = "main"
 POLL_SECONDS = 20
+REVIEW_ROUNDS = 2
+REVIEW_TOOLS = ["Read", "Grep", "Glob", "Bash(git diff *)", "Bash(git log *)", "Bash(git show *)", "Bash(git status)"]
+ACTIVE = ("running", "reviewing")
 
-# Tools the agent may use without asking. Anything else is denied (nobody is there to approve).
 ALLOWED_TOOLS = [
     "Read", "Edit", "Write", "Glob", "Grep", "WebFetch", "WebSearch", "TodoWrite",
     "Bash(./gradlew *)", "Bash(./gradlew)",
@@ -59,15 +57,10 @@ DISALLOWED_TOOLS = [
     "Bash(git worktree *)", "Bash(rm -rf *)", "Bash(sudo *)",
 ]
 
-# Gitignored files that each worktree needs (copied from the main checkout when present).
 LOCAL_FILES = ["local.properties", "app-android/google-services.json"]
 
-STATUS_ORDER = ["running", "verifying", "review", "blocked", "failed", "pending", "merged"]
+STATUS_ORDER = ["running", "verifying", "reviewing", "review", "blocked", "failed", "pending", "merged"]
 
-
-# ---------------------------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------------------------
 
 def sh(cmd: list[str], cwd: Path, check: bool = True, capture: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, cwd=cwd, check=check, text=True,
@@ -89,6 +82,8 @@ def repo_root() -> Path:
 
 class Orchestrator:
     def __init__(self, root: Path, worktrees: Path | None = None):
+        self.model: str | None = None
+        self.max_turns: int | None = None
         self.root = root
         self.state_dir = root / ".agents"
         self.logs_dir = self.state_dir / "logs"
@@ -99,8 +94,6 @@ class Orchestrator:
         self.tasks = {t["id"]: t for t in json.loads(tasks_file.read_text())["tasks"]}
         self.prompt_template = (root / "scripts" / "agents" / "task-prompt.md").read_text()
         self.state: dict[str, dict] = json.loads(self.state_file.read_text()) if self.state_file.exists() else {}
-
-    # -- state ------------------------------------------------------------------------------
 
     def save(self) -> None:
         tmp = self.state_file.with_suffix(".tmp")
@@ -129,7 +122,6 @@ class Orchestrator:
         e = self.entry(task_id)
         if e.get("status") == "merged":
             return True
-        # A reviewed branch that you merged yourself (e.g. via a GitHub PR, then `git pull`).
         br = self.branch(task_id)
         if e.get("status") == "review" and self.branch_exists(br):
             if sh(["git", "merge-base", "--is-ancestor", br, MAIN_BRANCH], self.root, check=False).returncode == 0:
@@ -142,9 +134,7 @@ class Orchestrator:
             return False
         return all(self.is_merged(dep) for dep in self.tasks[task_id]["deps"])
 
-    # -- agent lifecycle ----------------------------------------------------------------------
-
-    def start(self, task_id: str, model: str | None, max_turns: int | None) -> None:
+    def start(self, task_id: str, fixes: str | None = None) -> None:
         task, e = self.tasks[task_id], self.entry(task_id)
         wt, br = self.worktree(task_id), self.branch(task_id)
         self.worktrees.mkdir(parents=True, exist_ok=True)
@@ -161,23 +151,26 @@ class Orchestrator:
 
         prompt = self.prompt_template.format(id=task_id, title=task["title"], spec=task["spec"],
                                              verify=task["verify"], branch=br, type=task.get("type", "feat"))
+        if fixes:
+            prompt += ("\n\nThe mandatory code review rejected your previous attempt. Fix every finding below, "
+                       "run the verify command again and commit the fixes (`fix: …` or `refactor: …`).\n\n" + fixes)
         cmd = ["claude", "-p", prompt,
                "--permission-mode", "acceptEdits",
                "--permission-prompts", "none",
                "--output-format", "stream-json", "--verbose",
                "--allowedTools", *ALLOWED_TOOLS,
                "--disallowedTools", *DISALLOWED_TOOLS]
-        if model:
-            cmd += ["--model", model]
-        if max_turns:
-            cmd += ["--max-turns", str(max_turns)]
+        if self.model:
+            cmd += ["--model", self.model]
+        if self.max_turns:
+            cmd += ["--max-turns", str(self.max_turns)]
 
         log = self.logs_dir / f"{task_id}.jsonl"
-        with open(log, "w") as fh:
+        with open(log, "a" if fixes else "w") as fh:
             proc = subprocess.Popen(cmd, cwd=wt, stdout=fh, stderr=subprocess.STDOUT,
                                     stdin=subprocess.DEVNULL, start_new_session=True)
         e.update(status="running", pid=proc.pid, branch=br, worktree=str(wt), log=str(log),
-                 started_at=now(), finished_at=None, note=None)
+                 started_at=now(), finished_at=None, note="Fixing review findings" if fixes else None)
         self.save()
         print(f"▶ {task_id} started (pid {proc.pid}) in {wt}")
 
@@ -189,7 +182,7 @@ class Orchestrator:
             if finished == pid:
                 return False
         except ChildProcessError:
-            pass  # not our child (orchestrator restarted): fall back to kill(0)
+            pass
         try:
             os.kill(pid, 0)
             return True
@@ -206,8 +199,8 @@ class Orchestrator:
             e.update(status="blocked", note="Agent wrote BLOCKED.md")
         elif sh(["git", "rev-list", "--count", f"{MAIN_BRANCH}..HEAD"], wt).stdout.strip() == "0":
             e.update(status="failed", note="Agent made no commit (see logs)")
-        else:
-            self.run_verify(task_id)
+        elif self.run_verify(task_id):
+            self.start_review(task_id)
         self.stop_gradle(wt)
         self.save()
         print(f"■ {task_id}: {e['status']}" + (f" — {e['note']}" if e.get("note") else ""))
@@ -226,22 +219,83 @@ class Orchestrator:
                                 stderr=subprocess.STDOUT).returncode
         e["verify_log"] = str(vlog)
         if rc == 0:
-            e.update(status="review", note="Verify passed — review the worktree, then `merge`")
+            e.update(status="verified", note="Verify passed")
             return True
         e.update(status="failed", note=f"Verify failed (exit {rc}), see {vlog.name}")
         return False
 
+    def start_review(self, task_id: str) -> None:
+        e, task = self.entry(task_id), self.tasks[task_id]
+        prompt = (f"Review the changes on this branch for task {task_id} — {task['title']}. "
+                  f"The task spec is {task['spec']}. Follow your instructions and end with the JSON verdict only.")
+        cmd = ["claude", "-p", prompt, "--agent", "code-reviewer",
+               "--permission-prompts", "none", "--output-format", "json",
+               "--allowedTools", *REVIEW_TOOLS]
+        if self.model:
+            cmd += ["--model", self.model]
+        out = self.logs_dir / f"{task_id}.review.json"
+        with open(out, "w") as fh:
+            proc = subprocess.Popen(cmd, cwd=e["worktree"], stdout=fh, stderr=subprocess.STDOUT,
+                                    stdin=subprocess.DEVNULL, start_new_session=True)
+        e.update(status="reviewing", pid=proc.pid, note="Code review in progress")
+        self.save()
+        print(f"🔍 {task_id} review started (pid {proc.pid})")
+
+    def finish_review(self, task_id: str) -> None:
+        e = self.entry(task_id)
+        verdict = self.read_verdict(self.logs_dir / f"{task_id}.review.json")
+        if verdict is None:
+            e.update(status="failed", note="Review output unreadable, see logs/<id>.review.json")
+        else:
+            report = self.logs_dir / f"{task_id}.review.md"
+            report.write_text(self.format_findings(verdict))
+            blocking = [f for f in verdict.get("findings", []) if f.get("severity") in ("blocker", "major")]
+            if verdict.get("approved") and not blocking:
+                minors = len(verdict.get("findings", []))
+                e.update(status="review", note=f"Verify + code review passed ({minors} minor notes) — `merge` when ready")
+            else:
+                rounds = e.get("review_round", 0) + 1
+                e["review_round"] = rounds
+                if rounds <= REVIEW_ROUNDS:
+                    self.save()
+                    self.start(task_id, fixes=report.read_text())
+                    return
+                e.update(status="failed", note=f"Review rejected after {REVIEW_ROUNDS} fix rounds, see {report.name}")
+        self.save()
+        print(f"■ {task_id}: {e['status']} — {e.get('note')}")
+
+    @staticmethod
+    def read_verdict(path: Path) -> dict | None:
+        try:
+            raw = json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError):
+            return None
+        if isinstance(raw, dict) and isinstance(raw.get("structured_output"), dict):
+            return raw["structured_output"]
+        text = raw.get("result", "") if isinstance(raw, dict) else ""
+        start, end = text.find("{"), text.rfind("}")
+        if start < 0 or end <= start:
+            return None
+        try:
+            return json.loads(text[start:end + 1])
+        except json.JSONDecodeError:
+            return None
+
+    @staticmethod
+    def format_findings(verdict: dict) -> str:
+        lines = [f"Review: {'approved' if verdict.get('approved') else 'changes requested'} — {verdict.get('summary', '')}", ""]
+        for f in verdict.get("findings", []):
+            where = f"{f.get('file', '?')}:{f.get('line', '?')}"
+            lines.append(f"- [{f.get('severity')}] {where} — {f.get('problem')} → {f.get('fix')}")
+        return "\n".join(lines) + "\n"
+
     @staticmethod
     def stop_gradle(wt: Path) -> None:
-        # Free RAM: each worktree starts its own Gradle daemon.
         if (wt / "gradlew").exists():
             subprocess.run(["./gradlew", "--stop"], cwd=wt, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL)
 
-    # -- commands -----------------------------------------------------------------------------
-
-    def run(self, parallel: int, lanes: set[str] | None, only: set[str] | None, watch: bool,
-            model: str | None, max_turns: int | None) -> None:
+    def run(self, parallel: int, lanes: set[str] | None, only: set[str] | None, watch: bool) -> None:
         def eligible(tid: str) -> bool:
             return (lanes is None or self.tasks[tid]["lane"] in lanes) and (only is None or tid in only)
 
@@ -249,14 +303,17 @@ class Orchestrator:
         try:
             while True:
                 for tid, e in list(self.state.items()):
-                    if e.get("status") == "running" and not self.alive(e.get("pid")):
-                        self.finish(tid)
-                running = [t for t, e in self.state.items() if e.get("status") == "running"]
+                    if e.get("status") in ACTIVE and not self.alive(e.get("pid")):
+                        if e["status"] == "running":
+                            self.finish(tid)
+                        else:
+                            self.finish_review(tid)
+                running = [t for t, e in self.state.items() if e.get("status") in ACTIVE]
                 for tid in self.tasks:
                     if len(running) >= parallel:
                         break
                     if eligible(tid) and self.is_ready(tid):
-                        self.start(tid, model, max_turns)
+                        self.start(tid)
                         running.append(tid)
                 self.save()
 
@@ -322,7 +379,6 @@ class Orchestrator:
             sys.exit("Main checkout has uncommitted changes.")
         br = self.branch(task_id)
         task = self.tasks[task_id]
-        # One clean conventional commit per task: "<type>: <summary>"; no task ids in commits.
         subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
         subjects = [x for x in subjects if x.strip()]
         summary = self.summary_from(subjects, task)
@@ -364,7 +420,7 @@ class Orchestrator:
 
     def retry(self, task_id: str, fresh: bool) -> None:
         e = self.entry(task_id)
-        if e.get("status") == "running":
+        if e.get("status") in ACTIVE:
             sys.exit(f"{task_id} is still running.")
         if fresh:
             self.remove_worktree(task_id)
@@ -388,7 +444,7 @@ class Orchestrator:
     def stop(self, task_id: str) -> None:
         e = self.entry(task_id)
         pid = e.get("pid")
-        if e.get("status") == "running" and pid:
+        if e.get("status") in ACTIVE and pid:
             try:
                 os.killpg(pid, signal.SIGTERM)
             except ProcessLookupError:
@@ -400,6 +456,8 @@ class Orchestrator:
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--model", help="Claude model alias for agents and reviewer, e.g. opus or sonnet")
+    p.add_argument("--max-turns", type=int, help="Safety limit on agent turns")
     p.add_argument("--worktrees", type=Path, help="Directory for task worktrees (default: ../<repo>-worktrees)")
     sub = p.add_subparsers(dest="cmd", required=True)
 
@@ -408,14 +466,13 @@ def main() -> None:
     r.add_argument("--lanes", help="Comma-separated lanes, e.g. core,be,android")
     r.add_argument("--only", help="Comma-separated task ids")
     r.add_argument("--watch", action="store_true", help="Keep running and pick up tasks as you merge")
-    r.add_argument("--model", help="Claude model alias, e.g. opus or sonnet")
-    r.add_argument("--max-turns", type=int, help="Safety limit on agent turns")
 
     sub.add_parser("status", help="Show task states")
     lg = sub.add_parser("logs", help="Readable agent log")
     lg.add_argument("task")
     lg.add_argument("--raw", action="store_true")
     for name, helptext in [("verify", "Re-run the verify command in the task worktree"),
+                           ("review", "Run the mandatory code review now and wait for it"),
                            ("stop", "Stop a running agent")]:
         sp = sub.add_parser(name, help=helptext)
         sp.add_argument("task")
@@ -435,11 +492,12 @@ def main() -> None:
     if task and task not in o.tasks:
         sys.exit(f"Unknown task {task}. Known: {', '.join(o.tasks)}")
 
+    o.model, o.max_turns = a.model, a.max_turns
     if a.cmd == "run":
         if shutil.which("claude") is None:
             sys.exit("`claude` CLI not found. Install Claude Code and run `claude` once to sign in.")
         split = lambda s: {x.strip() for x in s.split(",") if x.strip()} if s else None
-        o.run(a.parallel, split(a.lanes), split(a.only), a.watch, a.model, a.max_turns)
+        o.run(a.parallel, split(a.lanes), split(a.only), a.watch)
     elif a.cmd == "status":
         o.print_status()
     elif a.cmd == "logs":
@@ -448,6 +506,11 @@ def main() -> None:
         ok = o.run_verify(task)
         o.save()
         print(f"{task}: {'passed' if ok else 'failed'} — {o.entry(task).get('note')}")
+    elif a.cmd == "review":
+        o.start_review(task)
+        while o.alive(o.entry(task).get("pid")):
+            time.sleep(POLL_SECONDS)
+        o.finish_review(task)
     elif a.cmd == "stop":
         o.stop(task)
     elif a.cmd == "merge":

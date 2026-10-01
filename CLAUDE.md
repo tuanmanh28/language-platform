@@ -1,60 +1,83 @@
-# CLAUDE.md — guide for AI agents working in this repo
+# CLAUDE.md
 
-Read this before changing anything. Then read the task spec you were given in `docs/backlog/`.
+Rules for every AI agent in this repo. Read this, then your task spec in `docs/backlog/`, then the skills that apply.
 
 ## Project
 
-IELTS practice platform. Kotlin Multiplatform shared core, native UI per platform, Ktor backend.
-See `README.md` (how to run) and `docs/ROADMAP.md` (what and why).
+IELTS practice platform: Kotlin Multiplatform shared core, native UI per platform, Ktor backend.
+`README.md` explains how to run it; `docs/ROADMAP.md` explains what and why.
 
-| Module | What lives there |
+| Module | Contents |
 | --- | --- |
-| `core/model` | Serializable models shared by apps and backend. Sample tests from `content/` are embedded at build time. |
-| `core/exam-engine` | Pure scoring logic (answer normalisation, band tables). No I/O. |
-| `shared` | KMP data layer: Ktor client, SQLDelight cache, repositories, ViewModels, Koin DI. Targets android, jvm, iosArm64, iosSimulatorArm64, macosArm64. |
-| `ui-compose` | Compose Multiplatform screens/components for Android + Desktop. |
-| `app-android`, `app-desktop` | Thin entry points. |
-| `app-apple` | SwiftUI (iOS + macOS). Xcode project is generated from `project.yml` with XcodeGen. |
-| `backend` | Ktor server (JVM 21), Dockerfile, tests with `testApplication`. |
-| `content/` | Test content as JSON + JSON Schema. |
+| `core/model` | `@Serializable` models shared by apps and backend; bundled sample content |
+| `core/exam-engine` | Pure scoring logic |
+| `shared` | KMP data layer, repositories, ViewModels, Koin (android, jvm, iosArm64, iosSimulatorArm64, macosArm64) |
+| `ui-compose` | Compose Multiplatform UI for Android + Desktop: design system, navigation, screens |
+| `app-android`, `app-desktop` | Entry points only |
+| `app-apple` | SwiftUI for iOS + macOS; Xcode project generated from `project.yml` |
+| `backend` | Ktor server, Flyway, Exposed |
+| `content/` | Test content JSON + schema |
+| `_reference/` | Read-only reference repos (not part of the project) |
+
+## Skills — use them
+
+| When you… | Skill |
+| --- | --- |
+| write code that can fail, design errors | `error-handling` |
+| add a feature end to end | `kmp-feature` |
+| touch API client, SQLDelight, repositories, sync | `shared-data-layer` |
+| build a Compose screen | `compose-screen` |
+| add tokens or UI components | `design-system` |
+| add routes, tabs, deep links | `navigation` |
+| expose Kotlin to Swift or write SwiftUI | `swiftui-interop` |
+| add a backend endpoint | `backend-endpoint` |
+| change the database | `backend-database` |
+| write tests | `testing` |
+| add or upgrade dependencies, edit Gradle | `gradle-dependency` |
+
+## Engineering standards
+
+- **Clean architecture, simple logic.** Clear layers, small functions, intention-revealing names, immutable data. The
+  simplest design that is correct wins; no premature abstraction, no clever code, no dead code.
+- **Comments:** avoid them. Code must explain itself. Write a comment only to explain *why* something non-obvious is done,
+  in English, on one line. No KDoc on obvious members, no section dividers, no comments narrating the code.
+- **Errors:** `Result<V, E>` from kotlin-result with sealed error types (`error-handling`). Exceptions are for bugs only.
+  `Result` never crosses into Swift or into a `StateFlow`.
+- **Latest libraries:** new dependencies use the latest stable version, looked up at the source (`gradle-dependency`).
+- **Business logic** lives in `core`/`shared`/backend services — never in Compose or SwiftUI code.
+- `shared` must keep compiling for iOS/macOS: no JVM-only APIs in `commonMain`.
+- **Tests** for all new logic at the level the `testing` skill prescribes.
+- UI uses only design-system components and tokens; user-facing strings come from resources (Vietnamese).
+- Database changes only through new Flyway migrations (backend) or `.sqm` migrations (app).
 
 ## Commands
 
 ```bash
 ./gradlew :core:model:jvmTest :core:exam-engine:jvmTest   # core logic
-./gradlew :shared:jvmTest                                  # repositories, ViewModels (JVM)
-./gradlew :backend:test                                    # API tests
-./gradlew :app-android:assembleDebug                       # Android build
-./gradlew :app-desktop:compileKotlin                       # Desktop (shares ui-compose)
-./gradlew :shared:compileKotlinIosSimulatorArm64          # keep shared iOS-compatible (slow, run when touching shared)
+./gradlew :shared:jvmTest                                  # repositories, ViewModels
+./gradlew :backend:test                                    # API + database tests
+./gradlew :app-android:assembleDebug                       # Android
+./gradlew :app-desktop:compileKotlin                       # Desktop
+./gradlew :shared:compileKotlinIosSimulatorArm64          # shared still compiles for Apple
 ```
 
-Your task spec lists the exact verification command. **It must pass before you commit.**
+Your task spec lists the exact verify command. It must pass before you commit.
 
-## Rules
+## Working rules
 
-1. **Stay in scope.** Implement only your task. If you find unrelated problems, list them in your final summary instead of fixing them.
-2. **Keep the architecture:**
-   - Business logic goes in `shared` / `core`, never in Android or SwiftUI code. UI renders `StateFlow` state and calls ViewModel actions.
-   - New ViewModels: `androidx.lifecycle.ViewModel` in `shared`, registered in `shared/.../di/Koin.kt`, exposed to Swift via `ViewModels`.
-   - Anything with I/O behind an interface so it can be faked in tests.
-   - `shared` must stay compilable for iOS/macOS: no JVM-only APIs in `commonMain`.
-3. **Dependencies** go in `gradle/libs.versions.toml`. Use the latest stable version compatible with Kotlin 2.4.20 and check that it exists on Maven Central/Google Maven before using it. Do not upgrade existing versions unless the task says so.
-4. **Tests are required** for logic you add (`commonTest`/`jvmTest` in KMP modules, `src/test` in backend). Use fakes, not mocks of our own classes.
-5. **UI:** use design-system components and theme tokens from `ui-compose` once they exist (task AND-01/AND-02); never hard-code colors or dimensions in screens. User-facing strings are Vietnamese for now.
-6. **Database:** backend schema changes only through new Flyway migrations (`V<n>__description.sql`); never edit an applied migration. App cache schema changes through SQLDelight `.sqm` migrations.
-7. **Do not touch:** `_reference/`, generated files, other tasks' areas, CI secrets.
-8. **Git:**
-   - Work only on the branch you were started on. Never push, never rebase or rewrite `main`.
-   - Branches follow `<type>/<slug>` (e.g. `feat/backend-config`); the orchestrator creates them.
-   - Commit messages follow Conventional Commits: `feat: …`, `fix: …`, `refactor: …`, `update: …`, `test: …`, `docs: …`, `chore: …`
-     (lowercase, imperative, no trailing period). Never put task ids (BE-01, AND-03…) in commit messages or branch names.
-   - **Do not add `Co-Authored-By`, "Generated with Claude", or any AI attribution** to commits or files.
-   - Do not change git config.
-9. **If blocked** (missing secret, ambiguous requirement, failing build you cannot fix), stop. Write `BLOCKED.md` at the repo root explaining what you need, commit it, and finish.
+1. **Scope:** implement only your task. List unrelated problems in your final summary instead of fixing them.
+2. **Git:** stay on your branch; never push, rebase, reset or change git config.
+   Commit messages follow Conventional Commits — `feat: …`, `fix: …`, `refactor: …`, `update: …`, `test: …`, `docs: …`,
+   `chore: …` — lowercase, imperative, no trailing period. Never put task ids (BE-01, AND-03…) in branch names or commit
+   messages. No `Co-Authored-By`, "Generated with", or any AI attribution anywhere.
+3. **Do not touch** `_reference/`, generated files, CI secrets, or other tasks' areas.
+4. **Blocked** (missing secret, unclear requirement, failure outside your scope): write `BLOCKED.md` explaining exactly what
+   you need, commit it, stop.
+5. **Review is mandatory:** after verify passes, the `code-reviewer` subagent reviews your branch. `blocker`/`major`
+   findings come back to you to fix.
 
 ## Final summary (print at the end)
 
-- What you changed (files/modules)
+- What changed (files/modules)
 - How you verified it (commands + result)
 - Follow-ups or risks for the reviewer

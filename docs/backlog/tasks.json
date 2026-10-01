@@ -11,13 +11,37 @@
       "spec": "docs/backlog/F-01.md"
     },
     {
+      "id": "U-01",
+      "type": "update",
+      "slug": "latest-dependencies",
+      "title": "Upgrade the whole stack to the latest stable versions",
+      "lane": "core",
+      "deps": [
+        "F-01"
+      ],
+      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/U-01.md"
+    },
+    {
+      "id": "R-01",
+      "type": "refactor",
+      "slug": "align-with-skills",
+      "title": "Align existing code with the skills",
+      "lane": "core",
+      "deps": [
+        "U-01"
+      ],
+      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/R-01.md"
+    },
+    {
       "id": "BE-01",
       "type": "feat",
       "slug": "backend-config",
       "title": "Backend configuration, environments and observability",
       "lane": "be",
       "deps": [
-        "F-01"
+        "R-01"
       ],
       "verify": "./gradlew :backend:test",
       "spec": "docs/backlog/BE-01.md"
@@ -114,7 +138,7 @@
       "title": "Design tokens pipeline",
       "lane": "android",
       "deps": [
-        "F-01"
+        "R-01"
       ],
       "verify": "npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-01.md"
@@ -138,7 +162,7 @@
       "title": "App navigation shell",
       "lane": "android",
       "deps": [
-        "F-01"
+        "R-01"
       ],
       "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-03.md"

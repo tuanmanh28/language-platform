@@ -6,7 +6,9 @@ so agents never step on each other.
 The orchestrator checks every result itself (it re-runs the task's verify command) before asking you to review.
 
 ```
-backlog (tasks.json) ──► ready tasks ──► agent per worktree ──► verify ──► you review ──► merge ──► next tasks unblock
+backlog ──► ready tasks ──► agent per worktree ──► verify ──► code-reviewer ──► you ──► merge ──► next tasks unblock
+                                          ▲                          │ blocker/major findings
+                                          └──────── fix round (max 2) ┘
 ```
 
 ## Requirements
@@ -55,11 +57,18 @@ You can also edit the task spec (`docs/backlog/BE-01.md`), commit it on `main`, 
 | State | Meaning | Your move |
 | --- | --- | --- |
 | `pending` | Waiting for dependencies to be merged | — |
-| `running` | Agent working | `logs <ID>` |
-| `review` | Agent committed and verify passed | Review, then `merge` |
-| `failed` | No commit, uncommitted leftovers, or verify failed | Read `logs` / `.agents/logs/<ID>.verify.log`, then `retry` |
+| `running` | Agent working (or fixing review findings) | `logs <ID>` |
+| `reviewing` | Mandatory `code-reviewer` subagent checking the branch | wait |
+| `review` | Verify and code review passed (minor notes in `.agents/logs/<ID>.review.md`) | Look, then `merge` |
+| `failed` | No commit, uncommitted leftovers, verify failed, or review still rejecting after 2 fix rounds | Read `logs` / `.agents/logs/<ID>.verify.log`, then `retry` |
 | `blocked` | Agent wrote `BLOCKED.md` (needs a secret, a decision…) | Unblock, then `retry` |
 | `merged` | In `main` | — |
+
+## Code review
+
+After verify passes, `.claude/agents/code-reviewer.md` reviews `git diff main...HEAD` against `CLAUDE.md` and the skills
+(read-only tools). `blocker`/`major` findings are sent back to the same agent to fix, up to 2 rounds. Run it manually with
+`python3 scripts/agents/orchestrator.py review <ID>`.
 
 ## Safety
 
@@ -75,5 +84,5 @@ You can also edit the task spec (`docs/backlog/BE-01.md`), commit it on `main`, 
 - RAM: every worktree runs its own Gradle daemon; the orchestrator stops it when a task ends. Close the emulator or
   lower `--parallel` to 1 when building Android while agents run.
 - Usage limits: each agent run consumes your Claude plan's usage. If a run stops because of limits, `retry` it later.
-- `--model opus` / `--model sonnet` to choose the model; `--max-turns 200` as a safety stop.
+- `--model opus` / `--model sonnet` (before the subcommand) to choose the model; `--max-turns 200` as a safety stop.
 - Keep tasks small. A task that fails twice usually needs a clearer spec or splitting.
