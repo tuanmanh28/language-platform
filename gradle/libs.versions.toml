@@ -28,6 +28,7 @@ jwksRsa = "0.24.1"
 
 androidxActivity = "1.13.0"
 androidxLifecycleKMP = "2.11.0"
+navigation3 = "1.1.2"
 
 minSdk = "24"
 compileSdk = "37"
@@ -99,6 +100,8 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-lifecycle-viewmodel-kmp = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycleKMP" }
 androidx-lifecycle-viewmodel-compose-kmp = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycleKMP" }
 androidx-lifecycle-runtime-compose-kmp = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycleKMP" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycleKMP" }
+androidx-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 
 compose-rules-ktlint = { module = "io.nlopez.compose.rules:ktlint", version.ref = "composeRulesKtlint" }
 

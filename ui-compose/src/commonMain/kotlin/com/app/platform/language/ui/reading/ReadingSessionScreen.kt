@@ -46,7 +46,6 @@ import com.app.platform.language.core.model.QuestionGroup
 import com.app.platform.language.core.model.QuestionType
 import com.app.platform.language.shared.reading.ReadingSessionUiState
 import com.app.platform.language.shared.reading.ReadingSessionViewModel
-import com.app.platform.language.ui.PlatformBackHandler
 import com.app.platform.language.ui.components.AnswerState
 import com.app.platform.language.ui.components.LpAnswerChip
 import com.app.platform.language.ui.components.LpErrorState
@@ -76,7 +75,7 @@ private val TwoPaneMinWidth = 840.dp
 internal fun ReadingSessionScreen(
   testId: String,
   onExit: () -> Unit,
-  viewModel: ReadingSessionViewModel = koinViewModel(key = "reading-session-$testId") { parametersOf(testId) },
+  viewModel: ReadingSessionViewModel = koinViewModel { parametersOf(testId) },
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -84,8 +83,6 @@ internal fun ReadingSessionScreen(
     viewModel.start()
     onDispose { viewModel.stop() }
   }
-
-  PlatformBackHandler(onBack = onExit)
 
   ReadingSessionScreen(
     state = state,

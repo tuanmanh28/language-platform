@@ -16,6 +16,22 @@
   <string name="common_timer_running_out">Sắp hết giờ</string>
   <string name="common_band">Band %1$s</string>
   <string name="common_explanation_title">Giải thích</string>
+  <string name="common_back">Quay lại</string>
+  <string name="common_coming_soon">Sắp có</string>
+  <string name="common_coming_soon_message">Tính năng này đang được phát triển.</string>
+
+  <string name="navigation_tab_practice">Luyện tập</string>
+  <string name="navigation_tab_vocabulary">Từ vựng</string>
+  <string name="navigation_tab_progress">Tiến độ</string>
+  <string name="navigation_tab_profile">Tôi</string>
+
+  <string name="practice_home_title">Luyện tập</string>
+  <string name="practice_home_section_title">Kỹ năng</string>
+  <string name="practice_home_skill_reading">Reading</string>
+  <string name="practice_home_skill_listening">Listening</string>
+  <string name="practice_home_skill_writing">Writing</string>
+  <string name="practice_home_skill_speaking">Speaking</string>
+  <string name="practice_home_skill_available">Làm đề luyện có chấm điểm</string>
 
   <string name="reading_common_error_not_found">Không tìm thấy đề</string>
   <string name="reading_common_error_offline">Không kết nối được máy chủ</string>

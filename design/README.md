@@ -95,7 +95,7 @@ stateless, use theme tokens only, and have a `@Preview` per state that renders i
 | `LpGapField` | Gap-fill answer with a word-limit hint and a word counter | empty, within limit, over limit, no limit |
 | `LpTimerBar` | Remaining time as a label and a bar | `TimerBarState`: normal, warning (last minute) |
 | `LpBandBadge` | IELTS band score | `BandBadgeSize`: small, large |
-| `LpTestCard` | Practice test in a list | default |
+| `LpTestCard` | Practice test or skill in a list | `TestCardState`: enabled, disabled (coming soon) |
 | `LpProgressRing` | Loading spinner, or a ring filled to a fraction with a centre label | indeterminate, determinate (`ProgressRingSize`: small, large) |
 | `LpEmptyState` | Nothing to show yet, with an optional action | title only, with message and action |
 | `LpErrorState` | Failure message with a retry button | default |

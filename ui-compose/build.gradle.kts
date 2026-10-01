@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.android.kotlin.multiplatform.library)
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.kotlinx.serialization)
 }
 
 // Apple platforms use SwiftUI (app-apple), so this module only targets Android and Desktop.
@@ -38,11 +39,10 @@ kotlin {
 
       implementation(libs.androidx.lifecycle.viewmodel.compose.kmp)
       implementation(libs.androidx.lifecycle.runtime.compose.kmp)
+      implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+      implementation(libs.androidx.navigation3.ui)
       implementation(libs.koin.compose)
       implementation(libs.koin.compose.viewmodel)
-    }
-    androidMain.dependencies {
-      implementation(libs.androidx.activity.compose)
     }
     jvmTest.dependencies {
       implementation(kotlin("test"))

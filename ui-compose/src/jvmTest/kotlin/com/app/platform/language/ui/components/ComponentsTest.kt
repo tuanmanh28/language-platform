@@ -149,6 +149,19 @@ class ComponentsTest {
     }
 
   @Test
+  fun disabledTestCardIgnoresClicks() =
+    runComposeUiTest {
+      var clicks = 0
+      setThemedContent {
+        LpTestCard(title = "Listening", details = "Sắp có", onClick = { clicks++ }, state = TestCardState.DISABLED)
+      }
+
+      onAllNodes(hasText("Listening") and isNotEnabled()).assertCountEquals(THEME_COUNT).onFirst().performClick()
+
+      assertEquals(0, clicks)
+    }
+
+  @Test
   fun progressRingRendersIndeterminateAndDeterminate() =
     runComposeUiTest {
       setThemedContent {

@@ -27,6 +27,7 @@ import com.app.platform.language.ui.components.LpProgressRing
 import com.app.platform.language.ui.components.LpTestCard
 import com.app.platform.language.ui.components.LpTextButton
 import com.app.platform.language.ui.resources.Res
+import com.app.platform.language.ui.resources.common_back
 import com.app.platform.language.ui.resources.reading_list_offline_banner
 import com.app.platform.language.ui.resources.reading_list_refresh
 import com.app.platform.language.ui.resources.reading_list_section_title
@@ -39,11 +40,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun ReadingTestListScreen(
   onOpenTest: (String) -> Unit,
+  onBack: () -> Unit,
   viewModel: ReadingTestListViewModel = koinViewModel(),
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  ReadingTestListScreen(state = state, onRefresh = viewModel::refresh, onOpenTest = onOpenTest)
+  ReadingTestListScreen(state = state, onRefresh = viewModel::refresh, onOpenTest = onOpenTest, onBack = onBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,12 +54,14 @@ internal fun ReadingTestListScreen(
   state: ReadingTestListUiState,
   onRefresh: () -> Unit,
   onOpenTest: (String) -> Unit,
+  onBack: () -> Unit,
 ) {
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
       TopAppBar(
         title = { Text(stringResource(Res.string.reading_list_title)) },
+        navigationIcon = { LpTextButton(text = stringResource(Res.string.common_back), onClick = onBack) },
         actions = { LpTextButton(text = stringResource(Res.string.reading_list_refresh), onClick = onRefresh) },
       )
     },
@@ -135,7 +139,7 @@ private fun OfflineBanner(modifier: Modifier = Modifier) {
 @Composable
 private fun ReadingTestListLoadingPreview() {
   LanguagePlatformTheme {
-    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -143,7 +147,7 @@ private fun ReadingTestListLoadingPreview() {
 @Composable
 private fun ReadingTestListLoadingDarkPreview() {
   LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -151,7 +155,7 @@ private fun ReadingTestListLoadingDarkPreview() {
 @Composable
 private fun ReadingTestListReadyPreview() {
   LanguagePlatformTheme {
-    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -159,7 +163,7 @@ private fun ReadingTestListReadyPreview() {
 @Composable
 private fun ReadingTestListReadyDarkPreview() {
   LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -167,7 +171,7 @@ private fun ReadingTestListReadyDarkPreview() {
 @Composable
 private fun ReadingTestListEmptyPreview() {
   LanguagePlatformTheme {
-    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -175,7 +179,7 @@ private fun ReadingTestListEmptyPreview() {
 @Composable
 private fun ReadingTestListEmptyDarkPreview() {
   LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -183,7 +187,7 @@ private fun ReadingTestListEmptyDarkPreview() {
 @Composable
 private fun ReadingTestListOfflinePreview() {
   LanguagePlatformTheme {
-    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
 
@@ -191,6 +195,6 @@ private fun ReadingTestListOfflinePreview() {
 @Composable
 private fun ReadingTestListOfflineDarkPreview() {
   LanguagePlatformTheme(darkTheme = true) {
-    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {})
+    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {}, onBack = {})
   }
 }
