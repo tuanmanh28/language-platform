@@ -333,7 +333,10 @@ class Orchestrator:
             sys.exit(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
                      f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}")
         body = f"Task: {task_id}\n\n" + "\n".join(f"- {x}" for x in subjects)
-        sh(["git", "commit", "-q", "-m", f"{task.get('type', 'feat')}: {summary}", "-m", body], self.root)
+        if sh(["git", "diff", "--cached", "--quiet"], self.root, check=False).returncode == 0:
+            print(f"{task_id} made no file changes — nothing to commit, marking it merged.")
+        else:
+            sh(["git", "commit", "-q", "-m", f"{task.get('type', 'feat')}: {summary}", "-m", body], self.root)
         self.remove_worktree(task_id)
         sh(["git", "branch", "-D", br], self.root, check=False)
         e.update(status="merged", merged_at=now(), note=None)
