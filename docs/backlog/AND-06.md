@@ -1,5 +1,6 @@
 # AND-06 — Progress and streak
 
+- **Type / branch:** `feat` / `feat/and-06-progress-streak`
 - **Lane:** android
 - **Depends on:** AND-03
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -18,4 +19,4 @@ Motivation: show daily streak and progress per skill.
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on the task branch as `AND-06: <summary>`.
+- Committed on branch `feat/and-06-progress-streak` as `feat: <summary>` with `Task: AND-06` in the commit body.

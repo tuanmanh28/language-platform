@@ -39,8 +39,13 @@ F-01 ─┬─ BE-01 ─ BE-02 ─┬─ BE-03 ─┬─ BE-05 (also BE-04)
                  └─ AND-08 (also AND-02) ───────────────┘
 ```
 
+## Naming
+
+Each task has a `type` (`feat`, `fix`, `refactor`, `update`…) and a `slug` in `tasks.json`.
+Branch: `<type>/<id>-<slug>` (e.g. `feat/be-01-backend-config`). Merged into `main` as one commit `<type>: <summary>`.
+
 ## Adding a task
 
 1. Create `docs/backlog/<ID>.md` following an existing file (goal, scope, decisions, acceptance criteria, verify).
-2. Add it to `tasks.json` with its dependencies and verify command.
+2. Add it to `tasks.json` with its type, slug, dependencies and verify command.
 3. Keep tasks small enough for one agent session (roughly half a day of human work) and touching as few modules as possible.

@@ -1,5 +1,6 @@
 # AND-01 — Design tokens pipeline
 
+- **Type / branch:** `feat` / `feat/and-01-design-tokens`
 - **Lane:** android
 - **Depends on:** F-01
 - **Verify:** `npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -23,4 +24,4 @@ A single source of design tokens that generates the Compose theme (and later Swi
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on the task branch as `AND-01: <summary>`.
+- Committed on branch `feat/and-01-design-tokens` as `feat: <summary>` with `Task: AND-01` in the commit body.

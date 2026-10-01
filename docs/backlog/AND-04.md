@@ -1,5 +1,6 @@
 # AND-04 — Reading experience v2
 
+- **Type / branch:** `feat` / `feat/and-04-reading-v2`
 - **Lane:** android
 - **Depends on:** AND-02, AND-03, AND-05
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -20,4 +21,4 @@ Make Reading practice genuinely useful for study.
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on the task branch as `AND-04: <summary>`.
+- Committed on branch `feat/and-04-reading-v2` as `feat: <summary>` with `Task: AND-04` in the commit body.

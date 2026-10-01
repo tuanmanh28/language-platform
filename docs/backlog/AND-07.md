@@ -1,5 +1,6 @@
 # AND-07 — Sign-in with Google and authenticated API client
 
+- **Type / branch:** `feat` / `feat/and-07-google-sign-in`
 - **Lane:** android
 - **Depends on:** AND-03, BE-04
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -19,4 +20,4 @@ Users sign in so attempts sync to the backend (BE-05 consumes this).
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on the task branch as `AND-07: <summary>`.
+- Committed on branch `feat/and-07-google-sign-in` as `feat: <summary>` with `Task: AND-07` in the commit body.

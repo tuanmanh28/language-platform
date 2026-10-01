@@ -1,7 +1,8 @@
 # Parallel AI agents
 
 `orchestrator.py` runs several Claude Code agents at once on tasks from [`docs/backlog`](../../docs/backlog/README.md).
-Each task gets its own git worktree and branch (`task/<ID>`), so agents never step on each other.
+Each task gets its own git worktree and a conventional branch (`feat/be-01-backend-config`, `fix/f-01-build-green`…),
+so agents never step on each other.
 The orchestrator checks every result itself (it re-runs the task's verify command) before asking you to review.
 
 ```
@@ -32,7 +33,8 @@ python3 scripts/agents/orchestrator.py logs BE-01
 open ../language-platform-worktrees/BE-01
 git -C ../language-platform-worktrees/BE-01 log -p main..HEAD
 
-# Accept it (merges into main, removes the worktree); --watch then starts tasks that depended on it
+# Accept it: squash-merges into main as ONE conventional commit (`feat: …` + `Task: BE-01` in the body),
+# removes the worktree; --watch then starts tasks that depended on it
 python3 scripts/agents/orchestrator.py merge BE-01
 git push
 ```

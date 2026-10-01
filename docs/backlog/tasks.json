@@ -2,6 +2,8 @@
   "tasks": [
     {
       "id": "F-01",
+      "type": "fix",
+      "slug": "build-green",
       "title": "Build green on JVM, Android and iOS-sim targets",
       "lane": "core",
       "deps": [],
@@ -10,6 +12,8 @@
     },
     {
       "id": "BE-01",
+      "type": "feat",
+      "slug": "backend-config",
       "title": "Backend configuration, environments and observability",
       "lane": "be",
       "deps": [
@@ -20,6 +24,8 @@
     },
     {
       "id": "BE-02",
+      "type": "feat",
+      "slug": "postgres-flyway",
       "title": "PostgreSQL with Flyway, Exposed and Testcontainers",
       "lane": "be",
       "deps": [
@@ -30,6 +36,8 @@
     },
     {
       "id": "BE-03",
+      "type": "feat",
+      "slug": "reading-from-db",
       "title": "Serve Reading tests from the database with content seeding",
       "lane": "be",
       "deps": [
@@ -40,6 +48,8 @@
     },
     {
       "id": "BE-04",
+      "type": "feat",
+      "slug": "firebase-auth",
       "title": "Firebase Auth token verification and users",
       "lane": "be",
       "deps": [
@@ -50,6 +60,8 @@
     },
     {
       "id": "BE-05",
+      "type": "feat",
+      "slug": "attempts-sync",
       "title": "Attempts sync API",
       "lane": "be",
       "deps": [
@@ -61,6 +73,8 @@
     },
     {
       "id": "BE-06",
+      "type": "feat",
+      "slug": "openapi",
       "title": "OpenAPI spec and Swagger UI",
       "lane": "be",
       "deps": [
@@ -71,6 +85,8 @@
     },
     {
       "id": "BE-07",
+      "type": "feat",
+      "slug": "deploy-cloud-run",
       "title": "Deploy pipeline: Cloud Run + Neon",
       "lane": "be",
       "deps": [
@@ -81,6 +97,8 @@
     },
     {
       "id": "BE-08",
+      "type": "feat",
+      "slug": "listening-api",
       "title": "Listening content model, API and audio storage",
       "lane": "be",
       "deps": [
@@ -91,6 +109,8 @@
     },
     {
       "id": "AND-01",
+      "type": "feat",
+      "slug": "design-tokens",
       "title": "Design tokens pipeline",
       "lane": "android",
       "deps": [
@@ -101,6 +121,8 @@
     },
     {
       "id": "AND-02",
+      "type": "feat",
+      "slug": "component-library",
       "title": "Core component library",
       "lane": "android",
       "deps": [
@@ -111,6 +133,8 @@
     },
     {
       "id": "AND-03",
+      "type": "feat",
+      "slug": "navigation-shell",
       "title": "App navigation shell",
       "lane": "android",
       "deps": [
@@ -121,6 +145,8 @@
     },
     {
       "id": "AND-04",
+      "type": "feat",
+      "slug": "reading-v2",
       "title": "Reading experience v2",
       "lane": "android",
       "deps": [
@@ -133,6 +159,8 @@
     },
     {
       "id": "AND-05",
+      "type": "feat",
+      "slug": "vocabulary-fsrs",
       "title": "Vocabulary: save words and FSRS review",
       "lane": "android",
       "deps": [
@@ -143,6 +171,8 @@
     },
     {
       "id": "AND-06",
+      "type": "feat",
+      "slug": "progress-streak",
       "title": "Progress and streak",
       "lane": "android",
       "deps": [
@@ -153,6 +183,8 @@
     },
     {
       "id": "AND-07",
+      "type": "feat",
+      "slug": "google-sign-in",
       "title": "Sign-in with Google and authenticated API client",
       "lane": "android",
       "deps": [
@@ -164,6 +196,8 @@
     },
     {
       "id": "AND-08",
+      "type": "feat",
+      "slug": "listening-player",
       "title": "Listening player and practice",
       "lane": "android",
       "deps": [

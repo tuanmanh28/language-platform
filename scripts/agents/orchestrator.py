@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import shlex
 import shutil
@@ -38,7 +39,6 @@ from pathlib import Path
 # ---------------------------------------------------------------------------------------------
 
 MAIN_BRANCH = "main"
-BRANCH_PREFIX = "task/"
 POLL_SECONDS = 20
 
 # Tools the agent may use without asking. Anything else is denied (nobody is there to approve).
@@ -111,7 +111,13 @@ class Orchestrator:
         return self.state.setdefault(task_id, {"status": "pending"})
 
     def branch(self, task_id: str) -> str:
-        return BRANCH_PREFIX + task_id
+        """Conventional branch name, e.g. feat/be-01-backend-config (kept stable once a task started)."""
+        known = self.state.get(task_id, {}).get("branch")
+        if known:
+            return known
+        t = self.tasks[task_id]
+        slug = t.get("slug") or re.sub(r"[^a-z0-9]+", "-", t["title"].lower()).strip("-")[:40]
+        return f"{t.get('type', 'feat')}/{task_id.lower()}-{slug}"
 
     def worktree(self, task_id: str) -> Path:
         return self.worktrees / task_id
@@ -154,7 +160,7 @@ class Orchestrator:
                 shutil.copy2(src, wt / rel)
 
         prompt = self.prompt_template.format(id=task_id, title=task["title"], spec=task["spec"],
-                                             verify=task["verify"], branch=br)
+                                             verify=task["verify"], branch=br, type=task.get("type", "feat"))
         cmd = ["claude", "-p", prompt,
                "--permission-mode", "acceptEdits",
                "--permission-prompts", "none",
@@ -315,18 +321,33 @@ class Orchestrator:
         if sh(["git", "status", "--porcelain", "--untracked-files=no"], self.root).stdout.strip():
             sys.exit("Main checkout has uncommitted changes.")
         br = self.branch(task_id)
-        title = self.tasks[task_id]["title"]
-        if sh(["git", "merge", "--ff-only", br], self.root, check=False).returncode != 0:
-            res = sh(["git", "merge", "--no-ff", br, "-m", f"Merge {task_id}: {title}"], self.root, check=False)
-            if res.returncode != 0:
-                sh(["git", "merge", "--abort"], self.root, check=False)
-                sys.exit(f"Merge conflict. Resolve manually, or run `retry {task_id} --rebase` "
-                         f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}")
+        task = self.tasks[task_id]
+        # One clean conventional commit per task: "<type>: <summary>" + "Task: <ID>" in the body.
+        subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
+        subjects = [x for x in subjects if x.strip()]
+        summary = self.summary_from(subjects, task)
+        res = sh(["git", "merge", "--squash", br], self.root, check=False)
+        if res.returncode != 0:
+            sh(["git", "merge", "--abort"], self.root, check=False)
+            sh(["git", "reset", "--merge"], self.root, check=False)
+            sys.exit(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
+                     f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}")
+        body = f"Task: {task_id}\n\n" + "\n".join(f"- {x}" for x in subjects)
+        sh(["git", "commit", "-q", "-m", f"{task.get('type', 'feat')}: {summary}", "-m", body], self.root)
         self.remove_worktree(task_id)
-        sh(["git", "branch", "-d", br], self.root, check=False)
+        sh(["git", "branch", "-D", br], self.root, check=False)
         e.update(status="merged", merged_at=now(), note=None)
         self.save()
         print(f"✔ {task_id} merged into {MAIN_BRANCH}. Push when you are ready: git push")
+
+    @staticmethod
+    def summary_from(subjects: list[str], task: dict) -> str:
+        """Use the agent's first commit subject without any 'type:' / 'ID:' prefix, else the task title."""
+        for subj in subjects:
+            text = re.sub(r"^(\w+(\([^)]*\))?!?|[A-Z]+-\d+):\s*", "", subj).strip()
+            if text and not text.lower().startswith("merge"):
+                return text[0].lower() + text[1:] if text[:2] != text[:2].upper() else text
+        return task["title"][0].lower() + task["title"][1:]
 
     def retry(self, task_id: str, fresh: bool) -> None:
         e = self.entry(task_id)
@@ -339,7 +360,8 @@ class Orchestrator:
             wt = self.worktree(task_id)
             if (wt / "BLOCKED.md").exists():
                 print("Note: BLOCKED.md is still in the worktree; remove it once the blocker is solved.")
-        self.state[task_id] = {"status": "pending"}
+        keep = {} if fresh else {k: v for k, v in e.items() if k == "branch"}
+        self.state[task_id] = {"status": "pending", **keep}
         self.save()
         print(f"{task_id} reset to pending" + (" (fresh branch from main)" if fresh else " (keeps its branch)"))
 

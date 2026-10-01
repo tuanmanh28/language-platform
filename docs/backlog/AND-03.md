@@ -1,5 +1,6 @@
 # AND-03 — App navigation shell
 
+- **Type / branch:** `feat` / `feat/and-03-navigation-shell`
 - **Lane:** android
 - **Depends on:** F-01
 - **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
@@ -20,4 +21,4 @@ Replace the hand-rolled screen switching with real navigation and the app's main
 ## Definition of done
 - Verify command passes.
 - Follows `CLAUDE.md` (scope, architecture, tests, no AI attribution in commits).
-- Committed on the task branch as `AND-03: <summary>`.
+- Committed on branch `feat/and-03-navigation-shell` as `feat: <summary>` with `Task: AND-03` in the commit body.
