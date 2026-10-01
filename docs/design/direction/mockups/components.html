@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component sheet — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32); --highlight: rgba(255, 221, 181, 0.7);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48); --highlight: rgba(103, 61, 0, 0.7);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-reading { font-size: 18px; line-height: 30px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before, .hit::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.icon-btn.selected { color: var(--primary); background: var(--primary-container); }
+
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag .ms { font-size: 20px; margin-left: -4px; }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tag.success { background: var(--correct-container); color: var(--on-correct-container); }
+.tag.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.pbar { height: 6px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.pbar > i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.tile.correct { background: var(--correct-container); color: var(--on-correct-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.row.done .t-headline { color: var(--on-surface-variant); }
+.done-mark { color: var(--correct); }
+.banner { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px;
+  background: var(--info-container); color: var(--on-info-container); }
+.banner .ms { color: var(--info); }
+.skel { background: var(--surface-high); border-radius: 10px; position: relative; overflow: hidden; }
+.skel::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent); animation: shimmer 1.2s cubic-bezier(0.2, 0, 0, 1) infinite; }
+.reduce .skel::after { animation: none; display: none; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 24px; }
+.empty .btn { margin-top: 16px; }
+.error-icon { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; margin-bottom: 8px;
+  background: var(--wrong-container); color: var(--on-wrong-container); }
+.ring { display: block; transform: rotate(-90deg); }
+.ring .track { fill: none; stroke: var(--surface-high); }
+.ring .fill { fill: none; stroke: var(--primary); stroke-linecap: round; }
+.ring .fill.tertiary { stroke: var(--tertiary); }
+.roller { display: inline-flex; overflow: hidden; line-height: 1.2; height: 1.2em; vertical-align: bottom; }
+.roller .digit { display: inline-block; height: 1.2em; overflow: hidden; }
+.roller .digits { display: flex; flex-direction: column; }
+.roller .digits span { height: 1.2em; }
+.i0 { fill: var(--card); stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linejoin: round; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px;
+  box-shadow: var(--shadow-sheet); touch-action: none; }
+.desktop .sheet { width: 480px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.desktop .topbar { height: 52px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 44px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.desktop .topbar .back { bottom: 4px; }
+
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 4px 0; display: flex; z-index: 40;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid var(--outline-variant); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 50px; justify-content: center;
+  color: var(--on-surface-variant); font-size: 12px; line-height: 16px; font-weight: 500; }
+.tab .ms { font-size: 28px; }
+.tab[aria-selected="true"] { color: var(--primary); }
+.tab[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.sidebar { width: 248px; flex: none; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px;
+  background: var(--surface-low); border-right: 1px solid var(--outline-variant); }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 12px 20px; }
+.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--primary); color: var(--on-primary);
+  display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px;
+  font-size: 15px; font-weight: 500; color: var(--on-surface-variant); width: 100%; text-align: left; }
+.side-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.side-item[aria-selected="true"] { background: var(--primary-container); color: var(--on-primary-container); }
+.side-item[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.side-item kbd { margin-left: auto; font: inherit; font-size: 12px; opacity: 0.6; }
+.main { flex: 1; position: relative; }
+.desktop .screen { padding: 8px 32px 40px; }
+.content { max-width: 1080px; margin: 0 auto; }
+
+.lt { padding: 8px 20px 4px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.desktop .lt { padding: 24px 0 8px; }
+.pad { padding: 8px 20px 0; display: flex; flex-direction: column; }
+.desktop .pad { padding: 8px 0 0; }
+.streak { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 12px 0 8px; border-radius: 999px;
+  background: var(--tertiary-container); color: var(--on-tertiary-container); font-weight: 700; font-size: 15px; margin-bottom: 4px; position: relative; }
+.streak::before { content: ''; position: absolute; inset: -6px 0; }
+.streak .ms { color: var(--tertiary); font-size: 20px; }
+.continue { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+.continue-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.continue .pbar { margin: 12px 0 4px; }
+.continue-foot { display: flex; align-items: center; gap: 4px; margin-bottom: 14px; }
+.goal { padding: 18px 20px; display: flex; gap: 18px; align-items: center; margin-top: 16px; }
+.goal-ring { position: relative; width: 84px; height: 84px; flex: none; }
+.goal-ring .center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.week { display: flex; gap: 6px; margin-top: 10px; }
+.week span { width: 26px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--on-surface-variant); }
+.week i { width: 10px; height: 10px; border-radius: 999px; background: var(--surface-high); }
+.week i.on { background: var(--tertiary); }
+.week .today { color: var(--on-surface); font-weight: 700; }
+.stat { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+.stat-row { display: flex; flex-direction: column; gap: 6px; }
+.stat-row .top { display: flex; justify-content: space-between; align-items: baseline; }
+.trend { display: inline-flex; align-items: center; gap: 2px; color: var(--correct); font-weight: 600; }
+.stat .pbar > i { background: var(--tertiary); }
+.home-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 24px; align-items: start; }
+.home-grid .goal { margin-top: 0; }
+.desktop .continue { padding: 28px; }
+.desktop .continue .btn { align-self: flex-start; }
+.book { display: flex; gap: 16px; align-items: center; }
+.cover { width: 44px; height: 58px; border-radius: 6px; background: var(--primary-container); color: var(--on-primary-container);
+  display: grid; place-items: center; font-weight: 700; font-size: 15px; flex: none; }
+
+.exam { display: flex; flex-direction: column; }
+.phone .exam { padding-top: 50px; }
+.exam-bar { display: flex; align-items: center; gap: 4px; height: 56px; padding: 0 8px 0 4px; flex: none; position: relative; z-index: 5;
+  background: var(--card); border-bottom: 1px solid var(--outline-variant); }
+.desktop .exam-bar { height: 60px; padding: 0 16px 0 8px; gap: 8px; }
+.exam-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.desktop .exam-title { flex: none; }
+.desktop .timer-slot { position: absolute; left: 50%; transform: translateX(-50%); }
+.timer { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 999px;
+  background: var(--surface-high); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums;
+  transition: background-color 250ms cubic-bezier(0.2, 0, 0, 1), color 250ms cubic-bezier(0.2, 0, 0, 1); }
+.timer .ms { font-size: 20px; }
+.timer.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.timer.critical { background: var(--warning); color: var(--on-warning); }
+.tools { display: flex; gap: 2px; margin-left: auto; align-items: center; }
+.offline-pill { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border-radius: 999px;
+  background: var(--surface-high); color: var(--on-surface-variant); font-size: 13px; margin-right: 8px; }
+.seg-wrap { padding: 10px 16px; flex: none; background: var(--surface); }
+.seg { display: flex; position: relative; background: var(--surface-high); border-radius: 14px; padding: 4px; }
+.seg button { flex: 1; height: 40px; position: relative; z-index: 1; font-size: 15px; font-weight: 600; color: var(--on-surface-variant);
+  display: flex; align-items: center; justify-content: center; gap: 6px; }
+.seg button[aria-selected="true"] { color: var(--on-surface); }
+.seg .ind { position: absolute; top: 4px; bottom: 4px; left: 4px; border-radius: 10px; background: var(--surface-bright); box-shadow: var(--shadow-card); }
+.count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--surface-highest); font-size: 12px; display: inline-grid; place-items: center; }
+.panes { flex: 1; position: relative; overflow: hidden; }
+.pane { position: absolute; inset: 0; overflow-y: auto; padding: 8px 20px 24px; scrollbar-width: thin; }
+.passage-pane { background: var(--card); }
+.desktop .panes { display: flex; }
+.desktop .pane { position: relative; inset: auto; flex: 1; padding: 32px 40px 48px; }
+.desktop .pane > .measure { max-width: 680px; margin: 0 auto; }
+.divider { width: 1px; background: var(--outline-variant); position: relative; flex: none; cursor: col-resize; }
+.divider::after { content: ''; position: absolute; top: 50%; left: -3px; width: 7px; height: 40px; margin-top: -20px; border-radius: 999px; background: var(--outline); }
+.passage p + p { margin-top: 16px; }
+.passage .para { font-weight: 700; margin-right: 6px; }
+mark { background: var(--highlight); color: inherit; border-radius: 4px; padding: 0 2px; }
+mark.evidence { background: var(--info-container); color: var(--on-info-container); box-shadow: 0 2px 0 var(--info); }
+.q-group + .q-group { margin-top: 32px; }
+.q { display: flex; gap: 12px; padding: 14px 12px; margin: 0 -12px; border-radius: 14px; align-items: flex-start; transition: background-color 250ms; }
+.q.current { background: var(--card); box-shadow: var(--shadow-card); }
+.qn { width: 28px; height: 28px; border-radius: 6px; background: var(--surface-high); display: grid; place-items: center;
+  font-size: 13px; font-weight: 600; flex: none; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.q.current .qn { background: var(--primary); color: var(--on-primary); }
+.q .flag { margin: -10px -10px 0 auto; color: var(--on-surface-variant); }
+.q .flag.on { color: var(--primary); }
+.q .flag.on .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.chip { height: 48px; padding: 0 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline);
+  font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+  transition: background-color 150ms, border-color 150ms, color 150ms; }
+.chip:hover { background: color-mix(in srgb, var(--on-surface) 8%, var(--card)); }
+.chip.selected { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.chip.correct { background: var(--correct-container); color: var(--on-correct-container); border-color: var(--correct); box-shadow: inset 0 0 0 1px var(--correct); }
+.chip.wrong { background: var(--wrong-container); color: var(--on-wrong-container); border-color: var(--wrong); box-shadow: inset 0 0 0 1px var(--wrong); }
+.chip.missed { border: 1px dashed var(--correct); color: var(--correct); }
+.chip.correct .ms { color: var(--correct); } .chip.wrong .ms { color: var(--wrong); }
+.review .chip:not(.correct):not(.wrong):not(.missed) { opacity: 0.6; }
+.verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 10px; font-size: 15px; font-weight: 600; }
+.verdict .ok, .verdict .bad { display: inline-flex; align-items: center; gap: 4px; }
+.verdict .ok { color: var(--correct); } .verdict .bad { color: var(--wrong); }
+.verdict .btn-text { height: 32px; padding: 0 4px; }
+.gap-input { display: inline-block; width: 168px; height: 48px; margin: 2px 4px; padding: 0 12px; border-radius: 10px; vertical-align: middle;
+  background: var(--surface-high); border: 1px solid var(--outline); font-size: 17px; color: var(--on-surface); }
+.gap-input:focus, .gap-input.focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.gap-input.over { border-color: var(--warning); box-shadow: 0 0 0 1px var(--warning); }
+.gap-input.correct { border-color: var(--correct); background: var(--correct-container); color: var(--on-correct-container); }
+.gap-input.wrong { border-color: var(--wrong); background: var(--wrong-container); color: var(--on-wrong-container); }
+.counter { display: block; margin-top: 4px; }
+.counter.over { color: var(--warning); font-weight: 600; }
+.option { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 56px; padding: 12px 14px; margin-top: 8px; text-align: left;
+  border-radius: 14px; background: var(--card); border: 1px solid var(--outline); transition: background-color 150ms, border-color 150ms; }
+.option:hover { background: color-mix(in srgb, var(--on-surface) 8%, var(--card)); }
+.option .letter { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--outline); display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+.option.selected { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-container); color: var(--on-primary-container); }
+.option.selected .letter { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.option.correct { border-color: var(--correct); box-shadow: inset 0 0 0 1px var(--correct); background: var(--correct-container); color: var(--on-correct-container); }
+.option.correct .letter { background: var(--correct); color: var(--on-correct); border-color: var(--correct); }
+.option.wrong { border-color: var(--wrong); box-shadow: inset 0 0 0 1px var(--wrong); background: var(--wrong-container); color: var(--on-wrong-container); }
+.option.wrong .letter { background: var(--wrong); color: var(--on-wrong); border-color: var(--wrong); }
+.option.missed { border: 1px dashed var(--correct); }
+.nav-strip { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px 38px; position: relative; z-index: 5;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--outline-variant); }
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; flex: 1; padding: 6px 4px; scrollbar-width: none; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.navigator { flex: none; height: 68px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--card); border-top: 1px solid var(--outline-variant); }
+.part { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.part.collapsed { color: var(--on-surface-variant); }
+.part.collapsed:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.part-qs { display: flex; gap: 8px; }
+.nav-q { width: 40px; height: 40px; border-radius: 6px; flex: none; border: 1px solid var(--outline); background: var(--card);
+  font-size: 13px; font-weight: 600; position: relative; font-variant-numeric: tabular-nums; transition: background-color 150ms; }
+.desktop .nav-q { width: 36px; height: 36px; }
+.nav-q.answered { background: var(--primary-container); border-color: transparent; color: var(--on-primary-container); }
+.nav-q.current { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.nav-q.correct { background: var(--correct-container); color: var(--on-correct-container); border-color: transparent; }
+.nav-q.wrong { background: var(--wrong-container); color: var(--on-wrong-container); border-color: transparent; }
+.nav-q .badge { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 999px; display: grid; place-items: center;
+  background: var(--primary); color: var(--on-primary); box-shadow: 0 0 0 2px var(--card); }
+.nav-q .badge .ms { font-size: 12px; font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 20; }
+.nav-q.correct .badge { background: var(--correct); color: var(--on-correct); }
+.nav-q.wrong .badge { background: var(--wrong); color: var(--on-wrong); }
+.nav-strip .btn, .navigator .btn { height: 40px; padding: 0 16px; font-size: 15px; }
+.result { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 20px 48px; }
+.phone .result { padding-top: 110px; }
+.result-ring { position: relative; width: 168px; height: 168px; margin: 16px 0 8px; }
+.result-ring .center { position: absolute; inset: 0; display: grid; place-items: center; }
+.result-ring .t-display { color: var(--primary); }
+.result .card { width: 100%; max-width: 520px; padding: 4px 0; text-align: left; margin-top: 24px; }
+.result .actions { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+.desktop .result .actions { flex-direction: row; justify-content: center; }
+.part-row { display: flex; flex-direction: column; gap: 8px; padding: 14px 20px; }
+.part-row + .part-row { border-top: 1px solid var(--outline-variant); }
+.part-row .top { display: flex; justify-content: space-between; }
+.explain-quote { margin: 12px 0; padding: 12px 14px; border-radius: 14px; background: var(--surface-high); }
+.save-words { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.save-words button { height: 40px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; position: relative;
+  background: var(--secondary-container); color: var(--on-secondary-container); font-size: 15px; font-weight: 600; }
+.save-words button.saved { background: var(--primary-container); color: var(--on-primary-container); }
+.tag.wrong { background: var(--wrong-container); color: var(--on-wrong-container); }
+.tag.wrong .ms { color: var(--wrong); }
+.review-shell { display: flex; flex-direction: column; }
+.phone .review-shell { padding-top: 50px; }
+.review-bar { flex: none; height: 56px; display: flex; align-items: center; gap: 8px; padding: 0 4px; position: relative; }
+.desktop .review-bar { height: 64px; padding: 0 16px 0 8px; border-bottom: 1px solid var(--outline-variant); background: var(--surface-low); }
+.review-title { display: flex; flex-direction: column; }
+.progress { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; width: 160px; }
+.progress .pbar { width: 100%; height: 4px; }
+.review-bar .undo { margin-left: auto; }
+.icon-btn[disabled] { opacity: 0.38; pointer-events: none; }
+.stage-area { flex: 1; position: relative; padding: 8px 20px 16px; }
+.desktop .stage-area { display: flex; align-items: center; justify-content: center; padding: 24px; }
+.card-slot { position: absolute; inset: 8px 20px 16px; perspective: 1200px; touch-action: none; }
+.desktop .card-slot { position: relative; inset: auto; width: 560px; height: 400px; }
+.card3d { position: absolute; inset: 0; transform-style: preserve-3d; cursor: pointer; }
+.face { position: absolute; inset: 0; border-radius: 28px; background: var(--card); box-shadow: var(--shadow-raised); padding: 24px;
+  display: flex; flex-direction: column; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.face.back { transform: rotateY(180deg); }
+.reduce .face.back { transform: none; }
+.reduce .face { backface-visibility: visible; -webkit-backface-visibility: visible; }
+.face-top { display: flex; justify-content: space-between; align-items: center; }
+.face-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; }
+.audio { width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: var(--primary-container); color: var(--on-primary-container); margin-top: 16px; }
+.audio.small { width: 48px; height: 48px; margin: 0; }
+.hint { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.back-word { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.back-body { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 16px; }
+.back-body hr { border: 0; border-top: 1px solid var(--outline-variant); margin: 8px 0; }
+.back-body mark { background: var(--primary-container); color: var(--on-primary-container); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+.swipe-hint { position: absolute; top: 24px; height: 36px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 15px; font-weight: 700; opacity: 0; pointer-events: none; z-index: 2; }
+.swipe-hint.good { right: 24px; background: var(--primary-container); color: var(--on-primary-container); }
+.swipe-hint.again { left: 24px; background: var(--secondary-container); color: var(--on-secondary-container); }
+.actions-bar { flex: none; padding: 0 20px 42px; position: relative; min-height: 120px; }
+.desktop .actions-bar { padding: 0 0 16px; width: 560px; margin: 0 auto; min-height: 96px; }
+.actions-bar > div { position: absolute; left: 20px; right: 20px; top: 0; }
+.desktop .actions-bar > div { left: 0; right: 0; }
+.ratings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.rate { height: 64px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--secondary-container); color: var(--on-secondary-container); position: relative; transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.rate::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; transition: opacity 100ms; }
+.rate:hover::after { opacity: 0.08; } .rate:active::after { opacity: 0.12; }
+.rate:active { transform: scale(0.97); }
+.reduce .rate:active { transform: none; }
+.rate.good { background: var(--primary); color: var(--on-primary); }
+.rate .t-footnote { opacity: 0.85; }
+.rate kbd { position: absolute; top: 6px; right: 8px; font: inherit; font-size: 11px; opacity: 0.6; }
+.shortcuts { flex: none; display: flex; justify-content: center; gap: 20px; padding: 12px 0 20px; color: var(--on-surface-variant); font-size: 13px; }
+.shortcuts kbd { font: inherit; font-weight: 600; padding: 1px 6px; border-radius: 6px; background: var(--surface-container); border: 1px solid var(--outline-variant); color: var(--on-surface); }
+.snackbar { position: absolute; left: 16px; right: 16px; bottom: 132px; z-index: 40; display: flex; align-items: center; gap: 8px;
+  padding: 6px 6px 6px 16px; border-radius: 14px; background: var(--inverse-surface); color: var(--inverse-on-surface); box-shadow: var(--shadow-raised); }
+.desktop .snackbar { left: 50%; right: auto; width: 420px; margin-left: -210px; bottom: 140px; }
+.snackbar .btn-text { color: var(--inverse-primary); }
+.summary { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 20px 48px; }
+.summary-ring { position: relative; width: 168px; height: 168px; margin: 16px 0 12px; }
+.summary-ring .center { position: absolute; inset: 0; display: grid; place-items: center; }
+.summary .list { width: 100%; max-width: 480px; text-align: left; margin-top: 24px; }
+.summary .actions { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+.board { position: absolute; inset: 0; overflow-y: auto; padding: 66px 20px 48px; }
+.desktop .board { top: 38px; padding: 40px 48px 72px; }
+.board-inner { max-width: 1180px; margin: 0 auto; }
+.section { margin-top: 44px; }
+.section:first-child { margin-top: 8px; }
+.eyebrow { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--primary); }
+.section > .t-title1 { margin: 4px 0 16px; }
+.specs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+.phone .specs { grid-template-columns: 1fr; }
+.spec { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.dark .spec { outline: 1px solid var(--outline-variant); outline-offset: -1px; }
+.spec.span2 { grid-column: span 2; }
+.phone .spec.span2 { grid-column: auto; }
+.spec-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.spec-head code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 14px; font-weight: 600; }
+.spec-note { margin-top: -8px; }
+.states { display: flex; flex-wrap: wrap; gap: 14px 12px; align-items: flex-start; }
+.states.col { flex-direction: column; align-items: stretch; }
+.state { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0; }
+.states.col .state { align-items: stretch; }
+.lbl { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; color: var(--on-surface-variant); }
+.is-pressed { transform: scale(0.97); }
+.is-pressed::after { opacity: 0.12 !important; }
+.is-focused { outline: 2px solid var(--primary); outline-offset: 2px; }
+.spinner { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(270deg); } }
+.btn .spinner { width: 20px; height: 20px; }
+.btn .spinner circle { stroke: currentColor; }
+.static-sheet { position: relative; border-radius: 28px; background: var(--card); box-shadow: var(--shadow-raised); padding: 8px 20px 24px; outline: 1px solid var(--outline-variant); outline-offset: -1px; }
+.mini-phone { position: relative; height: 84px; border-radius: 14px; overflow: hidden; background: var(--surface); outline: 1px solid var(--outline-variant); }
+.mini-phone .tabbar { position: absolute; height: 72px; padding-top: 4px; }
+.rail { display: flex; flex-direction: column; gap: 4px; width: 88px; }
+.rail button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; font-size: 12px; font-weight: 500; color: var(--on-surface-variant); }
+.rail button span.pillicon { width: 56px; height: 32px; border-radius: 999px; display: grid; place-items: center; }
+.rail button[aria-selected="true"] { color: var(--on-surface); }
+.rail button[aria-selected="true"] span.pillicon { background: var(--primary-container); color: var(--on-primary-container); }
+.rail button[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.lt-collapsed { height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 14px; background: var(--bar); border: 1px solid var(--outline-variant); }
+.test-card { padding: 16px; display: flex; gap: 14px; align-items: center; width: 100%; text-align: left; }
+.test-card[aria-disabled="true"] { opacity: 0.38; }
+.mini-slot { position: relative; height: 300px; perspective: 1200px; }
+.mini-slot .card3d { inset: 0; }
+.mini-slot .face { padding: 18px; }
+.mini-exam .exam-bar { border-radius: 14px; border: 1px solid var(--outline-variant); position: relative; }
+.mini-exam .timer-slot { position: static; transform: none; margin-left: auto; }
+.snackbar.static { position: relative; left: auto; right: auto; bottom: auto; width: 100%; margin: 0; }
+.stat-mini { width: 100%; }
+.nav-badge { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 20px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--tertiary); color: var(--on-tertiary); font-size: 11px; line-height: 18px; font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Component sheet</strong><span>Mockup · <a href="../README.md">design direction</a> · mọi component Lp… ở mọi trạng thái; chạm segmented, chip và flashcard để thử</span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Nhóm</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const intervals = new Set();
+const STATES = [['all', 'Tất cả'], ['actions', 'Nút'], ['answers', 'Câu trả lời'], ['progress', 'Tiến độ'], ['containers', 'Thẻ & danh sách'], ['navigation', 'Điều hướng'], ['feedback', 'Phản hồi'], ['flashcard', 'Flashcard']];
+const ui = { theme: 'both', frame: 'desktop', state: 'all' };
+
+const SPINNER = '<svg class="spinner" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="42 100"/></svg>';
+const ILLO = `<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true"><circle class="i3" cx="60" cy="50" r="32"/><path class="i1" d="M12 68 Q36 58 60 70 Q84 58 108 68 V98 Q84 88 60 100 Q36 88 12 98 Z"/><path class="i2" d="M12 98 Q36 88 60 100 Q84 88 108 98 V104 Q84 94 60 106 Q36 94 12 104 Z"/><path class="is" d="M60 70 V100 M22 76 Q36 71 50 77 M22 84 Q36 79 50 85 M70 77 Q84 71 98 76 M70 85 Q84 79 98 84"/></svg>`;
+
+const state = (label, html) => `<div class="state"><span class="lbl">${label}</span>${html}</div>`;
+const spec = (name, kind, note, body, wide = false) => `<article class="spec ${wide ? 'span2' : ''}">
+  <div class="spec-head"><code>${name}</code><span class="tag ${kind === 'Mới' ? 'primary' : ''}">${kind}</span></div>
+  ${note ? `<p class="spec-note t-footnote muted">${note}</p>` : ''}${body}</article>`;
+
+function section(id, eyebrow, title, specs) {
+  if (ui.state !== 'all' && ui.state !== id) return '';
+  return `<section class="section"><p class="eyebrow">${eyebrow}</p><h2 class="t-title1">${title}</h2><div class="specs">${specs.join('')}</div></section>`;
+}
+
+function actions() {
+  return section('actions', 'Actions', 'Nút và điều khiển', [
+    spec('LpPrimaryButton', 'Cập nhật', 'Một hành động chính mỗi màn. Cao 52 (điện thoại) / 44 (máy tính), radius.md, nhấn thu 0.97.', `<div class="states">
+      ${state('Mặc định', '<button class="btn btn-primary"><span class="ms">play_arrow</span>Làm tiếp</button>')}
+      ${state('Đang nhấn', '<button class="btn btn-primary is-pressed">Làm tiếp</button>')}
+      ${state('Focus', '<button class="btn btn-primary is-focused">Làm tiếp</button>')}
+      ${state('Vô hiệu', '<button class="btn btn-primary" disabled>Làm tiếp</button>')}
+      ${state('Đang tải', `<button class="btn btn-primary" aria-busy="true" aria-label="Đang nộp bài">${SPINNER}Đang nộp…</button>`)}</div>`),
+    spec('LpSecondaryButton', 'Cập nhật', 'Dạng tonal (secondaryContainer) thay cho viền.', `<div class="states">
+      ${state('Mặc định', '<button class="btn btn-secondary">Làm tiếp</button>')}
+      ${state('Đang nhấn', '<button class="btn btn-secondary is-pressed">Làm tiếp</button>')}
+      ${state('Focus', '<button class="btn btn-secondary is-focused">Làm tiếp</button>')}
+      ${state('Vô hiệu', '<button class="btn btn-secondary" disabled>Làm tiếp</button>')}</div>`),
+    spec('LpTextButton', 'Cập nhật', '', `<div class="states">
+      ${state('Mặc định', '<button class="btn btn-text">Xem tất cả</button>')}
+      ${state('Đang nhấn', '<button class="btn btn-text is-pressed">Xem tất cả</button>')}
+      ${state('Vô hiệu', '<button class="btn btn-text" disabled>Xem tất cả</button>')}</div>`),
+    spec('LpIconButton', 'Mới', 'Vùng chạm 48, biểu tượng 24, tooltip trên máy tính.', `<div class="states">
+      ${state('Mặc định', '<button class="icon-btn" aria-label="Tô sáng" title="Tô sáng"><span class="ms">ink_highlighter</span></button>')}
+      ${state('Đang nhấn', '<button class="icon-btn" style="background:var(--surface-high)" aria-label="Ghi chú"><span class="ms">sticky_note_2</span></button>')}
+      ${state('Đang chọn', '<button class="icon-btn selected" aria-pressed="true" aria-label="Tô sáng"><span class="ms fill">ink_highlighter</span></button>')}
+      ${state('Vô hiệu', '<button class="icon-btn" disabled style="opacity:.38" aria-label="Hoàn tác"><span class="ms">undo</span></button>')}</div>`),
+    spec('LpSegmentedControl', 'Mới', 'Thanh chỉ báo trượt bằng spring.snappy. Chạm để thử.', `<div class="states col">
+      ${state('2 phần, có bộ đếm', '<div class="seg" role="tablist" data-seg><span class="ind"></span><button role="tab" aria-selected="true">Bài đọc</button><button role="tab" aria-selected="false">Câu hỏi <span class="count">9</span></button></div>')}
+      ${state('3 phần', '<div class="seg" role="tablist" data-seg><span class="ind"></span><button role="tab" aria-selected="true">Tất cả</button><button role="tab" aria-selected="false">Chưa làm</button><button role="tab" aria-selected="false">Đã làm</button></div>')}</div>`),
+  ]);
+}
+
+function answers() {
+  const chip = (cls, label, icon = '') => `<button class="chip ${cls}">${icon}${label}</button>`;
+  const ok = '<span class="ms fill sm">check_circle</span>', bad = '<span class="ms fill sm">cancel</span>';
+  const option = (cls, letter, text, trailing = '') => `<button class="option ${cls}" style="margin-top:0"><span class="letter">${letter}</span><span class="t-body grow">${text}</span>${trailing}</button>`;
+  const gap = (cls, value, counter, counterCls = '') => `<div><input class="gap-input ${cls}" value="${value}" aria-label="Câu 20" style="margin:0"><span class="counter t-footnote muted ${counterCls}">${counter}</span></div>`;
+  const nav = (cls, n, badge = '') => `<button class="nav-q ${cls}">${n}${badge ? `<span class="badge"><span class="ms">${badge}</span></span>` : ''}</button>`;
+  return section('answers', 'Answers', 'Câu trả lời', [
+    spec('LpAnswerChip', 'Cập nhật', 'Đúng/sai luôn có biểu tượng và nhãn, không chỉ dựa vào màu. Hàng dưới: chạm để chọn.', `<div class="states">
+      ${state('Chưa chọn', chip('', 'TRUE'))}${state('Đã chọn', chip('selected', 'TRUE'))}${state('Đúng', chip('correct', 'TRUE', ok))}
+      ${state('Sai', chip('wrong', 'FALSE', bad))}${state('Đáp án bị bỏ lỡ', chip('missed', 'NOT GIVEN'))}${state('Vô hiệu', '<button class="chip" disabled style="opacity:.38">TRUE</button>')}</div>
+      <div class="chips" role="radiogroup" aria-label="Thử chọn" data-chips>${chip('', 'TRUE')}${chip('', 'FALSE')}${chip('', 'NOT GIVEN')}</div>`),
+    spec('LpOptionRow', 'Cập nhật', 'Huy hiệu chữ cái A–D thay cho nút radio.', `<div class="states col">
+      ${state('Chưa chọn', option('', 'A', 'To describe a new experiment'))}
+      ${state('Đã chọn', option('selected', 'B', 'To suggest a possible explanation'))}
+      ${state('Đúng', option('correct', 'B', 'To suggest a possible explanation', '<span class="ms fill" style="color:var(--correct)">check_circle</span>'))}
+      ${state('Sai', option('wrong', 'C', 'To criticise earlier research', '<span class="ms fill" style="color:var(--wrong)">cancel</span>'))}
+      ${state('Bỏ lỡ (đáp án đúng chưa chọn)', option('missed', 'B', 'To suggest a possible explanation', '<span class="t-footnote" style="color:var(--correct);font-weight:600">Đáp án đúng</span>'))}</div>`),
+    spec('LpGapField', 'Cập nhật', 'Quá giới hạn dùng màu warning, không phải error.', `<div class="states">
+      ${state('Trống', gap('', '', '0/2 từ'))}${state('Đang nhập', gap('focus', 'chemical', '1/2 từ'))}
+      ${state('Trong giới hạn', gap('', 'chemical trail', '2/2 từ'))}${state('Quá giới hạn', gap('over', 'a chemical trail', 'Quá giới hạn · 3/2 từ', 'over'))}
+      ${state('Không giới hạn', gap('', 'the laboratory', '2 từ'))}${state('Đúng', gap('correct', 'queen', ''))}${state('Sai', gap('wrong', 'scent trail', ''))}</div>`),
+    spec('LpQuestionNavigator', 'Mới', '40 × 40 trên điện thoại, 36 × 36 trên máy tính (con trỏ). Nhãn đọc màn hình: “Câu 16, đã trả lời, đã đánh dấu”.', `<div class="states">
+      ${state('Chưa làm', nav('', 19))}${state('Đã làm', nav('answered', 15))}${state('Đang xem', nav('current', 18))}${state('Đánh dấu', nav('answered', 16, 'flag'))}
+      ${state('Đúng', nav('correct', 14, 'check'))}${state('Sai', nav('wrong', 21, 'close'))}</div>`),
+  ]);
+}
+
+function progress() {
+  const timer = (cls, text, icon = 'timer', fill = false) => `<span class="timer ${cls}"><span class="ms ${fill ? 'fill' : ''}">${icon}</span>${text}</span>`;
+  return section('progress', 'Progress', 'Thời gian, điểm và tiến độ', [
+    spec('LpTimerBar', 'Cập nhật', 'Dạng viên thuốc, số dạng bảng. Chạm 5:00 và 1:00: đổi màu, nhịp nhẹ một lần, rung warning.', `<div class="states">
+      ${state('Bình thường', timer('', '34:12'))}${state('Còn ≤ 5 phút', timer('warning', '04:59', 'timer', true))}
+      ${state('Còn ≤ 1 phút', timer('critical', '00:58', 'timer', true))}${state('Tạm dừng', timer('', '12:40', 'pause'))}</div>`),
+    spec('LpBandBadge', 'Cập nhật', 'Số lăn bằng spring.gentle.', `<div class="states" style="align-items:center">
+      ${state('Nhỏ', '<span class="tag primary" style="height:32px;font-size:15px;font-weight:700">Band 7.0</span>')}
+      ${state('Lớn', `<span style="width:120px;height:120px;border-radius:999px;display:grid;place-items:center;background:var(--primary-container);color:var(--on-primary-container)"><span class="t-display">${roller('7.5')}</span></span>`)}</div>`),
+    spec('LpProgressRing', 'Cập nhật', 'Đầu tròn, nền surfaceContainerHigh; mục tiêu dùng tertiary.', `<div class="states" style="align-items:center">
+      ${state('Không xác định', `<span style="color:var(--primary);display:block;width:48px;height:48px">${SPINNER.replace('class="spinner"', 'class="spinner" width="48" height="48"')}</span>`)}
+      ${state('Nhỏ · 40%', `<div style="width:48px;height:48px">${ring(48, 4, 0.4)}</div>`)}
+      ${state('Vừa · 4/6', `<div class="goal-ring" style="width:84px;height:84px">${ring(84, 10, 4 / 6, 'tertiary')}<div class="center"><span class="t-title3">${roller('4/6')}</span></div></div>`)}
+      ${state('Lớn · 30/40', `<div class="goal-ring" style="width:168px;height:168px">${ring(168, 14, 30 / 40)}<div class="center"><span class="t-display" style="color:var(--primary)">${roller('7.0')}</span></div></div>`)}
+      ${state('Hoàn thành', `<div class="goal-ring" style="width:84px;height:84px">${ring(84, 10, 1, 'tertiary')}<div class="center"><span class="ms fill lg" style="color:var(--tertiary)">check</span></div></div>`)}</div>`),
+    spec('LpProgressBar', 'Mới', '', `<div class="states col">
+      ${state('Xác định · 45%', '<div class="pbar"><i style="width:45%"></i></div>')}${state('Hoàn thành', '<div class="pbar"><i style="width:100%;background:var(--correct)"></i></div>')}</div>`),
+    spec('LpStreakBadge', 'Mới', 'Không bao giờ hiện số 0 đỏ: lỡ một ngày thì chuỗi chờ, không bị phạt.', `<div class="states">
+      ${state('Đã học hôm nay', '<span class="streak"><span class="ms fill">local_fire_department</span>12</span>')}
+      ${state('Chưa học hôm nay', '<span class="streak" style="background:var(--surface-high);color:var(--on-surface-variant)"><span class="ms" style="color:var(--on-surface-variant)">local_fire_department</span>12</span>')}
+      ${state('Ngày nghỉ', '<span class="streak" style="background:var(--info-container);color:var(--on-info-container)"><span class="ms" style="color:var(--info)">ac_unit</span>12</span>')}</div>`),
+  ]);
+}
+
+function containers() {
+  const testCard = (title, sub, trailing, extra = '') => `<div class="card test-card" ${extra}><div class="cover">18</div><div class="grow"><div class="t-headline">${title}</div><div class="t-subheadline muted">${sub}</div></div>${trailing}</div>`;
+  const row = (icon, tone, title, sub, trailing, extra = '') => `<div class="list"><div class="row" ${extra}><span class="tile ${tone}"><span class="ms">${icon}</span></span><div class="grow"><div class="t-headline">${title}</div><div class="t-subheadline muted">${sub}</div></div>${trailing}</div></div>`;
+  const cardState = (label, style = '', cls = '') => state(label, `<div class="card ${cls}" style="padding:16px;width:150px;min-height:72px;position:relative;${style}"><span class="t-headline">Thẻ</span><p class="t-footnote muted">Nội dung</p></div>`);
+  return section('containers', 'Containers', 'Thẻ và danh sách', [
+    spec('LpCard', 'Mới', 'Nền card trên nền nhóm. Thứ nằm trong card dùng surfaceContainerHigh; nhấn/hover là lớp onSurface 8/12%, không đổi màu nền.', `<div class="states">
+      ${cardState('Mặc định')}
+      ${cardState('Đang nhấn', 'background:color-mix(in srgb, var(--on-surface) 12%, var(--card))')}
+      ${cardState('Focus', '', 'is-focused')}</div>`),
+    spec('LpTestCard', 'Cập nhật', 'card + shadow.card, radius.lg; là nguồn shared element vào phòng thi.', `<div class="states col">
+      ${state('Chưa làm', testCard('Test 3 · Reading', '3 passage · 60 phút', '<span class="ms chev">chevron_right</span>'))}
+      ${state('Đang làm', testCard('Test 2 · Reading', 'Câu 18/40 · còn 34 phút', '<span class="tag primary">Đang làm</span>'))}
+      ${state('Đã làm', testCard('Test 1 · Reading', 'Hôm qua · 30/40 câu', '<span class="tag primary" style="font-weight:700">7.0</span>'))}
+      ${state('Sắp có', testCard('Test 4 · Listening', 'Sắp có', '<span class="tag">Sắp có</span>', 'aria-disabled="true"'))}</div>`),
+    spec('LpContinueCard', 'Mới', 'Thẻ chính của “Hôm nay”.', `<article class="card continue" style="box-shadow:none;outline:1px solid var(--outline-variant)"><div class="continue-top"><span class="tag primary">Đang làm</span><span class="t-footnote muted">Hôm qua, 21:40</span></div>
+      <h3 class="t-title2">Cambridge 18 · Test 2</h3><p class="t-subheadline muted">Reading · Passage 2 · Câu 18/40</p>
+      <div class="pbar"><i style="width:45%"></i></div><div class="continue-foot t-footnote muted"><span class="ms sm">timer</span>Còn 34 phút</div>
+      <button class="btn btn-primary btn-block"><span class="ms">play_arrow</span>Làm tiếp</button></article>`),
+    spec('LpListRow · LpSectionHeader', 'Mới', 'Danh sách nhóm kiểu iOS Settings; đường kẻ thụt vào theo chữ.', `<div class="section-h" style="margin:0"><h3 class="t-title3">Kế hoạch hôm nay</h3><button class="btn btn-text" style="height:32px;padding:0">Xem tất cả</button></div>
+      <div class="states col">
+      ${state('Mặc định', row('style', 'primary', 'Ôn 24 thẻ đến hạn', 'Từ vựng · 5 phút', '<span class="ms chev">chevron_right</span>'))}
+      ${state('Đang nhấn', row('style', 'primary', 'Ôn 24 thẻ đến hạn', 'Từ vựng · 5 phút', '<span class="ms chev">chevron_right</span>', 'style="background:var(--surface-container)"'))}
+      ${state('Đã xong', row('headphones', 'correct', 'Nghe chép chính tả', 'Section 3 · 10 phút', '<span class="ms fill done-mark" aria-label="Đã xong">check_circle</span>'))}
+      ${state('Vô hiệu', row('lock', 'info', 'Writing Task 2', 'Sắp có', '', 'style="opacity:.38"'))}</div>`),
+    spec('LpStatTile', 'Mới', 'Xu hướng luôn có mũi tên và chữ, không chỉ màu.', `<div class="states col"><div class="card stat stat-mini" style="box-shadow:none;outline:1px solid var(--outline-variant)">
+      <div class="stat-row"><div class="top"><span class="t-headline">Matching Headings</span><span class="t-subheadline tnum">58% đúng</span></div><div class="pbar"><i style="width:58%"></i></div><span class="t-footnote muted"><span class="trend"><span class="ms sm">trending_up</span>+6%</span> so với tuần trước</span></div>
+      <div class="stat-row"><div class="top"><span class="t-headline">Note Completion</span><span class="t-subheadline tnum">64% đúng</span></div><div class="pbar"><i style="width:64%"></i></div><span class="t-footnote muted"><span class="trend" style="color:var(--on-surface-variant)"><span class="ms sm">trending_down</span>−4%</span> so với tuần trước</span></div>
+      <div class="stat-row"><div class="top"><span class="t-headline">Sentence Completion</span><span class="t-subheadline tnum">71% đúng</span></div><div class="pbar"><i style="width:71%"></i></div><span class="t-footnote muted"><span class="trend" style="color:var(--on-surface-variant)"><span class="ms sm">trending_flat</span>0%</span> giữ nguyên so với tuần trước</span></div></div></div>`),
+    spec('LpTag', 'Mới', '', `<div class="states">${state('Trung tính', '<span class="tag">adj</span>')}${state('Primary', '<span class="tag primary">Đang làm</span>')}${state('Success', '<span class="tag success">Đã xong</span>')}${state('Warning', '<span class="tag warning">Sắp hết hạn</span>')}</div>`),
+  ]);
+}
+
+function navigation() {
+  const tabs = [['wb_sunny', 'Hôm nay'], ['menu_book', 'Luyện đề'], ['style', 'Từ vựng'], ['monitoring', 'Tiến độ'], ['person', 'Tôi']];
+  return section('navigation', 'Navigation', 'Điều hướng', [
+    spec('LpNavigationSuite', 'Mới', 'Thanh dưới (điện thoại) · rail (máy tính bảng) · sidebar (máy tính); cùng 5 đích, cùng thứ tự.', `<div class="states col">
+      ${state('Thanh dưới · mờ đục · có huy hiệu', `<div class="mini-phone"><nav class="tabbar">${tabs.map(([icon, label], i) => `<button class="tab" aria-selected="${i === 0}" ${i === 2 ? 'aria-label="Từ vựng, 24 thẻ đến hạn"' : ''} style="position:relative"><span class="ms">${icon}</span>${label}${i === 2 ? '<span class="nav-badge tnum">24</span>' : ''}</button>`).join('')}</nav></div>`)}
+      <div class="states">${state('Rail', `<div class="rail">${tabs.slice(0, 3).map(([icon, label], i) => `<button aria-selected="${i === 0}"><span class="pillicon"><span class="ms">${icon}</span></span>${label}</button>`).join('')}</div>`)}
+      ${state('Sidebar: chọn · mặc định · hover · focus', `<div style="width:220px;display:flex;flex-direction:column;gap:2px">
+        <button class="side-item" aria-selected="true"><span class="ms">wb_sunny</span>Hôm nay<kbd>⌘1</kbd></button>
+        <button class="side-item"><span class="ms">menu_book</span>Luyện đề<kbd>⌘2</kbd></button>
+        <button class="side-item" style="background:var(--surface-container)"><span class="ms">style</span>Từ vựng<kbd>⌘3</kbd></button>
+        <button class="side-item is-focused"><span class="ms">monitoring</span>Tiến độ<kbd>⌘4</kbd></button></div>`)}</div></div>`, true),
+    spec('LpLargeTitleBar', 'Mới', 'Tiêu đề lớn thu vào thanh khi cuộn; thanh trong suốt → mờ đục.', `<div class="states col">
+      ${state('Mở rộng', '<div><div class="t-footnote muted" style="font-weight:600">Thứ Năm, 2 tháng 10</div><div class="t-large-title">Hôm nay</div></div>')}
+      ${state('Thu gọn', '<div class="lt-collapsed t-headline">Hôm nay</div>')}</div>`),
+    spec('LpExamBar', 'Mới', 'Phòng thi: tối giản như máy thi IELTS.', `<div class="states col mini-exam">
+      ${state('Bình thường', '<div class="exam-bar"><button class="icon-btn" aria-label="Thoát"><span class="ms">close</span></button><div class="exam-title"><span class="t-headline">Passage 2</span><span class="t-caption muted">Câu 14–26</span></div><div class="timer-slot"><span class="timer"><span class="ms">timer</span>34:12</span></div></div>')}
+      ${state('Sắp hết giờ', '<div class="exam-bar"><button class="icon-btn" aria-label="Thoát"><span class="ms">close</span></button><div class="exam-title"><span class="t-headline">Passage 3</span><span class="t-caption muted">Câu 27–40</span></div><div class="timer-slot"><span class="timer warning"><span class="ms fill">timer</span>04:59</span></div></div>')}
+      ${state('Ngoại tuyến', '<div class="exam-bar"><button class="icon-btn" aria-label="Thoát"><span class="ms">close</span></button><div class="exam-title"><span class="t-headline">Passage 2</span><span class="t-caption muted">Câu 14–26</span></div><span class="ms muted" aria-label="Đang ngoại tuyến" style="margin-left:auto">cloud_off</span><div class="timer-slot" style="margin-left:8px"><span class="timer"><span class="ms">timer</span>34:12</span></div></div>')}</div>`),
+  ]);
+}
+
+function feedback() {
+  return section('feedback', 'Feedback', 'Thông báo, trạng thái trống và lỗi', [
+    spec('LpBanner', 'Mới', '', `<div class="states col">
+      ${state('Info', '<div class="banner"><span class="ms">info</span><div class="t-subheadline">Mẹo: chạm vào một từ trong bài đọc để lưu vào bộ thẻ.</div></div>')}
+      ${state('Ngoại tuyến', '<div class="banner"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>')}
+      ${state('Warning, có hành động', '<div class="banner" style="background:var(--warning-container);color:var(--on-warning-container);align-items:center"><span class="ms" style="color:var(--warning)">warning</span><div class="t-subheadline grow">Còn 3 câu chưa trả lời.</div><button class="btn btn-text" style="height:36px;color:inherit">Xem</button></div>')}</div>`),
+    spec('LpSnackbar', 'Mới', 'Tự ẩn sau 4 giây; hành động dùng inversePrimary.', `<div class="states col">
+      ${state('Mặc định', '<div class="snackbar static"><span class="t-subheadline grow" style="padding:10px 0">Đã lưu “meticulous” vào bộ thẻ</span></div>')}
+      ${state('Có hành động', '<div class="snackbar static"><span class="t-subheadline grow">Đã chấm “Được”</span><button class="btn btn-text">Hoàn tác</button></div>')}</div>`),
+    spec('LpEmptyState', 'Cập nhật', 'Minh hoạ 120/160, một hành động.', `<div class="empty" style="padding:8px">${ILLO}<h3 class="t-title2">Chưa có từ nào</h3><p class="t-callout muted">Chạm vào một từ trong bài đọc để lưu vào đây.</p><button class="btn btn-secondary">Mở bài đọc</button></div>`),
+    spec('LpErrorState', 'Cập nhật', '', `<div class="states col">${state('Mặc định', '<div class="empty" style="padding:8px"><div class="error-icon"><span class="ms lg">cloud_off</span></div><h3 class="t-title2">Chưa tải được kế hoạch hôm nay</h3><p class="t-callout muted">Kiểm tra kết nối rồi thử lại nhé.</p><button class="btn btn-primary"><span class="ms">refresh</span>Thử lại</button></div>')}
+      ${state('Đang thử lại', `<div class="empty" style="padding:8px"><button class="btn btn-primary" aria-busy="true">${SPINNER}Đang thử lại…</button></div>`)}</div>`),
+    spec('LpSkeleton', 'Mới', 'Chỉ hiện sau 300 ms; Giảm chuyển động: khối tĩnh.', `<div class="states col">
+      ${state('Có ánh sáng chạy', '<div style="display:flex;gap:12px;align-items:center"><div class="skel" style="width:48px;height:48px;border-radius:999px;flex:none"></div><div style="flex:1;display:flex;flex-direction:column;gap:8px"><div class="skel" style="height:16px;width:70%"></div><div class="skel" style="height:14px;width:45%"></div></div></div>')}
+      ${state('Tĩnh', '<div class="reduce" style="display:flex;gap:12px;align-items:center"><div class="skel" style="width:48px;height:48px;border-radius:999px;flex:none"></div><div style="flex:1;display:flex;flex-direction:column;gap:8px"><div class="skel" style="height:16px;width:70%"></div><div class="skel" style="height:14px;width:45%"></div></div></div>')}</div>`),
+    spec('LpSheet · LpExplainSheet', 'Cập nhật', 'Điện thoại: sheet đáy, tay nắm, kéo xuống/Esc/back để đóng. Máy tính: hộp thoại giữa màn. Không đóng được: “Hết giờ” (không tay nắm, không scrim, không Esc). Focus vào tiêu đề, bẫy Tab, trả focus khi đóng.', `<div class="static-sheet"><div class="handle"></div>
+      <p class="t-footnote muted">Câu 16 · Đoạn C</p><h3 class="t-title2">Đáp án: NOT GIVEN</h3>
+      <div class="explain-quote t-reading">“…a team of researchers set up colonies <mark class="evidence">in the laboratory</mark>…”</div>
+      <p class="t-body">Bài không nói các tổ kiến được lấy từ đâu. Câu này hay bẫy ở chữ <em>forests</em>.</p>
+      <div class="save-words"><button><span class="ms sm">add</span>colony</button><button class="saved"><span class="ms sm">check</span>laboratory</button></div></div>`),
+  ]);
+}
+
+function flashcards() {
+  const card = { word: 'meticulous', ipa: '/məˈtɪk.jə.ləs/', pos: 'adj', meaning: 'tỉ mỉ, kỹ lưỡng', definition: 'very careful about small details', example: 'The researchers kept <mark>meticulous</mark> records of every colony.' };
+  const front = `<div class="face front"><div class="face-top"><span class="tag">${card.pos}</span><span class="t-footnote muted">Cambridge 18</span></div><div class="face-center"><h3 class="t-large-title">${card.word}</h3><p class="t-callout muted">${card.ipa}</p><span class="audio"><span class="ms fill">volume_up</span></span></div><p class="hint t-footnote muted"><span class="ms sm">touch_app</span>Chạm để lật thẻ</p></div>`;
+  const back = `<div class="face back"><div class="back-word"><div><h3 class="t-title2">${card.word}</h3><p class="t-subheadline muted">${card.ipa} · ${card.pos}</p></div><span class="audio small"><span class="ms fill">volume_up</span></span></div><div class="back-body"><p class="t-title2" style="color:var(--primary)">${card.meaning}</p><p class="t-callout muted">${card.definition}</p><hr><p class="t-reading">${card.example}</p></div></div>`;
+  const rate = (cls, label, interval, extra = '') => `<button class="rate ${cls}" ${extra} style="width:100%"><span class="t-headline">${label}</span><span class="t-footnote tnum">${interval}</span></button>`;
+  return section('flashcard', 'Flashcard', 'Ôn từ vựng', [
+    spec('LpFlashcard', 'Mới', 'Chạm để lật (rotateY 180°, spring.smooth); Giảm chuyển động: cross-fade.', `<div class="mini-slot"><div class="card3d" role="button" tabindex="0" data-flip aria-label="Thẻ: meticulous. Chạm hai lần để lật">${front}${back}</div></div>`),
+    spec('LpRatingButton', 'Mới', 'FSRS: hiện khoảng ôn tiếp theo. “Được” là lựa chọn chính.', `<div class="ratings">${rate('again', 'Quên', '< 1 phút')}${rate('hard', 'Khó', '6 phút')}${rate('good', 'Được', '1 ngày')}${rate('easy', 'Dễ', '4 ngày')}</div>
+      <div class="states">${state('Đang nhấn', rate('good is-pressed', 'Được', '1 ngày'))}${state('Mặt trước: nút “Lật thẻ” thay chỗ', '<button class="btn btn-primary" style="height:64px;width:100%"><span class="ms">flip</span>Lật thẻ</button>')}</div>`),
+  ]);
+}
+
+function screen(frame) {
+  const board = `<div class="board"><div class="board-inner">${actions()}${answers()}${progress()}${containers()}${navigation()}${feedback()}${flashcards()}</div></div>`;
+  return frame === 'phone'
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">wifi</span><span class="ms">battery_full</span></span></div>${board}<div class="home-ind"></div>`
+    : `<div class="win-bar"><i></i><i></i><i></i><span>Component sheet — Luyện IELTS</span></div>${board}`;
+}
+
+function moveIndicator(seg, index, animate) {
+  const buttons = seg.querySelectorAll('button');
+  const indicator = seg.querySelector('.ind');
+  const width = (seg.clientWidth - 8) / buttons.length;
+  indicator.style.width = `${width}px`;
+  const target = `translateX(${index * width}px)`;
+  const from = indicator.style.transform || 'translateX(0px)';
+  indicator.style.transform = target;
+  if (animate) play(indicator, [{ transform: from }, { transform: target }], 'snappy');
+}
+
+function mount(device) {
+  device.querySelectorAll('[data-seg]').forEach((seg) => moveIndicator(seg, 0, false));
+  if (reduceMotion) device.querySelectorAll('[data-flip] .back').forEach((back) => { back.style.opacity = 0; });
+  device.addEventListener('click', (event) => {
+    const button = event.target.closest('button, [data-flip]');
+    if (!button) return;
+    const seg = button.closest('[data-seg]');
+    if (seg) {
+      const buttons = [...seg.querySelectorAll('button')];
+      buttons.forEach((b) => b.setAttribute('aria-selected', String(b === button)));
+      moveIndicator(seg, buttons.indexOf(button), true);
+      haptic(device, 'selection · CLOCK_TICK');
+    }
+    if (button.closest('[data-chips]')) {
+      button.parentElement.querySelectorAll('.chip').forEach((chip) => chip.classList.toggle('selected', chip === button));
+      play(button, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+      haptic(device, 'selection · CLOCK_TICK');
+    }
+    if (button.dataset.flip !== undefined) {
+      const flipped = button.dataset.flipped === 'true';
+      button.dataset.flipped = String(!flipped);
+      if (reduceMotion) {
+        const [front, back] = button.children;
+        button.style.transform = 'none';
+        back.style.transform = 'none';
+        [front, back].forEach((face) => { face.style.backfaceVisibility = 'visible'; });
+        play(flipped ? back : front, [{ opacity: 1 }, { opacity: 0 }]);
+        play(flipped ? front : back, [{ opacity: 0 }, { opacity: 1 }]);
+      } else {
+        const from = flipped ? 'rotateY(180deg)' : 'rotateY(0deg)', to = flipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+        button.style.transform = to;
+        play(button, [{ transform: from }, { transform: to }], 'smooth');
+      }
+    }
+  });
+  enter(device);
+}
+
+function handleKey() { }
+
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (device.classList.contains('desktop')) return;
+  const log = document.querySelector('.haptic-log');
+  log.innerHTML = `<span class="ms sm">vibration</span> Rung: ${kind}`;
+  log.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(haptic.timer);
+  haptic.timer = setTimeout(() => { log.textContent = ''; }, 2000);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function enter(root) {
+  root.querySelectorAll('[data-stagger]').forEach((el, i) => {
+    play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER });
+  });
+  root.querySelectorAll('.ring .fill').forEach((circle) => {
+    const length = Number(circle.dataset.length);
+    play(circle, [{ strokeDashoffset: length }, { strokeDashoffset: circle.dataset.offset }], 'gentle', { delay: 120 });
+  });
+  root.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle', { delay: 120 }));
+  root.querySelectorAll('.roller').forEach(roll);
+}
+
+function roller(text) {
+  const parts = [...String(text)].map((ch) => (/\d/.test(ch)
+    ? `<span class="digit" aria-hidden="true"><span class="digits" data-digit="${ch}">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
+    : `<span aria-hidden="true">${ch}</span>`));
+  return `<span class="roller tnum">${parts.join('')}<span class="sr">${text}</span></span>`;
+}
+
+function roll(el) {
+  el.querySelectorAll('.digits').forEach((col, i) => {
+    const target = `translateY(-${Number(col.dataset.digit) * 1.2}em)`;
+    col.style.transform = target;
+    play(col, [{ transform: 'translateY(0)' }, { transform: target }], 'gentle', { delay: 150 + i * 40 });
+  });
+}
+
+function ring(size, stroke, fraction, tone = '') {
+  const radius = (size - stroke) / 2;
+  const length = 2 * Math.PI * radius;
+  const offset = length * (1 - fraction);
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+    <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"/>
+    <circle class="fill ${tone}" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"
+      stroke-dasharray="${length}" stroke-dashoffset="${offset}" data-length="${length}" data-offset="${offset}"/></svg>`;
+}
+
+const illustrationSize = (frame) => (frame === 'desktop' ? 160 : 120);
+
+function push(device, html) {
+  const host = device.querySelector('.nav-host');
+  const base = host.querySelector('.layer.base');
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10;
+  page.innerHTML = html;
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  base.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(base, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  page.querySelectorAll('[data-action="back"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); pop(page, base, dim, 0); }));
+  enableEdgeSwipe(page, base, dim, host);
+  return page;
+}
+
+function pop(page, base, dim, fromProgress) {
+  const width = page.offsetWidth;
+  const start = fromProgress * width;
+  play(page, [{ transform: `translateX(${start}px)` }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+  play(base, [{ transform: `translateX(${-0.3 * width * (1 - fromProgress)}px)` }, { transform: 'translateX(0)' }], 'smooth');
+  play(dim, [{ opacity: 0.08 * (1 - fromProgress) }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+}
+
+function enableEdgeSwipe(page, base, dim, host) {
+  let startX = null, lastX = 0, lastT = 0, velocity = 0;
+  const scale = () => Number(host.closest('.device').dataset.scale);
+  page.addEventListener('pointerdown', (event) => {
+    const x = (event.clientX - page.getBoundingClientRect().left) / scale();
+    if (x > 28) return;
+    startX = event.clientX; lastX = event.clientX; lastT = event.timeStamp;
+    page.setPointerCapture(event.pointerId);
+    [page, base, dim].forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+  });
+  page.addEventListener('pointermove', (event) => {
+    if (startX === null) return;
+    const dx = Math.max(0, (event.clientX - startX) / scale());
+    velocity = (event.clientX - lastX) / scale() / Math.max(1, event.timeStamp - lastT);
+    lastX = event.clientX; lastT = event.timeStamp;
+    const progress = dx / page.offsetWidth;
+    page.style.transform = `translateX(${dx}px)`;
+    base.style.transform = `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)`;
+    dim.style.opacity = 0.08 * (1 - progress);
+  });
+  page.addEventListener('pointerup', (event) => {
+    if (startX === null) return;
+    const progress = Math.max(0, (event.clientX - startX) / scale()) / page.offsetWidth;
+    startX = null;
+    if (progress > 0.35 || velocity > 0.5) return pop(page, base, dim, progress);
+    play(page, [{ transform: `translateX(${progress * page.offsetWidth}px)` }, { transform: 'translateX(0)' }], 'smooth');
+    play(base, [{ transform: `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)` }, { transform: 'translateX(-30%)' }], 'smooth');
+    dim.style.opacity = 0.08;
+  });
+}
+
+function morphTarget(device, frame) {
+  return frame === 'phone' ? { x: 0, y: 0, w: 390, h: 844, r: 54 } : { x: 0, y: 38, w: 1280, h: 762, r: 0 };
+}
+
+function clipFor(from, to, radius) {
+  return `inset(${from.y - to.y}px ${to.x + to.w - from.x - from.w}px ${to.y + to.h - from.y - from.h}px ${from.x - to.x}px round ${radius}px)`;
+}
+
+function openSheet(device, frame, html, label, { dismissible = true, onClose = () => { } } = {}) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const initial = sheet.querySelector('[data-autofocus]') || sheet.querySelector('h2');
+  if (!initial.matches('button')) initial.setAttribute('tabindex', '-1');
+  initial.focus({ preventScroll: true });
+  const close = (fromY = 0) => {
+    onClose();
+    play(scrim, [{ opacity: Math.max(0, 1 - fromY / sheet.offsetHeight) }, { opacity: 0 }], 'smooth');
+    play(sheet, phone ? [{ transform: `translateY(${fromY}px)` }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && dismissible) return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button, input, [tabindex="0"]')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  if (dismissible) scrim.addEventListener('click', () => close());
+  sheet.querySelectorAll('[data-action="close-sheet"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); close(); }));
+  if (!phone || !dismissible) return close;
+  let startY = null, lastY = 0, lastT = 0, velocity = 0;
+  const scale = Number(device.dataset.scale);
+  sheet.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button')) return;
+    startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
+    sheet.setPointerCapture(event.pointerId);
+    sheet.getAnimations().forEach((a) => a.cancel());
+  });
+  sheet.addEventListener('pointermove', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    velocity = (event.clientY - lastY) / scale / Math.max(1, event.timeStamp - lastT);
+    lastY = event.clientY; lastT = event.timeStamp;
+    sheet.style.transform = `translateY(${dy}px)`;
+    scrim.style.opacity = 1 - dy / sheet.offsetHeight;
+  });
+  sheet.addEventListener('pointerup', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    startY = null;
+    if (dy > sheet.offsetHeight * 0.3 || velocity > 0.6) return close(dy);
+    play(sheet, [{ transform: `translateY(${dy}px)` }, { transform: 'none' }], 'smooth');
+    play(scrim, [{ opacity: 1 - dy / sheet.offsetHeight }, { opacity: 1 }], 'smooth');
+  });
+  return close;
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const width = frame === 'phone' ? 390 : 1280, height = frame === 'phone' ? 844 : 800;
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  intervals.forEach(clearInterval);
+  intervals.clear();
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, ui.state)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  const stateGroup = document.querySelector('[data-control="state"]');
+  stateGroup.insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  window.addEventListener('keydown', handleKey);
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>
