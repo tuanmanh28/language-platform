@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme nền của Activity; màu thật do Compose (LanguagePlatformTheme) quyết định. -->
+    <style name="Theme.LanguagePlatform" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

@@ -1,0 +1,118 @@
+# XcodeGen spec — sinh LanguagePlatform.xcodeproj cho iOS + macOS (SwiftUI dùng chung).
+# Chạy:  brew install xcodegen && cd app-apple && xcodegen
+# File .xcodeproj được sinh ra không commit (đã có trong .gitignore); sửa cấu hình ở file này.
+name: LanguagePlatform
+
+options:
+  bundleIdPrefix: com.app.platform.language
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "14.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Build phase gọi Gradle cần thoát sandbox của Xcode
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    CODE_SIGN_STYLE: Automatic
+    # Điền Team ID của bạn trong Xcode (Signing & Capabilities) hoặc ở đây
+    DEVELOPMENT_TEAM: ""
+    # Framework Kotlin do task embedAndSignAppleFrameworkForXcode đặt vào đây
+    FRAMEWORK_SEARCH_PATHS: "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+    OTHER_LDFLAGS: ["$(inherited)", "-framework", "Shared", "-lsqlite3"]
+
+targetTemplates:
+  KotlinApp:
+    preBuildScripts:
+      - name: Compile Kotlin framework
+        basedOnDependencyAnalysis: false
+        script: |
+          if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
+            echo "Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\""
+            exit 0
+          fi
+          # Xcode không đọc shell profile → tự tìm JDK 17+ (hoặc JDK đi kèm Android Studio)
+          if [ -z "$JAVA_HOME" ]; then
+            if /usr/libexec/java_home -v 17+ >/dev/null 2>&1; then
+              export JAVA_HOME="$(/usr/libexec/java_home -v 17+)"
+            elif [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+              export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+            fi
+          fi
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+
+targets:
+  LanguagePlatformiOS:
+    type: application
+    platform: iOS
+    templates: [KotlinApp]
+    sources:
+      - path: Sources
+      - path: iOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.app.platform.language
+        PRODUCT_NAME: LanguagePlatform
+        TARGETED_DEVICE_FAMILY: "1,2"
+    info:
+      path: iOS/Info.plist
+      properties:
+        CFBundleDisplayName: Language Platform
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSAppTransportSecurity:
+          # Cho phép gọi backend local (http://localhost:8080) khi dev
+          NSAllowsLocalNetworking: true
+
+  LanguagePlatformMac:
+    type: application
+    platform: macOS
+    templates: [KotlinApp]
+    sources:
+      - path: Sources
+      - path: macOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.app.platform.language.macos
+        PRODUCT_NAME: LanguagePlatform
+        ENABLE_HARDENED_RUNTIME: YES
+        # "Sign to Run Locally" — chạy được trên máy mà chưa cần Apple Developer Team
+        CODE_SIGN_IDENTITY: "-"
+    entitlements:
+      path: macOS/LanguagePlatform.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+    info:
+      path: macOS/Info.plist
+      properties:
+        CFBundleDisplayName: Language Platform
+        LSApplicationCategoryType: public.app-category.education
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+
+schemes:
+  LanguagePlatformiOS:
+    build:
+      targets:
+        LanguagePlatformiOS: all
+    run:
+      config: Debug
+  LanguagePlatformMac:
+    build:
+      targets:
+        LanguagePlatformMac: all
+    run:
+      config: Debug

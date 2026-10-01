@@ -1,0 +1,35 @@
+-- Cache đề đã tải về để làm bài offline.
+CREATE TABLE CachedReadingTest (
+    id TEXT NOT NULL PRIMARY KEY,
+    json TEXT NOT NULL,
+    updatedAt INTEGER NOT NULL
+);
+
+-- Lịch sử làm bài trên máy. Phase sau sẽ đồng bộ lên server qua hàng đợi sync.
+CREATE TABLE ReadingAttempt (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    testId TEXT NOT NULL,
+    correctCount INTEGER NOT NULL,
+    totalQuestions INTEGER NOT NULL,
+    band REAL NOT NULL,
+    answersJson TEXT NOT NULL,
+    createdAt INTEGER NOT NULL
+);
+
+CREATE INDEX ReadingAttempt_testId ON ReadingAttempt(testId);
+
+upsertTest:
+INSERT OR REPLACE INTO CachedReadingTest(id, json, updatedAt) VALUES (?, ?, ?);
+
+selectTest:
+SELECT json FROM CachedReadingTest WHERE id = ?;
+
+selectAllTests:
+SELECT json FROM CachedReadingTest ORDER BY id;
+
+insertAttempt:
+INSERT INTO ReadingAttempt(testId, correctCount, totalQuestions, band, answersJson, createdAt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+countAttempts:
+SELECT COUNT(*) FROM ReadingAttempt WHERE testId = ?;

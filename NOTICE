@@ -1,0 +1,5 @@
+Cấu trúc build Kotlin Multiplatform ban đầu (cấu hình Gradle, cách tích hợp SKIE/Koin/SQLDelight,
+cách nối framework Kotlin vào Xcode) tham khảo từ dự án PeopleInSpace:
+  https://github.com/joreilly/PeopleInSpace
+  Licensed under the Apache License, Version 2.0
+  https://www.apache.org/licenses/LICENSE-2.0

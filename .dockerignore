@@ -1,0 +1,3 @@
+# Image backend chỉ cần file jar đã build
+*
+!backend/build/libs/backend-all.jar

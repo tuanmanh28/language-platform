@@ -1,0 +1,38 @@
+# Bản clone PeopleInSpace để tham khảo — không thuộc repo
+/_reference/
+
+# Gradle / Kotlin
+.gradle/
+build/
+.kotlin/
+local.properties
+*.hprof
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Xcode (project được sinh từ app-apple/project.yml bằng XcodeGen)
+app-apple/*.xcodeproj/
+app-apple/iOS/Info.plist
+app-apple/macOS/Info.plist
+app-apple/macOS/*.entitlements
+xcuserdata/
+DerivedData/
+*.xcuserstate
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Web (Next.js — Phase 3)
+node_modules/
+.next/
+
+# Bí mật
+.env
+.env.*
+!.env.example

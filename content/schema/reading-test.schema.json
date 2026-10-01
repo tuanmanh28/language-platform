@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading-test.schema.json",
+  "title": "ReadingTest",
+  "description": "Một đề IELTS Reading. Khớp với com.app.platform.language.core.model.ReadingTest.",
+  "type": "object",
+  "required": ["id", "title", "timeLimitMinutes", "passages"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "module": { "enum": ["academic", "general_training"], "default": "academic" },
+    "title": { "type": "string", "minLength": 1 },
+    "timeLimitMinutes": { "type": "integer", "minimum": 1, "maximum": 60 },
+    "passages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": { "$ref": "#/$defs/passage" }
+    }
+  },
+  "$defs": {
+    "passage": {
+      "type": "object",
+      "required": ["id", "title", "paragraphs", "questionGroups"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["text"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "pattern": "^[A-Z]$" },
+              "text": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "questionGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/questionGroup" }
+        }
+      }
+    },
+    "questionGroup": {
+      "type": "object",
+      "required": ["id", "type", "instruction", "questions"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "enum": ["multiple_choice", "true_false_not_given", "yes_no_not_given", "sentence_completion"]
+        },
+        "instruction": { "type": "string" },
+        "maxWords": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/question" }
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "number", "prompt", "acceptedAnswers"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "number": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "prompt": { "type": "string" },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "text"],
+            "additionalProperties": false,
+            "properties": {
+              "key": { "type": "string", "pattern": "^[A-Z]$" },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "acceptedAnswers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "explanation": { "type": "string" }
+      }
+    }
+  }
+}

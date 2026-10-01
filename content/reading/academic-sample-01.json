@@ -1,0 +1,163 @@
+{
+  "id": "academic-sample-01",
+  "schemaVersion": 1,
+  "module": "academic",
+  "title": "Rooftop Farming Returns to the City",
+  "timeLimitMinutes": 20,
+  "passages": [
+    {
+      "id": "p1",
+      "title": "Rooftop Farming Returns to the City",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "In the early twentieth century, many European cities kept small vegetable plots on flat roofs, but the practice faded after cheap refrigerated transport made it easier to bring produce from distant farms. By the 1970s, rooftops were seen mainly as places for water tanks and ventilation equipment."
+        },
+        {
+          "label": "B",
+          "text": "Interest returned in the 2000s, driven less by food security than by concerns about heat. Dark roofs absorb sunlight during the day and release it at night, raising neighbourhood temperatures. Researchers in Montreal recorded surface temperatures on a planted roof that were up to 30 degrees Celsius lower than on a nearby bitumen roof during a summer afternoon."
+        },
+        {
+          "label": "C",
+          "text": "The weight of soil remains the main engineering obstacle. Saturated soil can be extremely heavy, so most commercial rooftop farms now use lightweight growing media made from expanded clay or recycled materials. Some operators avoid soil entirely and rely on hydroponic systems, in which plant roots sit in nutrient-rich water."
+        },
+        {
+          "label": "D",
+          "text": "Economic results are mixed. A farm in Brooklyn that opened in 2010 reported that restaurant contracts, rather than sales at local markets, provided most of its income in its first five years. However, a survey of 42 rooftop projects in North America found that fewer than a third covered their operating costs from food sales alone; many relied on educational programmes or corporate events."
+        },
+        {
+          "label": "E",
+          "text": "City governments have begun to respond. Several have changed building regulations so that a roof garden no longer counts towards a building's height limit, and a few offer tax reductions to owners who install vegetation. Critics argue that such incentives mainly benefit wealthy developers, yet supporters point out that cooler streets help all residents, especially elderly people during heatwaves."
+        }
+      ],
+      "questionGroups": [
+        {
+          "id": "g1",
+          "type": "true_false_not_given",
+          "instruction": "Do the following statements agree with the information given in the passage? Write TRUE if the statement agrees with the information, FALSE if the statement contradicts the information, NOT GIVEN if there is no information on this.",
+          "questions": [
+            {
+              "id": "q1",
+              "number": 1,
+              "prompt": "Rooftop vegetable growing declined partly because of improvements in transporting food.",
+              "acceptedAnswers": ["TRUE"],
+              "explanation": "Paragraph A: the practice faded after cheap refrigerated transport made it easier to bring produce from distant farms."
+            },
+            {
+              "id": "q2",
+              "number": 2,
+              "prompt": "The revival of rooftop farming in the 2000s was mainly motivated by food shortages.",
+              "acceptedAnswers": ["FALSE"],
+              "explanation": "Paragraph B: interest returned 'less by food security than by concerns about heat'."
+            },
+            {
+              "id": "q3",
+              "number": 3,
+              "prompt": "The Montreal study was carried out over several years.",
+              "acceptedAnswers": ["NOT GIVEN"],
+              "explanation": "Paragraph B mentions the Montreal measurements but not how long the study lasted."
+            },
+            {
+              "id": "q4",
+              "number": 4,
+              "prompt": "Most commercial rooftop farms today grow plants in ordinary garden soil.",
+              "acceptedAnswers": ["FALSE"],
+              "explanation": "Paragraph C: most commercial rooftop farms now use lightweight growing media."
+            },
+            {
+              "id": "q5",
+              "number": 5,
+              "prompt": "Hydroponic systems are more expensive to run than soil-based systems.",
+              "acceptedAnswers": ["NOT GIVEN"],
+              "explanation": "Paragraph C describes hydroponic systems but does not compare their running costs."
+            }
+          ]
+        },
+        {
+          "id": "g2",
+          "type": "multiple_choice",
+          "instruction": "Choose the correct letter, A, B, C or D.",
+          "questions": [
+            {
+              "id": "q6",
+              "number": 6,
+              "prompt": "According to paragraph D, the Brooklyn farm earned most of its early income from",
+              "options": [
+                { "key": "A", "text": "sales at local markets." },
+                { "key": "B", "text": "agreements with restaurants." },
+                { "key": "C", "text": "educational programmes." },
+                { "key": "D", "text": "corporate events." }
+              ],
+              "acceptedAnswers": ["B"],
+              "explanation": "Paragraph D: restaurant contracts, rather than sales at local markets, provided most of its income."
+            },
+            {
+              "id": "q7",
+              "number": 7,
+              "prompt": "The survey of 42 rooftop projects found that",
+              "options": [
+                { "key": "A", "text": "most projects made a profit from food." },
+                { "key": "B", "text": "fewer than a third paid their running costs through food sales alone." },
+                { "key": "C", "text": "educational programmes lost money." },
+                { "key": "D", "text": "projects in Canada performed better than those in the United States." }
+              ],
+              "acceptedAnswers": ["B"],
+              "explanation": "Paragraph D: fewer than a third covered their operating costs from food sales alone."
+            },
+            {
+              "id": "q8",
+              "number": 8,
+              "prompt": "What do supporters of the city incentives argue?",
+              "options": [
+                { "key": "A", "text": "Developers deserve lower taxes." },
+                { "key": "B", "text": "Height limits should be removed." },
+                { "key": "C", "text": "Lower street temperatures benefit everyone." },
+                { "key": "D", "text": "Elderly residents should be given roof gardens." }
+              ],
+              "acceptedAnswers": ["C"],
+              "explanation": "Paragraph E: supporters point out that cooler streets help all residents."
+            }
+          ]
+        },
+        {
+          "id": "g3",
+          "type": "sentence_completion",
+          "instruction": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
+          "maxWords": 2,
+          "questions": [
+            {
+              "id": "q9",
+              "number": 9,
+              "prompt": "By the 1970s, rooftops were used mainly for ventilation equipment and ______.",
+              "acceptedAnswers": ["water tanks"]
+            },
+            {
+              "id": "q10",
+              "number": 10,
+              "prompt": "Dark roofs absorb ______ during the day and release it at night.",
+              "acceptedAnswers": ["sunlight"]
+            },
+            {
+              "id": "q11",
+              "number": 11,
+              "prompt": "Lightweight growing media may be made from expanded clay or ______.",
+              "acceptedAnswers": ["recycled materials"]
+            },
+            {
+              "id": "q12",
+              "number": 12,
+              "prompt": "In hydroponic systems, plant roots sit in nutrient-rich ______.",
+              "acceptedAnswers": ["water"]
+            },
+            {
+              "id": "q13",
+              "number": 13,
+              "prompt": "A few cities offer ______ to owners who install vegetation on their roofs.",
+              "acceptedAnswers": ["tax reductions", "tax reduction"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
