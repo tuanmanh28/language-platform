@@ -22,9 +22,15 @@ internal fun assertParaphrasesMatch(
   val questionWording = listOf(question.prompt) + question.options.map { it.text }
   explanation.paraphrases.forEach { paraphrase ->
     assertTrue(
-      questionWording.any { paraphrase.inQuestion in it },
+      questionWording.any { it.containsWords(paraphrase.inQuestion) },
       "$name: '${paraphrase.inQuestion}' is not in the question or its options",
     )
-    assertTrue(paraphrase.inSource in source, "$name: '${paraphrase.inSource}' is not verbatim in the source")
+    assertTrue(
+      source.containsWords(paraphrase.inSource),
+      "$name: '${paraphrase.inSource}' is not verbatim in the source",
+    )
   }
 }
+
+private fun String.containsWords(fragment: String): Boolean =
+  Regex("(?<!\\w)${Regex.escape(fragment)}(?!\\w)").containsMatchIn(this)
