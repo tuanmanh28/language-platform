@@ -15,7 +15,7 @@ References:
 
 ```kotlin
 @Composable
-fun VocabularyScreen(
+internal fun VocabularyScreen(
   onOpenWord: (String) -> Unit,
   viewModel: VocabularyViewModel = koinViewModel(),
 ) {
@@ -28,20 +28,23 @@ internal fun VocabularyScreen(
   state: VocabularyUiState,
   onRate: (Card, Rating) -> Unit,
   onOpenWord: (String) -> Unit,
-  modifier: Modifier = Modifier,
 ) {
   when (state) {
-    VocabularyUiState.Loading -> LpLoading(modifier)
-    is VocabularyUiState.Failed -> LpErrorState(state.message, modifier = modifier)
-    is VocabularyUiState.Ready -> ReadyContent(state, onRate, onOpenWord, modifier)
+    VocabularyUiState.Loading -> LpLoading(Modifier.fillMaxSize())
+    is VocabularyUiState.Failed -> LpErrorState(state.message, Modifier.fillMaxSize())
+    is VocabularyUiState.Ready -> ReadyContent(state, onRate, onOpenWord, Modifier.fillMaxSize())
   }
 }
 ```
 
-- The public overload takes navigation callbacks and the ViewModel; the `internal` overload takes only state and lambdas
-  and is what previews and UI tests use.
+- The stateful overload takes navigation callbacks and the ViewModel; the stateless overload takes only state and
+  lambdas and is what previews and UI tests use. Both are `internal`: only the module's navigation entries call them.
+- **Screens take no `modifier`.** A screen is a whole destination: it fills the space its navigation entry gives it and
+  sizes its own root (`Modifier.fillMaxSize()`); window insets are handled by the app shell. Everything below the
+  screen (sections, design-system components) takes `modifier: Modifier = Modifier`.
 - Split big bodies into private composables named after what they show (`ReadyContent`, `PassagePane`), not `Content1`.
-- Lambdas are named `on<Action>`; `modifier` is the first optional parameter and applied to the root only.
+- Lambdas are named `on<Action>`. In sections and components, `modifier` is the first optional parameter and is applied
+  to the root only.
 - No ViewModel, repository or Koin access below the stateful overload.
 
 ## Rules
@@ -63,7 +66,7 @@ One `@Preview` per meaningful state (loading, ready, empty, error), light and da
 
 ## Checklist
 
-- [ ] Stateful/stateless split; previews for each state.
+- [ ] Stateful/stateless split, both `internal`, no `modifier` on the screen; previews for each state.
 - [ ] No hard-coded colors, sizes or strings.
 - [ ] Works on a phone and on a wide desktop window.
 - [ ] `./gradlew :app-android:assembleDebug :app-desktop:compileKotlin` passes.

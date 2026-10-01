@@ -67,8 +67,9 @@ References:
   camelCase (`rememberNavState()`).
 - Screen entry: `<Feature>Screen`; sections: `<Feature><Part>` (`ReadingQuestionList`); previews:
   `private fun <Composable>Preview()` in `<Feature>PreviewData.kt` + the screen file.
-- Parameter order: required data, `modifier: Modifier = Modifier` (first optional), other optional params, event
-  lambdas named `on<Event>` (`onAnswerSelected`), trailing `content` lambda.
+- Screens take no `modifier`. Sections and components order parameters as: required data,
+  `modifier: Modifier = Modifier` (first optional), other optional params, event lambdas named `on<Event>`
+  (`onAnswerSelected`), trailing `content` lambda.
 
 ## Swift
 
