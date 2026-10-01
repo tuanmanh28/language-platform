@@ -62,10 +62,24 @@ Phase 1 API:
 
 | Method | Path | Description |
 | --- | --- | --- |
-| GET | `/health` | Liveness check |
+| GET | `/health` | Liveness check: `{"status", "version", "env"}` |
 | GET | `/api/v1/reading/tests` | List tests |
 | GET | `/api/v1/reading/tests/{id}` | Test details |
 | POST | `/api/v1/reading/tests/{id}/submit` | Score answers (`{"answers": {"q1": "TRUE", ...}}`) |
+
+Configuration (environment variables; the server refuses to start on an invalid value):
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `PORT` | `8080` | |
+| `APP_ENV` | `local` | `local`, `staging` or `prod`; non-local envs log JSON |
+| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/language_platform` | Required outside `local` |
+| `DATABASE_USER` | `app` | Required outside `local` |
+| `DATABASE_PASSWORD` | `app` | Required outside `local` |
+| `CORS_ALLOWED_ORIGINS` | `*` in `local`, none elsewhere | Comma-separated origins (`https://app.example.com`); `*` only in `local` |
+
+Every response carries an `X-Request-Id` header (taken from the request when valid, generated otherwise); the same id
+appears in the logs.
 
 Without a running backend the apps still work with the bundled tests (and show an offline label).
 
