@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import java.time.Instant
 import kotlin.test.Test

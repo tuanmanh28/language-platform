@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import java.security.MessageDigest
 import java.time.Instant

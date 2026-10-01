@@ -5,6 +5,7 @@ import com.app.platform.language.backend.config.AppEnv
 import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -26,6 +27,7 @@ class HealthRoutesTest {
         databaseHealth,
         FakeUserStore(),
         FakeAttemptStore(),
+        FakeWritingSubmissionStore(),
         AppConfig.local.copy(env = AppEnv.STAGING),
       )
     }

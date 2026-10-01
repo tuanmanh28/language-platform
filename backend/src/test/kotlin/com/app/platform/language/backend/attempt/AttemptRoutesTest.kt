@@ -5,6 +5,7 @@ import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeTokenVerifier
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.exam.ReadingScorer
 import com.app.platform.language.core.model.ApiError
@@ -47,7 +48,15 @@ class AttemptRoutesTest {
     }
 
   private fun ApplicationTestBuilder.start(): HttpClient {
-    application { module(FakeDatabaseHealth(), users, attempts, tokenVerifier = verifier) }
+    application {
+      module(
+        FakeDatabaseHealth(),
+        users,
+        attempts,
+        FakeWritingSubmissionStore(),
+        tokenVerifier = verifier,
+      )
+    }
     return createClient { install(ContentNegotiation) { json(ContentJson) } }
   }
 

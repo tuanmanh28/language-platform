@@ -4,6 +4,7 @@ import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeContentStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ApiError
 import com.app.platform.language.core.model.BundledReadingTests
@@ -40,7 +41,7 @@ class ReadingRoutesTest {
   @Test
   fun listsAndServesBundledTests() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
       val client = jsonClient()
 
       val list = client.get("/api/v1/reading/tests").body<List<ReadingTestSummary>>()
@@ -53,7 +54,7 @@ class ReadingRoutesTest {
   @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response = jsonClient().get("/api/v1/reading/tests/${sample.id}")
 
@@ -64,7 +65,7 @@ class ReadingRoutesTest {
   @Test
   fun matchingEtagIsNotModified() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
       val client = jsonClient()
       val etag = client.get("/api/v1/reading/tests").headers[HttpHeaders.ETag]
 
@@ -78,7 +79,7 @@ class ReadingRoutesTest {
   @Test
   fun weakMatchInEtagListIsNotModified() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response =
         jsonClient().get("/api/v1/reading/tests/${sample.id}") {
@@ -91,7 +92,7 @@ class ReadingRoutesTest {
   @Test
   fun staleEtagGetsFullResponse() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response =
         jsonClient().get("/api/v1/reading/tests/${sample.id}") { header(HttpHeaders.IfNoneMatch, "\"0\"") }
@@ -104,7 +105,15 @@ class ReadingRoutesTest {
   fun storeFailureIsInternalError() =
     testApplication {
       val store = FakeContentStore().apply { nextError = IllegalStateException("store is down") }
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), contentStore = store) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          contentStore = store,
+        )
+      }
 
       val response = jsonClient().get("/api/v1/reading/tests")
 
@@ -115,7 +124,7 @@ class ReadingRoutesTest {
   @Test
   fun unknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response = jsonClient().get("/api/v1/reading/tests/nope")
 
@@ -126,7 +135,7 @@ class ReadingRoutesTest {
   @Test
   fun submitScoresWithSharedEngine() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
       val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }
 
       val result =
@@ -143,7 +152,7 @@ class ReadingRoutesTest {
   @Test
   fun submitToUnknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response =
         jsonClient().post("/api/v1/reading/tests/nope/submit") {
@@ -157,7 +166,7 @@ class ReadingRoutesTest {
   @Test
   fun malformedSubmitBodyIsBadRequest() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
 
       val response =
         jsonClient().post("/api/v1/reading/tests/${sample.id}/submit") {

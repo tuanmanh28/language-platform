@@ -5,9 +5,11 @@ import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.core.model.BundledListeningTests
 import com.app.platform.language.core.model.BundledReadingTests
+import com.app.platform.language.core.model.BundledWritingPrompts
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ListeningTest
 import com.app.platform.language.core.model.ReadingTest
+import com.app.platform.language.core.model.WritingPrompt
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import kotlinx.coroutines.test.runTest
@@ -31,8 +33,9 @@ class ContentSeederTest {
         sections = sample.sections.map { it.copy(audioUrl = "owner-listening-01/section-${it.number}.mp3") },
       )
     }
-  private val nothing = SeededCounts(reading = 0, listening = 0)
-  private val oneOfEach = SeededCounts(reading = 1, listening = 1)
+  private val ownerWriting = BundledWritingPrompts.all.first().copy(id = "owner-writing-01", imageUrl = null)
+  private val nothing = SeededCounts(reading = 0, listening = 0, writing = 0)
+  private val oneOfEach = SeededCounts(reading = 1, listening = 1, writing = 1)
 
   @TempDir
   lateinit var tempDir: Path
@@ -50,6 +53,7 @@ class ContentSeederTest {
         publicDir,
         ownerReading.copy(id = "public-reading-01"),
         ownerListening.copy(id = "public-listening-01"),
+        ownerWriting.copy(id = "public-writing-01"),
       )
       writeContent(privateDir, ownerReading, ownerListening)
 
@@ -60,6 +64,8 @@ class ContentSeederTest {
           StoredRow("listening_tests", "public-listening-01", 1, Visibility.PUBLIC.id),
           StoredRow("reading_tests", ownerReading.id, 1, Visibility.PRIVATE.id),
           StoredRow("reading_tests", "public-reading-01", 1, Visibility.PUBLIC.id),
+          StoredRow("writing_prompts", ownerWriting.id, 1, Visibility.PRIVATE.id),
+          StoredRow("writing_prompts", "public-writing-01", 1, Visibility.PUBLIC.id),
         ),
         storedRows(),
       )
@@ -88,7 +94,7 @@ class ContentSeederTest {
 
       assertEquals(Ok(SeededContent(public = nothing, private = oneOfEach)), seeder.seed(publicDir, privateDir))
 
-      assertEquals(listOf(2 to "private", 2 to "private"), storedRows().map { it.version to it.visibility })
+      assertEquals(List(3) { 2 to "private" }, storedRows().map { it.version to it.visibility })
     }
 
   @Test
@@ -97,7 +103,7 @@ class ContentSeederTest {
       writeContent(publicDir, ownerReading, ownerListening.copy(id = "public-listening-01"))
       writeContent(privateDir, ownerReading, ownerListening)
 
-      assertEquals(Err(SeedError.PublicAndPrivateTest(ownerReading.id)), seeder.seed(publicDir, privateDir))
+      assertEquals(Err(SeedError.PublicAndPrivateContent(ownerReading.id)), seeder.seed(publicDir, privateDir))
       assertEquals(emptyList(), storedRows())
     }
 
@@ -111,6 +117,40 @@ class ContentSeederTest {
         Err(SeedError.InvalidPrivateAudioPath(ownerListening.id, nested.audioUrl)),
         seeder.seed(publicDir, privateDir),
       )
+      assertEquals(emptyList(), storedRows())
+    }
+
+  @Test
+  fun privateWritingPromptWithAnUnservableImagePathIsRejectedBeforeAnyWrite() =
+    runTest {
+      val prompt = ownerWriting.copy(imageUrl = "writing/owner-writing-01/chart.png")
+      writeContent(
+        publicDir,
+        ownerReading.copy(id = "public-reading-01"),
+        ownerListening.copy(id = "public-listening-01"),
+      )
+      writeContent(privateDir, ownerReading, ownerListening, prompt)
+
+      assertEquals(
+        Err(SeedError.InvalidPrivateImagePath(prompt.id, "writing/owner-writing-01/chart.png")),
+        seeder.seed(publicDir, privateDir),
+      )
+      assertEquals(emptyList(), storedRows())
+    }
+
+  @Test
+  fun writingPromptInBothDirectoriesIsRejected() =
+    runTest {
+      writeContent(
+        publicDir,
+        ownerReading.copy(id = "public-reading-01"),
+        ownerListening.copy(id = "public-listening-01"),
+        ownerWriting,
+      )
+      writeContent(privateDir, ownerReading, ownerListening, ownerWriting)
+
+      assertEquals(Err(SeedError.PublicAndPrivateContent(ownerWriting.id)), seeder.seed(publicDir, privateDir))
+      assertEquals(emptyList(), storedRows())
     }
 
   @Test
@@ -126,6 +166,7 @@ class ContentSeederTest {
     contentDir: Path,
     reading: ReadingTest,
     listening: ListeningTest,
+    writing: WritingPrompt = ownerWriting,
   ) {
     contentDir
       .resolve("reading")
@@ -137,13 +178,19 @@ class ContentSeederTest {
       .createDirectories()
       .resolve("${listening.id}.json")
       .writeText(ContentJson.encodeToString(ListeningTest.serializer(), listening))
+    contentDir
+      .resolve("writing")
+      .createDirectories()
+      .resolve("${writing.id}.json")
+      .writeText(ContentJson.encodeToString(WritingPrompt.serializer(), writing))
   }
 
   private suspend fun storedRows(): List<StoredRow> =
     database.tx {
       exec(
         "SELECT 'listening_tests' AS t, id, version, visibility FROM listening_tests " +
-          "UNION ALL SELECT 'reading_tests', id, version, visibility FROM reading_tests ORDER BY t, id",
+          "UNION ALL SELECT 'reading_tests', id, version, visibility FROM reading_tests " +
+          "UNION ALL SELECT 'writing_prompts', id, version, visibility FROM writing_prompts ORDER BY t, id",
       ) { rows ->
         buildList {
           while (rows.next()) {

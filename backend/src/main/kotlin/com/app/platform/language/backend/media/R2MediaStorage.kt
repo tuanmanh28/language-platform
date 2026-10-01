@@ -1,14 +1,15 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import com.app.platform.language.backend.config.AudioStorageConfig
 import java.time.Clock
 import java.time.Instant
 import kotlin.time.Duration.Companion.minutes
 
-class R2AudioStorage(
+class R2MediaStorage(
   config: AudioStorageConfig.R2,
+  private val keyPrefix: String = "",
   private val clock: Clock = Clock.systemUTC(),
-) : AudioStorage {
+) : MediaStorage {
   private val bucket = config.bucket
   private val presigner =
     S3UrlPresigner(
@@ -19,9 +20,9 @@ class R2AudioStorage(
     )
 
   override fun urlFor(path: String): String =
-    presigner.presignGet("/$bucket/${path.trimStart('/')}", URL_LIFETIME, signingWindowStart())
+    presigner.presignGet("/$bucket/$keyPrefix${path.trimStart('/')}", URL_LIFETIME, signingWindowStart())
 
-  // Signing at the window start keeps URLs, and so the test's ETag, stable until the window ends.
+  // Signing at the window start keeps URLs, and so the content's ETag, stable until the window ends.
   private fun signingWindowStart(): Instant {
     val windowMillis = SIGNING_WINDOW.inWholeMilliseconds
     return Instant.ofEpochMilli(clock.millis() / windowMillis * windowMillis)

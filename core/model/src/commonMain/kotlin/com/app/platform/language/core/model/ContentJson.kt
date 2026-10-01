@@ -26,3 +26,11 @@ object BundledListeningTests {
 
   fun find(id: String): ListeningTest? = all.firstOrNull { it.id == id }
 }
+
+object BundledWritingPrompts {
+  val all: List<WritingPrompt> by lazy {
+    BundledContent.writingPromptsJson.map { ContentJson.decodeFromString(WritingPrompt.serializer(), it) }
+  }
+
+  fun find(id: String): WritingPrompt? = all.firstOrNull { it.id == id }
+}

@@ -68,11 +68,12 @@ tasks.processResources {
 val contentDir = rootDir.resolve("content")
 val readingContentDir = contentDir.resolve("reading")
 val listeningContentDir = contentDir.resolve("listening")
+val writingContentDir = contentDir.resolve("writing")
 
 tasks.register<JavaExec>("seedContent") {
   group = "application"
   description =
-    "Upserts content/ as public and CONTENT_DIR as private tests into the database configured by the environment."
+    "Upserts content/ as public and CONTENT_DIR as private content into the database configured by the environment."
   classpath = sourceSets.main.get().runtimeClasspath
   mainClass.set("com.app.platform.language.backend.SeedContentKt")
   args(contentDir.path)
@@ -83,8 +84,10 @@ tasks.test {
   systemProperty("backend.expectedVersion", backendVersion)
   systemProperty("backend.readingContentDir", readingContentDir.path)
   systemProperty("backend.listeningContentDir", listeningContentDir.path)
+  systemProperty("backend.writingContentDir", writingContentDir.path)
   inputs.dir(readingContentDir)
   inputs.dir(listeningContentDir)
+  inputs.dir(writingContentDir)
 }
 
 tasks.named<ShadowJar>("shadowJar") {

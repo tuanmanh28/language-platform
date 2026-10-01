@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
@@ -9,12 +9,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class LocalAudioStorageTest {
+class LocalMediaStorageTest {
   @TempDir
   lateinit var tempDir: Path
 
   private val audioDir by lazy { tempDir.resolve("content/audio").createDirectories() }
-  private val storage by lazy { LocalAudioStorage(audioDir, "http://localhost:8080") }
+  private val storage by lazy { LocalMediaStorage(audioDir, "http://localhost:8080", "/api/v1/listening/audio") }
 
   @Test
   fun urlPointsAtTheStreamingEndpoint() {
@@ -31,9 +31,9 @@ class LocalAudioStorageTest {
       .createDirectories()
       .resolve("section-1.mp3")
       .writeText("audio")
-    val (testId, fileName) = storage.urlFor("practice-01/section-1.mp3").split('/').takeLast(2)
+    val (contentId, fileName) = storage.urlFor("practice-01/section-1.mp3").split('/').takeLast(2)
 
-    assertEquals(audioDir.resolve("practice-01/section-1.mp3"), storage.file(testId, fileName))
+    assertEquals(audioDir.resolve("practice-01/section-1.mp3"), storage.file(contentId, fileName))
   }
 
   @Test
@@ -58,7 +58,7 @@ class LocalAudioStorageTest {
   }
 
   @Test
-  fun symlinkLeavingTheAudioDirectoryIsRejected() {
+  fun symlinkLeavingTheMediaDirectoryIsRejected() {
     val outside = tempDir.resolve("outside.mp3").apply { writeText("audio") }
     audioDir
       .resolve("practice-01")

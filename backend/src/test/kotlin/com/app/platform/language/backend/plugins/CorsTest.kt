@@ -5,6 +5,7 @@ import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -58,6 +59,7 @@ class CorsTest {
         FakeDatabaseHealth(),
         FakeUserStore(),
         FakeAttemptStore(),
+        FakeWritingSubmissionStore(),
         AppConfig.local.copy(allowedOrigins = allowedOrigins),
       )
     }

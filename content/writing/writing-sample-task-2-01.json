@@ -1,0 +1,9 @@
+{
+  "id": "writing-sample-task-2-01",
+  "schemaVersion": 1,
+  "module": "academic",
+  "task": "task_2",
+  "instructions": "Some people believe that cities should give public parks priority over new car parks, while others think that more parking spaces are essential for local shops and businesses.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.",
+  "minWords": 250,
+  "timeLimitMinutes": 40
+}

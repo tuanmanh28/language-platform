@@ -76,6 +76,11 @@ Phase 1 API:
 | POST | `/api/v1/listening/tests/{id}/submit` | Score answers on the Listening band scale |
 | GET | `/api/v1/listening/audio/{testId}/{fileName}` | Private audio from `CONTENT_DIR/audio`, owners only (`AUDIO_STORAGE=local`) |
 | GET | `/api/v1/me` | Signed-in user `{"id", "email", "displayName"}`; needs `Authorization: Bearer <Firebase ID token>`, `401` otherwise |
+| GET | `/api/v1/writing/prompts` | Writing prompts with absolute image URLs; signed-in only |
+| POST | `/api/v1/writing/submissions` | Store an essay (`{"promptId", "text"}`) as `pending` with its IELTS word count; signed-in only |
+| GET | `/api/v1/writing/submissions` | The signed-in user's essays, newest first |
+| GET | `/api/v1/writing/submissions/{id}` | One of the signed-in user's essays; `404` for anyone else's |
+| GET | `/api/v1/writing/images/{promptId}/{fileName}` | Private prompt images from `CONTENT_DIR/images`, owners only (`AUDIO_STORAGE=local`) |
 
 Configuration (environment variables; the server refuses to start on an invalid value):
 
@@ -88,12 +93,12 @@ Configuration (environment variables; the server refuses to start on an invalid 
 | `DATABASE_PASSWORD` | `app` | Required outside `local` |
 | `CORS_ALLOWED_ORIGINS` | `*` in `local`, none elsewhere | Comma-separated origins (`https://app.example.com`); `*` only in `local` |
 | `CONTENT_SOURCE` | `db` | `db` serves published tests from PostgreSQL; `bundled` serves the tests compiled into `core/model` |
-| `AUDIO_BASE_URL` | `http://localhost:9000/audio` in `local` | Required outside `local`. Public `http(s)` base URL of the audio bucket or CDN (e.g. a Cloudflare R2 public domain); listening content stores audio paths relative to it |
+| `AUDIO_BASE_URL` | `http://localhost:9000/audio` in `local` | Required outside `local`. Public `http(s)` base URL of the audio bucket or CDN (e.g. a Cloudflare R2 public domain); listening audio and public writing images are stored as paths relative to it |
 | `FIREBASE_PROJECT_ID` | `demo-language-platform` | Required outside `local`; ID tokens must be issued for this project |
 | `CONTENT_DIR` | `~/LanguagePlatform/content` | Private content outside the repo; see [`backend/README.md`](backend/README.md) |
 | `OWNER_EMAILS` | none | Comma-separated verified emails that may see private content |
 | `DEV_AUTH_TOKEN` | none | `local` only: bearer token that signs in as the first owner without Firebase |
-| `AUDIO_STORAGE` | `local` (required outside `local`) | Private audio: `local` (local env only) streams `CONTENT_DIR/audio` (base URL `API_BASE_URL`), `r2` presigns URLs (`R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) |
+| `AUDIO_STORAGE` | `local` (required outside `local`) | Private audio and writing images: `local` (local env only) streams `CONTENT_DIR/audio` and `CONTENT_DIR/images` (base URL `API_BASE_URL`), `r2` presigns URLs (`R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) |
 
 Sign-in (Google, Apple, email) happens in the apps with Firebase Authentication; the backend only verifies the ID token
 against Google's public keys and creates the user on its first authenticated request. To find the project id, open the

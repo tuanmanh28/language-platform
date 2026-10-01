@@ -1,0 +1,10 @@
+{
+  "id": "writing-sample-task-1-academic-01",
+  "schemaVersion": 1,
+  "module": "academic",
+  "task": "task_1_academic",
+  "instructions": "The bar chart below shows the number of visitors to three museums in a small town (a science museum, an art gallery and a history museum) in 2005, 2015 and 2025.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+  "imageUrl": "writing/writing-sample-task-1-academic-01/chart.png",
+  "minWords": 150,
+  "timeLimitMinutes": 20
+}

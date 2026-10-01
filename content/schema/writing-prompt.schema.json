@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "writing-prompt.schema.json",
+  "title": "WritingPrompt",
+  "description": "An IELTS Writing task prompt. Matches com.app.platform.language.core.model.WritingPrompt.",
+  "type": "object",
+  "required": ["id", "module", "task", "instructions", "minWords", "timeLimitMinutes"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "module": { "type": "string", "enum": ["academic", "general_training"] },
+    "task": { "type": "string", "enum": ["task_1_academic", "task_1_general", "task_2"] },
+    "instructions": { "type": "string", "minLength": 1 },
+    "imageUrl": {
+      "description": "Path relative to the image storage, e.g. writing/<prompt-id>/chart.png for public prompts and <prompt-id>/chart.png for private ones.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._/-]*$"
+    },
+    "minWords": { "type": "integer", "minimum": 1 },
+    "timeLimitMinutes": { "type": "integer", "minimum": 1 }
+  }
+}

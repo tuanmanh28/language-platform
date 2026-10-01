@@ -5,6 +5,7 @@ import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeListeningContentStore
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ApiError
 import com.app.platform.language.core.model.BundledListeningTests
@@ -42,7 +43,15 @@ class ListeningRoutesTest {
   @Test
   fun listsBundledTests() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val list = jsonClient().get("/api/v1/listening/tests").body<List<ListeningTestSummary>>()
 
@@ -52,7 +61,15 @@ class ListeningRoutesTest {
   @Test
   fun testIsServedWithAbsoluteAudioUrls() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val test = jsonClient().get("/api/v1/listening/tests/${sample.id}").body<ListeningTest>()
 
@@ -66,7 +83,15 @@ class ListeningRoutesTest {
   @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val response = jsonClient().get("/api/v1/listening/tests/${sample.id}")
 
@@ -77,7 +102,15 @@ class ListeningRoutesTest {
   @Test
   fun matchingEtagIsNotModified() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
       val client = jsonClient()
       val etag = client.get("/api/v1/listening/tests").headers[HttpHeaders.ETag]
 
@@ -89,7 +122,15 @@ class ListeningRoutesTest {
   @Test
   fun unknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val response = jsonClient().get("/api/v1/listening/tests/nope")
 
@@ -106,6 +147,7 @@ class ListeningRoutesTest {
           FakeDatabaseHealth(),
           FakeUserStore(),
           FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
           config,
           listeningContentStore = store,
         )
@@ -120,7 +162,15 @@ class ListeningRoutesTest {
   @Test
   fun submitScoresWithSharedEngine() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
       val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }
 
       val result =
@@ -137,7 +187,15 @@ class ListeningRoutesTest {
   @Test
   fun submitToUnknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val response =
         jsonClient().post("/api/v1/listening/tests/nope/submit") {
@@ -151,7 +209,15 @@ class ListeningRoutesTest {
   @Test
   fun malformedSubmitBodyIsBadRequest() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
 
       val response =
         jsonClient().post("/api/v1/listening/tests/${sample.id}/submit") {

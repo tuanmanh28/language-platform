@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import com.app.platform.language.backend.config.AudioStorageConfig
 import java.time.Clock
@@ -10,7 +10,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-class R2AudioStorageTest {
+class R2MediaStorageTest {
   private val config =
     AudioStorageConfig.R2(
       accountId = "0123abcd",
@@ -20,7 +20,10 @@ class R2AudioStorageTest {
     )
   private val now = Instant.parse("2026-10-02T09:30:00Z")
 
-  private fun storageAt(instant: Instant) = R2AudioStorage(config, Clock.fixed(instant, ZoneOffset.UTC))
+  private fun storageAt(
+    instant: Instant,
+    keyPrefix: String = "",
+  ) = R2MediaStorage(config, keyPrefix, Clock.fixed(instant, ZoneOffset.UTC))
 
   @Test
   fun urlPointsAtTheObjectInTheBucketAndIsShortLived() {
@@ -31,6 +34,13 @@ class R2AudioStorageTest {
     assertTrue("X-Amz-Date=20261002T093000Z" in url)
     assertTrue("X-Amz-Expires=5400" in url)
     assertTrue("test-secret" !in url)
+  }
+
+  @Test
+  fun keyPrefixPlacesTheObjectInItsFolder() {
+    val url = storageAt(now, keyPrefix = "images/").urlFor("task-1/chart.png")
+
+    assertTrue(url.startsWith("https://0123abcd.r2.cloudflarestorage.com/private-audio/images/task-1/chart.png?"))
   }
 
   @Test

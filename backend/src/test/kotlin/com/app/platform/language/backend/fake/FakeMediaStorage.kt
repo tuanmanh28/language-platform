@@ -1,10 +1,10 @@
 package com.app.platform.language.backend.fake
 
-import com.app.platform.language.backend.audio.AudioStorage
+import com.app.platform.language.backend.media.MediaStorage
 
-class FakeAudioStorage(
+class FakeMediaStorage(
   private val baseUrl: String = "https://private.example.com",
-) : AudioStorage {
+) : MediaStorage {
   var signature = "1"
 
   override fun urlFor(path: String): String = "$baseUrl/$path?signature=$signature"
