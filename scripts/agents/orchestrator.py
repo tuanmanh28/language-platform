@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 Run several Claude Code agents in parallel on backlog tasks, each in its own git worktree.
 
     python3 scripts/agents/orchestrator.py status
