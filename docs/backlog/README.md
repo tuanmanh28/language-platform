@@ -31,6 +31,18 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [AND-06](AND-06.md) | Progress and streak | android | AND-03 |
 | [AND-07](AND-07.md) | Sign-in with Google and authenticated API client | android | AND-03, BE-04 |
 | [AND-08](AND-08.md) | Listening player and practice | android | AND-02, AND-03, BE-08 |
+| [BE-09](BE-09.md) | Private content store and owner-only access | be | BE-03, BE-04, BE-08 |
+| [BE-10](BE-10.md) | Detailed explanations, evidence and paraphrases per question | be | BE-08 |
+| [BE-11](BE-11.md) | Content import tool: extract, validate, seed | be | BE-09, BE-10 |
+| [BE-12](BE-12.md) | Claude Code skill to import a full IELTS test | be | BE-11 |
+| [BE-13](BE-13.md) | Strategy tips per question type | be | BE-10 |
+| [AND-09](AND-09.md) | Answer review with evidence and paraphrases | android | AND-04, AND-08, BE-10 |
+| [AND-10](AND-10.md) | Accuracy by question type and tips | android | AND-06, AND-09, BE-13 |
+| [BE-14](BE-14.md) | Writing prompts and submissions | be | BE-09 |
+| [BE-15](BE-15.md) | Detailed AI grading for Writing | be | BE-14 |
+| [BE-16](BE-16.md) | Calibrate AI grading against examiner scores | be | BE-15, BE-11 |
+| [AND-11](AND-11.md) | Writing room | android | AND-03, AND-07, BE-14 |
+| [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, BE-15 |
 
 ```
 F-01 ─ U-01 ─ S-01 ─ S-02 ─ R-01
@@ -58,3 +70,23 @@ Task ids are only for planning — they never appear in branch names or commit m
 1. Create `docs/backlog/<ID>.md` following an existing file (goal, scope, decisions, acceptance criteria, verify).
 2. Add it to `tasks.json` with its type, slug, dependencies and verify command.
 3. Keep tasks small enough for one agent session (roughly half a day of human work) and touching as few modules as possible.
+
+### Phase 2–3 batch: private content, explanations, Writing AI
+
+```
+BE-09  ← BE-03, BE-04, BE-08        private content store, owner-only access
+BE-10  ← BE-08                      explanations, evidence, paraphrases
+BE-11  ← BE-09, BE-10               import tool (extract, audio, validate, seed)
+BE-12  ← BE-11                      Claude Code import skill
+BE-13  ← BE-10                      question-type tips
+BE-14  ← BE-09                      Writing prompts and submissions
+BE-15  ← BE-14                      detailed AI grading
+BE-16  ← BE-15, BE-11               grading calibration
+AND-09 ← AND-04, AND-08, BE-10      answer review with evidence
+AND-10 ← AND-06, AND-09, BE-13      accuracy by question type + tips
+AND-11 ← AND-03, AND-07, BE-14      Writing room
+AND-12 ← AND-11, BE-15              Writing feedback
+```
+Real IELTS/Cambridge material is personal study content: it lives only in `CONTENT_DIR` outside the repo and is served
+to the owner's account only (BE-09). The repo keeps original samples.
+

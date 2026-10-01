@@ -26,6 +26,13 @@ Windows and Web come last.
 | 4. Speaking | Months 6–7 | Record Part 1–3, pronunciation + LLM feedback, shadowing/dictation | Pronunciation scores are stable across retries |
 | 5. Mock tests | Months 8–9 | Entry test, full 4-skill mock tests, study plan by target band; then macOS, Windows, Web | — |
 
+## Content
+
+This is a personal study app. Practice material is the owner's own: official IELTS/Cambridge books bought by the owner
+and the free official samples, imported with `tools/content-import` and the `ielts-content-import` skill. That material
+lives only in `CONTENT_DIR` outside the repository and is served to the owner's account only. The public repository
+keeps original samples and original tips.
+
 ## Feature priorities (inspired by PREP, own identity)
 
 | Priority | Feature |

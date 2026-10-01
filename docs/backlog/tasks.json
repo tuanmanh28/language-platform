@@ -269,6 +269,161 @@
       ],
       "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-08.md"
+    },
+    {
+      "id": "BE-09",
+      "type": "feat",
+      "slug": "private-content",
+      "title": "Private content store and owner-only access",
+      "lane": "be",
+      "deps": [
+        "BE-03",
+        "BE-04",
+        "BE-08"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-09.md"
+    },
+    {
+      "id": "BE-10",
+      "type": "feat",
+      "slug": "question-explanations",
+      "title": "Detailed explanations, evidence and paraphrases per question",
+      "lane": "be",
+      "deps": [
+        "BE-08"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-10.md"
+    },
+    {
+      "id": "BE-11",
+      "type": "feat",
+      "slug": "content-import-tool",
+      "title": "Content import tool: extract, validate, seed",
+      "lane": "be",
+      "deps": [
+        "BE-09",
+        "BE-10"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-11.md"
+    },
+    {
+      "id": "BE-12",
+      "type": "feat",
+      "slug": "content-import-skill",
+      "title": "Claude Code skill to import a full IELTS test",
+      "lane": "be",
+      "deps": [
+        "BE-11"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-12.md"
+    },
+    {
+      "id": "BE-13",
+      "type": "feat",
+      "slug": "question-type-tips",
+      "title": "Strategy tips per question type",
+      "lane": "be",
+      "deps": [
+        "BE-10"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-13.md"
+    },
+    {
+      "id": "AND-09",
+      "type": "feat",
+      "slug": "answer-evidence-review",
+      "title": "Answer review with evidence and paraphrases",
+      "lane": "android",
+      "deps": [
+        "AND-04",
+        "AND-08",
+        "BE-10"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-09.md"
+    },
+    {
+      "id": "AND-10",
+      "type": "feat",
+      "slug": "question-type-insights",
+      "title": "Accuracy by question type and tips",
+      "lane": "android",
+      "deps": [
+        "AND-06",
+        "AND-09",
+        "BE-13"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-10.md"
+    },
+    {
+      "id": "BE-14",
+      "type": "feat",
+      "slug": "writing-submissions",
+      "title": "Writing prompts and submissions",
+      "lane": "be",
+      "deps": [
+        "BE-09"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-14.md"
+    },
+    {
+      "id": "BE-15",
+      "type": "feat",
+      "slug": "writing-grading",
+      "title": "Detailed AI grading for Writing",
+      "lane": "be",
+      "deps": [
+        "BE-14"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :backend:test",
+      "spec": "docs/backlog/BE-15.md"
+    },
+    {
+      "id": "BE-16",
+      "type": "feat",
+      "slug": "grading-calibration",
+      "title": "Calibrate AI grading against examiner scores",
+      "lane": "be",
+      "deps": [
+        "BE-15",
+        "BE-11"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-16.md"
+    },
+    {
+      "id": "AND-11",
+      "type": "feat",
+      "slug": "writing-room",
+      "title": "Writing room",
+      "lane": "android",
+      "deps": [
+        "AND-03",
+        "AND-07",
+        "BE-14"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-11.md"
+    },
+    {
+      "id": "AND-12",
+      "type": "feat",
+      "slug": "writing-feedback",
+      "title": "Writing feedback screen",
+      "lane": "android",
+      "deps": [
+        "AND-11",
+        "BE-15"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-12.md"
     }
   ]
 }
