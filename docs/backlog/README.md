@@ -43,13 +43,15 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [BE-16](BE-16.md) | Calibrate AI grading against examiner scores | be | BE-15, BE-11 |
 | [AND-11](AND-11.md) | Writing room | android | AND-03, AND-07, BE-14 |
 | [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, BE-15, AND-15 |
-| [BE-17](BE-17.md) | Sentence and word timestamps for Listening transcripts | be | BE-11 |
+| [BE-17](BE-17.md) | Sentence and word timestamps for Listening transcripts | be | BE-11, BE-19 |
 | [AND-13](AND-13.md) | Intensive listening: replay section by section and sentence by sentence | android | AND-09, BE-17 |
 | [AND-14](AND-14.md) | Dictation practice (chép chính tả) like Study4 | android | AND-13 |
 | [BE-18](BE-18.md) | Dictionary lookup for flashcards | be | BE-04 |
 | [AND-15](AND-15.md) | Flashcard decks like Quizlet | android | AND-05, BE-18 |
 | [AND-16](AND-16.md) | Flashcard study modes with spaced repetition | android | AND-15 |
 | [AND-17](AND-17.md) | Spaced repetition settings and statistics | android | AND-16, AND-06 |
+| [BE-19](BE-19.md) | Ingest a library of IELTS books: unpack, dedupe, OCR, audio | be | BE-11 |
+| [BE-20](BE-20.md) | Unattended import runner for the whole library | be | BE-12, BE-17, BE-19, BE-14 |
 
 ```
 F-01 ─ U-01 ─ S-01 ─ S-02 ─ R-01
@@ -98,7 +100,7 @@ AND-12 ← AND-11, BE-15, AND-15      Writing feedback (sentence by sentence)
 ### Study tools: intensive listening, dictation, flashcards (Study4 / Quizlet style)
 
 ```
-BE-17  ← BE-11                      transcript sentence/word timestamps (whisper.cpp alignment)
+BE-17  ← BE-11, BE-19               transcript sentence/word timestamps (whisper.cpp alignment)
 AND-13 ← AND-09, BE-17              intensive listening: section / sentence replay, A–B loop
 AND-14 ← AND-13                     dictation like Study4
 BE-18  ← BE-04                      dictionary lookup (IPA, audio, meanings, AI enrichment)
@@ -108,4 +110,11 @@ AND-17 ← AND-16, AND-06             SRS settings and statistics
 ```
 Real IELTS/Cambridge material is personal study content: it lives only in `CONTENT_DIR` outside the repo and is served
 to the owner's account only (BE-09). The repo keeps original samples.
+
+### Personal library import
+
+```
+BE-19  ← BE-11                      ingest archives: unpack, dedupe, OCR, audio normalise, page classification
+BE-20  ← BE-12, BE-17, BE-19, BE-14 unattended import runner (scripts/content/import-library.py)
+```
 

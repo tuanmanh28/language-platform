@@ -433,7 +433,8 @@
       "title": "Sentence and word timestamps for Listening transcripts",
       "lane": "be",
       "deps": [
-        "BE-11"
+        "BE-11",
+        "BE-19"
       ],
       "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
       "spec": "docs/backlog/BE-17.md"
@@ -512,6 +513,33 @@
       ],
       "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/AND-17.md"
+    },
+    {
+      "id": "BE-19",
+      "type": "feat",
+      "slug": "content-library-ingest",
+      "title": "Ingest a library of IELTS books: unpack, dedupe, OCR, audio",
+      "lane": "be",
+      "deps": [
+        "BE-11"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-19.md"
+    },
+    {
+      "id": "BE-20",
+      "type": "feat",
+      "slug": "content-import-runner",
+      "title": "Unattended import runner for the whole library",
+      "lane": "be",
+      "deps": [
+        "BE-12",
+        "BE-17",
+        "BE-19",
+        "BE-14"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
+      "spec": "docs/backlog/BE-20.md"
     }
   ]
 }
