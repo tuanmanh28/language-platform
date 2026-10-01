@@ -36,12 +36,74 @@
           "instruction": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
           "maxWords": 2,
           "questions": [
-            { "id": "q1", "number": 1, "prompt": "Name: Daniel ____", "acceptedAnswers": ["Hartley"] },
-            { "id": "q2", "number": 2, "prompt": "Postcode: ____", "acceptedAnswers": ["BR4 7TN"] },
-            { "id": "q3", "number": 3, "prompt": "Membership type: ____", "acceptedAnswers": ["off-peak", "off peak"] },
-            { "id": "q4", "number": 4, "prompt": "Monthly fee: £____", "acceptedAnswers": ["32", "thirty-two"] },
-            { "id": "q5", "number": 5, "prompt": "Main activity: ____", "acceptedAnswers": ["swimming"] },
-            { "id": "q6", "number": 6, "prompt": "Start date: ____", "acceptedAnswers": ["14 March", "March 14", "14th March"] }
+            {
+              "id": "q1",
+              "number": 1,
+              "prompt": "Name: Daniel ____",
+              "acceptedAnswers": ["Hartley"],
+              "explanation": {
+                "text": "Daniel đánh vần họ của mình từng chữ cái: H-A-R-T-L-E-Y.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 45, "endSeconds": 60, "quote": "That's H-A-R-T-L-E-Y." },
+                "trap": "Khi nghe đánh vần, 'T' và 'D' rất dễ nhầm; viết sai một chữ cái là mất điểm."
+              }
+            },
+            {
+              "id": "q2",
+              "number": 2,
+              "prompt": "Postcode: ____",
+              "acceptedAnswers": ["BR4 7TN"],
+              "explanation": {
+                "text": "Daniel đọc mã bưu chính của mình là BR4 7TN.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 68, "endSeconds": 85, "quote": "It's BR4 7TN." },
+                "trap": "Số '4' dễ bị nghe thành 'for' và bỏ sót; hãy viết đủ cả chữ và số như đã nghe."
+              }
+            },
+            {
+              "id": "q3",
+              "number": 3,
+              "prompt": "Membership type: ____",
+              "acceptedAnswers": ["off-peak", "off peak"],
+              "explanation": {
+                "text": "Lễ tân giới thiệu ba loại thẻ; Daniel thường tập vào buổi trưa nên chọn thẻ off-peak (ngày thường trước 4 giờ chiều).",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 105, "endSeconds": 115, "quote": "I usually train at lunchtime, so off-peak would suit me." },
+                "trap": "Thẻ 'full' được nhắc trước kèm giá 45 bảng, nên nhiều bạn ghi nhầm loại thẻ này."
+              }
+            },
+            {
+              "id": "q4",
+              "number": 4,
+              "prompt": "Monthly fee: £____",
+              "acceptedAnswers": ["32", "thirty-two"],
+              "explanation": {
+                "text": "Sau khi Daniel chọn thẻ off-peak, lễ tân báo giá 32 bảng một tháng.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 115, "endSeconds": 125, "quote": "Then that's thirty-two pounds a month." },
+                "paraphrases": [{ "inQuestion": "Monthly fee", "inSource": "pounds a month" }],
+                "trap": "45 bảng là giá thẻ full, được nói trước để gây nhiễu."
+              }
+            },
+            {
+              "id": "q5",
+              "number": 5,
+              "prompt": "Main activity: ____",
+              "acceptedAnswers": ["swimming"],
+              "explanation": {
+                "text": "Daniel từng chơi squash nhưng đầu gối không còn tốt, nên giờ anh chủ yếu đi bơi.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 125, "endSeconds": 160, "quote": "so it'll mainly be swimming" },
+                "paraphrases": [{ "inQuestion": "Main activity", "inSource": "mainly be swimming" }],
+                "trap": "'squash' được nhắc trước, nhưng 'used to' cho biết đó là môn anh đã bỏ."
+              }
+            },
+            {
+              "id": "q6",
+              "number": 6,
+              "prompt": "Start date: ____",
+              "acceptedAnswers": ["14 March", "March 14", "14th March"],
+              "explanation": {
+                "text": "Daniel muốn bắt đầu ngày 10/3 nhưng tuần đó hồ bơi bảo trì, nên hai bên chốt ngày 14/3.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 188, "endSeconds": 195, "quote": "The fourteenth of March is fine." },
+                "trap": "Ngày 10 tháng 3 được nói đầu tiên nhưng sau đó bị thay đổi."
+              }
+            }
           ]
         },
         {
@@ -58,7 +120,13 @@
                 { "key": "B", "text": "It is cheaper than other centres." },
                 { "key": "C", "text": "It has the largest pool in the area." }
               ],
-              "acceptedAnswers": ["A"]
+              "acceptedAnswers": ["A"],
+              "explanation": {
+                "text": "Daniel chọn trung tâm này vì nó chỉ cách văn phòng anh năm phút đi bộ.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 18, "endSeconds": 38, "quote": "yours is only five minutes' walk from my office" },
+                "paraphrases": [{ "inQuestion": "close to where he works", "inSource": "only five minutes' walk from my office" }],
+                "trap": "Phương án B gây nhiễu vì bài có chữ 'cheaper', nhưng đó là trung tâm ở Mill Road chứ không phải nơi Daniel chọn."
+              }
             },
             {
               "id": "q8",
@@ -69,7 +137,13 @@
                 { "key": "B", "text": "proof of address" },
                 { "key": "C", "text": "a bank card" }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Lễ tân dặn Daniel mang giấy tờ chứng minh địa chỉ, ví dụ hoá đơn điện nước, trong lần đến đầu tiên.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 195, "endSeconds": 235, "quote": "please bring proof of address, such as a utility bill" },
+                "paraphrases": [{ "inQuestion": "on his first visit", "inSource": "On your first visit" }],
+                "trap": "'photograph' có được nhắc, nhưng lễ tân nói không cần vì trung tâm sẽ chụp tại chỗ."
+              }
             },
             {
               "id": "q9",
@@ -80,7 +154,12 @@
                 { "key": "B", "text": "45 minutes" },
                 { "key": "C", "text": "an hour" }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Buổi hướng dẫn trước đây kéo dài một tiếng, nay chỉ còn 45 phút.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 235, "endSeconds": 275, "quote": "now it lasts forty-five minutes" },
+                "trap": "'an hour' là thời lượng cũ ('used to take'), không còn đúng nữa."
+              }
             },
             {
               "id": "q10",
@@ -91,7 +170,13 @@
                 { "key": "B", "text": "by email" },
                 { "key": "C", "text": "at reception" }
               ],
-              "acceptedAnswers": ["C"]
+              "acceptedAnswers": ["C"],
+              "explanation": {
+                "text": "Trung tâm không gửi thẻ qua bưu điện nữa; Daniel sẽ nhận thẻ tại quầy lễ tân khi đến buổi hướng dẫn.",
+                "evidence": { "type": "transcript", "sectionNumber": 1, "startSeconds": 290, "endSeconds": 330, "quote": "You'll collect it at reception when you come in for the induction." },
+                "paraphrases": [{ "inQuestion": "get his membership card", "inSource": "collect it" }],
+                "trap": "Daniel hỏi 'posted to me' nên dễ chọn A, nhưng câu trả lời là 'we stopped posting cards'."
+              }
             }
           ]
         }
@@ -130,7 +215,12 @@
                 { "key": "B", "text": "on the high street" },
                 { "key": "C", "text": "on the school field" }
               ],
-              "acceptedAnswers": ["C"]
+              "acceptedAnswers": ["C"],
+              "explanation": {
+                "text": "Công viên đang được trồng lại cỏ nên năm nay lễ hội chuyển sang sân trường.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 0, "endSeconds": 35, "quote": "this year we're moving to the school field" },
+                "trap": "'town park' là địa điểm thường lệ ('Normally'), không phải địa điểm năm nay."
+              }
             },
             {
               "id": "q12",
@@ -141,7 +231,13 @@
                 { "key": "B", "text": "11 am" },
                 { "key": "C", "text": "midday" }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Cổng mở lúc 10 giờ cho người bày hàng, còn lễ hội chính thức bắt đầu lúc 11 giờ.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 35, "endSeconds": 70, "quote": "the festival begins officially at eleven" },
+                "paraphrases": [{ "inQuestion": "officially begin", "inSource": "begins officially" }],
+                "trap": "10 giờ là giờ mở cổng cho người bày hàng, không phải giờ khai mạc."
+              }
             },
             {
               "id": "q13",
@@ -152,7 +248,13 @@
                 { "key": "B", "text": "a playground." },
                 { "key": "C", "text": "repairs to the community hall." }
               ],
-              "acceptedAnswers": ["C"]
+              "acceptedAnswers": ["C"],
+              "explanation": {
+                "text": "Năm nay toàn bộ số tiền quyên góp được dùng để sửa mái nhà văn hoá cộng đồng.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 70, "endSeconds": 105, "quote": "This year every penny goes towards repairs to the community hall roof." },
+                "paraphrases": [{ "inQuestion": "will pay for", "inSource": "goes towards" }],
+                "trap": "'playground' là mục đích quyên góp của năm ngoái ('Last year')."
+              }
             },
             {
               "id": "q14",
@@ -163,7 +265,13 @@
                 { "key": "B", "text": "park at the station." },
                 { "key": "C", "text": "come by bicycle." }
               ],
-              "acceptedAnswers": ["A"]
+              "acceptedAnswers": ["A"],
+              "explanation": {
+                "text": "Chỗ đỗ xe gần trường rất ít và bãi xe ở ga sẽ kín, nên ban tổ chức đề nghị đi xe buýt.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 105, "endSeconds": 140, "quote": "please come by bus" },
+                "paraphrases": [{ "inQuestion": "travel by bus", "inSource": "come by bus" }],
+                "trap": "Phương án B dùng chữ 'station' có trong bài, nhưng bài nói bãi xe ở ga sẽ đầy."
+              }
             },
             {
               "id": "q15",
@@ -174,7 +282,13 @@
                 { "key": "B", "text": "a climbing wall" },
                 { "key": "C", "text": "a dog show" }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Chợ ẩm thực và cuộc thi chó đã có từ trước; điểm mới lớn nhất năm nay là tường leo núi.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 140, "endSeconds": 175, "quote": "the big new attraction is a climbing wall" },
+                "paraphrases": [{ "inQuestion": "main new attraction", "inSource": "big new attraction" }],
+                "trap": "'food market' và 'dog show' đều được nhắc nhưng là hoạt động quay lại ('are back'), không phải điểm mới."
+              }
             }
           ]
         },
@@ -184,11 +298,64 @@
           "instruction": "Complete the sentences below. Write ONE WORD AND/OR A NUMBER for each answer.",
           "maxWords": 1,
           "questions": [
-            { "id": "q16", "number": 16, "prompt": "Children's activities take place in the ____ tent.", "acceptedAnswers": ["yellow"] },
-            { "id": "q17", "number": 17, "prompt": "The cooking demonstration starts at ____ o'clock.", "acceptedAnswers": ["3", "three"] },
-            { "id": "q18", "number": 18, "prompt": "Volunteers should wear a ____ badge.", "acceptedAnswers": ["green"] },
-            { "id": "q19", "number": 19, "prompt": "Lost children will be taken to the ____ point.", "acceptedAnswers": ["information"] },
-            { "id": "q20", "number": 20, "prompt": "The festival ends with a ____ display.", "acceptedAnswers": ["lantern"] }
+            {
+              "id": "q16",
+              "number": 16,
+              "prompt": "Children's activities take place in the ____ tent.",
+              "acceptedAnswers": ["yellow"],
+              "explanation": {
+                "text": "Các hoạt động cho trẻ em, gồm cả vẽ mặt, diễn ra ở lều màu vàng cạnh sân khấu chính.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 175, "endSeconds": 210, "quote": "Children's activities, including face painting, will be in the yellow tent" },
+                "paraphrases": [{ "inQuestion": "take place in", "inSource": "will be in" }],
+                "trap": "Đừng ghi 'main': sân khấu chính chỉ là vị trí bên cạnh lều."
+              }
+            },
+            {
+              "id": "q17",
+              "number": 17,
+              "prompt": "The cooking demonstration starts at ____ o'clock.",
+              "acceptedAnswers": ["3", "three"],
+              "explanation": {
+                "text": "Buổi trình diễn nấu ăn dự kiến lúc 2 giờ, nhưng đầu bếp đến muộn nên dời sang 3 giờ.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 210, "endSeconds": 245, "quote": "so it will now start at three" },
+                "trap": "'two' là giờ ban đầu ('was going to be'), đã bị thay đổi."
+              }
+            },
+            {
+              "id": "q18",
+              "number": 18,
+              "prompt": "Volunteers should wear a ____ badge.",
+              "acceptedAnswers": ["green"],
+              "explanation": {
+                "text": "Tình nguyện viên đeo huy hiệu màu xanh lá được phát hôm nay, không phải huy hiệu xanh dương của năm ngoái.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 245, "endSeconds": 280, "quote": "please wear the green badge you'll receive today, not the blue one from last year" },
+                "paraphrases": [{ "inQuestion": "should wear", "inSource": "please wear" }],
+                "trap": "'blue' cũng là một màu được nhắc, nhưng đó là huy hiệu cũ."
+              }
+            },
+            {
+              "id": "q19",
+              "number": 19,
+              "prompt": "Lost children will be taken to the ____ point.",
+              "acceptedAnswers": ["information"],
+              "explanation": {
+                "text": "Trẻ bị lạc sẽ được nhân viên đưa ngay tới điểm thông tin ở cổng chính.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 280, "endSeconds": 315, "quote": "staff will take them straight to the information point by the main gate" },
+                "paraphrases": [{ "inQuestion": "Lost children", "inSource": "If a child gets lost" }],
+                "trap": "Đừng ghi 'gate': 'main gate' chỉ là vị trí của điểm thông tin."
+              }
+            },
+            {
+              "id": "q20",
+              "number": 20,
+              "prompt": "The festival ends with a ____ display.",
+              "acceptedAnswers": ["lantern"],
+              "explanation": {
+                "text": "Ban tổ chức bỏ pháo hoa vì có động vật ở gần, nên lễ hội kết thúc bằng màn trình diễn đèn lồng.",
+                "evidence": { "type": "transcript", "sectionNumber": 2, "startSeconds": 315, "endSeconds": 360, "quote": "the festival ends with a lantern display on the field" },
+                "trap": "'fireworks' được nhắc đầu tiên nhưng đã bị loại ('decided against')."
+              }
+            }
           ]
         }
       ]
@@ -226,7 +393,13 @@
                 { "key": "B", "text": "The data was easy to collect." },
                 { "key": "C", "text": "Maya had studied birds before." }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Maya nói hai bạn chọn đề tài này vì dữ liệu rất dễ thu thập: chỉ cần ghi âm ngay bên ngoài căn hộ.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 0, "endSeconds": 40, "quote": "We chose it because the data is so easy to collect" },
+                "paraphrases": [{ "inQuestion": "was easy to collect", "inSource": "is so easy to collect" }],
+                "trap": "Phương án A và C đều bị phủ định trong bài: 'it wasn't her idea' và 'I'd never been into birds before'."
+              }
             },
             {
               "id": "q22",
@@ -237,7 +410,12 @@
                 { "key": "B", "text": "It was badly designed." },
                 { "key": "C", "text": "It was sent to too few people." }
               ],
-              "acceptedAnswers": ["A"]
+              "acceptedAnswers": ["A"],
+              "explanation": {
+                "text": "Tom cho rằng bảng hỏi quá dài, khiến một nửa số người trả lời bỏ dở giữa chừng.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 40, "endSeconds": 80, "quote": "the questionnaire we sent to residents was far too long" },
+                "trap": "Câu 'The design was fine' loại phương án B; đừng chỉ bắt được chữ 'design' rồi chọn."
+              }
             },
             {
               "id": "q23",
@@ -248,7 +426,13 @@
                 { "key": "B", "text": "They could not get access to it." },
                 { "key": "C", "text": "There were too few birds." }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Khu khảo sát đầu tiên có nhiều chim và tiếng ồn chấp nhận được, nhưng cổng bị khoá gần như mọi ngày nên hai bạn không vào được.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 80, "endSeconds": 120, "quote": "the gates were locked most days, so we couldn't get in" },
+                "paraphrases": [{ "inQuestion": "could not get access to it", "inSource": "couldn't get in" }],
+                "trap": "Bài có nhắc 'birds' và 'noise', nhưng đều theo hướng đó không phải là vấn đề."
+              }
             },
             {
               "id": "q24",
@@ -259,7 +443,13 @@
                 { "key": "B", "text": "nesting." },
                 { "key": "C", "text": "changes in song." }
               ],
-              "acceptedAnswers": ["C"]
+              "acceptedAnswers": ["C"],
+              "explanation": {
+                "text": "Tom muốn báo cáo tập trung vào sự thay đổi của tiếng hót, vì đó là phần dữ liệu mạnh nhất của nhóm.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 120, "endSeconds": 160, "quote": "the report should focus on how the songs have changed" },
+                "paraphrases": [{ "inQuestion": "changes in song", "inSource": "how the songs have changed" }],
+                "trap": "'feeding' và 'nesting' được nhắc là có ghi chép, nhưng không phải trọng tâm của báo cáo."
+              }
             },
             {
               "id": "q25",
@@ -270,7 +460,12 @@
                 { "key": "B", "text": "make the charts" },
                 { "key": "C", "text": "contact an expert" }
               ],
-              "acceptedAnswers": ["B"]
+              "acceptedAnswers": ["B"],
+              "explanation": {
+                "text": "Maya nhận phần vẽ biểu đồ vì cô dùng bảng tính nhanh hơn; viết phần mở đầu và liên hệ chuyên gia là việc của Tom.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 160, "endSeconds": 200, "quote": "I'll make the charts" },
+                "trap": "Phương án A và C đều có trong bài, nhưng đó là những việc Maya nhờ Tom làm."
+              }
             }
           ]
         },
@@ -280,11 +475,63 @@
           "instruction": "Complete the notes below. Write NO MORE THAN TWO WORDS for each answer.",
           "maxWords": 2,
           "questions": [
-            { "id": "q26", "number": 26, "prompt": "City birds sing at a higher ____.", "acceptedAnswers": ["pitch"] },
-            { "id": "q27", "number": 27, "prompt": "All recordings were made early in the ____.", "acceptedAnswers": ["morning"] },
-            { "id": "q28", "number": 28, "prompt": "The sounds were analysed with free ____.", "acceptedAnswers": ["software"] },
-            { "id": "q29", "number": 29, "prompt": "Results will be compared with a study from ____.", "acceptedAnswers": ["Berlin"] },
-            { "id": "q30", "number": 30, "prompt": "The draft must be handed in by ____.", "acceptedAnswers": ["Friday"] }
+            {
+              "id": "q26",
+              "number": 26,
+              "prompt": "City birds sing at a higher ____.",
+              "acceptedAnswers": ["pitch"],
+              "explanation": {
+                "text": "Phát hiện chính: chim thành phố hót ở cao độ cao hơn để tiếng hót không bị tiếng xe cộ trầm lấn át.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 200, "endSeconds": 240, "quote": "city birds sing at a higher pitch" },
+                "trap": "Đừng ghi 'noise' hay 'traffic': đó là nguyên nhân, không phải điều chim thay đổi."
+              }
+            },
+            {
+              "id": "q27",
+              "number": 27,
+              "prompt": "All recordings were made early in the ____.",
+              "acceptedAnswers": ["morning"],
+              "explanation": {
+                "text": "Mọi bản ghi âm đều được thực hiện vào sáng sớm, trước khi đường phố đông xe.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 240, "endSeconds": 280, "quote": "all the recordings were made early in the morning" },
+                "trap": "Chữ 'early' đã có trong câu hỏi; chép lại 'early morning' sẽ bị thừa từ."
+              }
+            },
+            {
+              "id": "q28",
+              "number": 28,
+              "prompt": "The sounds were analysed with free ____.",
+              "acceptedAnswers": ["software"],
+              "explanation": {
+                "text": "Hai bạn phân tích âm thanh bằng phần mềm miễn phí của trường thay vì ứng dụng đắt tiền mà giảng viên gợi ý.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 280, "endSeconds": 320, "quote": "We analysed the sounds with free software from the university" },
+                "trap": "'app' cũng được nhắc, nhưng đó là ứng dụng đắt tiền mà hai bạn không dùng."
+              }
+            },
+            {
+              "id": "q29",
+              "number": 29,
+              "prompt": "Results will be compared with a study from ____.",
+              "acceptedAnswers": ["Berlin"],
+              "explanation": {
+                "text": "Nhóm sẽ so sánh kết quả với nghiên cứu ở Berlin; nghiên cứu ở Paris dùng loài chim khác nên ít hữu ích hơn.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 320, "endSeconds": 355, "quote": "we compare our results with the study from Berlin" },
+                "paraphrases": [{ "inQuestion": "Results will be compared", "inSource": "we compare our results" }],
+                "trap": "'Paris' cũng là một nghiên cứu được nhắc, nhưng bị loại vì dùng loài khác."
+              }
+            },
+            {
+              "id": "q30",
+              "number": 30,
+              "prompt": "The draft must be handed in by ____.",
+              "acceptedAnswers": ["Friday"],
+              "explanation": {
+                "text": "Tom nói bản nháp phải nộp chậm nhất vào thứ Sáu.",
+                "evidence": { "type": "transcript", "sectionNumber": 3, "startSeconds": 355, "endSeconds": 390, "quote": "the draft has to be in by Friday" },
+                "paraphrases": [{ "inQuestion": "must be handed in", "inSource": "has to be in" }],
+                "trap": "'Thursday' chỉ là ngày hai bạn tự đặt ra cho chắc, còn 'next month' là hạn của báo cáo cuối cùng."
+              }
+            }
           ]
         }
       ]
@@ -314,16 +561,119 @@
           "instruction": "Complete the notes below. Write ONE WORD ONLY for each answer.",
           "maxWords": 1,
           "questions": [
-            { "id": "q31", "number": 31, "prompt": "Ice was cut from frozen lakes and ____.", "acceptedAnswers": ["rivers"] },
-            { "id": "q32", "number": 32, "prompt": "Most ice houses had an ____ shape.", "acceptedAnswers": ["egg"] },
-            { "id": "q33", "number": 33, "prompt": "The walls were lined with ____.", "acceptedAnswers": ["straw"] },
-            { "id": "q34", "number": 34, "prompt": "A ____ removed water from the bottom.", "acceptedAnswers": ["drain"] },
-            { "id": "q35", "number": 35, "prompt": "Wealthy families used ice mainly for ____.", "acceptedAnswers": ["desserts"] },
-            { "id": "q36", "number": 36, "prompt": "Doctors used ice to bring down a ____.", "acceptedAnswers": ["fever"] },
-            { "id": "q37", "number": 37, "prompt": "Most of Britain's imported ice came from ____.", "acceptedAnswers": ["Norway"] },
-            { "id": "q38", "number": 38, "prompt": "Ice was moved inland by ____.", "acceptedAnswers": ["train", "rail"] },
-            { "id": "q39", "number": 39, "prompt": "The trade declined after the invention of the ____.", "acceptedAnswers": ["refrigerator", "fridge"] },
-            { "id": "q40", "number": 40, "prompt": "Many ice houses are now homes for ____.", "acceptedAnswers": ["bats"] }
+            {
+              "id": "q31",
+              "number": 31,
+              "prompt": "Ice was cut from frozen lakes and ____.",
+              "acceptedAnswers": ["rivers"],
+              "explanation": {
+                "text": "Vào mùa đông, băng được cắt từ các hồ và sông đã đóng băng.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 0, "endSeconds": 40, "quote": "ice was cut from frozen lakes and rivers" },
+                "trap": "Đừng ghi 'buildings' hay 'ice houses': đó là nơi cất băng, không phải nơi lấy băng."
+              }
+            },
+            {
+              "id": "q32",
+              "number": 32,
+              "prompt": "Most ice houses had an ____ shape.",
+              "acceptedAnswers": ["egg"],
+              "explanation": {
+                "text": "Phần lớn hầm băng được xây một phần dưới đất và có hình quả trứng, giúp băng tan trượt xuống và nén chặt lại.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 40, "endSeconds": 80, "quote": "had an egg shape" },
+                "trap": "'underground' cũng mô tả hầm băng, nhưng đó là vị trí chứ không phải hình dạng."
+              }
+            },
+            {
+              "id": "q33",
+              "number": 33,
+              "prompt": "The walls were lined with ____.",
+              "acceptedAnswers": ["straw"],
+              "explanation": {
+                "text": "Tường được lót rơm để ngăn khí nóng; mùn cưa được thử về sau nhưng rơm vẫn phổ biến nhất.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 80, "endSeconds": 120, "quote": "The walls were lined with straw" },
+                "trap": "'Sawdust' chỉ là vật liệu được thử về sau, không phải đáp án."
+              }
+            },
+            {
+              "id": "q34",
+              "number": 34,
+              "prompt": "A ____ removed water from the bottom.",
+              "acceptedAnswers": ["drain"],
+              "explanation": {
+                "text": "Đáy hầm luôn có rãnh thoát nước, vì nước đọng sẽ làm phần băng còn lại tan rất nhanh.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 120, "endSeconds": 160, "quote": "At the bottom there was always a drain" },
+                "paraphrases": [{ "inQuestion": "from the bottom", "inSource": "At the bottom" }],
+                "trap": "Chữ 'water' lặp lại trong bài nên dễ bị chép vào, nhưng câu hỏi cần tên bộ phận thoát nước."
+              }
+            },
+            {
+              "id": "q35",
+              "number": 35,
+              "prompt": "Wealthy families used ice mainly for ____.",
+              "acceptedAnswers": ["desserts"],
+              "explanation": {
+                "text": "Băng đắt nên chủ yếu thuộc về các gia đình giàu, và họ dùng nó chủ yếu cho món tráng miệng.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 160, "endSeconds": 205, "quote": "used it mainly for desserts such as ice cream and chilled fruit" },
+                "trap": "'ice cream' chỉ là ví dụ của 'desserts' và dài hơn giới hạn một từ."
+              }
+            },
+            {
+              "id": "q36",
+              "number": 36,
+              "prompt": "Doctors used ice to bring down a ____.",
+              "acceptedAnswers": ["fever"],
+              "explanation": {
+                "text": "Bác sĩ dùng băng để hạ sốt từ rất lâu trước khi có thuốc hiện đại.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 205, "endSeconds": 245, "quote": "they used ice to bring down a fever" },
+                "trap": "'medicines' xuất hiện ngay sau đó, nhưng là thứ chưa có vào thời ấy."
+              }
+            },
+            {
+              "id": "q37",
+              "number": 37,
+              "prompt": "Most of Britain's imported ice came from ____.",
+              "acceptedAnswers": ["Norway"],
+              "explanation": {
+                "text": "Một phần băng được chở từ Mỹ, nhưng phần lớn băng nhập khẩu của Anh đến từ Na Uy.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 245, "endSeconds": 290, "quote": "most of Britain's ice was imported from Norway" },
+                "paraphrases": [{ "inQuestion": "came from", "inSource": "was imported from" }],
+                "trap": "'America' được nhắc trước nhưng đi với 'Some', không phải 'most'."
+              }
+            },
+            {
+              "id": "q38",
+              "number": 38,
+              "prompt": "Ice was moved inland by ____.",
+              "acceptedAnswers": ["train", "rail"],
+              "explanation": {
+                "text": "Từ các cảng, băng được chở vào nội địa bằng tàu hoả, nhanh hơn nhiều so với thuyền trên kênh đào.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 290, "endSeconds": 335, "quote": "the ice was moved inland by train" },
+                "trap": "'canal boats' là phương tiện cũ, chỉ được nhắc để so sánh."
+              }
+            },
+            {
+              "id": "q39",
+              "number": 39,
+              "prompt": "The trade declined after the invention of the ____.",
+              "acceptedAnswers": ["refrigerator", "fridge"],
+              "explanation": {
+                "text": "Việc buôn bán băng suy giảm nhanh chóng sau khi tủ lạnh ra đời.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 335, "endSeconds": 380, "quote": "The trade declined quickly after the invention of the refrigerator" },
+                "trap": "Đừng ghi '1930s': đó là thời điểm phần lớn hầm băng bị bỏ hoang."
+              }
+            },
+            {
+              "id": "q40",
+              "number": 40,
+              "prompt": "Many ice houses are now homes for ____.",
+              "acceptedAnswers": ["bats"],
+              "explanation": {
+                "text": "Ngày nay nhiều hầm băng được bảo vệ, và bên trong mát, tối nên trở thành nơi ở lý tưởng cho dơi.",
+                "evidence": { "type": "transcript", "sectionNumber": 4, "startSeconds": 380, "endSeconds": 420, "quote": "make them ideal homes for bats" },
+                "paraphrases": [{ "inQuestion": "now", "inSource": "Today" }],
+                "trap": "'protected' cũng nói về hầm băng ngày nay, nhưng không trả lời câu hỏi."
+              }
+            }
           ]
         }
       ]

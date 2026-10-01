@@ -4,6 +4,7 @@ import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.common.Versioned
 import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.content.Visibility
+import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.backend.fake.FakeContentStore
 import com.app.platform.language.core.model.BundledReadingTests
 import com.app.platform.language.core.model.ReadingError
@@ -27,9 +28,9 @@ class ReadingServiceTest {
   private val service = ReadingService(store, ContentAccessPolicy(setOf(ownerEmail)))
 
   @Test
-  fun knownTestIsReturnedWithItsVersion() =
+  fun knownTestIsReturnedWithoutAnswerKeyWithItsVersion() =
     runTest {
-      assertEquals(Ok(Versioned(sample, "3")), service.getTest(sample.id, viewer = null))
+      assertEquals(Ok(Versioned(sample.withoutAnswerKey(), "3")), service.getTest(sample.id, viewer = null))
     }
 
   @Test
@@ -75,7 +76,7 @@ class ReadingServiceTest {
         Ok(listOf(sample.toSummary(), privateTest.toSummary())),
         service.listTests(owner).map { it.value },
       )
-      assertEquals(Ok(privateTest), service.getTest(privateTest.id, owner).map { it.value })
+      assertEquals(Ok(privateTest.withoutAnswerKey()), service.getTest(privateTest.id, owner).map { it.value })
     }
 
   @Test

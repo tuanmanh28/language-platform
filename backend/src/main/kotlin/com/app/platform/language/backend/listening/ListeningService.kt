@@ -7,6 +7,7 @@ import com.app.platform.language.backend.common.catalogVersion
 import com.app.platform.language.backend.common.fingerprintVersion
 import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.content.Visibility
+import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.core.exam.ListeningScorer
 import com.app.platform.language.core.model.ListeningError
 import com.app.platform.language.core.model.ListeningResult
@@ -39,7 +40,7 @@ class ListeningService(
     viewer: AuthIdentity?,
   ): Result<Versioned<ListeningTest>, ListeningError> =
     findTest(id, viewer).map { stored ->
-      val test = stored.withAudioUrls()
+      val test = stored.withAudioUrls().withoutAnswerKey()
       Versioned(test, fingerprintVersion("${stored.version}:${test.sections.joinToString { it.audioUrl }}"))
     }
 

@@ -34,5 +34,6 @@ private fun evaluate(
     userAnswer = userAnswer,
     isCorrect = normalizedUser != null && withinWordLimit && normalizedUser in accepted,
     acceptedAnswers = question.acceptedAnswers,
+    explanation = question.explanation,
   )
 }

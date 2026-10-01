@@ -4,6 +4,7 @@ import com.app.platform.language.backend.audio.PublicAudioStorage
 import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.content.Visibility
+import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.backend.fake.FakeAudioStorage
 import com.app.platform.language.backend.fake.FakeListeningContentStore
 import com.app.platform.language.core.model.BundledListeningTests
@@ -129,11 +130,11 @@ class ListeningServiceTest {
     }
 
   @Test
-  fun questionsAndTranscriptsAreServedUnchanged() =
+  fun questionsAreServedWithoutAnswerKeyAndTranscriptsUnchanged() =
     runTest {
       val served = service.getTest(sample.id, viewer = null).map { it.value }
 
-      assertEquals(Ok(sample.allQuestions()), served.map { it.allQuestions() })
+      assertEquals(Ok(sample.withoutAnswerKey().allQuestions()), served.map { it.allQuestions() })
       assertEquals(
         Ok(sample.sections.map { it.transcript }),
         served.map { test ->

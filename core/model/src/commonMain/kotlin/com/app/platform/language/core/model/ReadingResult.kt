@@ -23,4 +23,5 @@ data class QuestionResult(
   val userAnswer: String?,
   val isCorrect: Boolean,
   val acceptedAnswers: List<String>,
+  val explanation: Explanation? = null,
 )

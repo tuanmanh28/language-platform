@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeContentStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
@@ -28,6 +29,8 @@ import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ReadingRoutesTest {
   private val sample = BundledReadingTests.all.first()
@@ -97,7 +100,20 @@ class ReadingRoutesTest {
         jsonClient().get("/api/v1/reading/tests/${sample.id}") { header(HttpHeaders.IfNoneMatch, "\"0\"") }
 
       assertEquals(HttpStatusCode.OK, response.status)
-      assertEquals(sample, response.body<ReadingTest>())
+      assertEquals(sample.withoutAnswerKey(), response.body<ReadingTest>())
+    }
+
+  @Test
+  fun testPayloadRevealsNoAnswersOrExplanations() =
+    testApplication {
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+
+      val payload = jsonClient().get("/api/v1/reading/tests/${sample.id}").bodyAsText()
+
+      val questions = ContentJson.decodeFromString(ReadingTest.serializer(), payload).allQuestions()
+      assertEquals(sample.questionCount, questions.size)
+      assertTrue(questions.all { it.acceptedAnswers.isEmpty() })
+      assertFalse("\"explanation\"" in payload)
     }
 
   @Test
@@ -138,6 +154,22 @@ class ReadingRoutesTest {
 
       assertEquals(sample.questionCount, result.correctCount)
       assertEquals(9.0, result.band)
+    }
+
+  @Test
+  fun submitResultRevealsAnswerKeyAndExplanations() =
+    testApplication {
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
+
+      val result =
+        jsonClient()
+          .post("/api/v1/reading/tests/${sample.id}/submit") {
+            contentType(ContentType.Application.Json)
+            setBody(SubmitAnswersRequest(emptyMap()))
+          }.body<ReadingResult>()
+
+      assertEquals(sample.allQuestions().map { it.acceptedAnswers }, result.questionResults.map { it.acceptedAnswers })
+      assertEquals(sample.allQuestions().map { it.explanation }, result.questionResults.map { it.explanation })
     }
 
   @Test

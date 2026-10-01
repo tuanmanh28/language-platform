@@ -1,6 +1,7 @@
 package com.app.platform.language.backend.reading
 
 import com.app.platform.language.backend.content.Visibility
+import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeAttemptStore
@@ -65,7 +66,7 @@ class ReadingFromDatabaseTest {
           }.body<ReadingResult>()
 
       assertEquals(BundledReadingTests.all.map { it.toSummary() }.sortedBy { it.id }, list)
-      assertEquals(sample, testResponse.body<ReadingTest>())
+      assertEquals(sample.withoutAnswerKey(), testResponse.body<ReadingTest>())
       assertEquals("\"1\"", testResponse.headers[HttpHeaders.ETag])
       assertEquals(ReadingScorer.score(sample, answers), result)
     }

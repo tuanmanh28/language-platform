@@ -90,7 +90,62 @@
           "minItems": 1,
           "items": { "type": "string", "minLength": 1 }
         },
-        "explanation": { "type": "string" }
+        "explanation": {
+          "anyOf": [
+            { "$ref": "#/$defs/explanation" },
+            { "type": "string", "deprecated": true, "description": "Legacy plain-text explanation, read as { text }." }
+          ]
+        }
+      }
+    },
+    "explanation": {
+      "type": "object",
+      "required": ["text"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "description": "Why the answer is correct, in Vietnamese." },
+        "evidence": {
+          "oneOf": [{ "$ref": "#/$defs/passageEvidence" }, { "$ref": "#/$defs/transcriptEvidence" }]
+        },
+        "paraphrases": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/paraphrase" }
+        },
+        "trap": { "type": "string", "minLength": 1, "description": "The distractor learners usually pick, in Vietnamese." }
+      }
+    },
+    "passageEvidence": {
+      "description": "Reading evidence: a verbatim quote from the paragraph with this label in the question's passage.",
+      "type": "object",
+      "required": ["type", "paragraphId", "quote"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "passage" },
+        "paragraphId": { "type": "string", "pattern": "^[A-Z]$" },
+        "quote": { "type": "string", "minLength": 1 }
+      }
+    },
+    "transcriptEvidence": {
+      "description": "Listening evidence: a verbatim quote from the transcript of the question's section in this time range.",
+      "type": "object",
+      "required": ["type", "sectionNumber", "startSeconds", "endSeconds", "quote"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "transcript" },
+        "sectionNumber": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "startSeconds": { "type": "integer", "minimum": 0 },
+        "endSeconds": { "type": "integer", "minimum": 1 },
+        "quote": { "type": "string", "minLength": 1 }
+      }
+    },
+    "paraphrase": {
+      "description": "Wording in the question or its options and the matching wording in the source, both verbatim English.",
+      "type": "object",
+      "required": ["inQuestion", "inSource"],
+      "additionalProperties": false,
+      "properties": {
+        "inQuestion": { "type": "string", "minLength": 1 },
+        "inSource": { "type": "string", "minLength": 1 }
       }
     }
   }
