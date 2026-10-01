@@ -1,0 +1,6 @@
+{
+  "border": {
+    "$type": "dimension",
+    "thin": { "$value": "1px" }
+  }
+}

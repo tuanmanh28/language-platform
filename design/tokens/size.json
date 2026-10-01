@@ -1,0 +1,13 @@
+{
+  "size": {
+    "$type": "dimension",
+    "progressRing": {
+      "small": { "$value": "48px" },
+      "large": { "$value": "120px" }
+    },
+    "progressRingStroke": {
+      "small": { "$value": "4px" },
+      "large": { "$value": "8px" }
+    }
+  }
+}

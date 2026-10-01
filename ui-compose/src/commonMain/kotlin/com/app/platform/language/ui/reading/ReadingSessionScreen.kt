@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,19 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -38,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -51,17 +44,22 @@ import com.app.platform.language.core.model.Passage
 import com.app.platform.language.core.model.Question
 import com.app.platform.language.core.model.QuestionGroup
 import com.app.platform.language.core.model.QuestionType
-import com.app.platform.language.core.model.ReadingError
 import com.app.platform.language.shared.reading.ReadingSessionUiState
 import com.app.platform.language.shared.reading.ReadingSessionViewModel
 import com.app.platform.language.ui.PlatformBackHandler
+import com.app.platform.language.ui.components.AnswerState
+import com.app.platform.language.ui.components.LpAnswerChip
+import com.app.platform.language.ui.components.LpErrorState
+import com.app.platform.language.ui.components.LpGapField
+import com.app.platform.language.ui.components.LpOptionRow
+import com.app.platform.language.ui.components.LpPrimaryButton
+import com.app.platform.language.ui.components.LpProgressRing
+import com.app.platform.language.ui.components.LpTextButton
+import com.app.platform.language.ui.components.LpTimerBar
+import com.app.platform.language.ui.components.TimerBarState
 import com.app.platform.language.ui.resources.Res
-import com.app.platform.language.ui.resources.common_retry
-import com.app.platform.language.ui.resources.reading_session_answer_placeholder
 import com.app.platform.language.ui.resources.reading_session_continue
 import com.app.platform.language.ui.resources.reading_session_exit
-import com.app.platform.language.ui.resources.reading_session_max_words
-import com.app.platform.language.ui.resources.reading_session_option
 import com.app.platform.language.ui.resources.reading_session_question
 import com.app.platform.language.ui.resources.reading_session_submit
 import com.app.platform.language.ui.resources.reading_session_submit_all_answered
@@ -73,7 +71,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 private val TwoPaneMinWidth = 840.dp
-private const val TIME_RUNNING_OUT_SECONDS = 60
 
 @Composable
 internal fun ReadingSessionScreen(
@@ -111,11 +108,11 @@ internal fun ReadingSessionScreen(
 ) {
   when (state) {
     ReadingSessionUiState.Loading -> {
-      Box(Modifier.fillMaxSize()) { CircularProgressIndicator(Modifier.align(Alignment.Center)) }
+      Box(Modifier.fillMaxSize()) { LpProgressRing(progress = null, modifier = Modifier.align(Alignment.Center)) }
     }
 
     is ReadingSessionUiState.Failed -> {
-      FailedContent(state.error, onRetry, Modifier.fillMaxSize())
+      LpErrorState(state.error.toUserMessage(), onRetry, Modifier.fillMaxSize())
     }
 
     is ReadingSessionUiState.InProgress -> {
@@ -125,25 +122,6 @@ internal fun ReadingSessionScreen(
     is ReadingSessionUiState.Finished -> {
       ReadingResultContent(state, onRestart, onExit, Modifier.fillMaxSize())
     }
-  }
-}
-
-@Composable
-private fun FailedContent(
-  error: ReadingError,
-  onRetry: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  Column(
-    modifier = modifier.padding(LanguagePlatformTheme.spacing.xl),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Text(error.toUserMessage(), style = MaterialTheme.typography.bodyLarge)
-
-    Spacer(Modifier.height(LanguagePlatformTheme.spacing.md))
-
-    Button(onClick = onRetry) { Text(stringResource(Res.string.common_retry)) }
   }
 }
 
@@ -157,31 +135,37 @@ private fun InProgressContent(
   modifier: Modifier = Modifier,
 ) {
   var isConfirmingSubmit by remember { mutableStateOf(false) }
-  val timerColor =
-    if (state.remainingSeconds <= TIME_RUNNING_OUT_SECONDS) {
-      MaterialTheme.colorScheme.error
-    } else {
-      MaterialTheme.colorScheme.onSurface
-    }
 
   Scaffold(
     modifier = modifier,
     topBar = {
-      TopAppBar(
-        title = { Text(state.test.title, maxLines = 1) },
-        navigationIcon = {
-          TextButton(onClick = onExit) { Text(stringResource(Res.string.reading_session_exit)) }
-        },
-        actions = {
-          Text(text = state.remainingLabel, style = MaterialTheme.typography.titleMedium, color = timerColor)
+      Column {
+        TopAppBar(
+          title = { Text(state.test.title, maxLines = 1) },
+          navigationIcon = {
+            LpTextButton(text = stringResource(Res.string.reading_session_exit), onClick = onExit)
+          },
+          actions = {
+            LpPrimaryButton(
+              text = stringResource(Res.string.reading_session_submit),
+              onClick = { isConfirmingSubmit = true },
+            )
 
-          Spacer(Modifier.width(LanguagePlatformTheme.spacing.md))
+            Spacer(Modifier.width(LanguagePlatformTheme.spacing.sm))
+          },
+        )
 
-          Button(onClick = { isConfirmingSubmit = true }) { Text(stringResource(Res.string.reading_session_submit)) }
-
-          Spacer(Modifier.width(LanguagePlatformTheme.spacing.sm))
-        },
-      )
+        LpTimerBar(
+          remainingLabel = state.remainingLabel,
+          progress = state.remainingFraction,
+          state = if (state.isTimeRunningOut) TimerBarState.WARNING else TimerBarState.NORMAL,
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .padding(horizontal = LanguagePlatformTheme.spacing.lg)
+              .padding(bottom = LanguagePlatformTheme.spacing.sm),
+        )
+      }
     },
   ) { padding ->
     BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
@@ -246,10 +230,10 @@ private fun SubmitDialog(
     title = { Text(stringResource(Res.string.reading_session_submit_title)) },
     text = { Text(message) },
     confirmButton = {
-      Button(onClick = onConfirm) { Text(stringResource(Res.string.reading_session_submit)) }
+      LpPrimaryButton(text = stringResource(Res.string.reading_session_submit), onClick = onConfirm)
     },
     dismissButton = {
-      TextButton(onClick = onDismiss) { Text(stringResource(Res.string.reading_session_continue)) }
+      LpTextButton(text = stringResource(Res.string.reading_session_continue), onClick = onDismiss)
     },
   )
 }
@@ -307,6 +291,7 @@ private fun LazyListScope.questions(
         group = group,
         question = question,
         answer = state.answerFor(question.id),
+        wordCount = state.wordCountFor(question.id),
         onAnswer = { onAnswer(question.id, it) },
         modifier = Modifier.fillMaxWidth(),
       )
@@ -319,6 +304,7 @@ private fun QuestionItem(
   group: QuestionGroup,
   question: Question,
   answer: String,
+  wordCount: Int,
   onAnswer: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -333,11 +319,17 @@ private fun QuestionItem(
     when (group.type) {
       QuestionType.TRUE_FALSE_NOT_GIVEN,
       QuestionType.YES_NO_NOT_GIVEN,
-      -> FixedChoiceAnswer(group.type.fixedChoices, answer, onAnswer)
+      -> {
+        FixedChoiceAnswer(group.type.fixedChoices, answer, onAnswer)
+      }
 
-      QuestionType.MULTIPLE_CHOICE -> MultipleChoiceAnswer(question, answer, onAnswer, Modifier.fillMaxWidth())
+      QuestionType.MULTIPLE_CHOICE -> {
+        MultipleChoiceAnswer(question, answer, onAnswer, Modifier.fillMaxWidth())
+      }
 
-      QuestionType.SENTENCE_COMPLETION -> CompletionAnswer(group.maxWords, answer, onAnswer, Modifier.fillMaxWidth())
+      QuestionType.SENTENCE_COMPLETION -> {
+        LpGapField(answer, wordCount, group.maxWords, onAnswer, Modifier.fillMaxWidth())
+      }
     }
   }
 }
@@ -349,12 +341,16 @@ private fun FixedChoiceAnswer(
   onAnswer: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Row(modifier, horizontalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm)) {
+  FlowRow(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm),
+    verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm),
+  ) {
     choices.forEach { choice ->
-      FilterChip(
-        selected = answer.equals(choice, ignoreCase = true),
+      LpAnswerChip(
+        text = choice,
+        state = if (answer.equals(choice, ignoreCase = true)) AnswerState.SELECTED else AnswerState.IDLE,
         onClick = { onAnswer(choice) },
-        label = { Text(choice) },
       )
     }
   }
@@ -367,50 +363,17 @@ private fun MultipleChoiceAnswer(
   onAnswer: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Column(modifier) {
+  Column(modifier, verticalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.sm)) {
     question.options.forEach { option ->
-      val isSelected = answer == option.key
-
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .selectable(selected = isSelected, onClick = { onAnswer(option.key) }, role = Role.RadioButton),
-      ) {
-        RadioButton(selected = isSelected, onClick = null)
-
-        Text(
-          stringResource(Res.string.reading_session_option, option.key, option.text),
-          style = MaterialTheme.typography.bodyMedium,
-        )
-      }
+      LpOptionRow(
+        key = option.key,
+        text = option.text,
+        state = if (answer == option.key) AnswerState.SELECTED else AnswerState.IDLE,
+        onClick = { onAnswer(option.key) },
+        modifier = Modifier.fillMaxWidth(),
+      )
     }
   }
-}
-
-@Composable
-private fun CompletionAnswer(
-  maxWords: Int?,
-  answer: String,
-  onAnswer: (String) -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  OutlinedTextField(
-    value = answer,
-    onValueChange = onAnswer,
-    singleLine = true,
-    placeholder = {
-      Text(
-        if (maxWords != null) {
-          stringResource(Res.string.reading_session_max_words, maxWords)
-        } else {
-          stringResource(Res.string.reading_session_answer_placeholder)
-        },
-      )
-    },
-    modifier = modifier,
-  )
 }
 
 @Preview

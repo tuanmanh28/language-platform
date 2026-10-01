@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,12 +26,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.platform.language.core.model.QuestionResult
 import com.app.platform.language.shared.reading.ReadingSessionUiState
+import com.app.platform.language.ui.components.BandBadgeSize
+import com.app.platform.language.ui.components.LpBandBadge
+import com.app.platform.language.ui.components.LpPrimaryButton
+import com.app.platform.language.ui.components.LpSecondaryButton
 import com.app.platform.language.ui.resources.Res
+import com.app.platform.language.ui.resources.common_answer_correct
+import com.app.platform.language.ui.resources.common_answer_wrong
+import com.app.platform.language.ui.resources.common_mark_correct
+import com.app.platform.language.ui.resources.common_mark_wrong
 import com.app.platform.language.ui.resources.reading_result_accepted_answers
 import com.app.platform.language.ui.resources.reading_result_back_to_list
-import com.app.platform.language.ui.resources.reading_result_correct
 import com.app.platform.language.ui.resources.reading_result_correct_count
-import com.app.platform.language.ui.resources.reading_result_correct_mark
 import com.app.platform.language.ui.resources.reading_result_details
 import com.app.platform.language.ui.resources.reading_result_estimated_band
 import com.app.platform.language.ui.resources.reading_result_no_answer
@@ -41,8 +45,6 @@ import com.app.platform.language.ui.resources.reading_result_question_number
 import com.app.platform.language.ui.resources.reading_result_restart
 import com.app.platform.language.ui.resources.reading_result_time_expired
 import com.app.platform.language.ui.resources.reading_result_title
-import com.app.platform.language.ui.resources.reading_result_wrong
-import com.app.platform.language.ui.resources.reading_result_wrong_mark
 import com.app.platform.language.ui.resources.reading_result_your_answer
 import com.app.platform.language.ui.theme.LanguagePlatformTheme
 import org.jetbrains.compose.resources.stringResource
@@ -101,7 +103,11 @@ private fun ResultSummary(
     ) {
       Text(stringResource(Res.string.reading_result_estimated_band), style = MaterialTheme.typography.labelLarge)
 
-      Text(result.band.toString(), style = MaterialTheme.typography.displayLarge)
+      Spacer(Modifier.height(LanguagePlatformTheme.spacing.sm))
+
+      LpBandBadge(result.band, size = BandBadgeSize.LARGE)
+
+      Spacer(Modifier.height(LanguagePlatformTheme.spacing.sm))
 
       Text(
         stringResource(Res.string.reading_result_correct_count, result.correctCount, result.totalQuestions),
@@ -117,9 +123,9 @@ private fun ResultSummary(
       Spacer(Modifier.height(LanguagePlatformTheme.spacing.lg))
 
       Row(horizontalArrangement = Arrangement.spacedBy(LanguagePlatformTheme.spacing.md)) {
-        OutlinedButton(onClick = onExit) { Text(stringResource(Res.string.reading_result_back_to_list)) }
+        LpSecondaryButton(text = stringResource(Res.string.reading_result_back_to_list), onClick = onExit)
 
-        Button(onClick = onRestart) { Text(stringResource(Res.string.reading_result_restart)) }
+        LpPrimaryButton(text = stringResource(Res.string.reading_result_restart), onClick = onRestart)
       }
     }
   }
@@ -131,14 +137,11 @@ private fun QuestionResultRow(
   modifier: Modifier = Modifier,
 ) {
   val verdict =
-    stringResource(if (item.isCorrect) Res.string.reading_result_correct else Res.string.reading_result_wrong)
+    stringResource(if (item.isCorrect) Res.string.common_answer_correct else Res.string.common_answer_wrong)
 
   Row(modifier.padding(vertical = LanguagePlatformTheme.spacing.xs), verticalAlignment = Alignment.Top) {
     Text(
-      text =
-        stringResource(
-          if (item.isCorrect) Res.string.reading_result_correct_mark else Res.string.reading_result_wrong_mark,
-        ),
+      text = stringResource(if (item.isCorrect) Res.string.common_mark_correct else Res.string.common_mark_wrong),
       color = if (item.isCorrect) LanguagePlatformTheme.colors.correct else LanguagePlatformTheme.colors.wrong,
       style = MaterialTheme.typography.titleMedium,
       modifier = Modifier.semantics { contentDescription = verdict },

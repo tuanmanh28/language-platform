@@ -12,6 +12,8 @@ const composeFiles = [
   { destination: 'SpacingTokens.kt', format: 'compose/dimensions', filter: inGroup('spacing') },
   { destination: 'RadiusTokens.kt', format: 'compose/dimensions', filter: inGroup('radius') },
   { destination: 'ElevationTokens.kt', format: 'compose/dimensions', filter: inGroup('elevation') },
+  { destination: 'SizeTokens.kt', format: 'compose/dimensions', filter: inGroup('size') },
+  { destination: 'BorderTokens.kt', format: 'compose/dimensions', filter: inGroup('border') },
   { destination: 'MotionTokens.kt', format: 'compose/durations', filter: inGroup('motion') },
 ];
 
@@ -21,6 +23,8 @@ const swiftFiles = [
   { destination: 'SpacingTokens.swift', format: 'swiftui/dimensions', filter: inGroup('spacing') },
   { destination: 'RadiusTokens.swift', format: 'swiftui/dimensions', filter: inGroup('radius') },
   { destination: 'ElevationTokens.swift', format: 'swiftui/dimensions', filter: inGroup('elevation') },
+  { destination: 'SizeTokens.swift', format: 'swiftui/dimensions', filter: inGroup('size') },
+  { destination: 'BorderTokens.swift', format: 'swiftui/dimensions', filter: inGroup('border') },
   { destination: 'MotionTokens.swift', format: 'swiftui/durations', filter: inGroup('motion') },
 ];
 

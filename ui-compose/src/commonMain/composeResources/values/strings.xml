@@ -1,5 +1,21 @@
 <resources>
   <string name="common_retry">Thử lại</string>
+  <string name="common_close">Đóng</string>
+  <string name="common_loading">Đang tải</string>
+  <string name="common_answer_correct">Đúng</string>
+  <string name="common_answer_wrong">Sai</string>
+  <string name="common_mark_correct">✓</string>
+  <string name="common_mark_wrong">✗</string>
+  <string name="common_option_label">%1$s. %2$s</string>
+  <string name="common_gap_placeholder">Câu trả lời</string>
+  <string name="common_gap_max_words">Tối đa %1$d từ</string>
+  <string name="common_gap_over_limit">Vượt quá %1$d từ</string>
+  <string name="common_gap_word_count">%1$d từ</string>
+  <string name="common_gap_word_count_of_limit">%1$d/%2$d từ</string>
+  <string name="common_timer_remaining">Thời gian còn lại %1$s</string>
+  <string name="common_timer_running_out">Sắp hết giờ</string>
+  <string name="common_band">Band %1$s</string>
+  <string name="common_explanation_title">Giải thích</string>
 
   <string name="reading_common_error_not_found">Không tìm thấy đề</string>
   <string name="reading_common_error_offline">Không kết nối được máy chủ</string>
@@ -12,7 +28,6 @@
   <string name="reading_list_offline_banner">Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.</string>
   <string name="reading_list_section_title">Đề luyện</string>
   <string name="reading_list_test_details">%1$s · %2$d câu · %3$d phút</string>
-
   <string name="reading_session_exit">Thoát</string>
   <string name="reading_session_submit">Nộp bài</string>
   <string name="reading_session_submit_title">Nộp bài?</string>
@@ -20,9 +35,6 @@
   <string name="reading_session_submit_all_answered">Bạn đã trả lời đủ %1$d câu.</string>
   <string name="reading_session_continue">Làm tiếp</string>
   <string name="reading_session_question">%1$d. %2$s</string>
-  <string name="reading_session_option">%1$s. %2$s</string>
-  <string name="reading_session_answer_placeholder">Câu trả lời</string>
-  <string name="reading_session_max_words">Tối đa %1$d từ</string>
 
   <string name="reading_result_title">Kết quả</string>
   <string name="reading_result_estimated_band">Band ước tính</string>
@@ -31,10 +43,6 @@
   <string name="reading_result_back_to_list">Về danh sách</string>
   <string name="reading_result_restart">Làm lại</string>
   <string name="reading_result_details">Chi tiết</string>
-  <string name="reading_result_correct">Đúng</string>
-  <string name="reading_result_wrong">Sai</string>
-  <string name="reading_result_correct_mark">✓</string>
-  <string name="reading_result_wrong_mark">✗</string>
   <string name="reading_result_question_number">Câu %1$d</string>
   <string name="reading_result_your_answer">Bạn trả lời: %1$s</string>
   <string name="reading_result_no_answer">—</string>

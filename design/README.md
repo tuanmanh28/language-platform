@@ -27,6 +27,8 @@ unchanged tokens produces no diff.
 | `spacing.json` | 4-pt spacing scale: `none` 0, `xs` 4, `sm` 8, `md` 12, `lg` 16, `xl` 24, `xxl` 32, `xxxl` 48. |
 | `radius.json` | Corner radii: `none` 0, `xs` 4, `sm` 8, `md` 12, `lg` 20, `xl` 28. |
 | `elevation.json` | Elevation levels `level0`–`level5`: 0, 1, 3, 6, 8, 12. |
+| `size.json` | Fixed component sizes: `progressRing.small` 48, `progressRing.large` 120 and their strokes 4 and 8. |
+| `border.json` | Border widths: `thin` 1. |
 | `motion.json` | Durations: `short` 150 ms, `medium` 250 ms, `long` 400 ms. |
 
 Dimensions are written in `px` and become `dp`/`sp` in Compose and points in SwiftUI. Type styles use a `px` line height
@@ -79,4 +81,24 @@ Every text/background pair meets WCAG AA (4.5:1). `npm run build` fails otherwis
 
 ## Components
 
-No `Lp…` components exist yet. Each new component is listed here with its name, purpose and states.
+Compose components live in `ui-compose/src/commonMain/kotlin/com/app/platform/language/ui/components/`. They are
+stateless, use theme tokens only, and have a `@Preview` per state that renders in the light and the dark theme.
+`ComponentsTest` (desktop/JVM) renders every component in every state.
+
+| Component | Purpose | States |
+| --- | --- | --- |
+| `LpPrimaryButton` | Main action of a screen or dialog | enabled, disabled |
+| `LpSecondaryButton` | Outlined alternative action | enabled, disabled |
+| `LpTextButton` | Low-emphasis action (top bar, dialog dismiss) | enabled, disabled |
+| `LpAnswerChip` | One fixed choice (TRUE / FALSE / NOT GIVEN, YES / NO / NOT GIVEN) | `AnswerState`: idle, selected, correct, wrong |
+| `LpOptionRow` | One multiple-choice option with a radio button | `AnswerState`: idle, selected, correct, wrong |
+| `LpGapField` | Gap-fill answer with a word-limit hint and a word counter | empty, within limit, over limit, no limit |
+| `LpTimerBar` | Remaining time as a label and a bar | `TimerBarState`: normal, warning (last minute) |
+| `LpBandBadge` | IELTS band score | `BandBadgeSize`: small, large |
+| `LpTestCard` | Practice test in a list | default |
+| `LpProgressRing` | Loading spinner, or a ring filled to a fraction with a centre label | indeterminate, determinate (`ProgressRingSize`: small, large) |
+| `LpEmptyState` | Nothing to show yet, with an optional action | title only, with message and action |
+| `LpErrorState` | Failure message with a retry button | default |
+| `LpExplainSheet` | Bottom sheet with the explanation of an answer | default |
+
+Correct and wrong answers show a ✓ / ✗ mark and a screen-reader verdict, never color alone.

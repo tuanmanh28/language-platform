@@ -2,23 +2,17 @@ package com.app.platform.language.ui.reading
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.platform.language.core.model.ReadingTestSummary
 import com.app.platform.language.shared.reading.ReadingTestListUiState
 import com.app.platform.language.shared.reading.ReadingTestListViewModel
+import com.app.platform.language.ui.components.LpProgressRing
+import com.app.platform.language.ui.components.LpTestCard
+import com.app.platform.language.ui.components.LpTextButton
 import com.app.platform.language.ui.resources.Res
 import com.app.platform.language.ui.resources.reading_list_offline_banner
 import com.app.platform.language.ui.resources.reading_list_refresh
@@ -61,13 +58,13 @@ internal fun ReadingTestListScreen(
     topBar = {
       TopAppBar(
         title = { Text(stringResource(Res.string.reading_list_title)) },
-        actions = { TextButton(onClick = onRefresh) { Text(stringResource(Res.string.reading_list_refresh)) } },
+        actions = { LpTextButton(text = stringResource(Res.string.reading_list_refresh), onClick = onRefresh) },
       )
     },
   ) { padding ->
     Box(Modifier.fillMaxSize().padding(padding)) {
       when (state) {
-        ReadingTestListUiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+        ReadingTestListUiState.Loading -> LpProgressRing(progress = null, modifier = Modifier.align(Alignment.Center))
         is ReadingTestListUiState.Ready -> ReadyContent(state, onOpenTest, Modifier.fillMaxSize())
       }
     }
@@ -99,32 +96,24 @@ private fun ReadyContent(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TestCard(
   test: ReadingTestSummary,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Card(onClick = onClick, modifier = modifier) {
-    Column(Modifier.padding(LanguagePlatformTheme.spacing.lg)) {
-      Text(test.title, style = MaterialTheme.typography.titleMedium)
-
-      Spacer(Modifier.height(LanguagePlatformTheme.spacing.xs))
-
-      Text(
-        text =
-          stringResource(
-            Res.string.reading_list_test_details,
-            test.module.label(),
-            test.questionCount,
-            test.timeLimitMinutes,
-          ),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-    }
-  }
+  LpTestCard(
+    title = test.title,
+    details =
+      stringResource(
+        Res.string.reading_list_test_details,
+        test.module.label(),
+        test.questionCount,
+        test.timeLimitMinutes,
+      ),
+    onClick = onClick,
+    modifier = modifier,
+  )
 }
 
 @Composable
