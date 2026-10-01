@@ -64,6 +64,12 @@ You can also edit the task spec (`docs/backlog/BE-01.md`), commit it on `main`, 
 | `blocked` | Agent wrote `BLOCKED.md` (needs a secret, a decision…) | Unblock, then `retry` |
 | `merged` | In `main` | — |
 
+## Git hooks
+
+The orchestrator sets `git config core.hooksPath .githooks` for this repo (worktrees share it). `.githooks/commit-msg`
+rejects commits whose subject is not `<type>: <summary>`, that mention task ids or AI attribution, or that are made on
+a branch not named `<type>/<slug>`. To use it without the orchestrator: `git config core.hooksPath .githooks`.
+
 ## Code review
 
 After verify passes, `.claude/agents/code-reviewer.md` reviews `git diff main...HEAD` against `CLAUDE.md` and the skills

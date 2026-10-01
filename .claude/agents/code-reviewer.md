@@ -19,7 +19,10 @@ Judge, in this order:
    no clever code. Comments only where they explain *why*, in English; flag every comment that restates the code.
 5. **Tests:** right level per the `testing` skill; error and empty paths covered; deterministic.
 6. **Dependencies:** latest stable versions, through the version catalog, correct source sets.
-7. **Conventions:** commit messages `type: summary` with no task ids, no AI attribution anywhere.
+7. **Naming and formatting:** every new package, file, class, function, resource key, endpoint, table and column follows
+   `code-conventions`; flag `Utils`/`Manager`/`Base`/`Impl` names and layer-first packages.
+8. **Git:** branch and commit messages follow `git-workflow` (`type: summary`, no task ids, no AI attribution); no
+   secrets, generated files or large binaries committed.
 
 Severity:
 - `blocker` — wrong behaviour, security issue, broken architecture rule, missing tests for new logic.

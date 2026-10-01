@@ -34,9 +34,12 @@ IELTS practice platform: Kotlin Multiplatform shared core, native UI per platfor
 | change the database | `backend-database` |
 | write tests | `testing` |
 | add or upgrade dependencies, edit Gradle | `gradle-dependency` |
+| name anything, format code | `code-conventions` |
+| branch, commit, merge, release | `git-workflow` |
 
 ## Engineering standards
 
+- **Naming and formatting** follow `code-conventions`; run `./gradlew spotlessApply` (once it exists) before committing.
 - **Clean architecture, simple logic.** Clear layers, small functions, intention-revealing names, immutable data. The
   simplest design that is correct wins; no premature abstraction, no clever code, no dead code.
 - **Comments:** avoid them. Code must explain itself. Write a comment only to explain *why* something non-obvious is done,
@@ -66,10 +69,11 @@ Your task spec lists the exact verify command. It must pass before you commit.
 ## Working rules
 
 1. **Scope:** implement only your task. List unrelated problems in your final summary instead of fixing them.
-2. **Git:** stay on your branch; never push, rebase, reset or change git config.
-   Commit messages follow Conventional Commits — `feat: …`, `fix: …`, `refactor: …`, `update: …`, `test: …`, `docs: …`,
-   `chore: …` — lowercase, imperative, no trailing period. Never put task ids (BE-01, AND-03…) in branch names or commit
-   messages. No `Co-Authored-By`, "Generated with", or any AI attribution anywhere.
+2. **Git (`git-workflow`):** stay on your branch; never push, rebase, reset, change git config or use `--no-verify`.
+   Subjects are `<type>: <summary>` (`feat`, `fix`, `refactor`, `update`, `perf`, `test`, `docs`, `build`, `ci`, `chore`),
+   lowercase, imperative, no scope, no trailing period, max 72 characters. Never put task ids (BE-01, AND-03…) in branch
+   names or commit messages. No `Co-Authored-By`, "Generated with", or any AI attribution anywhere.
+   `.githooks/commit-msg` rejects commits that break these rules: fix the message, never bypass the hook.
 3. **Do not touch** `_reference/`, generated files, CI secrets, or other tasks' areas.
 4. **Blocked** (missing secret, unclear requirement, failure outside your scope): write `BLOCKED.md` explaining exactly what
    you need, commit it, stop.

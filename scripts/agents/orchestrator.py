@@ -94,6 +94,11 @@ class Orchestrator:
         self.tasks = {t["id"]: t for t in json.loads(tasks_file.read_text())["tasks"]}
         self.prompt_template = (root / "scripts" / "agents" / "task-prompt.md").read_text()
         self.state: dict[str, dict] = json.loads(self.state_file.read_text()) if self.state_file.exists() else {}
+        self.install_hooks()
+
+    def install_hooks(self) -> None:
+        if (self.root / ".githooks").is_dir():
+            sh(["git", "config", "core.hooksPath", ".githooks"], self.root)
 
     def save(self) -> None:
         tmp = self.state_file.with_suffix(".tmp")
@@ -381,7 +386,7 @@ class Orchestrator:
         task = self.tasks[task_id]
         subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
         subjects = [x for x in subjects if x.strip()]
-        summary = self.summary_from(subjects, task)
+        summary = self.fit_subject(task.get("type", "feat"), self.summary_from(subjects, task), task)
         res = sh(["git", "merge", "--squash", br], self.root, check=False)
         if res.returncode != 0:
             sh(["git", "merge", "--abort"], self.root, check=False)
@@ -417,6 +422,16 @@ class Orchestrator:
             if text and not text.lower().startswith("merge"):
                 return text[0].lower() + text[1:] if text[:2] != text[:2].upper() else text
         return task["title"][0].lower() + task["title"][1:]
+
+    @staticmethod
+    def fit_subject(kind: str, summary: str, task: dict, limit: int = 72) -> str:
+        """Keep '<type>: <summary>' within the commit-msg hook's limit, falling back to the task title."""
+        budget = limit - len(kind) - 2
+        for text in (summary, task["title"][0].lower() + task["title"][1:]):
+            text = text.rstrip(". ")
+            if len(text) <= budget:
+                return text
+        return text[:budget].rsplit(" ", 1)[0]
 
     def retry(self, task_id: str, fresh: bool) -> None:
         e = self.entry(task_id)

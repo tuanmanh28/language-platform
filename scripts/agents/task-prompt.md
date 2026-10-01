@@ -15,10 +15,11 @@ reasonable decisions within the task's scope and note them in your final summary
    {verify}
    ```
 
-6. Commit your work on the current branch. Subject: `{type}: <short imperative summary>` (Conventional Commits;
-   use `fix:`/`refactor:`/`update:`/`test:`/`docs:`/`chore:` for commits that are not features).
-   Never put the task id ({id}) in commit messages.
-   No `Co-Authored-By`, no "Generated with" lines, no AI attribution. Do not push.
+6. Commit your work on the current branch following the `git-workflow` skill. First subject:
+   `{type}: <short imperative summary of the whole task>`; lowercase, no scope, no period, max 72 characters.
+   Names and formatting follow `code-conventions`. Never put the task id ({id}) in commit messages.
+   No `Co-Authored-By`, no "Generated with" lines, no AI attribution. Do not push. If the commit-msg hook rejects
+   a message, fix the message; never use `--no-verify`.
 7. If you are blocked (missing secret, unclear requirement, build issue outside your scope), write `BLOCKED.md`
    explaining exactly what you need, commit it, and stop.
 8. Finish with the summary described at the end of `CLAUDE.md`. A mandatory code review runs after you finish.

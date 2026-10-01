@@ -23,13 +23,25 @@
       "spec": "docs/backlog/U-01.md"
     },
     {
+      "id": "S-01",
+      "type": "build",
+      "slug": "code-style-tooling",
+      "title": "Formatting and lint tooling",
+      "lane": "core",
+      "deps": [
+        "U-01"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug",
+      "spec": "docs/backlog/S-01.md"
+    },
+    {
       "id": "R-01",
       "type": "refactor",
       "slug": "align-with-skills",
       "title": "Align existing code with the skills",
       "lane": "core",
       "deps": [
-        "U-01"
+        "S-01"
       ],
       "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/R-01.md"
