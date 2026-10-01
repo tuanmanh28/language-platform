@@ -23,8 +23,13 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":core:model")
 include(":core:exam-engine")
-include(":shared")
-include(":ui-compose")
-include(":app-android")
-include(":app-desktop")
 include(":backend")
+
+// -PbackendOnly builds the server without the Android SDK (e.g. inside the backend Docker image).
+val backendOnly = providers.gradleProperty("backendOnly").map { it.isEmpty() || it.toBoolean() }.getOrElse(false)
+if (!backendOnly) {
+  include(":shared")
+  include(":ui-compose")
+  include(":app-android")
+  include(":app-desktop")
+}

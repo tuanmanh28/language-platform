@@ -60,6 +60,9 @@ docker compose up db                      # PostgreSQL 17 on localhost:5432
 ./gradlew :backend:shadowJar && docker compose up --build
 ```
 
+Without the Android SDK, add `-PbackendOnly` to Gradle commands to configure only `core` and `backend`.
+Deploying to Cloud Run + Neon: [`docs/deploy.md`](docs/deploy.md).
+
 Phase 1 API:
 
 | Method | Path | Description |

@@ -1,0 +1,31 @@
+name: Backend image
+
+# Catches deploy-image breakages before they reach main.
+on:
+  pull_request:
+    paths:
+      - backend/**
+      - core/**
+      - content/**
+      - gradle/**
+      - gradlew
+      - build.gradle.kts
+      - settings.gradle.kts
+      - gradle.properties
+      - .github/workflows/backend-image.yml
+
+concurrency:
+  group: backend-image-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build backend image
+        run: docker build -f backend/Dockerfile.multistage -t language-platform-backend .

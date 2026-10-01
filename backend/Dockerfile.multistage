@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+# Builds the jar inside Docker with -PbackendOnly so no Android SDK or prebuilt jar is needed; see docs/deploy.md.
+# JDK 25 runs the Gradle daemon (gradle-daemon-jvm.properties); foojay still downloads the JDK 17 and 21 toolchains.
+FROM eclipse-temurin:25-jdk AS build
+
+WORKDIR /src
+COPY . .
+RUN --mount=type=cache,target=/root/.gradle \
+  ./gradlew -PbackendOnly :backend:shadowJar --no-daemon
+
+FROM eclipse-temurin:21-jre
+
+RUN useradd --system --create-home app
+WORKDIR /app
+COPY --from=build /src/backend/build/libs/backend-all.jar /app/app.jar
+
+USER app
+ENV PORT=8080
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]

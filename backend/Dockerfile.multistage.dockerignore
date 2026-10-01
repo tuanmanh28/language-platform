@@ -1,0 +1,13 @@
+# The multi-stage image builds from source, but only what -PbackendOnly needs
+*
+!gradle/
+!gradlew
+!settings.gradle.kts
+!build.gradle.kts
+!gradle.properties
+!core/
+!backend/
+!content/
+**/build/
+**/.gradle/
+**/.kotlin/

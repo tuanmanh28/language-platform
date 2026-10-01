@@ -1,7 +1,7 @@
 # Backend runtime image. Build the jar first with Gradle (needs the Android SDK, as the monorepo has Android modules):
 #   ./gradlew :backend:shadowJar
 #   docker compose up --build
-# CI builds the jar, then this image; production pushes the image to Cloud Run / ECS.
+# Deploys use backend/Dockerfile.multistage instead, which builds the jar inside Docker (docs/deploy.md).
 FROM eclipse-temurin:21-jre
 
 RUN useradd --system --create-home app
