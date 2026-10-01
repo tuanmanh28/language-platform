@@ -1,0 +1,332 @@
+{
+  "id": "listening-sample-01",
+  "schemaVersion": 1,
+  "title": "Sports Centre, Festival, Urban Birds and Ice Houses",
+  "sections": [
+    {
+      "id": "s1",
+      "number": 1,
+      "title": "Joining a sports centre",
+      "audioUrl": "listening/listening-sample-01/section-1.mp3",
+      "durationSeconds": 330,
+      "transcript": [
+        { "startSeconds": 0, "endSeconds": 18, "speaker": "Receptionist", "text": "Good morning, Riverside Sports Centre. How can I help you?" },
+        { "startSeconds": 18, "endSeconds": 38, "speaker": "Daniel", "text": "Hi, I'd like to join. I know the centre on Mill Road is a bit cheaper, but yours is only five minutes' walk from my office, so it's ideal." },
+        { "startSeconds": 38, "endSeconds": 45, "speaker": "Receptionist", "text": "Lovely. Can I take your name?" },
+        { "startSeconds": 45, "endSeconds": 60, "speaker": "Daniel", "text": "Daniel Hartley. That's H-A-R-T-L-E-Y." },
+        { "startSeconds": 60, "endSeconds": 68, "speaker": "Receptionist", "text": "And your postcode?" },
+        { "startSeconds": 68, "endSeconds": 85, "speaker": "Daniel", "text": "It's BR4 7TN." },
+        { "startSeconds": 85, "endSeconds": 105, "speaker": "Receptionist", "text": "We have full, off-peak and weekend memberships. Full is forty-five pounds a month; off-peak covers weekdays before four in the afternoon." },
+        { "startSeconds": 105, "endSeconds": 115, "speaker": "Daniel", "text": "I usually train at lunchtime, so off-peak would suit me." },
+        { "startSeconds": 115, "endSeconds": 125, "speaker": "Receptionist", "text": "Then that's thirty-two pounds a month. Which activity are you most interested in?" },
+        { "startSeconds": 125, "endSeconds": 160, "speaker": "Daniel", "text": "I used to play squash, but my knee isn't great any more, so it'll mainly be swimming." },
+        { "startSeconds": 160, "endSeconds": 168, "speaker": "Receptionist", "text": "When would you like to start?" },
+        { "startSeconds": 168, "endSeconds": 175, "speaker": "Daniel", "text": "Could I start on the tenth of March?" },
+        { "startSeconds": 175, "endSeconds": 188, "speaker": "Receptionist", "text": "The pool is closed for maintenance that week, so how about the fourteenth?" },
+        { "startSeconds": 188, "endSeconds": 195, "speaker": "Daniel", "text": "The fourteenth of March is fine." },
+        { "startSeconds": 195, "endSeconds": 235, "speaker": "Receptionist", "text": "On your first visit, please bring proof of address, such as a utility bill. You don't need a photograph; we take one here." },
+        { "startSeconds": 235, "endSeconds": 275, "speaker": "Receptionist", "text": "You'll also have an induction with a trainer. It used to take an hour, but now it lasts forty-five minutes." },
+        { "startSeconds": 275, "endSeconds": 290, "speaker": "Daniel", "text": "Will my card be posted to me?" },
+        { "startSeconds": 290, "endSeconds": 330, "speaker": "Receptionist", "text": "No, we stopped posting cards. You'll collect it at reception when you come in for the induction." }
+      ],
+      "questionGroups": [
+        {
+          "id": "s1-g1",
+          "type": "sentence_completion",
+          "instruction": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+          "maxWords": 2,
+          "questions": [
+            { "id": "q1", "number": 1, "prompt": "Name: Daniel ____", "acceptedAnswers": ["Hartley"] },
+            { "id": "q2", "number": 2, "prompt": "Postcode: ____", "acceptedAnswers": ["BR4 7TN"] },
+            { "id": "q3", "number": 3, "prompt": "Membership type: ____", "acceptedAnswers": ["off-peak", "off peak"] },
+            { "id": "q4", "number": 4, "prompt": "Monthly fee: £____", "acceptedAnswers": ["32", "thirty-two"] },
+            { "id": "q5", "number": 5, "prompt": "Main activity: ____", "acceptedAnswers": ["swimming"] },
+            { "id": "q6", "number": 6, "prompt": "Start date: ____", "acceptedAnswers": ["14 March", "March 14", "14th March"] }
+          ]
+        },
+        {
+          "id": "s1-g2",
+          "type": "multiple_choice",
+          "instruction": "Choose the correct letter, A, B or C.",
+          "questions": [
+            {
+              "id": "q7",
+              "number": 7,
+              "prompt": "Why did Daniel choose this sports centre?",
+              "options": [
+                { "key": "A", "text": "It is close to where he works." },
+                { "key": "B", "text": "It is cheaper than other centres." },
+                { "key": "C", "text": "It has the largest pool in the area." }
+              ],
+              "acceptedAnswers": ["A"]
+            },
+            {
+              "id": "q8",
+              "number": 8,
+              "prompt": "What must Daniel bring on his first visit?",
+              "options": [
+                { "key": "A", "text": "a photograph" },
+                { "key": "B", "text": "proof of address" },
+                { "key": "C", "text": "a bank card" }
+              ],
+              "acceptedAnswers": ["B"]
+            },
+            {
+              "id": "q9",
+              "number": 9,
+              "prompt": "How long does the induction session last?",
+              "options": [
+                { "key": "A", "text": "30 minutes" },
+                { "key": "B", "text": "45 minutes" },
+                { "key": "C", "text": "an hour" }
+              ],
+              "acceptedAnswers": ["B"]
+            },
+            {
+              "id": "q10",
+              "number": 10,
+              "prompt": "How will Daniel get his membership card?",
+              "options": [
+                { "key": "A", "text": "by post" },
+                { "key": "B", "text": "by email" },
+                { "key": "C", "text": "at reception" }
+              ],
+              "acceptedAnswers": ["C"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "number": 2,
+      "title": "A community festival",
+      "audioUrl": "listening/listening-sample-01/section-2.mp3",
+      "durationSeconds": 360,
+      "transcript": [
+        { "startSeconds": 0, "endSeconds": 35, "speaker": "Organiser", "text": "Thanks for coming to this briefing about the Greenfield Community Festival. Normally we hold it in the town park, but the park is being re-turfed, so this year we're moving to the school field." },
+        { "startSeconds": 35, "endSeconds": 70, "speaker": "Organiser", "text": "Gates open at ten for stallholders, but the festival begins officially at eleven, and it runs until late evening." },
+        { "startSeconds": 70, "endSeconds": 105, "speaker": "Organiser", "text": "Last year we raised money for the playground. This year every penny goes towards repairs to the community hall roof." },
+        { "startSeconds": 105, "endSeconds": 140, "speaker": "Organiser", "text": "Parking near the school is very limited and the station car park will be full, so please come by bus. There will be extra buses every twenty minutes." },
+        { "startSeconds": 140, "endSeconds": 175, "speaker": "Organiser", "text": "The food market and the dog show are back, of course, but the big new attraction is a climbing wall, run by instructors from the leisure centre." },
+        { "startSeconds": 175, "endSeconds": 210, "speaker": "Organiser", "text": "Children's activities, including face painting, will be in the yellow tent, next to the main stage." },
+        { "startSeconds": 210, "endSeconds": 245, "speaker": "Organiser", "text": "Our cooking demonstration was going to be at two, but the chef can only arrive later, so it will now start at three." },
+        { "startSeconds": 245, "endSeconds": 280, "speaker": "Organiser", "text": "Volunteers, please wear the green badge you'll receive today, not the blue one from last year." },
+        { "startSeconds": 280, "endSeconds": 315, "speaker": "Organiser", "text": "If a child gets lost, staff will take them straight to the information point by the main gate." },
+        { "startSeconds": 315, "endSeconds": 360, "speaker": "Organiser", "text": "We decided against fireworks because of the animals nearby, so the festival ends with a lantern display on the field." }
+      ],
+      "questionGroups": [
+        {
+          "id": "s2-g1",
+          "type": "multiple_choice",
+          "instruction": "Choose the correct letter, A, B or C.",
+          "questions": [
+            {
+              "id": "q11",
+              "number": 11,
+              "prompt": "Where will the festival be held this year?",
+              "options": [
+                { "key": "A", "text": "in the town park" },
+                { "key": "B", "text": "on the high street" },
+                { "key": "C", "text": "on the school field" }
+              ],
+              "acceptedAnswers": ["C"]
+            },
+            {
+              "id": "q12",
+              "number": 12,
+              "prompt": "When does the festival officially begin?",
+              "options": [
+                { "key": "A", "text": "10 am" },
+                { "key": "B", "text": "11 am" },
+                { "key": "C", "text": "midday" }
+              ],
+              "acceptedAnswers": ["B"]
+            },
+            {
+              "id": "q13",
+              "number": 13,
+              "prompt": "The money raised this year will pay for",
+              "options": [
+                { "key": "A", "text": "a new library." },
+                { "key": "B", "text": "a playground." },
+                { "key": "C", "text": "repairs to the community hall." }
+              ],
+              "acceptedAnswers": ["C"]
+            },
+            {
+              "id": "q14",
+              "number": 14,
+              "prompt": "Visitors are advised to",
+              "options": [
+                { "key": "A", "text": "travel by bus." },
+                { "key": "B", "text": "park at the station." },
+                { "key": "C", "text": "come by bicycle." }
+              ],
+              "acceptedAnswers": ["A"]
+            },
+            {
+              "id": "q15",
+              "number": 15,
+              "prompt": "What is the main new attraction this year?",
+              "options": [
+                { "key": "A", "text": "a food market" },
+                { "key": "B", "text": "a climbing wall" },
+                { "key": "C", "text": "a dog show" }
+              ],
+              "acceptedAnswers": ["B"]
+            }
+          ]
+        },
+        {
+          "id": "s2-g2",
+          "type": "sentence_completion",
+          "instruction": "Complete the sentences below. Write ONE WORD AND/OR A NUMBER for each answer.",
+          "maxWords": 1,
+          "questions": [
+            { "id": "q16", "number": 16, "prompt": "Children's activities take place in the ____ tent.", "acceptedAnswers": ["yellow"] },
+            { "id": "q17", "number": 17, "prompt": "The cooking demonstration starts at ____ o'clock.", "acceptedAnswers": ["3", "three"] },
+            { "id": "q18", "number": 18, "prompt": "Volunteers should wear a ____ badge.", "acceptedAnswers": ["green"] },
+            { "id": "q19", "number": 19, "prompt": "Lost children will be taken to the ____ point.", "acceptedAnswers": ["information"] },
+            { "id": "q20", "number": 20, "prompt": "The festival ends with a ____ display.", "acceptedAnswers": ["lantern"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "number": 3,
+      "title": "A student project on urban birds",
+      "audioUrl": "listening/listening-sample-01/section-3.mp3",
+      "durationSeconds": 390,
+      "transcript": [
+        { "startSeconds": 0, "endSeconds": 40, "speaker": "Maya", "text": "So, Tom, our tutor asked why we picked urban birds. Honestly, it wasn't her idea, and I'd never been into birds before. We chose it because the data is so easy to collect: we just record outside our flats." },
+        { "startSeconds": 40, "endSeconds": 80, "speaker": "Tom", "text": "True. I still think the questionnaire we sent to residents was far too long, though. The design was fine, but half the people gave up before the end." },
+        { "startSeconds": 80, "endSeconds": 120, "speaker": "Maya", "text": "And the first survey site was a disaster. There were plenty of birds and the noise was manageable, but the gates were locked most days, so we couldn't get in." },
+        { "startSeconds": 120, "endSeconds": 160, "speaker": "Tom", "text": "We have notes on feeding and nesting, but I think the report should focus on how the songs have changed. That's where our data is strongest." },
+        { "startSeconds": 160, "endSeconds": 200, "speaker": "Maya", "text": "I'll make the charts, since I'm quicker with the spreadsheet. Could you write the introduction and email the expert at the museum?" },
+        { "startSeconds": 200, "endSeconds": 240, "speaker": "Tom", "text": "Sure. The key finding is that city birds sing at a higher pitch, so their songs aren't drowned out by low traffic noise." },
+        { "startSeconds": 240, "endSeconds": 280, "speaker": "Maya", "text": "And we should mention that all the recordings were made early in the morning, before the roads got busy." },
+        { "startSeconds": 280, "endSeconds": 320, "speaker": "Tom", "text": "We analysed the sounds with free software from the university, rather than the expensive app the tutor mentioned." },
+        { "startSeconds": 320, "endSeconds": 355, "speaker": "Maya", "text": "Then we compare our results with the study from Berlin. The one from Paris used different species, so it's less useful." },
+        { "startSeconds": 355, "endSeconds": 390, "speaker": "Tom", "text": "The final report is due next month, but the draft has to be in by Friday. Let's aim for Thursday, just in case." }
+      ],
+      "questionGroups": [
+        {
+          "id": "s3-g1",
+          "type": "multiple_choice",
+          "instruction": "Choose the correct letter, A, B or C.",
+          "questions": [
+            {
+              "id": "q21",
+              "number": 21,
+              "prompt": "Why did the students choose urban birds as their topic?",
+              "options": [
+                { "key": "A", "text": "Their tutor suggested it." },
+                { "key": "B", "text": "The data was easy to collect." },
+                { "key": "C", "text": "Maya had studied birds before." }
+              ],
+              "acceptedAnswers": ["B"]
+            },
+            {
+              "id": "q22",
+              "number": 22,
+              "prompt": "What does Tom say about the questionnaire?",
+              "options": [
+                { "key": "A", "text": "It was too long." },
+                { "key": "B", "text": "It was badly designed." },
+                { "key": "C", "text": "It was sent to too few people." }
+              ],
+              "acceptedAnswers": ["A"]
+            },
+            {
+              "id": "q23",
+              "number": 23,
+              "prompt": "What was the problem with the first survey site?",
+              "options": [
+                { "key": "A", "text": "It was too noisy." },
+                { "key": "B", "text": "They could not get access to it." },
+                { "key": "C", "text": "There were too few birds." }
+              ],
+              "acceptedAnswers": ["B"]
+            },
+            {
+              "id": "q24",
+              "number": 24,
+              "prompt": "The students agree that the report should focus on",
+              "options": [
+                { "key": "A", "text": "feeding habits." },
+                { "key": "B", "text": "nesting." },
+                { "key": "C", "text": "changes in song." }
+              ],
+              "acceptedAnswers": ["C"]
+            },
+            {
+              "id": "q25",
+              "number": 25,
+              "prompt": "What will Maya do next?",
+              "options": [
+                { "key": "A", "text": "write the introduction" },
+                { "key": "B", "text": "make the charts" },
+                { "key": "C", "text": "contact an expert" }
+              ],
+              "acceptedAnswers": ["B"]
+            }
+          ]
+        },
+        {
+          "id": "s3-g2",
+          "type": "sentence_completion",
+          "instruction": "Complete the notes below. Write NO MORE THAN TWO WORDS for each answer.",
+          "maxWords": 2,
+          "questions": [
+            { "id": "q26", "number": 26, "prompt": "City birds sing at a higher ____.", "acceptedAnswers": ["pitch"] },
+            { "id": "q27", "number": 27, "prompt": "All recordings were made early in the ____.", "acceptedAnswers": ["morning"] },
+            { "id": "q28", "number": 28, "prompt": "The sounds were analysed with free ____.", "acceptedAnswers": ["software"] },
+            { "id": "q29", "number": 29, "prompt": "Results will be compared with a study from ____.", "acceptedAnswers": ["Berlin"] },
+            { "id": "q30", "number": 30, "prompt": "The draft must be handed in by ____.", "acceptedAnswers": ["Friday"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "number": 4,
+      "title": "Ice houses before refrigeration",
+      "audioUrl": "listening/listening-sample-01/section-4.mp3",
+      "durationSeconds": 420,
+      "transcript": [
+        { "startSeconds": 0, "endSeconds": 40, "speaker": "Lecturer", "text": "Today I want to look at how people kept ice before refrigeration. In winter, ice was cut from frozen lakes and rivers and stored in buildings called ice houses." },
+        { "startSeconds": 40, "endSeconds": 80, "speaker": "Lecturer", "text": "Most ice houses were built partly underground and had an egg shape, which allowed the melting ice to slide down and stay compact." },
+        { "startSeconds": 80, "endSeconds": 120, "speaker": "Lecturer", "text": "The walls were lined with straw, which kept out the warm air. Sawdust was tried later, but straw remained the most common choice." },
+        { "startSeconds": 120, "endSeconds": 160, "speaker": "Lecturer", "text": "At the bottom there was always a drain, because standing water would melt the rest of the ice very quickly." },
+        { "startSeconds": 160, "endSeconds": 205, "speaker": "Lecturer", "text": "Ice was expensive, so it belonged mostly to wealthy families, who used it mainly for desserts such as ice cream and chilled fruit." },
+        { "startSeconds": 205, "endSeconds": 245, "speaker": "Lecturer", "text": "Doctors were also customers: they used ice to bring down a fever, long before modern medicines were available." },
+        { "startSeconds": 245, "endSeconds": 290, "speaker": "Lecturer", "text": "In the nineteenth century, local ice was no longer enough. Some was shipped from America, but most of Britain's ice was imported from Norway." },
+        { "startSeconds": 290, "endSeconds": 335, "speaker": "Lecturer", "text": "From the ports, the ice was moved inland by train, which was much faster than the old canal boats." },
+        { "startSeconds": 335, "endSeconds": 380, "speaker": "Lecturer", "text": "The trade declined quickly after the invention of the refrigerator, and by the 1930s most ice houses had been abandoned." },
+        { "startSeconds": 380, "endSeconds": 420, "speaker": "Lecturer", "text": "Today, many surviving ice houses are protected, and their cool, dark interiors make them ideal homes for bats." }
+      ],
+      "questionGroups": [
+        {
+          "id": "s4-g1",
+          "type": "sentence_completion",
+          "instruction": "Complete the notes below. Write ONE WORD ONLY for each answer.",
+          "maxWords": 1,
+          "questions": [
+            { "id": "q31", "number": 31, "prompt": "Ice was cut from frozen lakes and ____.", "acceptedAnswers": ["rivers"] },
+            { "id": "q32", "number": 32, "prompt": "Most ice houses had an ____ shape.", "acceptedAnswers": ["egg"] },
+            { "id": "q33", "number": 33, "prompt": "The walls were lined with ____.", "acceptedAnswers": ["straw"] },
+            { "id": "q34", "number": 34, "prompt": "A ____ removed water from the bottom.", "acceptedAnswers": ["drain"] },
+            { "id": "q35", "number": 35, "prompt": "Wealthy families used ice mainly for ____.", "acceptedAnswers": ["desserts"] },
+            { "id": "q36", "number": 36, "prompt": "Doctors used ice to bring down a ____.", "acceptedAnswers": ["fever"] },
+            { "id": "q37", "number": 37, "prompt": "Most of Britain's imported ice came from ____.", "acceptedAnswers": ["Norway"] },
+            { "id": "q38", "number": 38, "prompt": "Ice was moved inland by ____.", "acceptedAnswers": ["train", "rail"] },
+            { "id": "q39", "number": 39, "prompt": "The trade declined after the invention of the ____.", "acceptedAnswers": ["refrigerator", "fridge"] },
+            { "id": "q40", "number": 40, "prompt": "Many ice houses are now homes for ____.", "acceptedAnswers": ["bats"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

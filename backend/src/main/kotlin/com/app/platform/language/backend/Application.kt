@@ -9,6 +9,11 @@ import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.docs.docsRoutes
 import com.app.platform.language.backend.health.DatabaseHealth
 import com.app.platform.language.backend.health.healthRoutes
+import com.app.platform.language.backend.listening.BundledListeningContentStore
+import com.app.platform.language.backend.listening.DatabaseListeningContentStore
+import com.app.platform.language.backend.listening.ListeningContentStore
+import com.app.platform.language.backend.listening.ListeningService
+import com.app.platform.language.backend.listening.listeningRoutes
 import com.app.platform.language.backend.plugins.configureAuthentication
 import com.app.platform.language.backend.plugins.configureCors
 import com.app.platform.language.backend.plugins.configureMonitoring
@@ -68,6 +73,7 @@ fun main() {
       userStore = DatabaseUserStore(database),
       config = config,
       contentStore = contentStore(config.contentSource, database),
+      listeningContentStore = listeningContentStore(config.contentSource, database),
     )
   }.start(wait = true)
 }
@@ -81,11 +87,21 @@ private fun contentStore(
     ContentSource.BUNDLED -> BundledContentStore()
   }
 
+private fun listeningContentStore(
+  source: ContentSource,
+  database: AppDatabase,
+): ListeningContentStore =
+  when (source) {
+    ContentSource.DB -> DatabaseListeningContentStore(database)
+    ContentSource.BUNDLED -> BundledListeningContentStore()
+  }
+
 fun Application.module(
   databaseHealth: DatabaseHealth,
   userStore: UserStore,
   config: AppConfig = AppConfig.local,
   contentStore: ContentStore = BundledContentStore(),
+  listeningContentStore: ListeningContentStore = BundledListeningContentStore(),
   tokenVerifier: TokenVerifier = FirebaseTokenVerifier(config.firebaseProjectId),
 ) {
   configureSerialization()
@@ -95,10 +111,12 @@ fun Application.module(
   configureAuthentication(tokenVerifier)
 
   val readingService = ReadingService(contentStore)
+  val listeningService = ListeningService(listeningContentStore, config.audioBaseUrl)
   val userService = UserService(userStore)
   routing {
     healthRoutes(BuildInfo.version, config.env, databaseHealth)
     readingRoutes(readingService)
+    listeningRoutes(listeningService)
     authenticatedUser(userService) {
       userRoutes()
     }

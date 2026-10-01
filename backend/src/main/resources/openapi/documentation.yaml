@@ -8,6 +8,7 @@ servers:
 tags:
   - name: health
   - name: reading
+  - name: listening
   - name: users
 paths:
   /health:
@@ -105,6 +106,83 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalError"
+  /api/v1/listening/tests:
+    get:
+      tags: [listening]
+      operationId: listListeningTests
+      summary: List published listening tests
+      parameters:
+        - $ref: "#/components/parameters/IfNoneMatch"
+      responses:
+        "200":
+          description: Published listening tests
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ListeningTestSummary"
+        "304":
+          $ref: "#/components/responses/NotModified"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/listening/tests/{id}:
+    get:
+      tags: [listening]
+      operationId: getListeningTest
+      summary: Get a listening test with its sections, absolute audio URLs, transcripts and questions
+      parameters:
+        - $ref: "#/components/parameters/TestId"
+        - $ref: "#/components/parameters/IfNoneMatch"
+      responses:
+        "200":
+          description: The listening test
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListeningTest"
+        "304":
+          $ref: "#/components/responses/NotModified"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/listening/tests/{id}/submit:
+    post:
+      tags: [listening]
+      operationId: submitListeningAnswers
+      summary: Score answers to a listening test
+      parameters:
+        - $ref: "#/components/parameters/TestId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitAnswersRequest"
+      responses:
+        "200":
+          description: Scored result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListeningResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
   /api/v1/me:
     get:
       tags: [users]
@@ -170,7 +248,7 @@ components:
     Unauthorized:
       description: Missing, invalid or expired Firebase ID token
     NotFound:
-      description: Reading test not found
+      description: Test not found
       content:
         application/json:
           schema:
@@ -332,6 +410,86 @@ components:
           additionalProperties:
             type: string
     ReadingResult:
+      type: object
+      required: [testId, correctCount, totalQuestions, band, questionResults]
+      properties:
+        testId:
+          type: string
+        correctCount:
+          type: integer
+        totalQuestions:
+          type: integer
+        band:
+          type: number
+          format: double
+        questionResults:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionResult"
+    ListeningTestSummary:
+      type: object
+      required: [id, title, durationSeconds, questionCount]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        durationSeconds:
+          type: integer
+        questionCount:
+          type: integer
+    ListeningTest:
+      type: object
+      required: [id, schemaVersion, title, sections]
+      properties:
+        id:
+          type: string
+        schemaVersion:
+          type: integer
+        title:
+          type: string
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListeningSection"
+    ListeningSection:
+      type: object
+      required: [id, number, title, audioUrl, durationSeconds, transcript, questionGroups]
+      properties:
+        id:
+          type: string
+        number:
+          type: integer
+        title:
+          type: string
+        audioUrl:
+          type: string
+          format: uri
+          description: Absolute URL of the section audio, resolved against AUDIO_BASE_URL
+        durationSeconds:
+          type: integer
+        transcript:
+          type: array
+          description: Empty when the section has no transcript
+          items:
+            $ref: "#/components/schemas/TranscriptSegment"
+        questionGroups:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionGroup"
+    TranscriptSegment:
+      type: object
+      required: [startSeconds, endSeconds, text]
+      properties:
+        startSeconds:
+          type: integer
+        endSeconds:
+          type: integer
+        speaker:
+          type: string
+        text:
+          type: string
+    ListeningResult:
       type: object
       required: [testId, correctCount, totalQuestions, band, questionResults]
       properties:

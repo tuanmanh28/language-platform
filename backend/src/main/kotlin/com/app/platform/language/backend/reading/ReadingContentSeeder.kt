@@ -1,40 +1,29 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.common.SeedError
+import com.app.platform.language.backend.common.loadContentFiles
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.IeltsModule
 import com.app.platform.language.core.model.ReadingTest
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
-import com.github.michaelbull.result.combine
 import com.github.michaelbull.result.coroutines.runSuspendCatching
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
-import com.github.michaelbull.result.runCatching
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.v1.jdbc.JdbcTransaction
 import java.nio.file.Path
-import kotlin.io.path.listDirectoryEntries
-import kotlin.io.path.readText
 
 class ReadingContentSeeder(
   private val database: AppDatabase,
 ) {
   suspend fun seed(directory: Path): Result<Int, SeedError> =
-    loadTests(directory).andThen { tests ->
+    loadContentFiles(directory, ReadingTest.serializer()).andThen { tests ->
       runSuspendCatching { database.tx { tests.forEach { upsert(it) } } }
         .map { tests.size }
         .mapError(SeedError::WriteFailed)
     }
-
-  private fun loadTests(directory: Path): Result<List<ReadingTest>, SeedError> =
-    runCatching { directory.listDirectoryEntries("*.json").sorted() }
-      .mapError { SeedError.UnreadableDirectory(directory, it) }
-      .andThen { files -> files.map(::parseTest).combine() }
-
-  private fun parseTest(file: Path): Result<ReadingTest, SeedError> =
-    runCatching { ContentJson.decodeFromString(ReadingTest.serializer(), file.readText()) }
-      .mapError { SeedError.InvalidContent(file, it) }
 
   private fun JdbcTransaction.upsert(test: ReadingTest) {
     exec(

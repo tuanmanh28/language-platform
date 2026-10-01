@@ -1,5 +1,7 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.common.Versioned
+import com.app.platform.language.backend.common.catalogVersion
 import com.app.platform.language.core.exam.ReadingScorer
 import com.app.platform.language.core.model.ReadingError
 import com.app.platform.language.core.model.ReadingResult
@@ -12,7 +14,6 @@ import com.github.michaelbull.result.coroutines.runSuspendCatching
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.toResultOr
-import java.security.MessageDigest
 
 class ReadingService(
   private val store: ContentStore,
@@ -20,7 +21,9 @@ class ReadingService(
   suspend fun listTests(): Result<Versioned<List<ReadingTestSummary>>, ReadingError> =
     runSuspendCatching { store.readingTests() }
       .mapError(ReadingError::Unexpected)
-      .map { tests -> Versioned(tests.map { it.test.toSummary() }, catalogVersion(tests)) }
+      .map { tests ->
+        Versioned(tests.map { it.test.toSummary() }, catalogVersion(tests.map { it.test.id to it.version }))
+      }
 
   suspend fun getTest(id: String): Result<Versioned<ReadingTest>, ReadingError> =
     findTest(id).map { stored -> Versioned(stored.test, stored.version.toString()) }
@@ -37,9 +40,4 @@ class ReadingService(
     runSuspendCatching { store.readingTest(id) }
       .mapError(ReadingError::Unexpected)
       .andThen { stored -> stored.toResultOr { ReadingError.NotFound } }
-
-  private fun catalogVersion(tests: List<StoredReadingTest>): String {
-    val fingerprint = tests.joinToString(",") { "${it.test.id}:${it.version}" }
-    return MessageDigest.getInstance("SHA-256").digest(fingerprint.toByteArray()).toHexString()
-  }
 }

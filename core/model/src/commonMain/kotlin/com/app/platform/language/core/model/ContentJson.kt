@@ -18,3 +18,11 @@ object BundledReadingTests {
 
   fun find(id: String): ReadingTest? = all.firstOrNull { it.id == id }
 }
+
+object BundledListeningTests {
+  val all: List<ListeningTest> by lazy {
+    BundledContent.listeningTestsJson.map { ContentJson.decodeFromString(ListeningTest.serializer(), it) }
+  }
+
+  fun find(id: String): ListeningTest? = all.firstOrNull { it.id == id }
+}

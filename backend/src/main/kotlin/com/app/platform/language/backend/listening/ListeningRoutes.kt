@@ -1,7 +1,7 @@
-package com.app.platform.language.backend.reading
+package com.app.platform.language.backend.listening
 
 import com.app.platform.language.backend.common.respondVersioned
-import com.app.platform.language.core.model.ReadingError
+import com.app.platform.language.core.model.ListeningError
 import com.app.platform.language.core.model.SubmitAnswersRequest
 import com.github.michaelbull.result.mapBoth
 import io.ktor.server.application.log
@@ -14,8 +14,8 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.util.getOrFail
 
-fun Route.readingRoutes(service: ReadingService) {
-  route("/api/v1/reading/tests") {
+fun Route.listeningRoutes(service: ListeningService) {
+  route("/api/v1/listening/tests") {
     get {
       service.listTests().mapBoth(
         success = { tests -> call.respondVersioned(tests) },
@@ -40,8 +40,8 @@ fun Route.readingRoutes(service: ReadingService) {
   }
 }
 
-private suspend fun RoutingCall.respondError(error: ReadingError) {
-  if (error is ReadingError.Unexpected) application.log.error("Reading request failed", error.cause)
+private suspend fun RoutingCall.respondError(error: ListeningError) {
+  if (error is ListeningError.Unexpected) application.log.error("Listening request failed", error.cause)
   val (status, body) = error.toHttp()
   respond(status, body)
 }

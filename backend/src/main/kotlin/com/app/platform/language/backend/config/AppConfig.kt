@@ -3,6 +3,7 @@ package com.app.platform.language.backend.config
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.binding
 
 data class AppConfig(
@@ -11,16 +12,19 @@ data class AppConfig(
   val database: DatabaseConfig,
   val allowedOrigins: AllowedOrigins,
   val contentSource: ContentSource,
+  val audioBaseUrl: String,
   val firebaseProjectId: String,
 ) {
   companion object {
     private const val DEFAULT_PORT = 8080
+    private const val LOCAL_AUDIO_BASE_URL = "http://localhost:9000/audio"
 
     // The "demo-" prefix is what the Firebase emulator expects for a project that does not exist.
     private const val LOCAL_FIREBASE_PROJECT_ID = "demo-language-platform"
     private val localDatabase =
       DatabaseConfig(url = "jdbc:postgresql://localhost:5432/language_platform", user = "app", password = "app")
     private val originPattern = Regex("https?://[a-z0-9.-]+(:\\d{1,5})?")
+    private val audioBaseUrlPattern = Regex("https?://[A-Za-z0-9.-]+(:\\d{1,5})?(/[A-Za-z0-9._~-]+)*/?")
 
     val local =
       AppConfig(
@@ -29,10 +33,13 @@ data class AppConfig(
         database = localDatabase,
         allowedOrigins = AllowedOrigins.All,
         contentSource = ContentSource.DB,
+        audioBaseUrl = LOCAL_AUDIO_BASE_URL,
         firebaseProjectId = LOCAL_FIREBASE_PROJECT_ID,
       )
 
     fun fromEnvironment(): Result<AppConfig, ConfigError> = parse(System.getenv())
+
+    fun databaseFromEnvironment(): Result<DatabaseConfig, ConfigError> = parseDatabase(System.getenv())
 
     fun parse(variables: Map<String, String>): Result<AppConfig, ConfigError> {
       val values = variables.filterValues { it.isNotBlank() }
@@ -41,19 +48,43 @@ data class AppConfig(
         AppConfig(
           port = parsePort(values["PORT"]).bind(),
           env = env,
-          database =
-            DatabaseConfig(
-              url = values.valueOrLocalDefault("DATABASE_URL", env, localDatabase.url).bind(),
-              user = values.valueOrLocalDefault("DATABASE_USER", env, localDatabase.user).bind(),
-              password = values.valueOrLocalDefault("DATABASE_PASSWORD", env, localDatabase.password).bind(),
-            ),
+          database = parseDatabase(values, env).bind(),
           allowedOrigins = parseAllowedOrigins(values["CORS_ALLOWED_ORIGINS"], env).bind(),
           contentSource = parseContentSource(values["CONTENT_SOURCE"]).bind(),
+          audioBaseUrl =
+            values
+              .valueOrLocalDefault("AUDIO_BASE_URL", env, LOCAL_AUDIO_BASE_URL)
+              .andThen(::parseAudioBaseUrl)
+              .bind(),
           firebaseProjectId =
             values.valueOrLocalDefault("FIREBASE_PROJECT_ID", env, LOCAL_FIREBASE_PROJECT_ID).bind(),
         )
       }
     }
+
+    fun parseDatabase(variables: Map<String, String>): Result<DatabaseConfig, ConfigError> {
+      val values = variables.filterValues { it.isNotBlank() }
+      return parseEnv(values["APP_ENV"]).andThen { env -> parseDatabase(values, env) }
+    }
+
+    private fun parseDatabase(
+      values: Map<String, String>,
+      env: AppEnv,
+    ): Result<DatabaseConfig, ConfigError> =
+      binding {
+        DatabaseConfig(
+          url = values.valueOrLocalDefault("DATABASE_URL", env, localDatabase.url).bind(),
+          user = values.valueOrLocalDefault("DATABASE_USER", env, localDatabase.user).bind(),
+          password = values.valueOrLocalDefault("DATABASE_PASSWORD", env, localDatabase.password).bind(),
+        )
+      }
+
+    private fun parseAudioBaseUrl(value: String): Result<String, ConfigError> =
+      if (audioBaseUrlPattern.matches(value)) {
+        Ok(value.trimEnd('/'))
+      } else {
+        Err(ConfigError.Invalid("AUDIO_BASE_URL", value))
+      }
 
     private fun parseContentSource(value: String?): Result<ContentSource, ConfigError> {
       if (value == null) return Ok(ContentSource.DB)

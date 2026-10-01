@@ -24,6 +24,6 @@ object PostgresTestDatabase {
   }
 
   suspend fun clean() {
-    database.tx { exec("TRUNCATE reading_attempts, users, reading_tests") }
+    database.tx { exec("TRUNCATE reading_attempts, users, reading_tests, listening_tests") }
   }
 }

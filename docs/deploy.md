@@ -133,6 +133,7 @@ Add these to the environment, or to **Settings → Secrets and variables → Act
 | Variable | `GAR_REPOSITORY` | Optional, default `backend` |
 | Variable | `CLOUD_RUN_SERVICE` | Optional, default `language-platform-api` |
 | Variable | `CORS_ALLOWED_ORIGINS` | Optional, comma-separated web origins (`https://app.example.com`); the mobile and desktop apps do not need CORS |
+| Variable | `AUDIO_BASE_URL` | `https://<r2-public-domain>/audio` (required): public base URL of the Cloudflare R2 bucket or CDN serving listening audio |
 
 The ids are not confidential, but keeping them as secrets keeps them out of the logs.
 
@@ -143,12 +144,17 @@ Run **Actions → Deploy backend → Run workflow** on `main`. The first deploy 
 - min instances `0` (scales to zero, no idle cost), max instances `2`, 1 vCPU, 512 MiB;
 - public access (`--allow-unauthenticated`), `APP_ENV=prod`, database settings from Secret Manager.
 
-Then load the reading tests into Neon from your machine (idempotent, safe to repeat after content changes):
+Then load the reading and listening tests into Neon from your machine (idempotent, safe to repeat after content
+changes):
 
 ```bash
 APP_ENV=prod DATABASE_URL='jdbc:postgresql://<host>/language_platform?sslmode=require' \
-  DATABASE_USER=app DATABASE_PASSWORD='<neon-password>' ./gradlew -PbackendOnly :backend:seedContent
+  DATABASE_USER=app DATABASE_PASSWORD='<neon-password>' \
+  ./gradlew -PbackendOnly :backend:seedContent
 ```
+
+Upload each listening section's audio to the bucket at the path its `audioUrl` names in `content/listening/*.json`
+(for example `listening/listening-sample-01/section-1.mp3`).
 
 Check it: `curl "$(gcloud run services describe "$SERVICE" --region "$REGION" --format 'value(status.url)')/api/v1/reading/tests"`.
 

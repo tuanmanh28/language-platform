@@ -17,6 +17,7 @@ class AppConfigTest {
       "DATABASE_PASSWORD" to "s3cret",
       "CORS_ALLOWED_ORIGINS" to "https://app.example.com, https://admin.example.com:8443",
       "CONTENT_SOURCE" to "bundled",
+      "AUDIO_BASE_URL" to "https://audio.example.com/content",
       "FIREBASE_PROJECT_ID" to "language-platform-prod",
     )
 
@@ -44,6 +45,7 @@ class AppConfigTest {
           ),
         allowedOrigins = AllowedOrigins.Only(setOf("https://app.example.com", "https://admin.example.com:8443")),
         contentSource = ContentSource.BUNDLED,
+        audioBaseUrl = "https://audio.example.com/content",
         firebaseProjectId = "language-platform-prod",
       )
 
@@ -145,6 +147,54 @@ class AppConfigTest {
     assertEquals(
       Err(ConfigError.Invalid("CONTENT_SOURCE", "s3")),
       AppConfig.parse(mapOf("CONTENT_SOURCE" to "s3")),
+    )
+  }
+
+  @Test
+  fun audioBaseUrlDefaultsToLocalStorageInLocal() {
+    assertEquals(Ok("http://localhost:9000/audio"), AppConfig.parse(emptyMap()).map { it.audioBaseUrl })
+  }
+
+  @Test
+  fun databaseConfigIsParsedWithoutTheOtherSettings() {
+    val variables = prodVariables - "AUDIO_BASE_URL" - "CORS_ALLOWED_ORIGINS" + ("PORT" to "not-a-port")
+
+    assertEquals(
+      Ok(DatabaseConfig("jdbc:postgresql://db.internal:5432/language_platform", "api", "s3cret")),
+      AppConfig.parseDatabase(variables),
+    )
+  }
+
+  @Test
+  fun databaseConfigIsRequiredOutsideLocal() {
+    assertEquals(Err(ConfigError.Missing("DATABASE_URL")), AppConfig.parseDatabase(mapOf("APP_ENV" to "prod")))
+  }
+
+  @Test
+  fun audioBaseUrlIsRequiredOutsideLocal() {
+    assertEquals(Err(ConfigError.Missing("AUDIO_BASE_URL")), AppConfig.parse(prodVariables - "AUDIO_BASE_URL"))
+  }
+
+  @Test
+  fun audioBaseUrlLosesTrailingSlash() {
+    val config = AppConfig.parse(mapOf("AUDIO_BASE_URL" to "https://cdn.example.com/audio/"))
+
+    assertEquals(Ok("https://cdn.example.com/audio"), config.map { it.audioBaseUrl })
+  }
+
+  @Test
+  fun audioBaseUrlWithoutHttpSchemeIsInvalid() {
+    assertEquals(
+      Err(ConfigError.Invalid("AUDIO_BASE_URL", "s3://bucket/audio")),
+      AppConfig.parse(mapOf("AUDIO_BASE_URL" to "s3://bucket/audio")),
+    )
+  }
+
+  @Test
+  fun audioBaseUrlWithQueryIsInvalid() {
+    assertEquals(
+      Err(ConfigError.Invalid("AUDIO_BASE_URL", "https://cdn.example.com/audio?token=1")),
+      AppConfig.parse(mapOf("AUDIO_BASE_URL" to "https://cdn.example.com/audio?token=1")),
     )
   }
 

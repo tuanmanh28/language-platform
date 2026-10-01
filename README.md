@@ -54,7 +54,7 @@ Data flow: the UI only renders the ViewModel's `state` (a StateFlow in `shared`)
 
 ```bash
 docker compose up db                      # PostgreSQL 17 on localhost:5432
-./gradlew :backend:seedContent            # upsert content/reading/*.json into the database (idempotent)
+./gradlew :backend:seedContent            # upsert content/{reading,listening}/*.json into the database (idempotent)
 ./gradlew :backend:run                    # run directly, http://localhost:8080/health
 # or everything with Docker:
 ./gradlew :backend:shadowJar && docker compose up --build
@@ -71,6 +71,9 @@ Phase 1 API:
 | GET | `/api/v1/reading/tests` | List tests |
 | GET | `/api/v1/reading/tests/{id}` | Test details |
 | POST | `/api/v1/reading/tests/{id}/submit` | Score answers (`{"answers": {"q1": "TRUE", ...}}`) |
+| GET | `/api/v1/listening/tests` | List tests |
+| GET | `/api/v1/listening/tests/{id}` | Test details: 4 sections with absolute audio URLs, transcripts and questions |
+| POST | `/api/v1/listening/tests/{id}/submit` | Score answers on the Listening band scale |
 | GET | `/api/v1/me` | Signed-in user `{"id", "email", "displayName"}`; needs `Authorization: Bearer <Firebase ID token>`, `401` otherwise |
 
 Configuration (environment variables; the server refuses to start on an invalid value):
@@ -84,6 +87,7 @@ Configuration (environment variables; the server refuses to start on an invalid 
 | `DATABASE_PASSWORD` | `app` | Required outside `local` |
 | `CORS_ALLOWED_ORIGINS` | `*` in `local`, none elsewhere | Comma-separated origins (`https://app.example.com`); `*` only in `local` |
 | `CONTENT_SOURCE` | `db` | `db` serves published tests from PostgreSQL; `bundled` serves the tests compiled into `core/model` |
+| `AUDIO_BASE_URL` | `http://localhost:9000/audio` in `local` | Required outside `local`. Public `http(s)` base URL of the audio bucket or CDN (e.g. a Cloudflare R2 public domain); listening content stores audio paths relative to it |
 | `FIREBASE_PROJECT_ID` | `demo-language-platform` | Required outside `local`; ID tokens must be issued for this project |
 
 Sign-in (Google, Apple, email) happens in the apps with Firebase Authentication; the backend only verifies the ID token
@@ -148,6 +152,10 @@ Running on a real device requires setting your Team under *Signing & Capabilitie
 1. Add a JSON file to `content/reading/` following `content/schema/reading-test.schema.json`
    (question numbers run consecutively from 1; MCQ answers must be option `key`s).
 2. Rebuild: the test is embedded into the apps and the backend; `BundledContentTest` validates it.
+
+Listening tests go to `content/listening/` following `content/schema/listening-test.schema.json` (four sections;
+`audioUrl` is a path relative to `AUDIO_BASE_URL`; transcript segments ordered and within the section duration) and are
+validated by `BundledListeningContentTest`. Audio files live in object storage, never in git.
 
 Test content must be **original or properly licensed** — never use material from Cambridge books or real exams.
 

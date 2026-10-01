@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.reading
+package com.app.platform.language.backend.common
 
 import java.nio.file.Path
 
@@ -17,12 +17,12 @@ sealed interface SeedError {
     val file: Path,
     override val cause: Throwable,
   ) : SeedError {
-    override val message = "Invalid reading test in $file"
+    override val message = "Invalid content in $file"
   }
 
   data class WriteFailed(
     override val cause: Throwable,
   ) : SeedError {
-    override val message = "Writing reading tests to the database failed"
+    override val message = "Writing content to the database failed"
   }
 }

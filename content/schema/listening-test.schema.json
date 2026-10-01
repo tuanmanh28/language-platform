@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "listening-test.schema.json",
+  "title": "ListeningTest",
+  "description": "An IELTS Listening test. Matches com.app.platform.language.core.model.ListeningTest.",
+  "type": "object",
+  "required": ["id", "title", "sections"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "sections": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/section" }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "required": ["id", "number", "title", "audioUrl", "durationSeconds", "questionGroups"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "number": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "title": { "type": "string", "minLength": 1 },
+        "audioUrl": {
+          "description": "Path relative to the audio storage base URL (AUDIO_BASE_URL), e.g. listening/<test-id>/section-1.mp3.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._/-]*$"
+        },
+        "durationSeconds": { "type": "integer", "minimum": 1 },
+        "transcript": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/transcriptSegment" }
+        },
+        "questionGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "reading-test.schema.json#/$defs/questionGroup" }
+        }
+      }
+    },
+    "transcriptSegment": {
+      "type": "object",
+      "required": ["startSeconds", "endSeconds", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "startSeconds": { "type": "integer", "minimum": 0 },
+        "endSeconds": { "type": "integer", "minimum": 1 },
+        "speaker": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

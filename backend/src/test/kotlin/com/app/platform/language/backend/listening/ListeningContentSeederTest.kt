@@ -1,11 +1,11 @@
-package com.app.platform.language.backend.reading
+package com.app.platform.language.backend.listening
 
 import com.app.platform.language.backend.common.SeedError
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
-import com.app.platform.language.core.model.BundledReadingTests
+import com.app.platform.language.core.model.BundledListeningTests
 import com.app.platform.language.core.model.ContentJson
-import com.app.platform.language.core.model.ReadingTest
+import com.app.platform.language.core.model.ListeningTest
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.getError
 import kotlinx.coroutines.test.runTest
@@ -19,10 +19,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
-class ReadingContentSeederTest {
-  private val sample = BundledReadingTests.all.first()
-  private val seeder = ReadingContentSeeder(database)
-  private val bundledRows = BundledReadingTests.all.map { StoredRow(it.id, 1, isPublished = true) }.sortedBy { it.id }
+class ListeningContentSeederTest {
+  private val sample = BundledListeningTests.all.first()
+  private val seeder = ListeningContentSeeder(database)
+  private val bundledRows =
+    BundledListeningTests.all.map { StoredRow(it.id, 1, isPublished = true) }.sortedBy { it.id }
 
   @TempDir
   lateinit var tempDir: Path
@@ -33,17 +34,15 @@ class ReadingContentSeederTest {
   @Test
   fun seedingInsertsEveryContentFileAsPublished() =
     runTest {
-      val seeded = seeder.seed(readingContentDir)
-
-      assertEquals(Ok(BundledReadingTests.all.size), seeded)
+      assertEquals(Ok(BundledListeningTests.all.size), seeder.seed(listeningContentDir))
       assertEquals(bundledRows, storedRows())
     }
 
   @Test
   fun seedingTwiceCreatesNoDuplicatesAndKeepsVersion() =
     runTest {
-      seeder.seed(readingContentDir)
-      seeder.seed(readingContentDir)
+      seeder.seed(listeningContentDir)
+      seeder.seed(listeningContentDir)
 
       assertEquals(bundledRows, storedRows())
     }
@@ -53,18 +52,18 @@ class ReadingContentSeederTest {
     runTest {
       writeContent(sample)
       seeder.seed(tempDir)
-      writeContent(sample.copy(title = "Rooftop Farming, Revised"))
+      writeContent(sample.copy(title = "Revised"))
 
       seeder.seed(tempDir)
 
       assertEquals(listOf(StoredRow(sample.id, 2, isPublished = true)), storedRows())
-      assertEquals("Rooftop Farming, Revised", DatabaseContentStore(database).readingTest(sample.id)?.test?.title)
+      assertEquals("Revised", DatabaseListeningContentStore(database).listeningTest(sample.id)?.test?.title)
     }
 
   @Test
   fun invalidFileIsInvalidContent() =
     runTest {
-      tempDir.resolve("broken.json").writeText("{ not a reading test")
+      tempDir.resolve("broken.json").writeText("{ not a listening test")
 
       assertIs<SeedError.InvalidContent>(seeder.seed(tempDir).getError())
       assertEquals(emptyList(), storedRows())
@@ -76,13 +75,13 @@ class ReadingContentSeederTest {
       assertIs<SeedError.UnreadableDirectory>(seeder.seed(tempDir.resolve("missing")).getError())
     }
 
-  private fun writeContent(test: ReadingTest) {
-    tempDir.resolve("${test.id}.json").writeText(ContentJson.encodeToString(ReadingTest.serializer(), test))
+  private fun writeContent(test: ListeningTest) {
+    tempDir.resolve("${test.id}.json").writeText(ContentJson.encodeToString(ListeningTest.serializer(), test))
   }
 
   private suspend fun storedRows(): List<StoredRow> =
     database.tx {
-      exec("SELECT id, version, published FROM reading_tests ORDER BY id") { rows ->
+      exec("SELECT id, version, published FROM listening_tests ORDER BY id") { rows ->
         buildList {
           while (rows.next()) add(StoredRow(rows.getString("id"), rows.getInt("version"), rows.getBoolean("published")))
         }
@@ -96,7 +95,7 @@ class ReadingContentSeederTest {
   )
 
   companion object {
-    private val readingContentDir = Path(System.getProperty("backend.readingContentDir"))
+    private val listeningContentDir = Path(System.getProperty("backend.listeningContentDir"))
     private lateinit var database: AppDatabase
 
     @JvmStatic
