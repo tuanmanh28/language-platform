@@ -1,17 +1,16 @@
-# Versions taken from PeopleInSpace (commit 7a101ee, 2026-09-25) — a set known to build green on their CI.
 [versions]
 kotlin = "2.4.20"
-androidGradlePlugin = "9.1.1"
-compose-multiplatform = "1.12.0"
+androidGradlePlugin = "9.4.1"
+compose-multiplatform = "1.12.1"
 coroutines = "1.11.0"
 kotlinxSerialization = "1.11.0"
 koin = "4.2.2"
-ktor = "3.5.2"
-sqlDelight = "2.3.2"
+ktor = "3.6.0"
+sqlDelight = "2.4.0"
 skie = "0.10.15"
 kermit = "2.2.0"
 shadowPlugin = "9.6.1"
-logback = "1.6.3"
+logback = "1.6.5"
 
 androidxActivity = "1.13.0"
 androidxLifecycleKMP = "2.11.0"
@@ -32,7 +31,6 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -55,7 +53,6 @@ koin-core-viewmodel = { module = "io.insert-koin:koin-core-viewmodel", version.r
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 

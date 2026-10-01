@@ -10,6 +10,7 @@ kotlin {
         namespace = "com.app.platform.language.core.exam"
         compileSdk = libs.versions.compileSdk.get().toInt()
         minSdk = libs.versions.minSdk.get().toInt()
+        withHostTest {}
     }
     jvm()
     iosArm64()
