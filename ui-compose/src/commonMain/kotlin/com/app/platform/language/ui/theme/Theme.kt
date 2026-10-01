@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Màu tạm cho Phase 1 — thay bằng design system thật khi có thiết kế.
+// Placeholder colors for Phase 1 — replace with the real design system once designs exist.
 private val Brand = Color(0xFF2457C5)
 private val BrandDark = Color(0xFFB3C5FF)
 
@@ -29,7 +29,7 @@ private val DarkColors = darkColorScheme(
     error = Color(0xFFFFB4AB),
 )
 
-/** Màu cho đúng/sai ở màn kết quả. */
+/** Correct/wrong colors on the result screen. */
 object ResultColors {
     val correct = Color(0xFF1B7F3B)
     val wrong = Color(0xFFBA1A1A)

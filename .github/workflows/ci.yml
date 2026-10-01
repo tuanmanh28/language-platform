@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  # Logic chung + backend + desktop + Android (runner Ubuntu có sẵn Android SDK)
+  # Shared logic + backend + desktop + Android (Ubuntu runners ship the Android SDK)
   jvm-android:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
@@ -37,7 +37,7 @@ jobs:
       - name: Build backend jar
         run: ./gradlew :backend:shadowJar
 
-  # iOS + macOS (SwiftUI) — cần runner macOS
+  # iOS + macOS (SwiftUI) — needs a macOS runner
   apple:
     runs-on: macos-26
     timeout-minutes: 60

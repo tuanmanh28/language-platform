@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Chỉ cho phép HTTP thường tới backend chạy local khi dev. Production luôn HTTPS. -->
+<!-- Plain HTTP is only allowed to a local backend during development. Production is always HTTPS. -->
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">10.0.2.2</domain>

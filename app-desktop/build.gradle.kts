@@ -22,7 +22,7 @@ compose.desktop {
         mainClass = "com.app.platform.language.desktop.MainKt"
 
         nativeDistributions {
-            // Windows: .msi/.exe. (.dmg chỉ để thử trên Mac — app macOS chính thức là SwiftUI.)
+            // Windows: .msi/.exe. (.dmg is only for trying it on a Mac — the real macOS app is SwiftUI.)
             targetFormats(TargetFormat.Msi, TargetFormat.Exe, TargetFormat.Dmg)
             packageName = "LanguagePlatform"
             packageVersion = "0.1.0"
@@ -30,7 +30,7 @@ compose.desktop {
 
             windows {
                 menuGroup = "Language Platform"
-                // Giữ cố định để bản cài mới ghi đè bản cũ. Sinh mới bằng uuidgen nếu cần.
+                // Keep fixed so new installers upgrade old ones. Regenerate with uuidgen if needed.
                 upgradeUuid = "e27b1e61-c0aa-4185-9f5b-b01259ee9ab1"
             }
         }

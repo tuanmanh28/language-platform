@@ -1,4 +1,4 @@
-# Version gốc lấy theo PeopleInSpace (commit 7a101ee, 25/09/2026) — bộ version này đang build xanh trên CI của họ.
+# Versions taken from PeopleInSpace (commit 7a101ee, 2026-09-25) — a set known to build green on their CI.
 [versions]
 kotlin = "2.4.20"
 androidGradlePlugin = "9.1.1"

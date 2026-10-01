@@ -5,16 +5,16 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
- * Quy đổi điểm thô (số câu đúng / 40) sang band.
+ * Converts a raw score (correct answers out of 40) to a band.
  *
- * Bảng dưới đây là bảng quy đổi THAM KHẢO được công bố rộng rãi; bảng thật của IELTS thay đổi nhẹ
- * theo từng đề. Kết quả hiển thị cho người dùng phải ghi là "band ước tính".
+ * The tables below are the widely published REFERENCE conversions; the official IELTS tables vary
+ * slightly per test. Results shown to users must be labelled "estimated band".
  */
 object BandScale {
 
     const val FULL_TEST_QUESTIONS = 40
 
-    /** (số câu đúng tối thiểu trên 40, band) — sắp xếp giảm dần. */
+    /** (minimum correct answers out of 40, band), sorted descending. */
     private val academicReading = listOf(
         39 to 9.0, 37 to 8.5, 35 to 8.0, 33 to 7.5, 30 to 7.0, 27 to 6.5, 23 to 6.0,
         19 to 5.5, 15 to 5.0, 13 to 4.5, 10 to 4.0, 8 to 3.5, 6 to 3.0, 4 to 2.5,
@@ -45,8 +45,8 @@ object BandScale {
         lookup(listening, scaleToFullTest(correct, total))
 
     /**
-     * Band tổng = trung bình 4 kỹ năng, làm tròn theo quy tắc IELTS:
-     * phần lẻ < .25 -> .0, < .75 -> .5, còn lại lên band nguyên kế tiếp.
+     * Overall band = mean of the four skills, rounded the IELTS way:
+     * fraction < .25 -> .0, < .75 -> .5, otherwise up to the next whole band.
      */
     fun overallBand(listening: Double, reading: Double, writing: Double, speaking: Double): Double {
         val average = (listening + reading + writing + speaking) / 4.0
@@ -59,7 +59,7 @@ object BandScale {
         }
     }
 
-    /** Đề luyện ngắn (vd. 13 câu) được quy về thang 40 câu để ra band ước tính. */
+    /** Short practice tests (e.g. 13 questions) are scaled to 40 questions to estimate a band. */
     internal fun scaleToFullTest(correct: Int, total: Int): Int {
         require(total > 0) { "total must be > 0" }
         require(correct in 0..total) { "correct must be within 0..total" }

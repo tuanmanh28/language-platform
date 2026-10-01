@@ -9,7 +9,7 @@ import io.ktor.client.engine.android.Android
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-// Context được đăng ký bởi androidContext(...) trong Application (xem app-android).
+// Context is registered by androidContext(...) in the Application (see app-android).
 actual fun platformModule(): Module = module {
     single<HttpClientEngine> { Android.create() }
     single<SqlDriver> {

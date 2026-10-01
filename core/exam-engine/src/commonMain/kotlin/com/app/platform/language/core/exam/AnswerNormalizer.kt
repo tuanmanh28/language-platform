@@ -3,8 +3,8 @@ package com.app.platform.language.core.exam
 import com.app.platform.language.core.model.QuestionType
 
 /**
- * Chuẩn hoá câu trả lời trước khi so sánh, để "The Museum." và "the museum" được coi là như nhau.
- * Áp dụng cho cả câu trả lời của người học lẫn đáp án trong đề.
+ * Normalises answers before comparison so that "The Museum." and "the museum" count as equal.
+ * Applied to both the learner's answer and the answer key.
  */
 object AnswerNormalizer {
 

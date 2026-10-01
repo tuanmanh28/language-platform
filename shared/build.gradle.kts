@@ -15,10 +15,10 @@ kotlin {
         minSdk = libs.versions.minSdk.get().toInt()
     }
 
-    // Desktop (Windows) chạy trên JVM
+    // Desktop (Windows) runs on the JVM
     jvm()
 
-    // iOS + macOS: xuất framework "Shared" cho app SwiftUI (xem app-apple/)
+    // iOS + macOS: exports the "Shared" framework for the SwiftUI app (see app-apple/)
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
@@ -76,7 +76,7 @@ sqldelight {
 
 skie {
     features {
-        // Cho phép dùng Observing(viewModel.state) { ... } trong SwiftUI
+        // Enables Observing(viewModel.state) { ... } in SwiftUI
         enableSwiftUIObservingPreview = true
     }
 }

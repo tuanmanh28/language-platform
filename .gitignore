@@ -1,4 +1,4 @@
-# Bản clone PeopleInSpace để tham khảo — không thuộc repo
+# Reference clone of PeopleInSpace — not part of this repo
 /_reference/
 
 # Gradle / Kotlin
@@ -15,7 +15,7 @@ captures/
 .externalNativeBuild/
 .cxx/
 
-# Xcode (project được sinh từ app-apple/project.yml bằng XcodeGen)
+# Xcode (the project is generated from app-apple/project.yml by XcodeGen)
 app-apple/*.xcodeproj/
 app-apple/iOS/Info.plist
 app-apple/macOS/Info.plist
@@ -32,7 +32,7 @@ Thumbs.db
 node_modules/
 .next/
 
-# Bí mật
+# Secrets
 .env
 .env.*
 !.env.example

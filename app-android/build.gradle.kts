@@ -26,11 +26,11 @@ android {
 
     buildTypes {
         getByName("debug") {
-            // Emulator Android gọi máy host qua 10.0.2.2
+            // The Android emulator reaches the host machine via 10.0.2.2
             buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080\"")
         }
         getByName("release") {
-            // TODO: đổi sang domain production khi có
+            // TODO: switch to the production domain once it exists
             buildConfigField("String", "API_BASE_URL", "\"https://api.example.com\"")
             isMinifyEnabled = true
             isShrinkResources = true

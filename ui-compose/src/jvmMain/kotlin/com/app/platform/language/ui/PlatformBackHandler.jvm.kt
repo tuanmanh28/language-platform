@@ -4,5 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 internal actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) {
-    // Desktop không có nút Back hệ thống.
+    // Desktop has no system Back button.
 }

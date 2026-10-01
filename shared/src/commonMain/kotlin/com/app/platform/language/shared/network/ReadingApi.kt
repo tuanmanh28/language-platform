@@ -20,7 +20,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-/** [baseUrl] không có dấu "/" ở cuối, vd. "http://localhost:8080". */
+/** [baseUrl] without a trailing "/", e.g. "http://localhost:8080". */
 data class ApiConfig(
     val baseUrl: String,
     val enableNetworkLogs: Boolean = false,
@@ -52,13 +52,13 @@ class KtorReadingApi(
 
 fun createHttpClient(engine: HttpClientEngine, json: Json, config: ApiConfig): HttpClient =
     HttpClient(engine) {
-        // Lỗi HTTP (4xx/5xx) ném exception để repository chuyển sang dữ liệu offline.
+        // HTTP errors (4xx/5xx) throw so the repository falls back to offline data.
         expectSuccess = true
 
         install(ContentNegotiation) {
             json(json)
         }
-        // Timeout ngắn để khi mất mạng app chuyển sang cache nhanh.
+        // Short timeouts so the app falls back to the cache quickly when offline.
         install(HttpTimeout) {
             connectTimeoutMillis = 5_000
             requestTimeoutMillis = 15_000

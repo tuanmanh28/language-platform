@@ -55,7 +55,7 @@ import com.app.platform.language.ui.PlatformBackHandler
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-/** Màn hình rộng hơn mức này (tablet, desktop) hiển thị bài đọc và câu hỏi song song. */
+/** Screens wider than this (tablet, desktop) show the passage and questions side by side. */
 private val TwoPaneMinWidth = 840.dp
 
 @Composable

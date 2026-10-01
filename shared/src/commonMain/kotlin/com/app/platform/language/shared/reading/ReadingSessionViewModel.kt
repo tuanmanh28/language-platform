@@ -24,13 +24,13 @@ sealed class ReadingSessionUiState {
 
     data class InProgress(
         val test: ReadingTest,
-        /** questionId -> câu trả lời hiện tại. */
+        /** questionId -> current answer. */
         val answers: Map<String, String>,
         val remainingSeconds: Int,
     ) : ReadingSessionUiState() {
         val answeredCount: Int get() = answers.count { it.value.isNotBlank() }
 
-        /** "mm:ss" — format ở shared để mọi nền tảng hiển thị giống nhau. */
+        /** "mm:ss" — formatted in shared so every platform shows the same thing. */
         val remainingLabel: String get() = formatSeconds(remainingSeconds)
 
         fun answerFor(questionId: String): String = answers[questionId].orEmpty()
@@ -44,9 +44,9 @@ sealed class ReadingSessionUiState {
 }
 
 /**
- * Một lượt làm bài Reading: tải đề, đếm ngược, lưu câu trả lời, chấm bằng [ReadingScorer].
+ * One Reading attempt: loads the test, counts down, keeps answers, scores with [ReadingScorer].
  *
- * Vòng đời timer: UI gọi [start] khi màn hình hiện và [stop] khi màn hình ẩn
+ * Timer lifecycle: the UI calls [start] when the screen appears and [stop] when it disappears
  * (SwiftUI: onAppear/onDisappear, Compose: DisposableEffect).
  */
 class ReadingSessionViewModel(
@@ -90,7 +90,7 @@ class ReadingSessionViewModel(
 
     fun submit() = finish(timeExpired = false)
 
-    /** Làm lại đề từ đầu (sau khi đã nộp). */
+    /** Starts the test again from scratch (after submitting). */
     fun restart() {
         val test = when (val current = _state.value) {
             is ReadingSessionUiState.Finished -> current.test

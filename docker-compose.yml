@@ -1,4 +1,4 @@
-# Môi trường dev local. Trước khi chạy: ./gradlew :backend:shadowJar
+# Local dev environment. Before running: ./gradlew :backend:shadowJar
 #   docker compose up --build
 # API: http://localhost:8080/health
 services:
@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     environment:
       PORT: "8080"
-      # Chưa dùng ở Phase 1 (API đang đọc đề nhúng sẵn) — dành cho bước nối PostgreSQL.
+      # Unused in Phase 1 (the API serves bundled tests) — reserved for the PostgreSQL step.
       DATABASE_URL: "jdbc:postgresql://db:5432/language_platform"
       DATABASE_USER: "app"
       DATABASE_PASSWORD: "app"

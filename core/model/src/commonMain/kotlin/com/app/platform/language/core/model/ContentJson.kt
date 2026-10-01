@@ -3,7 +3,7 @@ package com.app.platform.language.core.model
 import com.app.platform.language.core.model.content.BundledContent
 import kotlinx.serialization.json.Json
 
-/** Cấu hình JSON dùng chung cho app, backend và nội dung đề. */
+/** JSON configuration shared by the apps, the backend and test content. */
 val ContentJson: Json = Json {
     ignoreUnknownKeys = true
     explicitNulls = false
@@ -11,7 +11,7 @@ val ContentJson: Json = Json {
     isLenient = true
 }
 
-/** Các đề mẫu được nhúng sẵn lúc build (xem :core:model:generateBundledContent). */
+/** Sample tests embedded at build time (see :core:model:generateBundledContent). */
 object BundledReadingTests {
     val all: List<ReadingTest> by lazy {
         BundledContent.readingTestsJson.map { ContentJson.decodeFromString(ReadingTest.serializer(), it) }

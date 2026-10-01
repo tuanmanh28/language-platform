@@ -7,7 +7,7 @@ pluginManagement {
 }
 
 plugins {
-    // Tự tải JDK 17 cho jvmToolchain(17) nếu máy chỉ có JDK khác (vd. JBR 21 của Android Studio).
+    // Downloads JDK 17 for jvmToolchain(17) if only another JDK is installed (e.g. Android Studio's JBR 21).
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
@@ -21,17 +21,17 @@ dependencyResolutionManagement {
 rootProject.name = "language-platform"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-// Core thuần Kotlin, dùng chung cho app VÀ backend
+// Pure Kotlin core, shared by the apps AND the backend
 include(":core:model")
 include(":core:exam-engine")
 
-// Tầng dữ liệu + ViewModel dùng chung cho mọi app native (KMP)
+// Data layer + ViewModels shared by every native app (KMP)
 include(":shared")
 
-// UI Compose dùng chung Android + Desktop (Windows)
+// Compose UI shared by Android + Desktop (Windows)
 include(":ui-compose")
 
-// Entry point từng nền tảng
+// Per-platform entry points
 include(":app-android")
 include(":app-desktop")
 

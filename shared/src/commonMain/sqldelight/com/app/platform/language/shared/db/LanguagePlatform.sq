@@ -1,11 +1,11 @@
--- Cache đề đã tải về để làm bài offline.
+-- Downloaded tests, cached for offline practice.
 CREATE TABLE CachedReadingTest (
     id TEXT NOT NULL PRIMARY KEY,
     json TEXT NOT NULL,
     updatedAt INTEGER NOT NULL
 );
 
--- Lịch sử làm bài trên máy. Phase sau sẽ đồng bộ lên server qua hàng đợi sync.
+-- On-device attempt history. A later phase syncs it to the server via a sync queue.
 CREATE TABLE ReadingAttempt (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     testId TEXT NOT NULL,

@@ -1,9 +1,9 @@
 # Web (Phase 3)
 
-Web sẽ làm bằng **Next.js (React + TypeScript)** để có SSR/SEO cho landing page và blog IELTS.
+The web app will be built with **Next.js (React + TypeScript)** to get SSR/SEO for the landing page and the IELTS blog.
 
-- Gọi chung backend (`/api/v1/...`); API client sinh tự động từ OpenAPI của backend.
-- Chấm Listening/Reading trên web dùng endpoint `POST /api/v1/reading/tests/{id}/submit`
-  (chạy cùng code `core/exam-engine` với app), nên kết quả khớp với mobile/desktop.
+- Talks to the same backend (`/api/v1/...`); the API client is generated from the backend's OpenAPI spec.
+- Listening/Reading scoring on the web uses `POST /api/v1/reading/tests/{id}/submit`
+  (the same `core/exam-engine` code as the apps), so results match mobile/desktop.
 
-Chưa khởi tạo ở Phase 1.
+Not initialised in Phase 1.

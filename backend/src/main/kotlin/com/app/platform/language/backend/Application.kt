@@ -40,7 +40,7 @@ fun Application.module(contentStore: ContentStore = BundledContentStore()) {
     }
     install(CallLogging)
     install(CORS) {
-        // TODO: giới hạn origin khi có domain web chính thức
+        // TODO: restrict origins once the production web domain exists
         anyHost()
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Post)

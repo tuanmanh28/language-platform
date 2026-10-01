@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-// UI Compose dùng chung giữa Android (app-android) và Desktop/Windows (app-desktop).
-// iOS/macOS KHÔNG dùng module này — Apple dùng SwiftUI native (app-apple).
+// Compose UI shared by Android (app-android) and Desktop/Windows (app-desktop).
+// iOS/macOS do NOT use this module — Apple platforms use native SwiftUI (app-apple).
 kotlin {
     jvmToolchain(17)
 

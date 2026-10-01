@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "reading-test.schema.json",
   "title": "ReadingTest",
-  "description": "Một đề IELTS Reading. Khớp với com.app.platform.language.core.model.ReadingTest.",
+  "description": "An IELTS Reading test. Matches com.app.platform.language.core.model.ReadingTest.",
   "type": "object",
   "required": ["id", "title", "timeLimitMinutes", "passages"],
   "additionalProperties": false,

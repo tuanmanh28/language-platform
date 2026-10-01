@@ -16,7 +16,7 @@ sealed class ReadingTestListUiState {
     data class Error(val message: String) : ReadingTestListUiState()
     data class Success(
         val tests: List<ReadingTestSummary>,
-        /** true khi đang dùng cache/đề nhúng sẵn vì không gọi được server. */
+        /** True when showing cached/bundled tests because the server could not be reached. */
         val isOffline: Boolean,
     ) : ReadingTestListUiState()
 }

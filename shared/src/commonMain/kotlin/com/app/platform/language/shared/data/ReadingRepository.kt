@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-/** Dữ liệu đến từ đâu — UI dùng để hiện nhãn "offline". */
+/** Where data came from — the UI uses it to show an "offline" label. */
 enum class DataSource { NETWORK, CACHE, BUNDLED }
 
 data class TestListResult(
@@ -27,7 +27,7 @@ data class TestListResult(
 class TestNotFoundException(id: String) : Exception("Không tìm thấy đề $id")
 
 /**
- * Offline-first: thử mạng trước, lỗi thì dùng cache SQLite, cuối cùng dùng đề nhúng sẵn.
+ * Offline-first: try the network, then the SQLite cache, then the bundled tests.
  */
 class ReadingRepository(
     private val api: ReadingApi,
@@ -61,7 +61,7 @@ class ReadingRepository(
     suspend fun getTest(id: String): ReadingTest {
         try {
             val remote = api.getTest(id)
-            // Ghi cache lỗi thì vẫn trả về đề vừa tải được, không rơi xuống nhánh offline.
+            // If caching fails, still return the downloaded test instead of falling back to offline data.
             try {
                 withContext(Dispatchers.Default) {
                     queries.upsertTest(remote.id, json.encodeToString(ReadingTest.serializer(), remote), now())

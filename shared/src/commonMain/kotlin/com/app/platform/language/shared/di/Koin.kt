@@ -21,7 +21,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-/** Cung cấp [HttpClientEngine] và [SqlDriver] riêng cho từng nền tảng. */
+/** Provides the platform-specific [HttpClientEngine] and [SqlDriver]. */
 expect fun platformModule(): Module
 
 fun sharedModule(config: ApiConfig): Module = module {
@@ -36,7 +36,7 @@ fun sharedModule(config: ApiConfig): Module = module {
     viewModel { (testId: String) -> ReadingSessionViewModel(testId, get()) }
 }
 
-/** Gọi một lần khi app khởi động (Application.onCreate, main(), hoặc init của App SwiftUI). */
+/** Call once at startup (Application.onCreate, main(), or the SwiftUI App init). */
 fun initKoin(config: ApiConfig, appDeclaration: KoinAppDeclaration = {}): KoinApplication =
     startKoin {
         appDeclaration()
@@ -44,8 +44,8 @@ fun initKoin(config: ApiConfig, appDeclaration: KoinAppDeclaration = {}): KoinAp
     }
 
 /**
- * Điểm vào cho Swift: `SharedSdk.shared.start(baseUrl: "http://localhost:8080")`.
- * Swift không dùng được default argument/lambda của Kotlin nên tách hàm riêng.
+ * Entry point for Swift: `SharedSdk.shared.start(baseUrl: "http://localhost:8080")`.
+ * Swift cannot use Kotlin default arguments/lambdas, hence a dedicated function.
  */
 object SharedSdk {
     private var started = false
@@ -57,7 +57,7 @@ object SharedSdk {
     }
 }
 
-/** Lấy ViewModel từ Koin cho SwiftUI: `ViewModels.shared.readingSession(testId: id)`. */
+/** Resolves ViewModels from Koin for SwiftUI: `ViewModels.shared.readingSession(testId: id)`. */
 object ViewModels : KoinComponent {
     fun readingTestList(): ReadingTestListViewModel = get()
 

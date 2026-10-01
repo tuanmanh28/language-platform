@@ -1,126 +1,127 @@
 # Language Platform
 
-Nền tảng luyện IELTS chạy native trên **Android, iOS, macOS, Windows** (và Web ở Phase 3).
-Logic dùng chung viết một lần bằng **Kotlin Multiplatform (KMP)**; UI viết native theo từng hệ.
+An IELTS practice platform built natively for **Android, iOS, macOS and Windows** (plus Web in Phase 3).
+Shared logic is written once in **Kotlin Multiplatform (KMP)**; the UI is native on each platform.
 
-| Nền tảng | UI | Thư mục |
+| Platform | UI | Directory |
 | --- | --- | --- |
 | Android | Jetpack Compose | `app-android/` + `ui-compose/` |
-| Windows (và Linux/macOS qua JVM) | Compose Desktop | `app-desktop/` + `ui-compose/` |
+| Windows (and Linux/macOS via the JVM) | Compose Desktop | `app-desktop/` + `ui-compose/` |
 | iOS + macOS | SwiftUI | `app-apple/` |
 | Web | Next.js — Phase 3 | `web/` |
 | Backend | Ktor (Kotlin), Docker | `backend/` |
 
-Trạng thái: **khung Phase 1** — một lát cắt dọc hoàn chỉnh cho Reading:
-danh sách đề → làm bài có đếm giờ → chấm điểm + band ước tính, chạy được cả khi offline.
+Status: **Phase 1 scaffold** — one complete vertical slice for Reading:
+test list → timed test → scoring with an estimated band, working offline too.
 
-## Cấu trúc
+## Structure
 
 ```
 language-platform/
 ├── core/
-│   ├── model/          # KMP: model đề thi + kết quả (dùng chung app & backend), nhúng đề mẫu lúc build
-│   └── exam-engine/    # KMP: chấm điểm, chuẩn hoá đáp án, quy đổi band (có unit test)
-├── shared/             # KMP: network (Ktor), cache (SQLDelight), repository, ViewModel, Koin
-│                       #      → xuất framework "Shared" cho Swift qua SKIE
-├── ui-compose/         # Màn hình Compose dùng chung Android + Desktop
-├── app-android/        # Entry Android
-├── app-desktop/        # Entry Desktop → đóng gói .msi/.exe cho Windows
-├── app-apple/          # SwiftUI iOS + macOS; project Xcode sinh từ project.yml (XcodeGen)
+│   ├── model/          # KMP: test + result models (shared by apps & backend); embeds sample tests at build time
+│   └── exam-engine/    # KMP: scoring, answer normalisation, band conversion (unit tested)
+├── shared/             # KMP: networking (Ktor), cache (SQLDelight), repository, ViewModels, Koin
+│                       #      → exports the "Shared" framework to Swift via SKIE
+├── ui-compose/         # Compose screens shared by Android + Desktop
+├── app-android/        # Android entry point
+├── app-desktop/        # Desktop entry point → .msi/.exe installers for Windows
+├── app-apple/          # SwiftUI for iOS + macOS; Xcode project generated from project.yml (XcodeGen)
 ├── backend/            # Ktor API + Dockerfile
 ├── content/
-│   ├── reading/        # Đề Reading dạng JSON (nguồn sự thật duy nhất cho đề mẫu)
-│   └── schema/         # JSON Schema của đề
+│   ├── reading/        # Reading tests as JSON (single source of truth for sample tests)
+│   └── schema/         # JSON Schema for tests
 ├── web/                # Phase 3
-└── docker-compose.yml  # API + PostgreSQL cho dev local
+└── docker-compose.yml  # API + PostgreSQL for local development
 ```
 
-Luồng dữ liệu: UI chỉ render `state` (StateFlow) của ViewModel trong `shared` và gọi hàm hành động
-(`answer`, `submit`…). Repository thử API trước, lỗi thì dùng cache SQLite, cuối cùng dùng đề nhúng sẵn.
+Data flow: the UI only renders the ViewModel's `state` (a StateFlow in `shared`) and calls actions
+(`answer`, `submit`, …). The repository tries the API first, then the SQLite cache, then the bundled tests.
 
-## Yêu cầu
+## Requirements
 
-- Android Studio (bản mới, hỗ trợ AGP 9) + Android SDK
-- JDK 17+ (Gradle tự tải JDK 17 qua foojay nếu cần)
-- Xcode 26 + `brew install xcodegen` (cho iOS/macOS)
-- Docker (cho backend local)
+- A recent Android Studio (with AGP 9 support) + Android SDK
+- JDK 17+ (Gradle downloads JDK 17 via foojay if needed)
+- Xcode 26 + `brew install xcodegen` (for iOS/macOS)
+- Docker (for the local backend)
 
-> Mở thư mục gốc bằng Android Studio một lần để nó tạo `local.properties` (đường dẫn Android SDK).
-> Chạy Gradle từ terminal mà chưa có file này thì cần đặt biến `ANDROID_HOME`.
+> Open the root directory in Android Studio once so it creates `local.properties` (the Android SDK path).
+> When running Gradle from a terminal without that file, set `ANDROID_HOME`.
 
-## Chạy
+## Running
 
 ### 1. Backend
 
 ```bash
-./gradlew :backend:run                    # chạy trực tiếp, http://localhost:8080/health
-# hoặc bằng Docker:
+./gradlew :backend:run                    # run directly, http://localhost:8080/health
+# or with Docker:
 ./gradlew :backend:shadowJar && docker compose up --build
 ```
 
-API Phase 1:
+Phase 1 API:
 
-| Method | Path | Mô tả |
+| Method | Path | Description |
 | --- | --- | --- |
-| GET | `/health` | Kiểm tra sống |
-| GET | `/api/v1/reading/tests` | Danh sách đề |
-| GET | `/api/v1/reading/tests/{id}` | Chi tiết đề |
-| POST | `/api/v1/reading/tests/{id}/submit` | Chấm bài (`{"answers": {"q1": "TRUE", ...}}`) |
+| GET | `/health` | Liveness check |
+| GET | `/api/v1/reading/tests` | List tests |
+| GET | `/api/v1/reading/tests/{id}` | Test details |
+| POST | `/api/v1/reading/tests/{id}/submit` | Score answers (`{"answers": {"q1": "TRUE", ...}}`) |
 
-Không chạy backend thì app vẫn dùng được đề nhúng sẵn (hiện nhãn offline).
+Without a running backend the apps still work with the bundled tests (and show an offline label).
 
 ### 2. Android
 
-Chạy cấu hình `app-android` trong Android Studio, hoặc:
+Run the `app-android` configuration in Android Studio, or:
 
 ```bash
 ./gradlew :app-android:installDebug
 ```
 
-Emulator gọi backend qua `http://10.0.2.2:8080` (đặt trong `app-android/build.gradle.kts`).
+The emulator reaches the backend at `http://10.0.2.2:8080` (set in `app-android/build.gradle.kts`).
 
 ### 3. Windows / Desktop
 
 ```bash
 ./gradlew :app-desktop:run
-./gradlew :app-desktop:packageMsi   # chạy trên Windows để ra bộ cài .msi
+./gradlew :app-desktop:packageMsi   # run on Windows to produce an .msi installer
 ```
 
 ### 4. iOS / macOS
 
 ```bash
 cd app-apple
-xcodegen                     # sinh LanguagePlatform.xcodeproj từ project.yml
+xcodegen                     # generates LanguagePlatform.xcodeproj from project.yml
 open LanguagePlatform.xcodeproj
 ```
 
-Chọn scheme `LanguagePlatformiOS` (Simulator) hoặc `LanguagePlatformMac`, rồi Run. Build phase của Xcode tự gọi
-`./gradlew :shared:embedAndSignAppleFrameworkForXcode` để build framework Kotlin.
-Chạy trên máy thật cần điền Team trong *Signing & Capabilities*.
+Pick the `LanguagePlatformiOS` (Simulator) or `LanguagePlatformMac` scheme and Run. An Xcode build phase calls
+`./gradlew :shared:embedAndSignAppleFrameworkForXcode` to build the Kotlin framework.
+Running on a real device requires setting your Team under *Signing & Capabilities*.
 
-### Test
+### Tests
 
 ```bash
 ./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test
 ```
 
-## Thêm đề mới
+## Adding a test
 
-1. Tạo file JSON trong `content/reading/` theo `content/schema/reading-test.schema.json`
-   (số thứ tự câu liên tục từ 1; đáp án MCQ phải là `key` của option).
-2. Build lại: đề được nhúng vào app và backend; `BundledContentTest` kiểm tra tính hợp lệ.
+1. Add a JSON file to `content/reading/` following `content/schema/reading-test.schema.json`
+   (question numbers run consecutively from 1; MCQ answers must be option `key`s).
+2. Rebuild: the test is embedded into the apps and the backend; `BundledContentTest` validates it.
 
-Nội dung đề phải là **đề tự soạn hoặc có license** — không dùng đề trong sách Cambridge/đề thi thật.
+Test content must be **original or properly licensed** — never use material from Cambridge books or real exams.
 
-## Ghi chú kỹ thuật
+## Technical notes
 
-- Bảng quy đổi band trong `BandScale` là bảng tham khảo; UI luôn ghi "band ước tính".
-- Phase 1 gửi đáp án về client để chấm offline. Khi có Premium, chuyển chấm sang server.
-- Chỉ build `macosArm64` (Apple Silicon). Cần Mac Intel thì thêm target `macosX64`.
-- Windows dùng Compose Desktop (JVM). PeopleInSpace có thêm hướng WinUI 3 thuần native gọi Kotlin/Native
-  qua NuGet (xem `_reference/PeopleInSpace/windows/`) — còn thử nghiệm, cân nhắc sau.
+- The conversion tables in `BandScale` are reference tables; the UI always says "estimated band".
+- Phase 1 ships answer keys to the client for offline scoring. Scoring moves to the server once Premium exists.
+- Only `macosArm64` (Apple Silicon) is built. Add a `macosX64` target if Intel Macs are needed.
+- Windows uses Compose Desktop (JVM). PeopleInSpace also has a fully native WinUI 3 client that calls
+  Kotlin/Native through NuGet (see `_reference/PeopleInSpace/windows/`) — still experimental, to revisit later.
+- UI strings are in Vietnamese for now (hard-coded); they will move to string resources when localisation is added.
 
-## Tham khảo
+## Credits
 
-Cấu hình KMP ban đầu học theo [PeopleInSpace](https://github.com/joreilly/PeopleInSpace) (Apache-2.0) — xem `NOTICE`.
-Bản clone để đọc nằm ở `_reference/PeopleInSpace` (không thuộc repo, đã có trong `.gitignore`).
+The initial KMP setup was based on [PeopleInSpace](https://github.com/joreilly/PeopleInSpace) (Apache-2.0) — see `NOTICE`.
+A reference clone lives in `_reference/PeopleInSpace` (not part of the repo; listed in `.gitignore`).

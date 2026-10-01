@@ -1,4 +1,4 @@
-# kotlinx.serialization giữ serializer được sinh ra
+# kotlinx.serialization: keep generated serializers
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.**
 -keepclassmembers class com.app.platform.language.** {
@@ -8,6 +8,6 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Ktor tham chiếu class JVM không có trên Android
+# Ktor references JVM classes that do not exist on Android
 -dontwarn java.lang.management.**
 -dontwarn org.slf4j.**

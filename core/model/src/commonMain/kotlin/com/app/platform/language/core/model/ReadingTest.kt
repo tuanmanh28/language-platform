@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Một đề Reading. Cấu trúc khớp với content/schema/reading-test.schema.json.
- * Đề là dữ liệu (không hard-code trong app) nên thêm đề mới không cần phát hành app.
+ * A Reading test. Matches content/schema/reading-test.schema.json.
+ * Tests are data (not hard-coded in the apps), so new tests ship without an app release.
  */
 @Serializable
 data class ReadingTest(
@@ -45,7 +45,7 @@ data class Passage(
     val questionGroups: List<QuestionGroup>,
 )
 
-/** [label] là A, B, C… dùng cho dạng câu hỏi matching; có thể null. */
+/** [label] is A, B, C… used by matching questions; may be null. */
 @Serializable
 data class Paragraph(
     val label: String? = null,
@@ -57,7 +57,7 @@ data class QuestionGroup(
     val id: String,
     val type: QuestionType,
     val instruction: String,
-    /** Giới hạn số từ cho dạng điền từ, vd. "NO MORE THAN TWO WORDS" = 2. */
+    /** Word limit for completion questions, e.g. "NO MORE THAN TWO WORDS" = 2. */
     val maxWords: Int? = null,
     val questions: List<Question>,
 )
@@ -69,7 +69,7 @@ enum class QuestionType {
     @SerialName("yes_no_not_given") YES_NO_NOT_GIVEN,
     @SerialName("sentence_completion") SENTENCE_COMPLETION;
 
-    /** Các lựa chọn cố định cho dạng TRUE/FALSE/NOT GIVEN và YES/NO/NOT GIVEN; rỗng với dạng khác. */
+    /** Fixed choices for TRUE/FALSE/NOT GIVEN and YES/NO/NOT GIVEN; empty for other types. */
     val fixedChoices: List<String>
         get() = when (this) {
             TRUE_FALSE_NOT_GIVEN -> listOf("TRUE", "FALSE", "NOT GIVEN")
@@ -83,11 +83,11 @@ data class Question(
     val id: String,
     val number: Int,
     val prompt: String,
-    /** Chỉ dùng cho multiple_choice. */
+    /** Only used by multiple_choice. */
     val options: List<ChoiceOption> = emptyList(),
     /**
-     * Đáp án chấp nhận. Phase 1 gửi kèm về client để chấm offline;
-     * khi có tài khoản Premium sẽ chuyển sang chấm ở server.
+     * Accepted answers. Phase 1 ships them to the client for offline scoring;
+     * scoring moves to the server once Premium accounts exist.
      */
     val acceptedAnswers: List<String>,
     val explanation: String? = null,

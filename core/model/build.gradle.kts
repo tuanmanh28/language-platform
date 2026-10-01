@@ -4,9 +4,9 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-// Nội dung đề mẫu trong /content/reading/*.json được nhúng vào code lúc build,
-// để app chạy được offline lần đầu và backend phục vụ cùng một nguồn dữ liệu.
-// Biến khai báo BÊN TRONG register {} để doLast chỉ giữ biến local (an toàn với configuration cache).
+// Sample tests in /content/reading/*.json are embedded into code at build time, so the apps work
+// offline on first launch and the backend serves the same source of truth.
+// Values are declared INSIDE register {} so doLast only captures locals (configuration-cache safe).
 val generateBundledContent = tasks.register("generateBundledContent") {
     val contentDir = rootProject.layout.projectDirectory.dir("content/reading")
     val generatedDir = layout.buildDirectory.dir("generated/bundledContent/commonMain/kotlin")

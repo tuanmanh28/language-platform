@@ -19,7 +19,7 @@ private sealed interface Screen {
     data class Session(val testId: String) : Screen
 }
 
-/** Màn hình gốc cho Android và Desktop. Koin phải được khởi tạo trước (initKoin). */
+/** Root composable for Android and Desktop. Koin must be started first (initKoin). */
 @Composable
 fun LanguagePlatformApp() {
     LanguagePlatformTheme {
@@ -40,9 +40,9 @@ fun LanguagePlatformApp() {
 }
 
 /**
- * Mỗi lần mở một màn hình có ViewModelStore riêng, bị xoá khi rời màn hình.
- * Nhờ vậy mỗi lần vào làm bài là một phiên mới (timer không thể "tạm dừng" bằng cách thoát ra rồi vào lại).
- * Khi app có nhiều màn hình hơn, thay bằng navigation-compose (mỗi back-stack entry tự có store).
+ * Gives each opened screen its own ViewModelStore, cleared when the screen is left.
+ * Every visit to a test is a fresh attempt (the timer cannot be "paused" by leaving and coming back).
+ * Once the app has more screens, replace this with navigation-compose (each back-stack entry owns a store).
  */
 @Composable
 private fun ScopedViewModels(key: Any, content: @Composable () -> Unit) {
@@ -59,6 +59,6 @@ private fun ScopedViewModels(key: Any, content: @Composable () -> Unit) {
     }
 }
 
-/** Nút Back hệ thống (Android). Desktop không có nên là no-op. */
+/** System Back button (Android). Desktop has none, so it is a no-op there. */
 @Composable
 internal expect fun PlatformBackHandler(enabled: Boolean = true, onBack: () -> Unit)

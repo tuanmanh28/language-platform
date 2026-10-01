@@ -3,8 +3,8 @@ import Shared
 
 struct ReadingSessionView: View {
     let testId: String
-    // @StateObject chỉ tạo holder MỘT lần cho mỗi lần màn hình xuất hiện (autoclosure),
-    // nên không sinh thừa ViewModel khi SwiftUI dựng lại struct.
+    // @StateObject creates the holder only ONCE per appearance of the screen (autoclosure),
+    // so re-creating the struct does not spawn extra ViewModels.
     @StateObject private var holder: ViewModelHolder<ReadingSessionViewModel>
 
     init(testId: String) {
@@ -47,7 +47,7 @@ private struct InProgressView: View {
     let viewModel: ReadingSessionViewModel
     @State private var confirmSubmit = false
 
-    /// iPad ngang và Mac: bài đọc và câu hỏi đặt song song.
+    /// iPad landscape and Mac: passage and questions side by side.
     private let twoPaneMinWidth: CGFloat = 840
 
     var body: some View {
@@ -199,7 +199,7 @@ private struct QuestionItemView: View {
         }
     }
 
-    /// Giống QuestionType.fixedChoices bên Kotlin; viết lại ở Swift để không phụ thuộc cách SKIE bridge thành viên của enum.
+    /// Mirrors QuestionType.fixedChoices in Kotlin; duplicated in Swift to avoid depending on how SKIE bridges enum members.
     private func fixedChoices(for type: QuestionType) -> [String] {
         switch type {
         case .trueFalseNotGiven: return ["TRUE", "FALSE", "NOT GIVEN"]

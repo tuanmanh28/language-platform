@@ -7,12 +7,12 @@ import com.app.platform.language.core.model.ReadingResult
 import com.app.platform.language.core.model.ReadingTest
 
 /**
- * Chấm một bài Reading. Cùng một code chạy trong app (chấm offline) và trên backend,
- * nên kết quả luôn khớp nhau.
+ * Scores a Reading test. The same code runs in the apps (offline scoring) and on the backend,
+ * so results always match.
  */
 object ReadingScorer {
 
-    /** @param answers questionId -> câu trả lời thô người học nhập. */
+    /** @param answers questionId -> raw answer entered by the learner. */
     fun score(test: ReadingTest, answers: Map<String, String>): ReadingResult {
         val results = test.passages.flatMap { passage ->
             passage.questionGroups.flatMap { group ->
@@ -34,7 +34,7 @@ object ReadingScorer {
         val normalizedUser = userAnswer?.let { AnswerNormalizer.normalize(it, group.type) }
         val accepted = question.acceptedAnswers.map { AnswerNormalizer.normalize(it, group.type) }
 
-        // Gán ra biến local: property của class ở module khác không smart-cast được.
+        // Copy to a local: properties of classes from another module cannot be smart-cast.
         val maxWords = group.maxWords
         val withinWordLimit = maxWords == null ||
             normalizedUser == null ||

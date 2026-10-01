@@ -13,7 +13,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.util.getOrFail
 
-/** Nguồn đề thi. Phase 1 dùng đề nhúng sẵn; bước tiếp theo thay bằng PostgreSQL + Admin CMS. */
+/** Source of tests. Phase 1 serves the bundled tests; next step is PostgreSQL + an admin CMS. */
 interface ContentStore {
     fun readingTests(): List<ReadingTest>
     fun readingTest(id: String): ReadingTest?

@@ -16,7 +16,7 @@ application {
 }
 
 dependencies {
-    // Cùng model + logic chấm với app → kết quả chấm ở server và trên máy luôn khớp
+    // Same model + scoring logic as the apps, so server and on-device scores always match
     implementation(projects.core.model)
     implementation(projects.core.examEngine)
 
@@ -38,7 +38,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-// Fat jar dùng cho Docker: backend/build/libs/backend-all.jar
+// Fat jar for Docker: backend/build/libs/backend-all.jar
 tasks.named<ShadowJar>("shadowJar") {
     archiveFileName.set("backend-all.jar")
     mergeServiceFiles()
