@@ -26,32 +26,41 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [AND-01](AND-01.md) | Design tokens pipeline | android | R-01 |
 | [AND-02](AND-02.md) | Core component library | android | AND-01, S-03 |
 | [AND-03](AND-03.md) | App navigation shell | android | R-01, S-03 |
-| [AND-04](AND-04.md) | Reading experience v2 | android | AND-02, AND-03, AND-05 |
-| [AND-05](AND-05.md) | Vocabulary: save words and FSRS review | android | AND-03 |
-| [AND-06](AND-06.md) | Progress and streak | android | AND-03 |
-| [AND-07](AND-07.md) | Sign-in with Google and authenticated API client | android | AND-03, BE-04 |
-| [AND-08](AND-08.md) | Listening player and practice | android | AND-02, AND-03, BE-08 |
+| [AND-04](AND-04.md) | Reading experience v2 | android | AND-02, AND-03, AND-05, AND-18, DS-03 |
+| [AND-05](AND-05.md) | Vocabulary: save words and FSRS review | android | AND-03, AND-18, DS-05 |
+| [AND-06](AND-06.md) | Progress and streak | android | AND-03, AND-18, DS-02 |
+| [AND-07](AND-07.md) | Sign-in with Google and authenticated API client | android | AND-03, AND-18, BE-04, DS-02 |
+| [AND-08](AND-08.md) | Listening player and practice | android | AND-02, AND-03, AND-18, BE-08, DS-03 |
 | [BE-09](BE-09.md) | Private content store and owner-only access | be | BE-03, BE-04, BE-08 |
 | [BE-10](BE-10.md) | Detailed explanations, evidence and paraphrases per question | be | BE-08 |
 | [BE-11](BE-11.md) | Content import tool: extract, validate, seed | be | BE-09, BE-10 |
 | [BE-12](BE-12.md) | Claude Code skill to import a full IELTS test | be | BE-11 |
 | [BE-13](BE-13.md) | Strategy tips per question type | be | BE-10 |
-| [AND-09](AND-09.md) | Answer review with evidence and paraphrases | android | AND-04, AND-08, BE-10 |
-| [AND-10](AND-10.md) | Accuracy by question type and tips | android | AND-06, AND-09, BE-13 |
+| [AND-09](AND-09.md) | Answer review with evidence and paraphrases | android | AND-04, AND-08, AND-18, BE-10, DS-03 |
+| [AND-10](AND-10.md) | Accuracy by question type and tips | android | AND-06, AND-09, AND-18, BE-13, DS-03 |
 | [BE-14](BE-14.md) | Writing prompts and submissions | be | BE-09 |
 | [BE-15](BE-15.md) | Detailed AI grading for Writing | be | BE-14 |
 | [BE-16](BE-16.md) | Calibrate AI grading against examiner scores | be | BE-15, BE-11 |
-| [AND-11](AND-11.md) | Writing room | android | AND-03, AND-07, BE-14 |
-| [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, BE-15, AND-15 |
+| [AND-11](AND-11.md) | Writing room | android | AND-03, AND-07, AND-18, BE-14, DS-06 |
+| [AND-12](AND-12.md) | Writing feedback screen | android | AND-11, AND-15, AND-18, BE-15, DS-06 |
 | [BE-17](BE-17.md) | Sentence and word timestamps for Listening transcripts | be | BE-11, BE-19 |
-| [AND-13](AND-13.md) | Intensive listening: replay section by section and sentence by sentence | android | AND-09, BE-17 |
-| [AND-14](AND-14.md) | Dictation practice (chép chính tả) like Study4 | android | AND-13 |
+| [AND-13](AND-13.md) | Intensive listening: replay section by section and sentence by sentence | android | AND-09, AND-18, BE-17, DS-04 |
+| [AND-14](AND-14.md) | Dictation practice (chép chính tả) like Study4 | android | AND-13, AND-18, DS-04 |
 | [BE-18](BE-18.md) | Dictionary lookup for flashcards | be | BE-04 |
-| [AND-15](AND-15.md) | Flashcard decks like Quizlet | android | AND-05, BE-18 |
-| [AND-16](AND-16.md) | Flashcard study modes with spaced repetition | android | AND-15 |
-| [AND-17](AND-17.md) | Spaced repetition settings and statistics | android | AND-16, AND-06 |
+| [AND-15](AND-15.md) | Flashcard decks like Quizlet | android | AND-05, AND-18, BE-18, DS-05 |
+| [AND-16](AND-16.md) | Flashcard study modes with spaced repetition | android | AND-15, AND-18, DS-05 |
+| [AND-17](AND-17.md) | Spaced repetition settings and statistics | android | AND-06, AND-16, AND-18, DS-05 |
 | [BE-19](BE-19.md) | Ingest a library of IELTS books: unpack, dedupe, OCR, audio | be | BE-11 |
 | [BE-20](BE-20.md) | Unattended import runner for the whole library | be | BE-12, BE-17, BE-19, BE-14 |
+| [DS-01](DS-01.md) | Design direction and visual language | design | — |
+| [DS-02](DS-02.md) | Information architecture, navigation and home | design | DS-01 |
+| [DS-03](DS-03.md) | Reading and Listening test room, results and review | design | DS-01 |
+| [DS-04](DS-04.md) | Intensive listening and dictation | design | DS-01 |
+| [DS-05](DS-05.md) | Vocabulary, flashcards and spaced repetition | design | DS-01 |
+| [DS-06](DS-06.md) | Writing room and feedback | design | DS-01 |
+| [S-04](S-04.md) | Render every Compose preview to screenshots | core | S-03 |
+| [AND-18](AND-18.md) | Apply the design direction to tokens, components and motion | android | DS-01, S-04 |
+| [AND-19](AND-19.md) | Home, onboarding and navigation per the design | android | DS-02, AND-03, AND-06, AND-18 |
 
 ```
 F-01 ─ U-01 ─ S-01 ─ S-02 ─ R-01
@@ -116,5 +125,19 @@ to the owner's account only (BE-09). The repo keeps original samples.
 ```
 BE-19  ← BE-11                      ingest archives: unpack, dedupe, OCR, audio normalise, page classification
 BE-20  ← BE-12, BE-17, BE-19, BE-14 unattended import runner (scripts/content/import-library.py)
+```
+
+### Product design
+
+A product designer (`ux-design` skill) designs each area before it is built, and the `design-reviewer` agent reviews
+design tasks and, after the code review, every UI task using the rendered screenshots.
+
+```
+DS-01                               design direction: visual language, motion, components
+DS-02..DS-06 ← DS-01                navigation + home, test room + review, listening study, vocabulary, writing
+S-04   ← S-03                       every @Preview rendered to screenshots
+AND-18 ← DS-01, S-04                apply the direction to tokens, components and motion
+AND-19 ← DS-02, AND-03, AND-06, AND-18   home, onboarding, navigation per the design
+UI tasks (AND-04…AND-17) ← their DS area + AND-18
 ```
 

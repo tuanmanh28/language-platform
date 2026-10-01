@@ -34,6 +34,7 @@ IELTS practice platform: Kotlin Multiplatform shared core, native UI per platfor
 | change the database | `backend-database` |
 | write tests | `testing` |
 | add or upgrade dependencies, edit Gradle | `gradle-dependency` |
+| design a screen, flow, motion or visual style | `ux-design` |
 | name anything, format code | `code-conventions` |
 | branch, commit, merge, release | `git-workflow` |
 
@@ -80,7 +81,8 @@ Your task spec lists the exact verify command. It must pass before you commit.
 3. **Do not touch** `_reference/`, generated files, CI secrets, or other tasks' areas.
 4. **Blocked** (missing secret, unclear requirement, failure outside your scope): write `BLOCKED.md` explaining exactly what
    you need, commit it, stop.
-5. **Review is mandatory:** after verify passes, the `code-reviewer` subagent reviews your branch. `blocker`/`major`
+5. **Review is mandatory:** after verify passes, the `code-reviewer` subagent reviews your branch; UI tasks then go to
+   the `design-reviewer` (screenshots against `docs/design/`), design tasks only to the `design-reviewer`. `blocker`/`major`
    findings come back to you to fix.
 
 ## Final summary (print at the end)

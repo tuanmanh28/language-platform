@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/answer-evidence-review`
 - **Lane:** android
-- **Depends on:** AND-04, AND-08, BE-10
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-04, AND-08, AND-18, BE-10, DS-03
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 After a test, every question shows why the key is right and where it comes from.
@@ -13,6 +14,7 @@ After a test, every question shows why the key is right and where it comes from.
 - Reading review: tapping a question scrolls the passage to the evidence paragraph and highlights the quote; paraphrase pairs shown side by side; trap shown for wrong answers.
 - Listening review: transcript per section with the evidence range highlighted and tap-to-seek in the player from AND-08.
 - Design-system components only; strings in resources (Vietnamese).
+- Design: follow `docs/design/test-room/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

@@ -8,7 +8,8 @@ reasonable decisions within the task's scope and note them in your final summary
 2. If `BLOCKED.md` exists from a previous attempt, read it first, resolve what it asks, and `git rm` it.
    Read your task spec: `{spec}`. Read the specs of its dependencies only if you need context.
 3. Explore the relevant code before editing. Keep the change focused on this task.
-4. Implement the task, including tests. Clean architecture, simple logic, no unnecessary comments (English only).
+4. UI work follows the area's design spec in `docs/design/` and the `ux-design` skill: beautiful, simple, friendly,
+   smooth transitions. Implement the task, including tests. Clean architecture, simple logic, no unnecessary comments (English only).
    New libraries at their latest stable version.
 5. Run the verify command and fix problems until it passes:
 

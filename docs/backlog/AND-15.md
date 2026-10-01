@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/flashcard-decks`
 - **Lane:** android
-- **Depends on:** AND-05, BE-18
-- **Verify:** `./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-05, AND-18, BE-18, DS-05
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Organise vocabulary into decks with rich cards.
@@ -14,6 +15,7 @@ Organise vocabulary into decks with rich cards.
 - Card editor with live preview; bulk add by pasting a word list; import/export CSV and Quizlet-style text (`term<TAB>definition` per line).
 - Deck screen: card list with search, sort (due, added, difficulty), suspend/unsuspend, move between decks; counts of new / learning / due.
 - SQLDelight schema with `.sqm` migration from AND-05's words table (no data loss).
+- Design: follow `docs/design/vocabulary/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

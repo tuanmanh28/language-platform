@@ -71,6 +71,109 @@
       "spec": "docs/backlog/S-03.md"
     },
     {
+      "id": "S-04",
+      "type": "test",
+      "slug": "compose-screenshots",
+      "title": "Render every Compose preview to screenshots",
+      "lane": "core",
+      "deps": [
+        "S-03"
+      ],
+      "verify": "./gradlew spotlessCheck :ui-compose:screenshots",
+      "reviewers": [
+        "code-reviewer"
+      ],
+      "spec": "docs/backlog/S-04.md"
+    },
+    {
+      "id": "DS-01",
+      "type": "docs",
+      "slug": "design-direction",
+      "title": "Design direction and visual language",
+      "lane": "design",
+      "deps": [],
+      "verify": "test -s docs/design/direction/README.md && ls docs/design/direction/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-01.md"
+    },
+    {
+      "id": "DS-03",
+      "type": "docs",
+      "slug": "design-test-room-and-review",
+      "title": "Reading and Listening test room, results and review",
+      "lane": "design",
+      "deps": [
+        "DS-01"
+      ],
+      "verify": "test -s docs/design/test-room/README.md && ls docs/design/test-room/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-03.md"
+    },
+    {
+      "id": "DS-05",
+      "type": "docs",
+      "slug": "design-vocabulary",
+      "title": "Vocabulary, flashcards and spaced repetition",
+      "lane": "design",
+      "deps": [
+        "DS-01"
+      ],
+      "verify": "test -s docs/design/vocabulary/README.md && ls docs/design/vocabulary/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-05.md"
+    },
+    {
+      "id": "DS-02",
+      "type": "docs",
+      "slug": "design-navigation-and-home",
+      "title": "Information architecture, navigation and home",
+      "lane": "design",
+      "deps": [
+        "DS-01"
+      ],
+      "verify": "test -s docs/design/navigation-home/README.md && ls docs/design/navigation-home/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-02.md"
+    },
+    {
+      "id": "DS-04",
+      "type": "docs",
+      "slug": "design-listening-study",
+      "title": "Intensive listening and dictation",
+      "lane": "design",
+      "deps": [
+        "DS-01"
+      ],
+      "verify": "test -s docs/design/listening-study/README.md && ls docs/design/listening-study/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-04.md"
+    },
+    {
+      "id": "DS-06",
+      "type": "docs",
+      "slug": "design-writing",
+      "title": "Writing room and feedback",
+      "lane": "design",
+      "deps": [
+        "DS-01"
+      ],
+      "verify": "test -s docs/design/writing/README.md && ls docs/design/writing/mockups/*.html",
+      "reviewers": [
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/DS-06.md"
+    },
+    {
       "id": "BE-01",
       "type": "feat",
       "slug": "backend-config",
@@ -214,10 +317,16 @@
       "deps": [
         "AND-02",
         "AND-03",
-        "AND-05"
+        "AND-05",
+        "AND-18",
+        "DS-03"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
-      "spec": "docs/backlog/AND-04.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-04.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-05",
@@ -226,10 +335,16 @@
       "title": "Vocabulary: save words and FSRS review",
       "lane": "android",
       "deps": [
-        "AND-03"
+        "AND-03",
+        "AND-18",
+        "DS-05"
       ],
-      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
-      "spec": "docs/backlog/AND-05.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-05.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-06",
@@ -238,10 +353,16 @@
       "title": "Progress and streak",
       "lane": "android",
       "deps": [
-        "AND-03"
+        "AND-03",
+        "AND-18",
+        "DS-02"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
-      "spec": "docs/backlog/AND-06.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-06.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-07",
@@ -251,10 +372,16 @@
       "lane": "android",
       "deps": [
         "AND-03",
-        "BE-04"
+        "AND-18",
+        "BE-04",
+        "DS-02"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
-      "spec": "docs/backlog/AND-07.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-07.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-08",
@@ -265,10 +392,16 @@
       "deps": [
         "AND-02",
         "AND-03",
-        "BE-08"
+        "AND-18",
+        "BE-08",
+        "DS-03"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
-      "spec": "docs/backlog/AND-08.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-08.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "BE-09",
@@ -342,10 +475,16 @@
       "deps": [
         "AND-04",
         "AND-08",
-        "BE-10"
+        "AND-18",
+        "BE-10",
+        "DS-03"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-09.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-09.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-10",
@@ -356,10 +495,16 @@
       "deps": [
         "AND-06",
         "AND-09",
-        "BE-13"
+        "AND-18",
+        "BE-13",
+        "DS-03"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-10.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-10.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "BE-14",
@@ -407,10 +552,16 @@
       "deps": [
         "AND-03",
         "AND-07",
-        "BE-14"
+        "AND-18",
+        "BE-14",
+        "DS-06"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-11.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-11.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-12",
@@ -421,10 +572,16 @@
       "deps": [
         "AND-11",
         "AND-15",
-        "BE-15"
+        "AND-18",
+        "BE-15",
+        "DS-06"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-12.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-12.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "BE-17",
@@ -447,10 +604,16 @@
       "lane": "android",
       "deps": [
         "AND-09",
-        "BE-17"
+        "AND-18",
+        "BE-17",
+        "DS-04"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-13.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-13.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-14",
@@ -459,10 +622,16 @@
       "title": "Dictation practice (chép chính tả) like Study4",
       "lane": "android",
       "deps": [
-        "AND-13"
+        "AND-13",
+        "AND-18",
+        "DS-04"
       ],
-      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-14.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-14.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "BE-18",
@@ -484,10 +653,16 @@
       "lane": "android",
       "deps": [
         "AND-05",
-        "BE-18"
+        "AND-18",
+        "BE-18",
+        "DS-05"
       ],
-      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-15.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-15.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-16",
@@ -496,10 +671,16 @@
       "title": "Flashcard study modes with spaced repetition",
       "lane": "android",
       "deps": [
-        "AND-15"
+        "AND-15",
+        "AND-18",
+        "DS-05"
       ],
-      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-16.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-16.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "AND-17",
@@ -508,11 +689,17 @@
       "title": "Spaced repetition settings and statistics",
       "lane": "android",
       "deps": [
+        "AND-06",
         "AND-16",
-        "AND-06"
+        "AND-18",
+        "DS-05"
       ],
-      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
-      "spec": "docs/backlog/AND-17.md"
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "spec": "docs/backlog/AND-17.md",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ]
     },
     {
       "id": "BE-19",
@@ -540,6 +727,42 @@
       ],
       "verify": "./gradlew spotlessCheck :core:model:jvmTest :backend:test :tools:content-import:test",
       "spec": "docs/backlog/BE-20.md"
+    },
+    {
+      "id": "AND-18",
+      "type": "feat",
+      "slug": "apply-design-direction",
+      "title": "Apply the design direction to tokens, components and motion",
+      "lane": "android",
+      "deps": [
+        "DS-01",
+        "S-04"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/AND-18.md"
+    },
+    {
+      "id": "AND-19",
+      "type": "feat",
+      "slug": "home-and-navigation",
+      "title": "Home, onboarding and navigation per the design",
+      "lane": "android",
+      "deps": [
+        "DS-02",
+        "AND-03",
+        "AND-06",
+        "AND-18"
+      ],
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "reviewers": [
+        "code-reviewer",
+        "design-reviewer"
+      ],
+      "spec": "docs/backlog/AND-19.md"
     }
   ]
 }

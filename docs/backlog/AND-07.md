@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/google-sign-in`
 - **Lane:** android
-- **Depends on:** AND-03, BE-04
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Depends on:** AND-03, AND-18, BE-04, DS-02
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Users sign in so attempts sync to the backend (BE-05 consumes this).
@@ -12,6 +13,7 @@ Users sign in so attempts sync to the backend (BE-05 consumes this).
 - Firebase Auth on Android with Google sign-in (Credential Manager). Firebase config file is **not** committed: read it from `app-android/google-services.json` (gitignored) and document setup in README.
 - `shared`: `AuthTokenProvider` interface (platform implementations), Ktor client attaches `Authorization: Bearer` and refreshes on 401.
 - Tôi tab: sign in / sign out, show account; the app stays fully usable signed out.
+- Design: follow `docs/design/navigation-home/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Acceptance criteria
 - `shared` tests for header attachment and 401 refresh with a fake provider.

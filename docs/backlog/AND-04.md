@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/reading-v2`
 - **Lane:** android
-- **Depends on:** AND-02, AND-03, AND-05
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Depends on:** AND-02, AND-03, AND-05, AND-18, DS-03
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Make Reading practice genuinely useful for study.
@@ -14,6 +15,7 @@ Make Reading practice genuinely useful for study.
 - Question navigator (grid of numbers, answered/unanswered state) and "flag for review".
 - Remember an in-progress attempt (answers + remaining time) across process death via the shared layer.
 - All state logic in `shared` ViewModels with tests; Compose only renders.
+- Design: follow `docs/design/test-room/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Acceptance criteria
 - `shared` tests cover review state, navigator state and restore.

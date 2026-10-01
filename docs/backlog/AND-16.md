@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/flashcard-study-modes`
 - **Lane:** android
-- **Depends on:** AND-15
-- **Verify:** `./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-15, AND-18, DS-05
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Study cards in several ways while FSRS schedules every review.
@@ -15,6 +16,7 @@ Study cards in several ways while FSRS schedules every review.
 - **Match:** timed game matching terms and meanings, best time per deck.
 - **Test:** generated quiz (mixed question types) with a score report; wrong answers can be added to a re-study list.
 - Choose direction (EN→VI, VI→EN, audio→EN), shuffle, star cards to study only starred.
+- Design: follow `docs/design/vocabulary/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

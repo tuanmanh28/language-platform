@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/vocabulary-fsrs`
 - **Lane:** android
-- **Depends on:** AND-03
-- **Verify:** `./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Depends on:** AND-03, AND-18, DS-05
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Save words while practising and review them with spaced repetition.
@@ -15,6 +16,7 @@ Save words while practising and review them with spaced repetition.
 - Saving API used by AND-04: `VocabularyRepository.save(word, context)`.
 - `core/srs` implements **FSRS-6 completely**, not only the interval formula: card states New/Learning/Review/Relearning, configurable learning and relearning steps (default 1m, 10m), desired retention (default 0.9), maximum interval, interval fuzz, the 21 default parameters, retrievability, and `preview(card, now)` returning the next state for all four ratings so buttons can show their intervals.
 - Review log per rating (state before/after, elapsed days) stored for statistics and future parameter optimisation; undo of the last rating.
+- Design: follow `docs/design/vocabulary/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Acceptance criteria
 - `core/srs` tests match reference intervals; repository and ViewModel tests in `shared`.

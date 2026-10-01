@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/writing-feedback`
 - **Lane:** android
-- **Depends on:** AND-11, BE-15, AND-15
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-11, AND-15, AND-18, BE-15, DS-06
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Read and learn from the detailed grading.
@@ -17,6 +18,7 @@ Read and learn from the detailed grading.
 - Sentence-by-sentence mode: one sentence at a time, original vs corrected with differences highlighted and each issue explained; next/previous; mark as understood.
 - Strengths panel: collocations and topic vocabulary used, repeated words with alternatives, linking devices, sentence variety.
 - Save any correction or upgrade to flashcards (AND-15).
+- Design: follow `docs/design/writing/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

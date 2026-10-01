@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/dictation`
 - **Lane:** android
-- **Depends on:** AND-13
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-13, AND-18, DS-04
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Train listening precision by typing every sentence you hear.
@@ -15,6 +16,7 @@ Train listening precision by typing every sentence you hear.
 - Session score (accuracy per sentence and section), weakest sounds/words list, resume an unfinished session, history per test.
 - Words you missed can be added to flashcards in one tap with the audio range.
 - Desktop: works fully with the keyboard (Enter checks, Ctrl+R replays, Ctrl+Space slows).
+- Design: follow `docs/design/listening-study/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

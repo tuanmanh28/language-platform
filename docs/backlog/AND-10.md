@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/question-type-insights`
 - **Lane:** android
-- **Depends on:** AND-06, AND-09, BE-13
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-06, AND-09, AND-18, BE-13, DS-03
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 The learner sees which question types cost the most points and how to fix them.
@@ -11,6 +12,7 @@ The learner sees which question types cost the most points and how to fix them.
 ## Scope
 - `shared`: accuracy per question type from local attempts (Reading and Listening separately), last 30 days and all time; weakest three types.
 - Progress tab: per-type accuracy list with trend; tapping a type opens its tip (BE-13 API, cached offline) and a "practise this type" list of questions answered wrong.
+- Design: follow `docs/design/test-room/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

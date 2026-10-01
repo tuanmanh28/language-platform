@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/intensive-listening`
 - **Lane:** android
-- **Depends on:** AND-09, BE-17
-- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-09, AND-18, BE-17, DS-04
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Re-listen to any part of a test as often as needed until every word is clear.
@@ -15,6 +16,7 @@ Re-listen to any part of a test as often as needed until every word is clear.
 - Questions linked to their evidence sentences: from a wrong answer, "nghe lại đoạn này" plays exactly the evidence range, slowed down if chosen.
 - Tap a word → save to flashcards with the sentence and its audio range as context.
 - Player state and loop logic live in `shared` with a fake player in tests.
+- Design: follow `docs/design/listening-study/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.

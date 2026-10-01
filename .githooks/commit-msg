@@ -23,12 +23,12 @@ summary="${subject#*: }"
 [[ "$summary" =~ ^([a-z0-9]|[A-Z0-9]{2,}[^a-z]) ]] || fail "summary starts lowercase (acronyms allowed)"
 [[ "$subject" != *. ]] || fail "no trailing period"
 (( ${#subject} <= 72 )) || fail "subject is ${#subject} characters, max 72"
-! grep -qE '\b(BE|AND|F|U|R|S|IOS|WEB)-[0-9]+\b' <<<"$body" || fail "no task ids in commit messages"
+! grep -qE '\b(BE|AND|DS|F|U|R|S|IOS|WEB)-[0-9]+\b' <<<"$body" || fail "no task ids in commit messages"
 ! grep -qiE '^co-authored-by:.*(claude|anthropic|copilot|openai|cursor)|generated with \[?claude|claude\.ai/code|noreply@anthropic\.com' <<<"$body" \
   || fail "no AI attribution in commit messages"
 
 branch="$(git symbolic-ref --quiet --short HEAD || true)"
 if [[ -n "$branch" && "$branch" != "main" ]]; then
   [[ "$branch" =~ ^($types)/[a-z0-9]+(-[a-z0-9]+)*$ ]] || fail "branch '$branch' must be '<type>/<kebab-slug>'"
-  ! grep -qE '(^|/|-)(be|and|f|u|r|s|ios|web)-?[0-9]+(-|$)' <<<"$branch" || fail "no task ids in branch names"
+  ! grep -qE '(^|/|-)(be|and|ds|f|u|r|s|ios|web)-?[0-9]+(-|$)' <<<"$branch" || fail "no task ids in branch names"
 fi

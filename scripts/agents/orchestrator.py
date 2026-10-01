@@ -238,6 +238,7 @@ class Orchestrator:
         elif sh(["git", "rev-list", "--count", f"{MAIN_BRANCH}..HEAD"], wt).stdout.strip() == "0":
             e.update(status="failed", note="Agent made no commit (see logs)")
         elif self.run_verify(task_id):
+            e["review_stage"] = 0
             self.start_review(task_id)
         self.stop_gradle(wt)
         self.save()
@@ -262,39 +263,52 @@ class Orchestrator:
         e.update(status="failed", note=f"Verify failed (exit {rc}), see {vlog.name}")
         return False
 
+    def reviewers(self, task_id: str) -> list[str]:
+        return self.tasks[task_id].get("reviewers", ["code-reviewer"])
+
+    def review_log(self, task_id: str) -> Path:
+        agent = self.reviewers(task_id)[self.entry(task_id).get("review_stage", 0)]
+        return self.logs_dir / f"{task_id}.{agent}.json"
+
     def start_review(self, task_id: str) -> None:
         e, task = self.entry(task_id), self.tasks[task_id]
+        agent = self.reviewers(task_id)[e.setdefault("review_stage", 0)]
         prompt = (f"Review the changes on this branch for task {task_id} — {task['title']}. "
                   f"The task spec is {task['spec']}. Follow your instructions and end with the JSON verdict only.")
-        cmd = ["claude", "-p", prompt, "--agent", "code-reviewer",
+        cmd = ["claude", "-p", prompt, "--agent", agent,
                "--permission-prompts", "none", "--output-format", "json",
                "--allowedTools", *REVIEW_TOOLS]
         if self.model:
             cmd += ["--model", self.model]
-        out = self.logs_dir / f"{task_id}.review.json"
-        with open(out, "w") as fh:
+        with open(self.review_log(task_id), "w") as fh:
             proc = subprocess.Popen(cmd, cwd=e["worktree"], stdout=fh, stderr=subprocess.STDOUT,
                                     stdin=subprocess.DEVNULL, start_new_session=True)
-        e.update(status="reviewing", pid=proc.pid, note="Code review in progress")
+        e.update(status="reviewing", pid=proc.pid, note=f"{agent} in progress")
         self.save()
-        print(f"🔍 {task_id} review started (pid {proc.pid})")
+        print(f"🔍 {task_id} {agent} started (pid {proc.pid})")
 
     def finish_review(self, task_id: str) -> None:
         e = self.entry(task_id)
-        verdict = self.read_verdict(self.logs_dir / f"{task_id}.review.json")
-        if verdict is None and self.hit_limit(self.logs_dir / f"{task_id}.review.json"):
+        log = self.review_log(task_id)
+        stage = e.get("review_stage", 0)
+        verdict = self.read_verdict(log)
+        if verdict is None and self.hit_limit(log):
             e.update(status="verified", not_before=time.time() + LIMIT_WAIT_SECONDS,
                      note="Claude usage limit reached during review — reviewing again later")
         elif verdict is None:
-            e.update(status="failed", note="Review output unreadable, see logs/<id>.review.json")
+            e.update(status="failed", note=f"Review output unreadable, see {log.name}")
         else:
-            report = self.logs_dir / f"{task_id}.review.md"
+            report = log.with_suffix(".md")
             report.write_text(self.format_findings(verdict))
             blocking = [f for f in verdict.get("findings", []) if f.get("severity") in ("blocker", "major")]
+            if verdict.get("approved") and not blocking and stage + 1 < len(self.reviewers(task_id)):
+                e["review_stage"] = stage + 1
+                self.start_review(task_id)
+                return
             if verdict.get("approved") and not blocking:
-                minors = len(verdict.get("findings", []))
-                e.update(status="review", note=f"Verify + code review passed ({minors} minor notes) — `merge` when ready")
+                e.update(status="review", note="Verify + " + " + ".join(self.reviewers(task_id)) + " passed — `merge` when ready")
             else:
+                e["review_stage"] = 0
                 rounds = e.get("review_round", 0) + 1
                 e["review_round"] = rounds
                 if rounds <= REVIEW_ROUNDS:
@@ -631,10 +645,12 @@ def main() -> None:
         o.save()
         print(f"{task}: {'passed' if ok else 'failed'} — {o.entry(task).get('note')}")
     elif a.cmd == "review":
+        o.entry(task)["review_stage"] = 0
         o.start_review(task)
-        while o.alive(o.entry(task).get("pid")):
-            time.sleep(POLL_SECONDS)
-        o.finish_review(task)
+        while o.entry(task).get("status") == "reviewing":
+            while o.alive(o.entry(task).get("pid")):
+                time.sleep(POLL_SECONDS)
+            o.finish_review(task)
     elif a.cmd == "stop":
         o.stop(task)
     elif a.cmd == "merge":

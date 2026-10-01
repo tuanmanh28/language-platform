@@ -72,7 +72,7 @@ You can also edit the task spec (`docs/backlog/BE-01.md`), commit it on `main`, 
 | `pending` | Waiting for dependencies to be merged | — |
 | `running` | Agent working (or fixing review findings) | `logs <ID>` |
 | `reviewing` | Mandatory `code-reviewer` subagent checking the branch | wait |
-| `review` | Verify and code review passed (minor notes in `.agents/logs/<ID>.review.md`) | Look, then `merge` |
+| `review` | Verify and every reviewer passed (notes in `.agents/logs/<ID>.<reviewer>.md`) | Look, then `merge` |
 | `failed` | No commit, uncommitted leftovers, verify failed, or review still rejecting after 2 fix rounds | Read `logs` / `.agents/logs/<ID>.verify.log`, then `retry` |
 | `blocked` | Agent wrote `BLOCKED.md` (needs a secret, a decision…) | Unblock, then `retry` |
 | `merged` | In `main` | — |

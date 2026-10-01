@@ -2,8 +2,9 @@
 
 - **Type / branch:** `feat` / `feat/srs-settings-and-stats`
 - **Lane:** android
-- **Depends on:** AND-16, AND-06
-- **Verify:** `./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Depends on:** AND-06, AND-16, AND-18, DS-05
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :ui-compose:screenshots :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64`
+- **Reviews:** code-reviewer, design-reviewer
 
 ## Goal
 Control the review load and see memory improving.
@@ -12,6 +13,7 @@ Control the review load and see memory improving.
 - Settings per deck: new cards per day, maximum reviews per day, desired retention (0.80–0.97 with the expected workload shown), learning/relearning steps, maximum interval.
 - Statistics: reviews per day (heatmap), true retention, cards by state, forecast of due cards for the next 30 days, average time per card, hardest cards (most lapses).
 - Daily vocabulary goal and reminder hooked into AND-06's streak and notifications.
+- Design: follow `docs/design/vocabulary/` (spec and mockups) and the `ux-design` skill, including transitions and motion.
 
 ## Rules
 - Real IELTS/Cambridge material never enters git, tests, fixtures, logs or commit messages. Tests use small original fixtures you write yourself.
