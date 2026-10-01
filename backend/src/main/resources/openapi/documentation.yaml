@@ -1,0 +1,326 @@
+openapi: 3.0.3
+info:
+  title: Language Platform API
+  description: IELTS practice platform backend.
+  version: 0.1.0
+servers:
+  - url: /
+tags:
+  - name: health
+  - name: reading
+paths:
+  /health:
+    get:
+      tags: [health]
+      operationId: getHealth
+      summary: Report service status, version, environment and database reachability
+      responses:
+        "200":
+          description: Service and database are up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+        "503":
+          description: Database is unreachable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /api/v1/reading/tests:
+    get:
+      tags: [reading]
+      operationId: listReadingTests
+      summary: List published reading tests
+      parameters:
+        - $ref: "#/components/parameters/IfNoneMatch"
+      responses:
+        "200":
+          description: Published reading tests
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReadingTestSummary"
+        "304":
+          $ref: "#/components/responses/NotModified"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/reading/tests/{id}:
+    get:
+      tags: [reading]
+      operationId: getReadingTest
+      summary: Get a reading test with its passages and questions
+      parameters:
+        - $ref: "#/components/parameters/TestId"
+        - $ref: "#/components/parameters/IfNoneMatch"
+      responses:
+        "200":
+          description: The reading test
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingTest"
+        "304":
+          $ref: "#/components/responses/NotModified"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/reading/tests/{id}/submit:
+    post:
+      tags: [reading]
+      operationId: submitReadingAnswers
+      summary: Score answers to a reading test
+      parameters:
+        - $ref: "#/components/parameters/TestId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitAnswersRequest"
+      responses:
+        "200":
+          description: Scored result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+components:
+  parameters:
+    TestId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    IfNoneMatch:
+      name: If-None-Match
+      in: header
+      required: false
+      description: ETag from a previous response; a match returns 304
+      schema:
+        type: string
+  headers:
+    ETag:
+      description: Content version, quoted
+      schema:
+        type: string
+    CacheControl:
+      description: Always "public, no-cache", so clients revalidate with the ETag
+      schema:
+        type: string
+  responses:
+    NotModified:
+      description: Content is unchanged since the given ETag
+      headers:
+        ETag:
+          $ref: "#/components/headers/ETag"
+        Cache-Control:
+          $ref: "#/components/headers/CacheControl"
+    BadRequest:
+      description: Malformed request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+    NotFound:
+      description: Reading test not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+    InternalError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+  schemas:
+    ApiError:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+    HealthResponse:
+      type: object
+      required: [status, version, env, database]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        version:
+          type: string
+        env:
+          type: string
+          enum: [local, staging, prod]
+        database:
+          type: string
+          enum: [up, down]
+    IeltsModule:
+      type: string
+      enum: [academic, general_training]
+    QuestionType:
+      type: string
+      enum: [multiple_choice, true_false_not_given, yes_no_not_given, sentence_completion]
+    ReadingTestSummary:
+      type: object
+      required: [id, title, module, timeLimitMinutes, questionCount]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        module:
+          $ref: "#/components/schemas/IeltsModule"
+        timeLimitMinutes:
+          type: integer
+        questionCount:
+          type: integer
+    ReadingTest:
+      type: object
+      required: [id, schemaVersion, module, title, timeLimitMinutes, passages]
+      properties:
+        id:
+          type: string
+        schemaVersion:
+          type: integer
+        module:
+          $ref: "#/components/schemas/IeltsModule"
+        title:
+          type: string
+        timeLimitMinutes:
+          type: integer
+        passages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Passage"
+    Passage:
+      type: object
+      required: [id, title, paragraphs, questionGroups]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        paragraphs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paragraph"
+        questionGroups:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionGroup"
+    Paragraph:
+      type: object
+      required: [text]
+      properties:
+        label:
+          type: string
+        text:
+          type: string
+    QuestionGroup:
+      type: object
+      required: [id, type, instruction, questions]
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/QuestionType"
+        instruction:
+          type: string
+        maxWords:
+          type: integer
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+    Question:
+      type: object
+      required: [id, number, prompt, options, acceptedAnswers]
+      properties:
+        id:
+          type: string
+        number:
+          type: integer
+        prompt:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChoiceOption"
+        acceptedAnswers:
+          type: array
+          items:
+            type: string
+        explanation:
+          type: string
+    ChoiceOption:
+      type: object
+      required: [key, text]
+      properties:
+        key:
+          type: string
+        text:
+          type: string
+    SubmitAnswersRequest:
+      type: object
+      required: [answers]
+      properties:
+        answers:
+          type: object
+          description: Answer per question id
+          additionalProperties:
+            type: string
+    ReadingResult:
+      type: object
+      required: [testId, correctCount, totalQuestions, band, questionResults]
+      properties:
+        testId:
+          type: string
+        correctCount:
+          type: integer
+        totalQuestions:
+          type: integer
+        band:
+          type: number
+          format: double
+        questionResults:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionResult"
+    QuestionResult:
+      type: object
+      required: [questionId, number, isCorrect, acceptedAnswers]
+      properties:
+        questionId:
+          type: string
+        number:
+          type: integer
+        userAnswer:
+          type: string
+        isCorrect:
+          type: boolean
+        acceptedAnswers:
+          type: array
+          items:
+            type: string

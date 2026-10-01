@@ -4,6 +4,7 @@ import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.BuildInfo
 import com.app.platform.language.backend.config.ContentSource
 import com.app.platform.language.backend.database.AppDatabase
+import com.app.platform.language.backend.docs.docsRoutes
 import com.app.platform.language.backend.health.DatabaseHealth
 import com.app.platform.language.backend.health.healthRoutes
 import com.app.platform.language.backend.plugins.configureCors
@@ -81,5 +82,6 @@ fun Application.module(
   routing {
     healthRoutes(BuildInfo.version, config.env, databaseHealth)
     readingRoutes(readingService)
+    docsRoutes(config.env)
   }
 }
