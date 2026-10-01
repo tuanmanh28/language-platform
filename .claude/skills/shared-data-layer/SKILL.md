@@ -19,9 +19,9 @@ References:
 
    ```kotlin
    class ReadingApi(private val client: HttpClient) {
-       suspend fun getTest(id: String): Result<ReadingTest, ReadingError> =
-           runSuspendCatching { client.get("reading/tests/$id").body<ReadingTest>() }
-               .mapError { it.toReadingError() }
+     suspend fun getTest(id: String): Result<ReadingTest, ReadingError> =
+       runSuspendCatching { client.get("reading/tests/$id").body<ReadingTest>() }
+         .mapError { it.toReadingError() }
    }
    ```
 
@@ -37,23 +37,23 @@ References:
 
    ```kotlin
    interface ReadingRepository {
-       fun observeTests(): Flow<List<ReadingTestSummary>>
-       suspend fun refreshTests(): Result<Unit, ReadingError>
-       suspend fun getTest(id: String): Result<ReadingTest, ReadingError>
+     fun observeTests(): Flow<List<ReadingTestSummary>>
+     suspend fun refreshTests(): Result<Unit, ReadingError>
+     suspend fun getTest(id: String): Result<ReadingTest, ReadingError>
    }
 
    internal class OfflineFirstReadingRepository(
-       private val api: ReadingApi,
-       private val dao: ReadingDao,
+     private val api: ReadingApi,
+     private val dao: ReadingDao,
    ) : ReadingRepository {
 
-       override fun observeTests() = dao.observeSummaries()
+     override fun observeTests() = dao.observeSummaries()
 
-       override suspend fun refreshTests() = api.listTests().map { dao.replaceSummaries(it) }
+     override suspend fun refreshTests() = api.listTests().map { dao.replaceSummaries(it) }
 
-       override suspend fun getTest(id: String) =
-           dao.findTest(id)?.let { Ok(it) }
-               ?: api.getTest(id).onOk { dao.saveTest(it) }
+     override suspend fun getTest(id: String) =
+       dao.findTest(id)?.let { Ok(it) }
+         ?: api.getTest(id).onOk { dao.saveTest(it) }
    }
    ```
 

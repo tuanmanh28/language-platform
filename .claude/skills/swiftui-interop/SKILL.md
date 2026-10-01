@@ -30,15 +30,15 @@ The ViewModel must be cleared when the view goes away. Shared code exposes an ow
 
 ```kotlin
 class ViewModelOwner<VM : ViewModel> internal constructor(create: () -> VM, type: KClass<VM>) {
-    private val store = ViewModelStore()
-    val viewModel: VM = ViewModelProvider.create(store, viewModelFactory { initializer { create() } })[type]
+  private val store = ViewModelStore()
+  val viewModel: VM = ViewModelProvider.create(store, viewModelFactory { initializer { create() } })[type]
 
-    fun clear() = store.clear()
+  fun clear() = store.clear()
 }
 
 object ViewModels : KoinComponent {
-    fun readingSession(testId: String) =
-        ViewModelOwner({ get<ReadingSessionViewModel> { parametersOf(testId) } }, ReadingSessionViewModel::class)
+  fun readingSession(testId: String) =
+    ViewModelOwner({ get<ReadingSessionViewModel> { parametersOf(testId) } }, ReadingSessionViewModel::class)
 }
 ```
 
@@ -48,22 +48,22 @@ Verify `ViewModelProvider.create` / `viewModelFactory` against the current andro
 
 ```swift
 struct ReadingSessionView: View {
-    let testId: String
-    @State private var owner: ViewModelOwner<ReadingSessionViewModel>?
-    @State private var state: ReadingSessionUiState = ReadingSessionUiState.Loading.shared
+  let testId: String
+  @State private var owner: ViewModelOwner<ReadingSessionViewModel>?
+  @State private var state: ReadingSessionUiState = ReadingSessionUiState.Loading.shared
 
-    var body: some View {
-        ReadingSessionContent(state: state, actions: owner?.viewModel)
-            .task {
-                let owner = ViewModels.shared.readingSession(testId: testId)
-                self.owner = owner
-                await withTaskCancellationHandler {
-                    for await value in owner.viewModel.state { state = value }
-                } onCancel: {
-                    owner.clear()
-                }
-            }
-    }
+  var body: some View {
+    ReadingSessionContent(state: state, actions: owner?.viewModel)
+      .task {
+        let owner = ViewModels.shared.readingSession(testId: testId)
+        self.owner = owner
+        await withTaskCancellationHandler {
+          for await value in owner.viewModel.state { state = value }
+        } onCancel: {
+          owner.clear()
+        }
+      }
+  }
 }
 ```
 

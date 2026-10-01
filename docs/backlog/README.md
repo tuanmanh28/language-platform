@@ -12,7 +12,8 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [F-01](F-01.md) | Build green on JVM, Android and iOS-sim targets | core | — |
 | [U-01](U-01.md) | Upgrade the whole stack to the latest stable versions | core | F-01 |
 | [S-01](S-01.md) | Formatting and lint tooling | core | U-01 |
-| [R-01](R-01.md) | Align existing code with the skills | core | S-01 |
+| [S-02](S-02.md) | Reformat the codebase to 2-space indentation | core | S-01 |
+| [R-01](R-01.md) | Align existing code with the skills | core | S-02 |
 | [BE-01](BE-01.md) | Backend configuration, environments and observability | be | R-01 |
 | [BE-02](BE-02.md) | PostgreSQL with Flyway, Exposed and Testcontainers | be | BE-01 |
 | [BE-03](BE-03.md) | Serve Reading tests from the database with content seeding | be | BE-02 |
@@ -31,7 +32,7 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [AND-08](AND-08.md) | Listening player and practice | android | AND-02, AND-03, BE-08 |
 
 ```
-F-01 ─ U-01 ─ S-01 ─ R-01
+F-01 ─ U-01 ─ S-01 ─ S-02 ─ R-01
 
 R-01 ─┬─ BE-01 ─ BE-02 ─┬─ BE-03 ─┬─ BE-05 (also BE-04)
       │                 │         ├─ BE-06

@@ -38,16 +38,16 @@ backend/src/main/kotlin/com/app/platform/language/backend/
 
    ```kotlin
    fun Route.readingRoutes() {
-       val service by inject<ReadingService>()
+     val service by inject<ReadingService>()
 
-       route("/api/v1/reading/tests") {
-           get("{id}") {
-               service.getTest(call.parameters.getOrFail("id")).mapBoth(
-                   success = { call.respond(it) },
-                   failure = { error -> error.toHttp().let { (status, body) -> call.respond(status, body) } },
-               )
-           }
+     route("/api/v1/reading/tests") {
+       get("{id}") {
+         service.getTest(call.parameters.getOrFail("id")).mapBoth(
+           success = { call.respond(it) },
+           failure = { error -> error.toHttp().let { (status, body) -> call.respond(status, body) } },
+         )
        }
+     }
    }
    ```
 

@@ -7,7 +7,7 @@
       "title": "Build green on JVM, Android and iOS-sim targets",
       "lane": "core",
       "deps": [],
-      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/F-01.md"
     },
     {
@@ -19,7 +19,7 @@
       "deps": [
         "F-01"
       ],
-      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/U-01.md"
     },
     {
@@ -35,15 +35,27 @@
       "spec": "docs/backlog/S-01.md"
     },
     {
+      "id": "S-02",
+      "type": "refactor",
+      "slug": "two-space-indent",
+      "title": "Reformat the codebase to 2-space indentation",
+      "lane": "core",
+      "deps": [
+        "S-01"
+      ],
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin",
+      "spec": "docs/backlog/S-02.md"
+    },
+    {
       "id": "R-01",
       "type": "refactor",
       "slug": "align-with-skills",
       "title": "Align existing code with the skills",
       "lane": "core",
       "deps": [
-        "S-01"
+        "S-02"
       ],
-      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test :app-android:assembleDebug :app-desktop:compileKotlin :shared:compileKotlinIosSimulatorArm64",
       "spec": "docs/backlog/R-01.md"
     },
     {
@@ -55,7 +67,7 @@
       "deps": [
         "R-01"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-01.md"
     },
     {
@@ -67,7 +79,7 @@
       "deps": [
         "BE-01"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-02.md"
     },
     {
@@ -79,7 +91,7 @@
       "deps": [
         "BE-02"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-03.md"
     },
     {
@@ -91,7 +103,7 @@
       "deps": [
         "BE-02"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-04.md"
     },
     {
@@ -104,7 +116,7 @@
         "BE-03",
         "BE-04"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-05.md"
     },
     {
@@ -116,7 +128,7 @@
       "deps": [
         "BE-03"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-06.md"
     },
     {
@@ -128,7 +140,7 @@
       "deps": [
         "BE-02"
       ],
-      "verify": "./gradlew :backend:test",
+      "verify": "./gradlew spotlessCheck :backend:test",
       "spec": "docs/backlog/BE-07.md"
     },
     {
@@ -140,7 +152,7 @@
       "deps": [
         "BE-03"
       ],
-      "verify": "./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test",
+      "verify": "./gradlew spotlessCheck :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test",
       "spec": "docs/backlog/BE-08.md"
     },
     {
@@ -152,7 +164,7 @@
       "deps": [
         "R-01"
       ],
-      "verify": "npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-01.md"
     },
     {
@@ -164,7 +176,7 @@
       "deps": [
         "AND-01"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-02.md"
     },
     {
@@ -176,7 +188,7 @@
       "deps": [
         "R-01"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-03.md"
     },
     {
@@ -190,7 +202,7 @@
         "AND-03",
         "AND-05"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-04.md"
     },
     {
@@ -202,7 +214,7 @@
       "deps": [
         "AND-03"
       ],
-      "verify": "./gradlew :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-05.md"
     },
     {
@@ -214,7 +226,7 @@
       "deps": [
         "AND-03"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-06.md"
     },
     {
@@ -227,7 +239,7 @@
         "AND-03",
         "BE-04"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-07.md"
     },
     {
@@ -241,7 +253,7 @@
         "AND-03",
         "BE-08"
       ],
-      "verify": "./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
+      "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-08.md"
     }
   ]

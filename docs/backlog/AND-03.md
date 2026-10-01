@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/navigation-shell`
 - **Lane:** android
 - **Depends on:** R-01
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Replace the hand-rolled screen switching with real navigation and the app's main tabs.

@@ -27,20 +27,20 @@ References:
 
 ```kotlin
 internal object ReadingTestsTable : Table("reading_tests") {
-    val id = text("id")
-    val title = text("title")
-    val content = text("content")
-    val published = bool("published")
-    override val primaryKey = PrimaryKey(id)
+  val id = text("id")
+  val title = text("title")
+  val content = text("content")
+  val published = bool("published")
+  override val primaryKey = PrimaryKey(id)
 }
 
 internal class ExposedReadingRepository(private val database: Database) : ReadingRepository {
-    override suspend fun find(id: String): ReadingTest? = suspendTransaction(database) {
-        ReadingTestsTable.selectAll()
-            .where { (ReadingTestsTable.id eq id) and ReadingTestsTable.published }
-            .singleOrNull()
-            ?.toReadingTest()
-    }
+  override suspend fun find(id: String): ReadingTest? = suspendTransaction(database) {
+    ReadingTestsTable.selectAll()
+      .where { (ReadingTestsTable.id eq id) and ReadingTestsTable.published }
+      .singleOrNull()
+      ?.toReadingTest()
+  }
 }
 ```
 

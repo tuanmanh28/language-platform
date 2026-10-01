@@ -21,6 +21,7 @@ Judge, in this order:
 6. **Dependencies:** latest stable versions, through the version catalog, correct source sets.
 7. **Naming and formatting:** every new package, file, class, function, resource key, endpoint, table and column follows
    `code-conventions`; flag `Utils`/`Manager`/`Base`/`Impl` names and layer-first packages.
+   Indentation is 2 spaces per level; flag 4-space or tab indentation.
 8. **Git:** branch and commit messages follow `git-workflow` (`type: summary`, no task ids, no AI attribution); no
    secrets, generated files or large binaries committed.
 
@@ -36,10 +37,10 @@ Your final message must be only this JSON object:
 
 ```json
 {
-  "approved": true,
-  "summary": "one sentence",
-  "findings": [
-    { "severity": "major", "file": "path", "line": 42, "problem": "…", "fix": "…" }
-  ]
+ "approved": true,
+ "summary": "one sentence",
+ "findings": [
+  { "severity": "major", "file": "path", "line": 42, "problem": "…", "fix": "…" }
+ ]
 }
 ```

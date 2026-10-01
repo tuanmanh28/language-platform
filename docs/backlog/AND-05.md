@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/vocabulary-fsrs`
 - **Lane:** android
 - **Depends on:** AND-03
-- **Verify:** `./gradlew :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :core:srs:jvmTest :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Save words while practising and review them with spaced repetition.

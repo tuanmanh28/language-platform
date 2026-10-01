@@ -39,7 +39,8 @@ IELTS practice platform: Kotlin Multiplatform shared core, native UI per platfor
 
 ## Engineering standards
 
-- **Naming and formatting** follow `code-conventions`; run `./gradlew spotlessApply` (once it exists) before committing.
+- **Indentation is 2 spaces per level** in every language (Python: PEP 8). **Naming and formatting** follow
+  `code-conventions`; run `./gradlew spotlessApply` (once it exists) before committing.
 - **Clean architecture, simple logic.** Clear layers, small functions, intention-revealing names, immutable data. The
   simplest design that is correct wins; no premature abstraction, no clever code, no dead code.
 - **Comments:** avoid them. Code must explain itself. Write a comment only to explain *why* something non-obvious is done,

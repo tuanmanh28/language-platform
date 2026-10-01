@@ -100,7 +100,8 @@ References:
 ## Formatting
 
 - Formatter output wins: `./gradlew spotlessApply` (ktlint) for Kotlin/Gradle, `swift format` for Swift. Never fight it.
-- 4-space indent, max line length 120, trailing commas on multiline lists, no wildcard imports, no unused imports,
+- **2-space indentation for every nesting level** (Kotlin, Gradle, Swift, SQL, JSON, YAML, XML, shell), continuation
+  lines included; never 4 spaces or tabs. Python scripts follow PEP 8 (4). Max line length 120, trailing commas on multiline lists, no wildcard imports, no unused imports,
   newline at end of file.
 - Expression bodies for one-expression functions; named arguments when a call has several of the same type or a boolean.
 - Visibility: `private` / `internal` by default; `public` only for what other modules use. Explicit types on public API.

@@ -8,14 +8,14 @@ body="$(grep -v '^#' "$msg_file")"
 types="feat|fix|refactor|update|perf|test|docs|build|ci|chore"
 
 fail() {
-    echo "commit-msg: $1" >&2
-    echo "  subject: $subject" >&2
-    echo "  format:  <type>: <summary>   types: ${types//|/, }" >&2
-    exit 1
+  echo "commit-msg: $1" >&2
+  echo "  subject: $subject" >&2
+  echo "  format:  <type>: <summary>   types: ${types//|/, }" >&2
+  exit 1
 }
 
 case "$subject" in
-    Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
 esac
 
 [[ "$subject" =~ ^($types)!?:\ [^[:space:]] ]] || fail "subject must be '<type>: <summary>' without a scope"
@@ -25,10 +25,10 @@ summary="${subject#*: }"
 (( ${#subject} <= 72 )) || fail "subject is ${#subject} characters, max 72"
 ! grep -qE '\b(BE|AND|F|U|R|S|IOS|WEB)-[0-9]+\b' <<<"$body" || fail "no task ids in commit messages"
 ! grep -qiE '^co-authored-by:.*(claude|anthropic|copilot|openai|cursor)|generated with \[?claude|claude\.ai/code|noreply@anthropic\.com' <<<"$body" \
-    || fail "no AI attribution in commit messages"
+  || fail "no AI attribution in commit messages"
 
 branch="$(git symbolic-ref --quiet --short HEAD || true)"
 if [[ -n "$branch" && "$branch" != "main" ]]; then
-    [[ "$branch" =~ ^($types)/[a-z0-9]+(-[a-z0-9]+)*$ ]] || fail "branch '$branch' must be '<type>/<kebab-slug>'"
-    ! grep -qE '(^|/|-)(be|and|f|u|r|s|ios|web)-?[0-9]+(-|$)' <<<"$branch" || fail "no task ids in branch names"
+  [[ "$branch" =~ ^($types)/[a-z0-9]+(-[a-z0-9]+)*$ ]] || fail "branch '$branch' must be '<type>/<kebab-slug>'"
+  ! grep -qE '(^|/|-)(be|and|f|u|r|s|ios|web)-?[0-9]+(-|$)' <<<"$branch" || fail "no task ids in branch names"
 fi

@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/google-sign-in`
 - **Lane:** android
 - **Depends on:** AND-03, BE-04
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Users sign in so attempts sync to the backend (BE-05 consumes this).

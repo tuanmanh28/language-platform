@@ -37,9 +37,9 @@ Keep `shared` a single module; split by package per feature.
 
    ```kotlin
    sealed interface VocabularyUiState {
-       data object Loading : VocabularyUiState
-       data class Ready(val dueCards: List<Card>, val totalWords: Int) : VocabularyUiState
-       data class Failed(val message: String) : VocabularyUiState
+     data object Loading : VocabularyUiState
+     data class Ready(val dueCards: List<Card>, val totalWords: Int) : VocabularyUiState
+     data class Failed(val message: String) : VocabularyUiState
    }
    ```
 
@@ -47,26 +47,26 @@ Keep `shared` a single module; split by package per feature.
 
    ```kotlin
    class VocabularyViewModel(
-       private val repository: VocabularyRepository,
+     private val repository: VocabularyRepository,
    ) : ViewModel() {
 
-       private val _message = MutableStateFlow<String?>(null)
-       val message: StateFlow<String?> = _message.asStateFlow()
+     private val _message = MutableStateFlow<String?>(null)
+     val message: StateFlow<String?> = _message.asStateFlow()
 
-       val state: StateFlow<VocabularyUiState> = repository.observeDueCards()
-           .map<List<Card>, VocabularyUiState> { cards -> VocabularyUiState.Ready(cards, cards.size) }
-           .catch { emit(VocabularyUiState.Failed(it.toUserMessage())) }
-           .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), VocabularyUiState.Loading)
+     val state: StateFlow<VocabularyUiState> = repository.observeDueCards()
+       .map<List<Card>, VocabularyUiState> { cards -> VocabularyUiState.Ready(cards, cards.size) }
+       .catch { emit(VocabularyUiState.Failed(it.toUserMessage())) }
+       .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), VocabularyUiState.Loading)
 
-       fun rate(card: Card, rating: Rating) {
-           viewModelScope.launch {
-               repository.review(card, rating).onErr { error -> _message.value = error.toUserMessage() }
-           }
+     fun rate(card: Card, rating: Rating) {
+       viewModelScope.launch {
+         repository.review(card, rating).onErr { error -> _message.value = error.toUserMessage() }
        }
+     }
 
-       fun messageShown() {
-           _message.value = null
-       }
+     fun messageShown() {
+       _message.value = null
+     }
    }
    ```
 

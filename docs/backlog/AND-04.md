@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/reading-v2`
 - **Lane:** android
 - **Depends on:** AND-02, AND-03, AND-05
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Make Reading practice genuinely useful for study.

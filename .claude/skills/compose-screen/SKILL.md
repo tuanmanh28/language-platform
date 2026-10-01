@@ -16,25 +16,25 @@ References:
 ```kotlin
 @Composable
 fun VocabularyScreen(
-    onOpenWord: (String) -> Unit,
-    viewModel: VocabularyViewModel = koinViewModel(),
+  onOpenWord: (String) -> Unit,
+  viewModel: VocabularyViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    VocabularyScreen(state = state, onRate = viewModel::rate, onOpenWord = onOpenWord)
+  val state by viewModel.state.collectAsStateWithLifecycle()
+  VocabularyScreen(state = state, onRate = viewModel::rate, onOpenWord = onOpenWord)
 }
 
 @Composable
 internal fun VocabularyScreen(
-    state: VocabularyUiState,
-    onRate: (Card, Rating) -> Unit,
-    onOpenWord: (String) -> Unit,
-    modifier: Modifier = Modifier,
+  state: VocabularyUiState,
+  onRate: (Card, Rating) -> Unit,
+  onOpenWord: (String) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    when (state) {
-        VocabularyUiState.Loading -> LpLoading(modifier)
-        is VocabularyUiState.Failed -> LpErrorState(state.message, modifier = modifier)
-        is VocabularyUiState.Ready -> ReadyContent(state, onRate, onOpenWord, modifier)
-    }
+  when (state) {
+    VocabularyUiState.Loading -> LpLoading(modifier)
+    is VocabularyUiState.Failed -> LpErrorState(state.message, modifier = modifier)
+    is VocabularyUiState.Ready -> ReadyContent(state, onRate, onOpenWord, modifier)
+  }
 }
 ```
 

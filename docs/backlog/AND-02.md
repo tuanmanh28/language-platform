@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/component-library`
 - **Lane:** android
 - **Depends on:** AND-01
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Reusable Compose components every screen is built from.

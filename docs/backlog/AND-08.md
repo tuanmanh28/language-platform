@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/listening-player`
 - **Lane:** android
 - **Depends on:** AND-02, AND-03, BE-08
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Listening practice on Android.

@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/progress-streak`
 - **Lane:** android
 - **Depends on:** AND-03
-- **Verify:** `./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 Motivation: show daily streak and progress per skill.

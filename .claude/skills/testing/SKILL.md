@@ -36,21 +36,21 @@ References:
 
 ```kotlin
 class VocabularyViewModelTest {
-    private val repository = FakeVocabularyRepository()
-    private val dispatcher = StandardTestDispatcher()
+  private val repository = FakeVocabularyRepository()
+  private val dispatcher = StandardTestDispatcher()
 
-    @BeforeTest fun setUp() = Dispatchers.setMain(dispatcher)
-    @AfterTest fun tearDown() = Dispatchers.resetMain()
+  @BeforeTest fun setUp() = Dispatchers.setMain(dispatcher)
+  @AfterTest fun tearDown() = Dispatchers.resetMain()
 
-    @Test
-    fun dueCardsAreShownWhenRepositoryEmits() = runTest(dispatcher) {
-        val viewModel = VocabularyViewModel(repository)
-        viewModel.state.test {
-            assertEquals(VocabularyUiState.Loading, awaitItem())
-            repository.emit(listOf(card))
-            assertEquals(VocabularyUiState.Ready(listOf(card), 1), awaitItem())
-        }
+  @Test
+  fun dueCardsAreShownWhenRepositoryEmits() = runTest(dispatcher) {
+    val viewModel = VocabularyViewModel(repository)
+    viewModel.state.test {
+      assertEquals(VocabularyUiState.Loading, awaitItem())
+      repository.emit(listOf(card))
+      assertEquals(VocabularyUiState.Ready(listOf(card), 1), awaitItem())
     }
+  }
 }
 ```
 

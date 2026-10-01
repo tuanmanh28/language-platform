@@ -3,7 +3,7 @@
 - **Type / branch:** `feat` / `feat/design-tokens`
 - **Lane:** android
 - **Depends on:** R-01
-- **Verify:** `npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
+- **Verify:** `npm --prefix design ci && npm --prefix design run build && git diff --exit-code -- ui-compose && ./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal
 A single source of design tokens that generates the Compose theme (and later SwiftUI and CSS).

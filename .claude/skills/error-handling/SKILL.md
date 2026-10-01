@@ -28,9 +28,9 @@ One sealed interface per feature, in the feature package, with only the cases ca
 
 ```kotlin
 sealed interface ReadingError {
-    data object NotFound : ReadingError
-    data object Offline : ReadingError
-    data class Unexpected(val cause: Throwable) : ReadingError
+  data object NotFound : ReadingError
+  data object Offline : ReadingError
+  data class Unexpected(val cause: Throwable) : ReadingError
 }
 ```
 
@@ -38,9 +38,9 @@ Map raw failures in one place:
 
 ```kotlin
 internal fun Throwable.toReadingError(): ReadingError = when (this) {
-    is ClientRequestException -> if (response.status == HttpStatusCode.NotFound) ReadingError.NotFound else ReadingError.Unexpected(this)
-    is IOException -> ReadingError.Offline
-    else -> ReadingError.Unexpected(this)
+  is ClientRequestException -> if (response.status == HttpStatusCode.NotFound) ReadingError.NotFound else ReadingError.Unexpected(this)
+  is IOException -> ReadingError.Offline
+  else -> ReadingError.Unexpected(this)
 }
 ```
 
@@ -64,8 +64,8 @@ UI (inside a ViewModel):
 
 ```kotlin
 _state.value = repository.getTest(testId).mapBoth(
-    success = { test -> ReadingSessionUiState.InProgress(test) },
-    failure = { error -> ReadingSessionUiState.Error(error.toUserMessage()) },
+  success = { test -> ReadingSessionUiState.InProgress(test) },
+  failure = { error -> ReadingSessionUiState.Error(error.toUserMessage()) },
 )
 ```
 
@@ -73,8 +73,8 @@ HTTP (backend): one extension per error type, used by every route of that featur
 
 ```kotlin
 fun ReadingError.toHttp(): Pair<HttpStatusCode, ApiError> = when (this) {
-    ReadingError.NotFound -> HttpStatusCode.NotFound to ApiError("Reading test not found")
-    ReadingError.Offline, is ReadingError.Unexpected -> HttpStatusCode.InternalServerError to ApiError("Internal error")
+  ReadingError.NotFound -> HttpStatusCode.NotFound to ApiError("Reading test not found")
+  ReadingError.Offline, is ReadingError.Unexpected -> HttpStatusCode.InternalServerError to ApiError("Internal error")
 }
 ```
 
