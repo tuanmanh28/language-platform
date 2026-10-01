@@ -16,6 +16,8 @@ Lifecycle of a task:
 
 A task is *ready* when every dependency is merged into main. You review a task in its worktree,
 then `merge` it; with --watch the orchestrator keeps going and starts whatever became ready.
+With --auto it merges every task that passed verify + review itself (and pushes with --push),
+retries a failed task once from a fresh branch, and has the agent merge main into a branch that conflicts.
 
 Only the Python standard library is used. Requires git and the `claude` CLI (Claude Code) on PATH.
 """
@@ -45,7 +47,7 @@ ALLOWED_TOOLS = [
     "Bash(./gradlew *)", "Bash(./gradlew)",
     "Bash(git status)", "Bash(git status *)", "Bash(git diff)", "Bash(git diff *)",
     "Bash(git add *)", "Bash(git commit *)", "Bash(git log *)", "Bash(git show *)",
-    "Bash(git mv *)", "Bash(git rm *)", "Bash(git restore *)",
+    "Bash(git mv *)", "Bash(git rm *)", "Bash(git restore *)", "Bash(git merge --no-edit main)",
     "Bash(ls *)", "Bash(ls)", "Bash(mkdir *)", "Bash(find *)", "Bash(cat *)", "Bash(head *)",
     "Bash(tail *)", "Bash(wc *)", "Bash(grep *)", "Bash(rg *)", "Bash(sort *)", "Bash(diff *)",
     "Bash(npm *)", "Bash(npx *)", "Bash(node *)",
@@ -58,6 +60,16 @@ DISALLOWED_TOOLS = [
 ]
 
 LOCAL_FILES = ["local.properties", "app-android/google-services.json"]
+
+AUTO_RETRIES = 1
+CONFLICT_ROUNDS = 2
+
+REVIEW_FIX_PROMPT = ("\n\nThe mandatory code review rejected your previous attempt. Fix every finding below, "
+                     "run the verify command again and commit the fixes (`fix: …` or `refactor: …`).\n\n")
+CONFLICT_PROMPT = (f"\n\nYour work passed review, but {MAIN_BRANCH} moved on and your branch now conflicts with it. "
+                   f"Run `git merge --no-edit {MAIN_BRANCH}`, resolve every conflict so both your change and the "
+                   f"new {MAIN_BRANCH} work are kept, run the verify command, then `git add` the files and "
+                   f"`git commit --no-edit`. Change nothing else.")
 
 STATUS_ORDER = ["running", "verifying", "reviewing", "review", "blocked", "failed", "pending", "merged"]
 
@@ -78,6 +90,19 @@ def repo_root() -> Path:
     if out.returncode != 0:
         sys.exit("Not inside a git repository.")
     return Path(out.stdout.strip())
+
+
+class MergeError(Exception):
+    def __init__(self, message: str, conflict: bool = False):
+        super().__init__(message)
+        self.conflict = conflict
+
+
+def notify(message: str) -> None:
+    print(message)
+    if sys.platform == "darwin":
+        script = f"display notification {json.dumps(message)} with title \"Language Platform agents\""
+        subprocess.run(["osascript", "-e", script], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 class Orchestrator:
@@ -139,7 +164,7 @@ class Orchestrator:
             return False
         return all(self.is_merged(dep) for dep in self.tasks[task_id]["deps"])
 
-    def start(self, task_id: str, fixes: str | None = None) -> None:
+    def start(self, task_id: str, extra: str | None = None) -> None:
         task, e = self.tasks[task_id], self.entry(task_id)
         wt, br = self.worktree(task_id), self.branch(task_id)
         self.worktrees.mkdir(parents=True, exist_ok=True)
@@ -156,9 +181,8 @@ class Orchestrator:
 
         prompt = self.prompt_template.format(id=task_id, title=task["title"], spec=task["spec"],
                                              verify=task["verify"], branch=br, type=task.get("type", "feat"))
-        if fixes:
-            prompt += ("\n\nThe mandatory code review rejected your previous attempt. Fix every finding below, "
-                       "run the verify command again and commit the fixes (`fix: …` or `refactor: …`).\n\n" + fixes)
+        if extra:
+            prompt += extra
         cmd = ["claude", "-p", prompt,
                "--permission-mode", "acceptEdits",
                "--permission-prompts", "none",
@@ -171,11 +195,11 @@ class Orchestrator:
             cmd += ["--max-turns", str(self.max_turns)]
 
         log = self.logs_dir / f"{task_id}.jsonl"
-        with open(log, "a" if fixes else "w") as fh:
+        with open(log, "a" if extra else "w") as fh:
             proc = subprocess.Popen(cmd, cwd=wt, stdout=fh, stderr=subprocess.STDOUT,
                                     stdin=subprocess.DEVNULL, start_new_session=True)
         e.update(status="running", pid=proc.pid, branch=br, worktree=str(wt), log=str(log),
-                 started_at=now(), finished_at=None, note="Fixing review findings" if fixes else None)
+                 started_at=now(), finished_at=None, note="Continuing: " + extra.strip()[:60] + "…" if extra else None)
         self.save()
         print(f"▶ {task_id} started (pid {proc.pid}) in {wt}")
 
@@ -263,7 +287,7 @@ class Orchestrator:
                 e["review_round"] = rounds
                 if rounds <= REVIEW_ROUNDS:
                     self.save()
-                    self.start(task_id, fixes=report.read_text())
+                    self.start(task_id, extra=REVIEW_FIX_PROMPT + report.read_text())
                     return
                 e.update(status="failed", note=f"Review rejected after {REVIEW_ROUNDS} fix rounds, see {report.name}")
         self.save()
@@ -300,11 +324,17 @@ class Orchestrator:
             subprocess.run(["./gradlew", "--stop"], cwd=wt, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL)
 
-    def run(self, parallel: int, lanes: set[str] | None, only: set[str] | None, watch: bool) -> None:
+    def run(self, parallel: int, lanes: set[str] | None, only: set[str] | None, watch: bool,
+            auto: bool = False, push: bool = False) -> None:
         def eligible(tid: str) -> bool:
             return (lanes is None or self.tasks[tid]["lane"] in lanes) and (only is None or tid in only)
 
-        print(f"Worktrees: {self.worktrees}   parallel={parallel}   Ctrl+C stops the loop (agents keep running)")
+        if auto:
+            for e in self.state.values():
+                if e.get("status") == "failed":
+                    e.update(auto_retries=0, notified=False)
+        mode = "auto-merge" + (" + push" if push else "") if auto else "manual merge"
+        print(f"Worktrees: {self.worktrees}   parallel={parallel}   {mode}   Ctrl+C stops the loop (agents keep running)")
         try:
             while True:
                 for tid, e in list(self.state.items()):
@@ -313,6 +343,8 @@ class Orchestrator:
                             self.finish(tid)
                         else:
                             self.finish_review(tid)
+                if auto:
+                    self.auto_advance(eligible, push)
                 running = [t for t, e in self.state.items() if e.get("status") in ACTIVE]
                 for tid in self.tasks:
                     if len(running) >= parallel:
@@ -324,7 +356,7 @@ class Orchestrator:
 
                 remaining = [t for t in self.tasks if eligible(t) and self.entry(t).get("status") != "merged"]
                 if not remaining:
-                    print("All selected tasks are merged. 🎉")
+                    notify("All selected tasks are merged. 🎉")
                     return
                 if not running and not watch:
                     waiting = [t for t in remaining if self.entry(t).get("status") in ("review", "blocked", "failed")]
@@ -334,6 +366,45 @@ class Orchestrator:
                 time.sleep(POLL_SECONDS)
         except KeyboardInterrupt:
             print("\nLoop stopped. Running agents continue; run `status` or `run` again later.")
+
+    def auto_advance(self, eligible, push: bool) -> None:
+        for tid in self.tasks:
+            if not eligible(tid):
+                continue
+            e = self.entry(tid)
+            if e.get("status") == "review":
+                self.auto_merge(tid, push)
+            elif e.get("status") == "failed" and not e.get("notified"):
+                if e.get("auto_retries", 0) < AUTO_RETRIES:
+                    print(f"↻ {tid} failed ({e.get('note')}) — retrying once from a fresh branch")
+                    self.retry(tid, fresh=True, auto_retries=e.get("auto_retries", 0) + 1)
+                else:
+                    e["notified"] = True
+                    notify(f"{tid} failed: {e.get('note')}")
+            elif e.get("status") == "blocked" and not e.get("notified"):
+                e["notified"] = True
+                notify(f"{tid} is blocked — read BLOCKED.md in its worktree")
+        self.save()
+
+    def auto_merge(self, task_id: str, push: bool) -> None:
+        try:
+            self.merge(task_id, force=False)
+        except MergeError as err:
+            e = self.entry(task_id)
+            if err.conflict and e.get("conflict_rounds", 0) < CONFLICT_ROUNDS:
+                e["conflict_rounds"] = e.get("conflict_rounds", 0) + 1
+                print(f"↻ {task_id} conflicts with {MAIN_BRANCH} — agent merges {MAIN_BRANCH} and resolves it")
+                self.start(task_id, extra=CONFLICT_PROMPT)
+            elif err.conflict:
+                e.update(status="failed", note=f"Merge conflict after {CONFLICT_ROUNDS} resolve rounds", notified=True)
+                notify(f"{task_id}: merge conflict persists — resolve it manually")
+            elif e.get("note") != str(err):
+                e["note"] = str(err)
+                print(f"⏸ {task_id} waits: {err}")
+            return
+        if push:
+            res = sh(["git", "push", "origin", MAIN_BRANCH], self.root, check=False)
+            print("⇡ pushed" if res.returncode == 0 else f"⚠ push failed: {res.stdout.strip()}")
 
     def print_status(self) -> None:
         def order(tid: str) -> tuple:
@@ -377,11 +448,11 @@ class Orchestrator:
     def merge(self, task_id: str, force: bool) -> None:
         e = self.entry(task_id)
         if e.get("status") != "review" and not force:
-            sys.exit(f"{task_id} is '{e.get('status')}', not 'review'. Use --force to merge anyway.")
+            raise MergeError(f"{task_id} is '{e.get('status')}', not 'review'. Use --force to merge anyway.")
         if sh(["git", "rev-parse", "--abbrev-ref", "HEAD"], self.root).stdout.strip() != MAIN_BRANCH:
-            sys.exit(f"Check out {MAIN_BRANCH} in {self.root} first.")
+            raise MergeError(f"Check out {MAIN_BRANCH} in {self.root} first.")
         if sh(["git", "status", "--porcelain", "--untracked-files=no"], self.root).stdout.strip():
-            sys.exit("Main checkout has uncommitted changes.")
+            raise MergeError("Main checkout has uncommitted changes.")
         br = self.branch(task_id)
         task = self.tasks[task_id]
         subjects = sh(["git", "log", "--reverse", "--format=%s", f"{MAIN_BRANCH}..{br}"], self.root).stdout.split("\n")
@@ -391,9 +462,9 @@ class Orchestrator:
         if res.returncode != 0:
             sh(["git", "merge", "--abort"], self.root, check=False)
             sh(["git", "reset", "--merge"], self.root, check=False)
-            sys.exit(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
-                     f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}")
-        details = [self.strip_prefix(x) for x in subjects]
+            raise MergeError(f"Merge conflict. Resolve manually, or run `retry {task_id} --fresh` "
+                             f"to let an agent redo it on top of {MAIN_BRANCH}.\n{res.stdout}", conflict=True)
+        details = [self.strip_prefix(x) for x in subjects if not x.startswith("Merge ")]
         details = [x for x in details if x and x != summary]
         body = "\n".join(f"- {x}" for x in details)
         if sh(["git", "diff", "--cached", "--quiet"], self.root, check=False).returncode == 0:
@@ -405,7 +476,7 @@ class Orchestrator:
         sh(["git", "branch", "-D", br], self.root, check=False)
         e.update(status="merged", merged_at=now(), note=None)
         self.save()
-        print(f"✔ {task_id} merged into {MAIN_BRANCH}. Push when you are ready: git push")
+        print(f"✔ {task_id} merged into {MAIN_BRANCH}")
 
     @staticmethod
     def strip_prefix(subject: str) -> str:
@@ -433,7 +504,7 @@ class Orchestrator:
                 return text
         return text[:budget].rsplit(" ", 1)[0]
 
-    def retry(self, task_id: str, fresh: bool) -> None:
+    def retry(self, task_id: str, fresh: bool, auto_retries: int = 0) -> None:
         e = self.entry(task_id)
         if e.get("status") in ACTIVE:
             sys.exit(f"{task_id} is still running.")
@@ -445,7 +516,7 @@ class Orchestrator:
             if (wt / "BLOCKED.md").exists():
                 print("Note: BLOCKED.md is still in the worktree; remove it once the blocker is solved.")
         keep = {} if fresh else {k: v for k, v in e.items() if k == "branch"}
-        self.state[task_id] = {"status": "pending", **keep}
+        self.state[task_id] = {"status": "pending", **keep, **({"auto_retries": auto_retries} if auto_retries else {})}
         self.save()
         print(f"{task_id} reset to pending" + (" (fresh branch from main)" if fresh else " (keeps its branch)"))
 
@@ -481,6 +552,9 @@ def main() -> None:
     r.add_argument("--lanes", help="Comma-separated lanes, e.g. core,be,android")
     r.add_argument("--only", help="Comma-separated task ids")
     r.add_argument("--watch", action="store_true", help="Keep running and pick up tasks as you merge")
+    r.add_argument("--auto", action="store_true",
+                   help="Merge tasks that pass verify + review automatically; retry failures once (implies --watch)")
+    r.add_argument("--push", action="store_true", help="With --auto: git push main after every merge")
 
     sub.add_parser("status", help="Show task states")
     lg = sub.add_parser("logs", help="Readable agent log")
@@ -512,7 +586,7 @@ def main() -> None:
         if shutil.which("claude") is None:
             sys.exit("`claude` CLI not found. Install Claude Code and run `claude` once to sign in.")
         split = lambda s: {x.strip() for x in s.split(",") if x.strip()} if s else None
-        o.run(a.parallel, split(a.lanes), split(a.only), a.watch)
+        o.run(a.parallel, split(a.lanes), split(a.only), a.watch or a.auto, a.auto, a.push)
     elif a.cmd == "status":
         o.print_status()
     elif a.cmd == "logs":
@@ -529,7 +603,10 @@ def main() -> None:
     elif a.cmd == "stop":
         o.stop(task)
     elif a.cmd == "merge":
-        o.merge(task, a.force)
+        try:
+            o.merge(task, a.force)
+        except MergeError as err:
+            sys.exit(str(err))
     elif a.cmd == "retry":
         o.retry(task, a.fresh)
     elif a.cmd == "clean":
