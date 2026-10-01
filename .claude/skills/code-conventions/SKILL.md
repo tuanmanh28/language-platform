@@ -102,8 +102,29 @@ References:
 
 - Formatter output wins: `./gradlew spotlessApply` (ktlint) for Kotlin/Gradle, `swift format` for Swift. Never fight it.
 - **2-space indentation for every nesting level** (Kotlin, Gradle, Swift, SQL, JSON, YAML, XML, shell), continuation
-  lines included; never 4 spaces or tabs. Python scripts follow PEP 8 (4). Max line length 120, trailing commas on multiline lists, no wildcard imports, no unused imports,
-  newline at end of file.
+  lines included; never 4 spaces or tabs. Python scripts follow PEP 8 (4).
+- **One blank line between siblings in UI code.** Inside a composable or a SwiftUI `body`/container, every element at
+  the same level is separated by one blank line: the group of state declarations, each effect (`LaunchedEffect`,
+  `DisposableEffect`, `.task`), each back handler and each child composable or view. Related `val`/`@State` declarations
+  stay together as one group. No blank line right after `{` or right before `}`.
+
+  ```kotlin
+  val state by viewModel.state.collectAsStateWithLifecycle()
+
+  DisposableEffect(viewModel) {
+    viewModel.start()
+    onDispose { viewModel.stop() }
+  }
+
+  PlatformBackHandler(onBack = onExit)
+
+  ReadingSessionScreen(
+    state = state,
+    onExit = onExit,
+  )
+  ```
+- Max line length 120, trailing commas on multiline lists, no wildcard imports, no unused imports, newline at end of
+  file.
 - Expression bodies for one-expression functions; named arguments when a call has several of the same type or a boolean.
 - Visibility: `private` / `internal` by default; `public` only for what other modules use. Explicit types on public API.
 - Order inside a class: properties, `init`, public functions, private functions, companion object.

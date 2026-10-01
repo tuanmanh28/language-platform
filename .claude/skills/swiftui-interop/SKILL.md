@@ -67,6 +67,7 @@ struct ReadingSessionView: View {
 }
 ```
 
+- One blank line between sibling views and modifiers blocks at the same level (`code-conventions`).
 - The content view takes plain values and closures, so it has `#Preview`s without Kotlin.
 - Render states with `switch onEnum(of: state)`; every case handled, no `default`.
 - Use design-system components from `app-apple/Sources/DesignSystem/`.

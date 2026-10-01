@@ -59,6 +59,18 @@
       "spec": "docs/backlog/R-01.md"
     },
     {
+      "id": "S-03",
+      "type": "refactor",
+      "slug": "separate-sibling-ui-elements",
+      "title": "Blank line between sibling UI elements",
+      "lane": "core",
+      "deps": [
+        "R-01"
+      ],
+      "verify": "./gradlew spotlessCheck :app-android:assembleDebug :app-desktop:compileKotlin",
+      "spec": "docs/backlog/S-03.md"
+    },
+    {
       "id": "BE-01",
       "type": "feat",
       "slug": "backend-config",
@@ -174,7 +186,8 @@
       "title": "Core component library",
       "lane": "android",
       "deps": [
-        "AND-01"
+        "AND-01",
+        "S-03"
       ],
       "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-02.md"
@@ -186,7 +199,8 @@
       "title": "App navigation shell",
       "lane": "android",
       "deps": [
-        "R-01"
+        "R-01",
+        "S-03"
       ],
       "verify": "./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin",
       "spec": "docs/backlog/AND-03.md"

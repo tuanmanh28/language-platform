@@ -20,6 +20,7 @@ internal fun VocabularyScreen(
   viewModel: VocabularyViewModel = koinViewModel(),
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
+
   VocabularyScreen(state = state, onRate = viewModel::rate, onOpenWord = onOpenWord)
 }
 
@@ -42,6 +43,7 @@ internal fun VocabularyScreen(
 - **Screens take no `modifier`.** A screen is a whole destination: it fills the space its navigation entry gives it and
   sizes its own root (`Modifier.fillMaxSize()`); window insets are handled by the app shell. Everything below the
   screen (sections, design-system components) takes `modifier: Modifier = Modifier`.
+- One blank line between sibling elements (state group, effects, each child composable), as in `code-conventions`.
 - Split big bodies into private composables named after what they show (`ReadyContent`, `PassagePane`), not `Content1`.
 - Lambdas are named `on<Action>`. In sections and components, `modifier` is the first optional parameter and is applied
   to the root only.

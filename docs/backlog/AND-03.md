@@ -2,7 +2,7 @@
 
 - **Type / branch:** `feat` / `feat/navigation-shell`
 - **Lane:** android
-- **Depends on:** R-01
+- **Depends on:** R-01, S-03
 - **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal

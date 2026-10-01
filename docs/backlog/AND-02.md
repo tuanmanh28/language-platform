@@ -2,7 +2,7 @@
 
 - **Type / branch:** `feat` / `feat/component-library`
 - **Lane:** android
-- **Depends on:** AND-01
+- **Depends on:** AND-01, S-03
 - **Verify:** `./gradlew spotlessCheck :shared:jvmTest :app-android:assembleDebug :app-desktop:compileKotlin`
 
 ## Goal

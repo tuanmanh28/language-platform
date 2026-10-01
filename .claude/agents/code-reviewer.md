@@ -22,6 +22,7 @@ Judge, in this order:
 7. **Naming and formatting:** every new package, file, class, function, resource key, endpoint, table and column follows
    `code-conventions`; flag `Utils`/`Manager`/`Base`/`Impl` names and layer-first packages.
    Indentation is 2 spaces per level; flag 4-space or tab indentation.
+   UI code: one blank line between sibling elements (state group, effects, each child composable or view).
    Compose: screens take no `modifier`; every other composable that emits UI (sections, private parts, `Lp…`
    components) takes `modifier: Modifier = Modifier` as its first optional parameter and applies it to its root only.
 8. **Git:** branch and commit messages follow `git-workflow` (`type: summary`, no task ids, no AI attribution); no

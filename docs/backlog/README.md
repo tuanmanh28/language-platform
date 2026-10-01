@@ -14,6 +14,7 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [S-01](S-01.md) | Formatting and lint tooling | core | U-01 |
 | [S-02](S-02.md) | Reformat the codebase to 2-space indentation | core | S-01 |
 | [R-01](R-01.md) | Align existing code with the skills | core | S-02 |
+| [S-03](S-03.md) | Blank line between sibling UI elements | core | R-01 |
 | [BE-01](BE-01.md) | Backend configuration, environments and observability | be | R-01 |
 | [BE-02](BE-02.md) | PostgreSQL with Flyway, Exposed and Testcontainers | be | BE-01 |
 | [BE-03](BE-03.md) | Serve Reading tests from the database with content seeding | be | BE-02 |
@@ -23,8 +24,8 @@ A task becomes **ready** when all its dependencies are merged into `main`.
 | [BE-07](BE-07.md) | Deploy pipeline: Cloud Run + Neon | be | BE-02 |
 | [BE-08](BE-08.md) | Listening content model, API and audio storage | be | BE-03 |
 | [AND-01](AND-01.md) | Design tokens pipeline | android | R-01 |
-| [AND-02](AND-02.md) | Core component library | android | AND-01 |
-| [AND-03](AND-03.md) | App navigation shell | android | R-01 |
+| [AND-02](AND-02.md) | Core component library | android | AND-01, S-03 |
+| [AND-03](AND-03.md) | App navigation shell | android | R-01, S-03 |
 | [AND-04](AND-04.md) | Reading experience v2 | android | AND-02, AND-03, AND-05 |
 | [AND-05](AND-05.md) | Vocabulary: save words and FSRS review | android | AND-03 |
 | [AND-06](AND-06.md) | Progress and streak | android | AND-03 |
