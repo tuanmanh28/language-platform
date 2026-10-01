@@ -4,15 +4,15 @@ import SwiftUI
 /// The real state lives in the ViewModel's StateFlow and is observed with SKIE's `Observing`,
 /// so the holder never needs to publish objectWillChange.
 final class ViewModelHolder<VM: AnyObject>: ObservableObject {
-    let viewModel: VM
-    private let onRelease: ((VM) -> Void)?
+  let viewModel: VM
+  private let onRelease: ((VM) -> Void)?
 
-    init(_ viewModel: @autoclosure () -> VM, onRelease: ((VM) -> Void)? = nil) {
-        self.viewModel = viewModel()
-        self.onRelease = onRelease
-    }
+  init(_ viewModel: @autoclosure () -> VM, onRelease: ((VM) -> Void)? = nil) {
+    self.viewModel = viewModel()
+    self.onRelease = onRelease
+  }
 
-    deinit {
-        onRelease?(viewModel)
-    }
+  deinit {
+    onRelease?(viewModel)
+  }
 }

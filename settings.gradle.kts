@@ -1,21 +1,21 @@
 pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
 }
 
 plugins {
-    // Downloads JDK 17 for jvmToolchain(17) if only another JDK is installed (e.g. Android Studio's JBR 21).
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+  // Downloads JDK 17 for jvmToolchain(17) if only another JDK is installed (e.g. Android Studio's JBR 21).
+  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
+  repositories {
+    google()
+    mavenCentral()
+  }
 }
 
 rootProject.name = "language-platform"

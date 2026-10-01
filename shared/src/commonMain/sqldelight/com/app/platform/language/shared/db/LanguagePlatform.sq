@@ -1,19 +1,19 @@
 -- Downloaded tests, cached for offline practice.
 CREATE TABLE CachedReadingTest (
-    id TEXT NOT NULL PRIMARY KEY,
-    json TEXT NOT NULL,
-    updatedAt INTEGER NOT NULL
+  id TEXT NOT NULL PRIMARY KEY,
+  json TEXT NOT NULL,
+  updatedAt INTEGER NOT NULL
 );
 
 -- On-device attempt history. A later phase syncs it to the server via a sync queue.
 CREATE TABLE ReadingAttempt (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    testId TEXT NOT NULL,
-    correctCount INTEGER NOT NULL,
-    totalQuestions INTEGER NOT NULL,
-    band REAL NOT NULL,
-    answersJson TEXT NOT NULL,
-    createdAt INTEGER NOT NULL
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  testId TEXT NOT NULL,
+  correctCount INTEGER NOT NULL,
+  totalQuestions INTEGER NOT NULL,
+  band REAL NOT NULL,
+  answersJson TEXT NOT NULL,
+  createdAt INTEGER NOT NULL
 );
 
 CREATE INDEX ReadingAttempt_testId ON ReadingAttempt(testId);

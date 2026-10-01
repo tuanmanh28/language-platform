@@ -22,52 +22,52 @@ import io.ktor.server.routing.routing
 import kotlinx.serialization.Serializable
 
 fun main() {
-    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
-    embeddedServer(Netty, port = port, host = "0.0.0.0") {
-        module()
-    }.start(wait = true)
+  val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+  embeddedServer(Netty, port = port, host = "0.0.0.0") {
+    module()
+  }.start(wait = true)
 }
 
 @Serializable
 data class ApiError(
-    val message: String,
+  val message: String,
 )
 
 @Serializable
 data class HealthResponse(
-    val status: String,
+  val status: String,
 )
 
 fun Application.module(contentStore: ContentStore = BundledContentStore()) {
-    install(ContentNegotiation) {
-        json(ContentJson)
+  install(ContentNegotiation) {
+    json(ContentJson)
+  }
+  install(CallLogging)
+  install(CORS) {
+    // TODO: restrict origins once the production web domain exists
+    anyHost()
+    allowMethod(HttpMethod.Options)
+    allowMethod(HttpMethod.Post)
+    allowHeader(HttpHeaders.ContentType)
+    allowHeader(HttpHeaders.Authorization)
+  }
+  install(StatusPages) {
+    exception<NotFoundException> { call, cause ->
+      call.respond(HttpStatusCode.NotFound, ApiError(cause.message ?: "Not found"))
     }
-    install(CallLogging)
-    install(CORS) {
-        // TODO: restrict origins once the production web domain exists
-        anyHost()
-        allowMethod(HttpMethod.Options)
-        allowMethod(HttpMethod.Post)
-        allowHeader(HttpHeaders.ContentType)
-        allowHeader(HttpHeaders.Authorization)
+    exception<BadRequestException> { call, cause ->
+      call.respond(HttpStatusCode.BadRequest, ApiError(cause.message ?: "Bad request"))
     }
-    install(StatusPages) {
-        exception<NotFoundException> { call, cause ->
-            call.respond(HttpStatusCode.NotFound, ApiError(cause.message ?: "Not found"))
-        }
-        exception<BadRequestException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ApiError(cause.message ?: "Bad request"))
-        }
-        exception<Throwable> { call, cause ->
-            call.application.log.error("Unhandled error", cause)
-            call.respond(HttpStatusCode.InternalServerError, ApiError("Internal server error"))
-        }
+    exception<Throwable> { call, cause ->
+      call.application.log.error("Unhandled error", cause)
+      call.respond(HttpStatusCode.InternalServerError, ApiError("Internal server error"))
     }
+  }
 
-    routing {
-        get("/health") {
-            call.respond(HealthResponse(status = "ok"))
-        }
-        readingRoutes(contentStore)
+  routing {
+    get("/health") {
+      call.respond(HealthResponse(status = "ok"))
     }
+    readingRoutes(contentStore)
+  }
 }

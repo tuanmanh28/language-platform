@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 // Shared by iOS and macOS.
 actual fun platformModule(): Module =
-    module {
-        single<HttpClientEngine> { Darwin.create() }
-        single<SqlDriver> { NativeSqliteDriver(LanguagePlatformDatabase.Schema, "language_platform.db") }
-    }
+  module {
+    single<HttpClientEngine> { Darwin.create() }
+    single<SqlDriver> { NativeSqliteDriver(LanguagePlatformDatabase.Schema, "language_platform.db") }
+  }

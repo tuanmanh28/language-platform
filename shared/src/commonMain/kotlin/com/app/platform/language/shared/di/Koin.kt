@@ -25,45 +25,45 @@ import org.koin.dsl.module
 expect fun platformModule(): Module
 
 fun sharedModule(config: ApiConfig): Module =
-    module {
-        single { config }
-        single { ContentJson }
-        single { createHttpClient(get<HttpClientEngine>(), get(), get()) }
-        single<ReadingApi> { KtorReadingApi(get(), get()) }
-        single { LanguagePlatformDatabase(get<SqlDriver>()) }
-        single { ReadingRepository(get(), get(), get()) }
+  module {
+    single { config }
+    single { ContentJson }
+    single { createHttpClient(get<HttpClientEngine>(), get(), get()) }
+    single<ReadingApi> { KtorReadingApi(get(), get()) }
+    single { LanguagePlatformDatabase(get<SqlDriver>()) }
+    single { ReadingRepository(get(), get(), get()) }
 
-        viewModel { ReadingTestListViewModel(get()) }
-        viewModel { (testId: String) -> ReadingSessionViewModel(testId, get()) }
-    }
+    viewModel { ReadingTestListViewModel(get()) }
+    viewModel { (testId: String) -> ReadingSessionViewModel(testId, get()) }
+  }
 
 /** Call once at startup (Application.onCreate, main(), or the SwiftUI App init). */
 fun initKoin(
-    config: ApiConfig,
-    appDeclaration: KoinAppDeclaration = {},
+  config: ApiConfig,
+  appDeclaration: KoinAppDeclaration = {},
 ): KoinApplication =
-    startKoin {
-        appDeclaration()
-        modules(sharedModule(config), platformModule())
-    }
+  startKoin {
+    appDeclaration()
+    modules(sharedModule(config), platformModule())
+  }
 
 /**
  * Entry point for Swift: `SharedSdk.shared.start(baseUrl: "http://localhost:8080")`.
  * Swift cannot use Kotlin default arguments/lambdas, hence a dedicated function.
  */
 object SharedSdk {
-    private var started = false
+  private var started = false
 
-    fun start(baseUrl: String) {
-        if (started) return
-        initKoin(ApiConfig(baseUrl = baseUrl))
-        started = true
-    }
+  fun start(baseUrl: String) {
+    if (started) return
+    initKoin(ApiConfig(baseUrl = baseUrl))
+    started = true
+  }
 }
 
 /** Resolves ViewModels from Koin for SwiftUI: `ViewModels.shared.readingSession(testId: id)`. */
 object ViewModels : KoinComponent {
-    fun readingTestList(): ReadingTestListViewModel = get()
+  fun readingTestList(): ReadingTestListViewModel = get()
 
-    fun readingSession(testId: String): ReadingSessionViewModel = get { parametersOf(testId) }
+  fun readingSession(testId: String): ReadingSessionViewModel = get { parametersOf(testId) }
 }

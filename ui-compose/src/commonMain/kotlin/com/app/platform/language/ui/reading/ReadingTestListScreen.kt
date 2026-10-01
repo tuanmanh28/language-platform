@@ -36,102 +36,102 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReadingTestListScreen(
-    onOpenTest: (String) -> Unit,
-    modifier: Modifier = Modifier,
+  onOpenTest: (String) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val viewModel = koinViewModel<ReadingTestListViewModel>()
-    val state by viewModel.state.collectAsStateWithLifecycle()
+  val viewModel = koinViewModel<ReadingTestListViewModel>()
+  val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = { Text("Luyện IELTS Reading") },
-                actions = { TextButton(onClick = viewModel::refresh) { Text("Tải lại") } },
-            )
-        },
-    ) { padding ->
-        Box(Modifier.fillMaxSize().padding(padding)) {
-            when (val current = state) {
-                ReadingTestListUiState.Loading -> {
-                    CircularProgressIndicator(Modifier.align(Alignment.Center))
-                }
-
-                is ReadingTestListUiState.Error -> {
-                    ErrorState(
-                        message = current.message,
-                        onRetry = viewModel::refresh,
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
-
-                is ReadingTestListUiState.Success -> {
-                    LazyColumn(
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        if (current.isOffline) {
-                            item(key = "offline-banner") { OfflineBanner() }
-                        }
-                        items(current.tests, key = { it.id }) { test ->
-                            TestCard(test = test, onClick = { onOpenTest(test.id) })
-                        }
-                    }
-                }
-            }
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      TopAppBar(
+        title = { Text("Luyện IELTS Reading") },
+        actions = { TextButton(onClick = viewModel::refresh) { Text("Tải lại") } },
+      )
+    },
+  ) { padding ->
+    Box(Modifier.fillMaxSize().padding(padding)) {
+      when (val current = state) {
+        ReadingTestListUiState.Loading -> {
+          CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
+
+        is ReadingTestListUiState.Error -> {
+          ErrorState(
+            message = current.message,
+            onRetry = viewModel::refresh,
+            modifier = Modifier.align(Alignment.Center),
+          )
+        }
+
+        is ReadingTestListUiState.Success -> {
+          LazyColumn(
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+          ) {
+            if (current.isOffline) {
+              item(key = "offline-banner") { OfflineBanner() }
+            }
+            items(current.tests, key = { it.id }) { test ->
+              TestCard(test = test, onClick = { onOpenTest(test.id) })
+            }
+          }
+        }
+      }
     }
+  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TestCard(
-    test: ReadingTestSummary,
-    onClick: () -> Unit,
+  test: ReadingTestSummary,
+  onClick: () -> Unit,
 ) {
-    Card(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(test.title, style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = "${test.module.label()} · ${test.questionCount} câu · ${test.timeLimitMinutes} phút",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+  Card(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+    Column(Modifier.padding(16.dp)) {
+      Text(test.title, style = MaterialTheme.typography.titleMedium)
+      Spacer(Modifier.height(4.dp))
+      Text(
+        text = "${test.module.label()} · ${test.questionCount} câu · ${test.timeLimitMinutes} phút",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
     }
+  }
 }
 
 @Composable
 private fun OfflineBanner() {
-    Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = "Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(12.dp),
-        )
-    }
+  Surface(
+    color = MaterialTheme.colorScheme.secondaryContainer,
+    shape = MaterialTheme.shapes.medium,
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    Text(
+      text = "Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.",
+      style = MaterialTheme.typography.bodyMedium,
+      modifier = Modifier.padding(12.dp),
+    )
+  }
 }
 
 @Composable
 internal fun ErrorState(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
+  message: String,
+  onRetry: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    Column(modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(message, style = MaterialTheme.typography.bodyLarge)
-        Spacer(Modifier.height(12.dp))
-        Button(onClick = onRetry) { Text("Thử lại") }
-    }
+  Column(modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Text(message, style = MaterialTheme.typography.bodyLarge)
+    Spacer(Modifier.height(12.dp))
+    Button(onClick = onRetry) { Text("Thử lại") }
+  }
 }
 
 internal fun IeltsModule.label(): String =
-    when (this) {
-        IeltsModule.ACADEMIC -> "Academic"
-        IeltsModule.GENERAL_TRAINING -> "General Training"
-    }
+  when (this) {
+    IeltsModule.ACADEMIC -> "Academic"
+    IeltsModule.GENERAL_TRAINING -> "General Training"
+  }

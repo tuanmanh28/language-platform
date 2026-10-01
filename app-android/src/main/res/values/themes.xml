@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base Activity theme; the real colors come from Compose (LanguagePlatformTheme). -->
-    <style name="Theme.LanguagePlatform" parent="android:Theme.Material.Light.NoActionBar" />
+  <!-- Base Activity theme; the real colors come from Compose (LanguagePlatformTheme). -->
+  <style name="Theme.LanguagePlatform" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

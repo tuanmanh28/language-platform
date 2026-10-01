@@ -60,248 +60,248 @@ private val TwoPaneMinWidth = 840.dp
 
 @Composable
 fun ReadingSessionScreen(
-    testId: String,
-    onExit: () -> Unit,
-    modifier: Modifier = Modifier,
+  testId: String,
+  onExit: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val viewModel =
-        koinViewModel<ReadingSessionViewModel>(key = "reading-session-$testId") {
-            parametersOf(testId)
-        }
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    DisposableEffect(viewModel) {
-        viewModel.start()
-        onDispose { viewModel.stop() }
+  val viewModel =
+    koinViewModel<ReadingSessionViewModel>(key = "reading-session-$testId") {
+      parametersOf(testId)
     }
-    PlatformBackHandler(onBack = onExit)
+  val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Box(modifier.fillMaxSize()) {
-        when (val current = state) {
-            ReadingSessionUiState.Loading -> {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
-            }
+  DisposableEffect(viewModel) {
+    viewModel.start()
+    onDispose { viewModel.stop() }
+  }
+  PlatformBackHandler(onBack = onExit)
 
-            is ReadingSessionUiState.Error -> {
-                ErrorState(
-                    current.message,
-                    onRetry = viewModel::retry,
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
+  Box(modifier.fillMaxSize()) {
+    when (val current = state) {
+      ReadingSessionUiState.Loading -> {
+        CircularProgressIndicator(Modifier.align(Alignment.Center))
+      }
 
-            is ReadingSessionUiState.InProgress -> {
-                InProgressContent(
-                    state = current,
-                    onAnswer = viewModel::answer,
-                    onSubmit = viewModel::submit,
-                    onExit = onExit,
-                )
-            }
+      is ReadingSessionUiState.Error -> {
+        ErrorState(
+          current.message,
+          onRetry = viewModel::retry,
+          modifier = Modifier.align(Alignment.Center),
+        )
+      }
 
-            is ReadingSessionUiState.Finished -> {
-                ReadingResultScreen(
-                    state = current,
-                    onRestart = viewModel::restart,
-                    onExit = onExit,
-                )
-            }
-        }
+      is ReadingSessionUiState.InProgress -> {
+        InProgressContent(
+          state = current,
+          onAnswer = viewModel::answer,
+          onSubmit = viewModel::submit,
+          onExit = onExit,
+        )
+      }
+
+      is ReadingSessionUiState.Finished -> {
+        ReadingResultScreen(
+          state = current,
+          onRestart = viewModel::restart,
+          onExit = onExit,
+        )
+      }
     }
+  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InProgressContent(
-    state: ReadingSessionUiState.InProgress,
-    onAnswer: (questionId: String, value: String) -> Unit,
-    onSubmit: () -> Unit,
-    onExit: () -> Unit,
+  state: ReadingSessionUiState.InProgress,
+  onAnswer: (questionId: String, value: String) -> Unit,
+  onSubmit: () -> Unit,
+  onExit: () -> Unit,
 ) {
-    var confirmSubmit by remember { mutableStateOf(false) }
-    val total = state.test.questionCount
-    val isTimeRunningOut = state.remainingSeconds <= 60
-    val timerColor = if (isTimeRunningOut) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+  var confirmSubmit by remember { mutableStateOf(false) }
+  val total = state.test.questionCount
+  val isTimeRunningOut = state.remainingSeconds <= 60
+  val timerColor = if (isTimeRunningOut) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(state.test.title, maxLines = 1) },
-                navigationIcon = { TextButton(onClick = onExit) { Text("Thoát") } },
-                actions = {
-                    Text(
-                        text = state.remainingLabel,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = timerColor,
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Button(onClick = { confirmSubmit = true }) { Text("Nộp bài") }
-                    Spacer(Modifier.width(8.dp))
-                },
-            )
+  Scaffold(
+    topBar = {
+      TopAppBar(
+        title = { Text(state.test.title, maxLines = 1) },
+        navigationIcon = { TextButton(onClick = onExit) { Text("Thoát") } },
+        actions = {
+          Text(
+            text = state.remainingLabel,
+            style = MaterialTheme.typography.titleMedium,
+            color = timerColor,
+          )
+          Spacer(Modifier.width(12.dp))
+          Button(onClick = { confirmSubmit = true }) { Text("Nộp bài") }
+          Spacer(Modifier.width(8.dp))
         },
-    ) { padding ->
-        BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
-            if (maxWidth >= TwoPaneMinWidth) {
-                Row(Modifier.fillMaxSize()) {
-                    LazyColumn(
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                        contentPadding = PaddingValues(24.dp),
-                    ) { passages(state.test.passages) }
-                    LazyColumn(
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                        contentPadding = PaddingValues(24.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) { questions(state, onAnswer) }
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    passages(state.test.passages)
-                    item(key = "divider") { HorizontalDivider() }
-                    questions(state, onAnswer)
-                }
-            }
+      )
+    },
+  ) { padding ->
+    BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
+      if (maxWidth >= TwoPaneMinWidth) {
+        Row(Modifier.fillMaxSize()) {
+          LazyColumn(
+            modifier = Modifier.weight(1f).fillMaxHeight(),
+            contentPadding = PaddingValues(24.dp),
+          ) { passages(state.test.passages) }
+          LazyColumn(
+            modifier = Modifier.weight(1f).fillMaxHeight(),
+            contentPadding = PaddingValues(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+          ) { questions(state, onAnswer) }
         }
+      } else {
+        LazyColumn(
+          modifier = Modifier.fillMaxSize(),
+          contentPadding = PaddingValues(16.dp),
+          verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+          passages(state.test.passages)
+          item(key = "divider") { HorizontalDivider() }
+          questions(state, onAnswer)
+        }
+      }
     }
+  }
 
-    if (confirmSubmit) {
-        val unanswered = total - state.answeredCount
-        val hasUnanswered = unanswered > 0
-        val message =
-            if (hasUnanswered) {
-                "Bạn còn $unanswered/$total câu chưa trả lời."
-            } else {
-                "Bạn đã trả lời đủ $total câu."
-            }
-        AlertDialog(
-            onDismissRequest = { confirmSubmit = false },
-            title = { Text("Nộp bài?") },
-            text = { Text(message) },
-            confirmButton = {
-                Button(onClick = {
-                    confirmSubmit = false
-                    onSubmit()
-                }) { Text("Nộp bài") }
-            },
-            dismissButton = {
-                TextButton(onClick = { confirmSubmit = false }) { Text("Làm tiếp") }
-            },
-        )
-    }
+  if (confirmSubmit) {
+    val unanswered = total - state.answeredCount
+    val hasUnanswered = unanswered > 0
+    val message =
+      if (hasUnanswered) {
+        "Bạn còn $unanswered/$total câu chưa trả lời."
+      } else {
+        "Bạn đã trả lời đủ $total câu."
+      }
+    AlertDialog(
+      onDismissRequest = { confirmSubmit = false },
+      title = { Text("Nộp bài?") },
+      text = { Text(message) },
+      confirmButton = {
+        Button(onClick = {
+          confirmSubmit = false
+          onSubmit()
+        }) { Text("Nộp bài") }
+      },
+      dismissButton = {
+        TextButton(onClick = { confirmSubmit = false }) { Text("Làm tiếp") }
+      },
+    )
+  }
 }
 
 private fun LazyListScope.passages(passages: List<Passage>) {
-    passages.forEach { passage ->
-        item(key = "passage-${passage.id}") {
-            Text(
-                text = passage.title,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 12.dp),
-            )
-        }
-        items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
-            Text(
-                text =
-                    buildAnnotatedString {
-                        paragraph.label?.let { label ->
-                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("$label  ") }
-                        }
-                        append(paragraph.text)
-                    },
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(bottom = 12.dp),
-            )
-        }
+  passages.forEach { passage ->
+    item(key = "passage-${passage.id}") {
+      Text(
+        text = passage.title,
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.padding(bottom = 12.dp),
+      )
     }
+    items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
+      Text(
+        text =
+          buildAnnotatedString {
+            paragraph.label?.let { label ->
+              withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("$label  ") }
+            }
+            append(paragraph.text)
+          },
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier.padding(bottom = 12.dp),
+      )
+    }
+  }
 }
 
 private fun LazyListScope.questions(
-    state: ReadingSessionUiState.InProgress,
-    onAnswer: (String, String) -> Unit,
+  state: ReadingSessionUiState.InProgress,
+  onAnswer: (String, String) -> Unit,
 ) {
-    state.test.passages.flatMap { it.questionGroups }.forEach { group ->
-        item(key = "group-${group.id}") {
-            Text(
-                text = group.instruction,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
-        items(group.questions, key = { "question-${it.id}" }) { question ->
-            QuestionItem(
-                group = group,
-                question = question,
-                answer = state.answerFor(question.id),
-                onAnswer = { onAnswer(question.id, it) },
-            )
-        }
+  state.test.passages.flatMap { it.questionGroups }.forEach { group ->
+    item(key = "group-${group.id}") {
+      Text(
+        text = group.instruction,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.primary,
+      )
     }
+    items(group.questions, key = { "question-${it.id}" }) { question ->
+      QuestionItem(
+        group = group,
+        question = question,
+        answer = state.answerFor(question.id),
+        onAnswer = { onAnswer(question.id, it) },
+      )
+    }
+  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QuestionItem(
-    group: QuestionGroup,
-    question: Question,
-    answer: String,
-    onAnswer: (String) -> Unit,
+  group: QuestionGroup,
+  question: Question,
+  answer: String,
+  onAnswer: (String) -> Unit,
 ) {
-    Column(Modifier.fillMaxWidth()) {
-        Text("${question.number}. ${question.prompt}", style = MaterialTheme.typography.bodyLarge)
-        Spacer(Modifier.height(8.dp))
+  Column(Modifier.fillMaxWidth()) {
+    Text("${question.number}. ${question.prompt}", style = MaterialTheme.typography.bodyLarge)
+    Spacer(Modifier.height(8.dp))
 
-        when (group.type) {
-            QuestionType.TRUE_FALSE_NOT_GIVEN,
-            QuestionType.YES_NO_NOT_GIVEN,
-            -> {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    group.type.fixedChoices.forEach { choice ->
-                        FilterChip(
-                            selected = answer.equals(choice, ignoreCase = true),
-                            onClick = { onAnswer(choice) },
-                            label = { Text(choice) },
-                        )
-                    }
-                }
-            }
-
-            QuestionType.MULTIPLE_CHOICE -> {
-                Column {
-                    question.options.forEach { option ->
-                        val selected = answer == option.key
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = selected,
-                                        onClick = { onAnswer(option.key) },
-                                        role = Role.RadioButton,
-                                    ),
-                        ) {
-                            RadioButton(selected = selected, onClick = null)
-                            Text("${option.key}. ${option.text}", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
-                }
-            }
-
-            QuestionType.SENTENCE_COMPLETION -> {
-                OutlinedTextField(
-                    value = answer,
-                    onValueChange = onAnswer,
-                    singleLine = true,
-                    placeholder = {
-                        Text(group.maxWords?.let { "Tối đa $it từ" } ?: "Câu trả lời")
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+    when (group.type) {
+      QuestionType.TRUE_FALSE_NOT_GIVEN,
+      QuestionType.YES_NO_NOT_GIVEN,
+      -> {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+          group.type.fixedChoices.forEach { choice ->
+            FilterChip(
+              selected = answer.equals(choice, ignoreCase = true),
+              onClick = { onAnswer(choice) },
+              label = { Text(choice) },
+            )
+          }
         }
+      }
+
+      QuestionType.MULTIPLE_CHOICE -> {
+        Column {
+          question.options.forEach { option ->
+            val selected = answer == option.key
+            Row(
+              verticalAlignment = Alignment.CenterVertically,
+              modifier =
+                Modifier
+                  .fillMaxWidth()
+                  .selectable(
+                    selected = selected,
+                    onClick = { onAnswer(option.key) },
+                    role = Role.RadioButton,
+                  ),
+            ) {
+              RadioButton(selected = selected, onClick = null)
+              Text("${option.key}. ${option.text}", style = MaterialTheme.typography.bodyMedium)
+            }
+          }
+        }
+      }
+
+      QuestionType.SENTENCE_COMPLETION -> {
+        OutlinedTextField(
+          value = answer,
+          onValueChange = onAnswer,
+          singleLine = true,
+          placeholder = {
+            Text(group.maxWords?.let { "Tối đa $it từ" } ?: "Câu trả lời")
+          },
+          modifier = Modifier.fillMaxWidth(),
+        )
+      }
     }
+  }
 }
