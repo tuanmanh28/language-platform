@@ -1,5 +1,7 @@
 package com.app.platform.language.backend
 
+import com.app.platform.language.backend.auth.FirebaseTokenVerifier
+import com.app.platform.language.backend.auth.TokenVerifier
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.BuildInfo
 import com.app.platform.language.backend.config.ContentSource
@@ -7,6 +9,7 @@ import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.docs.docsRoutes
 import com.app.platform.language.backend.health.DatabaseHealth
 import com.app.platform.language.backend.health.healthRoutes
+import com.app.platform.language.backend.plugins.configureAuthentication
 import com.app.platform.language.backend.plugins.configureCors
 import com.app.platform.language.backend.plugins.configureMonitoring
 import com.app.platform.language.backend.plugins.configureSerialization
@@ -16,6 +19,11 @@ import com.app.platform.language.backend.reading.ContentStore
 import com.app.platform.language.backend.reading.DatabaseContentStore
 import com.app.platform.language.backend.reading.ReadingService
 import com.app.platform.language.backend.reading.readingRoutes
+import com.app.platform.language.backend.user.DatabaseUserStore
+import com.app.platform.language.backend.user.UserService
+import com.app.platform.language.backend.user.UserStore
+import com.app.platform.language.backend.user.authenticatedUser
+import com.app.platform.language.backend.user.userRoutes
 import com.github.michaelbull.result.getOrElse
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStopped
@@ -55,7 +63,12 @@ fun main() {
     },
   ) {
     monitor.subscribe(ApplicationStopped) { database.close() }
-    module(DatabaseHealth { database.isReachable() }, config, contentStore(config.contentSource, database))
+    module(
+      databaseHealth = DatabaseHealth { database.isReachable() },
+      userStore = DatabaseUserStore(database),
+      config = config,
+      contentStore = contentStore(config.contentSource, database),
+    )
   }.start(wait = true)
 }
 
@@ -70,18 +83,25 @@ private fun contentStore(
 
 fun Application.module(
   databaseHealth: DatabaseHealth,
+  userStore: UserStore,
   config: AppConfig = AppConfig.local,
   contentStore: ContentStore = BundledContentStore(),
+  tokenVerifier: TokenVerifier = FirebaseTokenVerifier(config.firebaseProjectId),
 ) {
   configureSerialization()
   configureMonitoring()
   configureCors(config.allowedOrigins)
   configureStatusPages()
+  configureAuthentication(tokenVerifier)
 
   val readingService = ReadingService(contentStore)
+  val userService = UserService(userStore)
   routing {
     healthRoutes(BuildInfo.version, config.env, databaseHealth)
     readingRoutes(readingService)
+    authenticatedUser(userService) {
+      userRoutes()
+    }
     docsRoutes(config.env)
   }
 }

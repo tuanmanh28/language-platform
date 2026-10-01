@@ -3,6 +3,7 @@ package com.app.platform.language.backend.plugins
 import com.app.platform.language.backend.config.AllowedOrigins
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
+import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -51,6 +52,6 @@ class CorsTest {
     }
 
   private fun ApplicationTestBuilder.useAllowedOrigins(allowedOrigins: AllowedOrigins) {
-    application { module(FakeDatabaseHealth(), AppConfig.local.copy(allowedOrigins = allowedOrigins)) }
+    application { module(FakeDatabaseHealth(), FakeUserStore(), AppConfig.local.copy(allowedOrigins = allowedOrigins)) }
   }
 }

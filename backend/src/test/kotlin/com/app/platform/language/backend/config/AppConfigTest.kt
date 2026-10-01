@@ -17,6 +17,7 @@ class AppConfigTest {
       "DATABASE_PASSWORD" to "s3cret",
       "CORS_ALLOWED_ORIGINS" to "https://app.example.com, https://admin.example.com:8443",
       "CONTENT_SOURCE" to "bundled",
+      "FIREBASE_PROJECT_ID" to "language-platform-prod",
     )
 
   @Test
@@ -43,6 +44,7 @@ class AppConfigTest {
           ),
         allowedOrigins = AllowedOrigins.Only(setOf("https://app.example.com", "https://admin.example.com:8443")),
         contentSource = ContentSource.BUNDLED,
+        firebaseProjectId = "language-platform-prod",
       )
 
     assertEquals(Ok(expected), AppConfig.parse(prodVariables))
@@ -69,6 +71,21 @@ class AppConfigTest {
       Err(ConfigError.Missing("DATABASE_PASSWORD")),
       AppConfig.parse(prodVariables - "DATABASE_PASSWORD"),
     )
+  }
+
+  @Test
+  fun firebaseProjectIdIsRequiredOutsideLocal() {
+    assertEquals(
+      Err(ConfigError.Missing("FIREBASE_PROJECT_ID")),
+      AppConfig.parse(prodVariables - "FIREBASE_PROJECT_ID"),
+    )
+  }
+
+  @Test
+  fun firebaseProjectIdIsReadFromEnvironmentInLocal() {
+    val config = AppConfig.parse(mapOf("FIREBASE_PROJECT_ID" to "language-platform-dev"))
+
+    assertEquals(Ok("language-platform-dev"), config.map { it.firebaseProjectId })
   }
 
   @Test

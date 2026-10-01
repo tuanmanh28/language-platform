@@ -3,6 +3,7 @@ package com.app.platform.language.backend.docs
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.AppEnv
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
+import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -23,7 +24,7 @@ import kotlin.test.assertTrue
 
 class DocsRoutesTest {
   private fun ApplicationTestBuilder.startIn(env: AppEnv) =
-    application { module(FakeDatabaseHealth(), AppConfig.local.copy(env = env)) }
+    application { module(FakeDatabaseHealth(), FakeUserStore(), AppConfig.local.copy(env = env)) }
 
   @Test
   fun swaggerUiIsServedOutsideProd() =
@@ -60,7 +61,7 @@ class DocsRoutesTest {
     testApplication {
       var routingRoot: RoutingRoot? = null
       application {
-        module(FakeDatabaseHealth())
+        module(FakeDatabaseHealth(), FakeUserStore())
         routingRoot = plugin(RoutingRoot)
       }
       val spec = OpenAPIV3Parser().readContents(client.get("/docs/documentation.yaml").bodyAsText()).openAPI

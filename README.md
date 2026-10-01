@@ -71,6 +71,7 @@ Phase 1 API:
 | GET | `/api/v1/reading/tests` | List tests |
 | GET | `/api/v1/reading/tests/{id}` | Test details |
 | POST | `/api/v1/reading/tests/{id}/submit` | Score answers (`{"answers": {"q1": "TRUE", ...}}`) |
+| GET | `/api/v1/me` | Signed-in user `{"id", "email", "displayName"}`; needs `Authorization: Bearer <Firebase ID token>`, `401` otherwise |
 
 Configuration (environment variables; the server refuses to start on an invalid value):
 
@@ -83,6 +84,13 @@ Configuration (environment variables; the server refuses to start on an invalid 
 | `DATABASE_PASSWORD` | `app` | Required outside `local` |
 | `CORS_ALLOWED_ORIGINS` | `*` in `local`, none elsewhere | Comma-separated origins (`https://app.example.com`); `*` only in `local` |
 | `CONTENT_SOURCE` | `db` | `db` serves published tests from PostgreSQL; `bundled` serves the tests compiled into `core/model` |
+| `FIREBASE_PROJECT_ID` | `demo-language-platform` | Required outside `local`; ID tokens must be issued for this project |
+
+Sign-in (Google, Apple, email) happens in the apps with Firebase Authentication; the backend only verifies the ID token
+against Google's public keys and creates the user on its first authenticated request. To find the project id, open the
+[Firebase console](https://console.firebase.google.com/), select the project, then **Project settings → General →
+Project ID** (it is also `project_id` in `google-services.json` and `PROJECT_ID` in `GoogleService-Info.plist`). The reading
+endpoints stay public; user-specific endpoints require a token.
 
 Seeding publishes new tests and bumps a test's `version` only when its content changed. The reading `GET` endpoints
 return an `ETag` derived from that version with `Cache-Control: public, no-cache`, and answer `304` to a matching

@@ -3,6 +3,7 @@ package com.app.platform.language.backend.reading
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
+import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.exam.ReadingScorer
 import com.app.platform.language.core.model.BundledReadingTests
@@ -43,7 +44,7 @@ class ReadingFromDatabaseTest {
   @Test
   fun seededTestIsListedServedAndScoredLikeTheSharedEngine() =
     testApplication {
-      application { module(FakeDatabaseHealth(), contentStore = DatabaseContentStore(database)) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), contentStore = DatabaseContentStore(database)) }
       val client = createClient { install(ContentNegotiation) { json(ContentJson) } }
       val answers =
         sample.allQuestions().withIndex().associate { (index, question) ->

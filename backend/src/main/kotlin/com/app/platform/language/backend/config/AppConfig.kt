@@ -11,14 +11,26 @@ data class AppConfig(
   val database: DatabaseConfig,
   val allowedOrigins: AllowedOrigins,
   val contentSource: ContentSource,
+  val firebaseProjectId: String,
 ) {
   companion object {
     private const val DEFAULT_PORT = 8080
+
+    // The "demo-" prefix is what the Firebase emulator expects for a project that does not exist.
+    private const val LOCAL_FIREBASE_PROJECT_ID = "demo-language-platform"
     private val localDatabase =
       DatabaseConfig(url = "jdbc:postgresql://localhost:5432/language_platform", user = "app", password = "app")
     private val originPattern = Regex("https?://[a-z0-9.-]+(:\\d{1,5})?")
 
-    val local = AppConfig(DEFAULT_PORT, AppEnv.LOCAL, localDatabase, AllowedOrigins.All, ContentSource.DB)
+    val local =
+      AppConfig(
+        port = DEFAULT_PORT,
+        env = AppEnv.LOCAL,
+        database = localDatabase,
+        allowedOrigins = AllowedOrigins.All,
+        contentSource = ContentSource.DB,
+        firebaseProjectId = LOCAL_FIREBASE_PROJECT_ID,
+      )
 
     fun fromEnvironment(): Result<AppConfig, ConfigError> = parse(System.getenv())
 
@@ -37,6 +49,8 @@ data class AppConfig(
             ),
           allowedOrigins = parseAllowedOrigins(values["CORS_ALLOWED_ORIGINS"], env).bind(),
           contentSource = parseContentSource(values["CONTENT_SOURCE"]).bind(),
+          firebaseProjectId =
+            values.valueOrLocalDefault("FIREBASE_PROJECT_ID", env, LOCAL_FIREBASE_PROJECT_ID).bind(),
         )
       }
     }
