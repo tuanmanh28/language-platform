@@ -51,7 +51,9 @@ ALLOWED_TOOLS = [
     "Bash(ls *)", "Bash(ls)", "Bash(mkdir *)", "Bash(find *)", "Bash(cat *)", "Bash(head *)",
     "Bash(tail *)", "Bash(wc *)", "Bash(grep *)", "Bash(rg *)", "Bash(sort *)", "Bash(diff *)",
     "Bash(npm *)", "Bash(npx *)", "Bash(node *)",
-    "Bash(xcodegen *)", "Bash(xcodebuild *)", "Bash(docker *)", "Bash(java -version)",
+    "Bash(xcodegen *)", "Bash(xcodebuild *)", "Bash(xcrun *)", "Bash(swift *)", "Bash(docker *)",
+    "Bash(java -version)", "Bash(bash scripts/*)", "Bash(./scripts/*)", "Bash(chmod +x *)",
+    "Bash(git update-index --chmod=+x *)",
 ]
 DISALLOWED_TOOLS = [
     "Bash(git push *)", "Bash(git push)", "Bash(git rebase *)", "Bash(git reset *)",

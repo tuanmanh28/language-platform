@@ -5,7 +5,8 @@ reasonable decisions within the task's scope and note them in your final summary
 
 1. Read `CLAUDE.md` and follow it strictly. Load the project skills in `.claude/skills/` that match your work
    (the table in `CLAUDE.md` maps work to skills) and follow them; read the reference files they point to.
-2. Read your task spec: `{spec}`. Read the specs of its dependencies only if you need context.
+2. If `BLOCKED.md` exists from a previous attempt, read it first, resolve what it asks, and `git rm` it.
+   Read your task spec: `{spec}`. Read the specs of its dependencies only if you need context.
 3. Explore the relevant code before editing. Keep the change focused on this task.
 4. Implement the task, including tests. Clean architecture, simple logic, no unnecessary comments (English only).
    New libraries at their latest stable version.
