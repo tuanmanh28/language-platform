@@ -4,11 +4,20 @@ import com.app.platform.language.backend.attempt.AttemptService
 import com.app.platform.language.backend.attempt.AttemptStore
 import com.app.platform.language.backend.attempt.DatabaseAttemptStore
 import com.app.platform.language.backend.attempt.attemptRoutes
+import com.app.platform.language.backend.audio.AudioService
+import com.app.platform.language.backend.audio.AudioStorage
+import com.app.platform.language.backend.audio.LocalAudioStorage
+import com.app.platform.language.backend.audio.PublicAudioStorage
+import com.app.platform.language.backend.audio.R2AudioStorage
+import com.app.platform.language.backend.audio.audioRoutes
+import com.app.platform.language.backend.auth.DevTokenVerifier
 import com.app.platform.language.backend.auth.FirebaseTokenVerifier
 import com.app.platform.language.backend.auth.TokenVerifier
 import com.app.platform.language.backend.config.AppConfig
+import com.app.platform.language.backend.config.AudioStorageConfig
 import com.app.platform.language.backend.config.BuildInfo
 import com.app.platform.language.backend.config.ContentSource
+import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.docs.docsRoutes
 import com.app.platform.language.backend.health.DatabaseHealth
@@ -18,6 +27,7 @@ import com.app.platform.language.backend.listening.DatabaseListeningContentStore
 import com.app.platform.language.backend.listening.ListeningContentStore
 import com.app.platform.language.backend.listening.ListeningService
 import com.app.platform.language.backend.listening.listeningRoutes
+import com.app.platform.language.backend.plugins.FIREBASE_AUTH
 import com.app.platform.language.backend.plugins.configureAuthentication
 import com.app.platform.language.backend.plugins.configureCors
 import com.app.platform.language.backend.plugins.configureMonitoring
@@ -36,6 +46,7 @@ import com.app.platform.language.backend.user.userRoutes
 import com.github.michaelbull.result.getOrElse
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStopped
+import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.connector
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -45,6 +56,7 @@ import kotlin.system.exitProcess
 
 private const val SHUTDOWN_GRACE_PERIOD_MILLIS = 5_000L
 private const val SHUTDOWN_TIMEOUT_MILLIS = 15_000L
+private const val AUDIO_DIR = "audio"
 
 fun main() {
   val logger = LoggerFactory.getLogger("Application")
@@ -101,6 +113,25 @@ private fun listeningContentStore(
     ContentSource.BUNDLED -> BundledListeningContentStore()
   }
 
+private fun localAudioStorage(
+  config: AppConfig,
+  storage: AudioStorageConfig.Local,
+): LocalAudioStorage = LocalAudioStorage(config.contentDir.resolve(AUDIO_DIR), storage.apiBaseUrl)
+
+private fun privateAudioStorage(config: AppConfig): AudioStorage =
+  when (val storage = config.audioStorage) {
+    is AudioStorageConfig.Local -> localAudioStorage(config, storage)
+    is AudioStorageConfig.R2 -> R2AudioStorage(storage)
+  }
+
+private fun withDevAuth(
+  verifier: TokenVerifier,
+  config: AppConfig,
+): TokenVerifier {
+  val devAuth = config.devAuth ?: return verifier
+  return DevTokenVerifier(devAuth.token, devAuth.ownerEmail, verifier)
+}
+
 fun Application.module(
   databaseHealth: DatabaseHealth,
   userStore: UserStore,
@@ -114,19 +145,34 @@ fun Application.module(
   configureMonitoring()
   configureCors(config.allowedOrigins)
   configureStatusPages()
-  configureAuthentication(tokenVerifier)
+  configureAuthentication(withDevAuth(tokenVerifier, config))
 
-  val readingService = ReadingService(contentStore)
-  val listeningService = ListeningService(listeningContentStore, config.audioBaseUrl)
+  val contentAccess = ContentAccessPolicy(config.ownerEmails)
+  val readingService = ReadingService(contentStore, contentAccess)
+  val listeningService =
+    ListeningService(
+      listeningContentStore,
+      PublicAudioStorage(config.audioBaseUrl),
+      privateAudioStorage(config),
+      contentAccess,
+    )
   val userService = UserService(userStore)
-  val attemptService = AttemptService(attemptStore, contentStore)
+  val attemptService = AttemptService(attemptStore, contentStore, contentAccess)
   routing {
     healthRoutes(BuildInfo.version, config.env, databaseHealth)
-    readingRoutes(readingService)
-    listeningRoutes(listeningService)
+    authenticate(FIREBASE_AUTH, optional = true) {
+      readingRoutes(readingService)
+      listeningRoutes(listeningService)
+    }
     authenticatedUser(userService) {
       userRoutes()
       attemptRoutes(attemptService)
+    }
+    val audioStorage = config.audioStorage
+    if (audioStorage is AudioStorageConfig.Local) {
+      authenticate(FIREBASE_AUTH) {
+        audioRoutes(AudioService(localAudioStorage(config, audioStorage), contentAccess))
+      }
     }
     docsRoutes(config.env)
   }

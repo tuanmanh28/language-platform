@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.listening
 
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.core.model.BundledListeningTests
@@ -29,7 +30,10 @@ class DatabaseListeningContentStoreTest {
       insert(sample.copy(id = "a-test"), version = 1, isPublished = true)
 
       assertEquals(
-        listOf(StoredListeningTest(sample.copy(id = "a-test"), 1), StoredListeningTest(sample.copy(id = "b-test"), 2)),
+        listOf(
+          StoredListeningTest(sample.copy(id = "a-test"), 1, Visibility.PUBLIC),
+          StoredListeningTest(sample.copy(id = "b-test"), 2, Visibility.PUBLIC),
+        ),
         store.listeningTests(),
       )
     }
@@ -47,7 +51,7 @@ class DatabaseListeningContentStoreTest {
     runTest {
       insert(sample, version = 5, isPublished = true)
 
-      assertEquals(StoredListeningTest(sample, 5), store.listeningTest(sample.id))
+      assertEquals(StoredListeningTest(sample, 5, Visibility.PUBLIC), store.listeningTest(sample.id))
     }
 
   @Test
@@ -64,20 +68,31 @@ class DatabaseListeningContentStoreTest {
       assertNull(store.listeningTest("missing"))
     }
 
+  @Test
+  fun privateTestKeepsItsVisibility() =
+    runTest {
+      insert(sample, version = 1, isPublished = true, visibility = Visibility.PRIVATE)
+
+      assertEquals(Visibility.PRIVATE, store.listeningTest(sample.id)?.visibility)
+    }
+
   private suspend fun insert(
     test: ListeningTest,
     version: Int,
     isPublished: Boolean,
+    visibility: Visibility = Visibility.PUBLIC,
   ) {
     database.tx {
       exec(
-        "INSERT INTO listening_tests (id, title, content, version, published) VALUES (?, ?, CAST(? AS JSONB), ?, ?)",
+        "INSERT INTO listening_tests (id, title, content, version, published, visibility) " +
+          "VALUES (?, ?, CAST(? AS JSONB), ?, ?, ?)",
         listOf(
           TextColumnType() to test.id,
           TextColumnType() to test.title,
           TextColumnType() to ContentJson.encodeToString(ListeningTest.serializer(), test),
           IntegerColumnType() to version,
           BooleanColumnType() to isPublished,
+          TextColumnType() to visibility.id,
         ),
       )
     }

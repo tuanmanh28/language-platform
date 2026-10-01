@@ -10,6 +10,7 @@ import com.github.michaelbull.result.mapBoth
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.server.application.log
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -23,7 +24,7 @@ fun Route.attemptRoutes(service: AttemptService) {
   route("/api/v1/attempts") {
     post {
       val request = call.receive<SubmitAttemptRequest>()
-      service.submit(call.currentUser().id, request).mapBoth(
+      service.submit(call.currentUser().id, call.principal(), request).mapBoth(
         success = { submitted ->
           call.respond(if (submitted.isNew) HttpStatusCode.Created else HttpStatusCode.OK, submitted.attempt)
         },

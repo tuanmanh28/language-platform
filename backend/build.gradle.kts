@@ -32,6 +32,7 @@ dependencies {
   implementation(libs.ktor.server.status.pages)
   implementation(libs.ktor.server.swagger)
   implementation(libs.ktor.server.auth)
+  implementation(libs.ktor.server.partial.content)
   implementation(libs.java.jwt)
   implementation(libs.jwks.rsa)
   implementation(libs.ktor.serialization.kotlinx.json)
@@ -70,7 +71,8 @@ val listeningContentDir = contentDir.resolve("listening")
 
 tasks.register<JavaExec>("seedContent") {
   group = "application"
-  description = "Upserts content/{reading,listening}/*.json into the database configured by the environment."
+  description =
+    "Upserts content/ as public and CONTENT_DIR as private tests into the database configured by the environment."
   classpath = sourceSets.main.get().runtimeClasspath
   mainClass.set("com.app.platform.language.backend.SeedContentKt")
   args(contentDir.path)

@@ -8,6 +8,7 @@ import com.auth0.jwt.JWTCreator
 import com.auth0.jwt.algorithms.Algorithm
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.getError
+import com.github.michaelbull.result.map
 import kotlinx.coroutines.test.runTest
 import java.math.BigInteger
 import java.security.KeyPair
@@ -42,6 +43,14 @@ class FirebaseTokenVerifierTest {
       val token = token { withClaim("email", null as String?).withClaim("name", null as String?) }
 
       assertEquals(Ok(AuthIdentity(uid = "uid-1", email = null, displayName = null)), verifier.verify(token))
+    }
+
+  @Test
+  fun verifiedEmailClaimMarksTheEmailVerified() =
+    runTest {
+      val result = verifier.verify(token { withClaim("email_verified", true) })
+
+      assertEquals(Ok(true), result.map { it.isEmailVerified })
     }
 
   @Test

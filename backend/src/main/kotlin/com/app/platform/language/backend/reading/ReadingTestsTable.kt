@@ -11,6 +11,7 @@ internal object ReadingTestsTable : Table("reading_tests") {
   // Read-only mapping of the JSONB column; writes cast explicitly in ReadingContentSeeder.
   val content = text("content")
   val version = integer("version")
+  val visibility = text("visibility")
   val published = bool("published")
   override val primaryKey = PrimaryKey(id)
 }

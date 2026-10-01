@@ -54,7 +54,7 @@ Data flow: the UI only renders the ViewModel's `state` (a StateFlow in `shared`)
 
 ```bash
 docker compose up db                      # PostgreSQL 17 on localhost:5432
-./gradlew :backend:seedContent            # upsert content/{reading,listening}/*.json into the database (idempotent)
+./gradlew :backend:seedContent            # upsert content/ (public) and CONTENT_DIR (private) into the database (idempotent)
 ./gradlew :backend:run                    # run directly, http://localhost:8080/health
 # or everything with Docker:
 ./gradlew :backend:shadowJar && docker compose up --build
@@ -74,6 +74,7 @@ Phase 1 API:
 | GET | `/api/v1/listening/tests` | List tests |
 | GET | `/api/v1/listening/tests/{id}` | Test details: 4 sections with absolute audio URLs, transcripts and questions |
 | POST | `/api/v1/listening/tests/{id}/submit` | Score answers on the Listening band scale |
+| GET | `/api/v1/listening/audio/{testId}/{fileName}` | Private audio from `CONTENT_DIR/audio`, owners only (`AUDIO_STORAGE=local`) |
 | GET | `/api/v1/me` | Signed-in user `{"id", "email", "displayName"}`; needs `Authorization: Bearer <Firebase ID token>`, `401` otherwise |
 
 Configuration (environment variables; the server refuses to start on an invalid value):
@@ -89,16 +90,21 @@ Configuration (environment variables; the server refuses to start on an invalid 
 | `CONTENT_SOURCE` | `db` | `db` serves published tests from PostgreSQL; `bundled` serves the tests compiled into `core/model` |
 | `AUDIO_BASE_URL` | `http://localhost:9000/audio` in `local` | Required outside `local`. Public `http(s)` base URL of the audio bucket or CDN (e.g. a Cloudflare R2 public domain); listening content stores audio paths relative to it |
 | `FIREBASE_PROJECT_ID` | `demo-language-platform` | Required outside `local`; ID tokens must be issued for this project |
+| `CONTENT_DIR` | `~/LanguagePlatform/content` | Private content outside the repo; see [`backend/README.md`](backend/README.md) |
+| `OWNER_EMAILS` | none | Comma-separated verified emails that may see private content |
+| `DEV_AUTH_TOKEN` | none | `local` only: bearer token that signs in as the first owner without Firebase |
+| `AUDIO_STORAGE` | `local` (required outside `local`) | Private audio: `local` (local env only) streams `CONTENT_DIR/audio` (base URL `API_BASE_URL`), `r2` presigns URLs (`R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) |
 
 Sign-in (Google, Apple, email) happens in the apps with Firebase Authentication; the backend only verifies the ID token
 against Google's public keys and creates the user on its first authenticated request. To find the project id, open the
 [Firebase console](https://console.firebase.google.com/), select the project, then **Project settings → General →
 Project ID** (it is also `project_id` in `google-services.json` and `PROJECT_ID` in `GoogleService-Info.plist`). The reading
-endpoints stay public; user-specific endpoints require a token.
+and listening endpoints stay public (a token additionally unlocks private tests for owners); user-specific endpoints
+require a token.
 
 Seeding publishes new tests and bumps a test's `version` only when its content changed. The reading `GET` endpoints
-return an `ETag` derived from that version with `Cache-Control: public, no-cache`, and answer `304` to a matching
-`If-None-Match`.
+return an `ETag` derived from that version with `Cache-Control: public, no-cache` (`private, no-cache` when signed in),
+and answer `304` to a matching `If-None-Match`.
 
 Every response carries an `X-Request-Id` header (taken from the request when valid, generated otherwise); the same id
 appears in the logs.

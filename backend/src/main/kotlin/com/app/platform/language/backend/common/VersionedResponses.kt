@@ -11,10 +11,16 @@ import io.ktor.server.routing.RoutingCall
 @PublishedApi
 internal const val CACHE_CONTROL = "public, no-cache"
 
+// Signed-in responses may include private content, so shared caches must never store them.
+@PublishedApi
+internal const val AUTHENTICATED_CACHE_CONTROL = "private, no-cache"
+
 suspend inline fun <reified T : Any> RoutingCall.respondVersioned(versioned: Versioned<T>) {
   val etag = "\"${versioned.version}\""
+  val isAuthenticated = request.headers.contains(HttpHeaders.Authorization)
   response.header(HttpHeaders.ETag, etag)
-  response.header(HttpHeaders.CacheControl, CACHE_CONTROL)
+  response.header(HttpHeaders.CacheControl, if (isAuthenticated) AUTHENTICATED_CACHE_CONTROL else CACHE_CONTROL)
+  response.header(HttpHeaders.Vary, HttpHeaders.Authorization)
   if (request.hasMatchingEtag(etag)) respond(HttpStatusCode.NotModified) else respond(versioned.value)
 }
 

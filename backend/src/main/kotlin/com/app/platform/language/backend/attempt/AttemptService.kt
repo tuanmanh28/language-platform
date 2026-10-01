@@ -1,5 +1,7 @@
 package com.app.platform.language.backend.attempt
 
+import com.app.platform.language.backend.auth.AuthIdentity
+import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.reading.ContentStore
 import com.app.platform.language.core.exam.ReadingScorer
 import com.app.platform.language.core.model.AttemptPage
@@ -19,9 +21,11 @@ import kotlin.uuid.Uuid
 class AttemptService(
   private val attempts: AttemptStore,
   private val content: ContentStore,
+  private val contentAccess: ContentAccessPolicy,
 ) {
   suspend fun submit(
     userId: Uuid,
+    viewer: AuthIdentity?,
     request: SubmitAttemptRequest,
   ): Result<SubmittedAttempt, AttemptError> =
     validate(request)
@@ -30,7 +34,7 @@ class AttemptService(
         if (existing != null) {
           Ok(SubmittedAttempt(existing, isNew = false))
         } else {
-          findTest(request.testId)
+          findTest(request.testId, viewer)
             .andThen { test -> validateAnswers(request.answers, test) }
             .andThen { test -> access { attempts.save(userId, request.scoredAgainst(test)) } }
         }
@@ -99,8 +103,16 @@ class AttemptService(
       Err(AttemptError.InvalidRequest("limit must be between 1 and ${AttemptQuery.MAX_LIMIT}"))
     }
 
-  private suspend fun findTest(id: String): Result<ReadingTest, AttemptError> =
-    access { content.readingTest(id) }.andThen { stored -> stored?.test.toResultOr { AttemptError.TestNotFound } }
+  private suspend fun findTest(
+    id: String,
+    viewer: AuthIdentity?,
+  ): Result<ReadingTest, AttemptError> =
+    access { content.readingTest(id) }.andThen { stored ->
+      stored
+        ?.takeIf { contentAccess.canSee(viewer, it.visibility) }
+        ?.test
+        .toResultOr { AttemptError.TestNotFound }
+    }
 
   private fun SubmitAttemptRequest.scoredAgainst(test: ReadingTest): NewAttempt {
     val result = ReadingScorer.score(test, answers)

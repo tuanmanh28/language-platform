@@ -1,6 +1,7 @@
 package com.app.platform.language.backend.listening
 
 import com.app.platform.language.backend.config.AppConfig
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeAttemptStore
@@ -40,7 +41,7 @@ class ListeningFromDatabaseTest {
   fun seedContent() =
     runTest {
       PostgresTestDatabase.clean()
-      ListeningContentSeeder(database).seed(listeningContentDir).getOrElse { fail(it.message) }
+      ListeningContentSeeder(database).seed(listeningContentDir, Visibility.PUBLIC).getOrElse { fail(it.message) }
     }
 
   @Test

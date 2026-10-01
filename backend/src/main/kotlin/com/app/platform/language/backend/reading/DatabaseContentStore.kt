@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ReadingTest
@@ -33,5 +34,6 @@ class DatabaseContentStore(
     StoredReadingTest(
       test = ContentJson.decodeFromString(ReadingTest.serializer(), this[ReadingTestsTable.content]),
       version = this[ReadingTestsTable.version],
+      visibility = Visibility.fromId(this[ReadingTestsTable.visibility]),
     )
 }

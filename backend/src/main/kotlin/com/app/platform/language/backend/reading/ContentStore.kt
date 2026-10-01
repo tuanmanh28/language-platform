@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.core.model.ReadingTest
 
 interface ContentStore {
@@ -11,4 +12,5 @@ interface ContentStore {
 data class StoredReadingTest(
   val test: ReadingTest,
   val version: Int,
+  val visibility: Visibility,
 )

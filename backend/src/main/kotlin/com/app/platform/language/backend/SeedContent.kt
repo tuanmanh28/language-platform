@@ -1,23 +1,23 @@
 package com.app.platform.language.backend
 
 import com.app.platform.language.backend.config.AppConfig
+import com.app.platform.language.backend.content.ContentSeeder
 import com.app.platform.language.backend.database.AppDatabase
-import com.app.platform.language.backend.listening.ListeningContentSeeder
-import com.app.platform.language.backend.reading.ReadingContentSeeder
-import com.github.michaelbull.result.coroutines.coroutineBinding
 import com.github.michaelbull.result.getOrElse
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import kotlin.io.path.Path
+import kotlin.io.path.isDirectory
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
   val logger = LoggerFactory.getLogger("SeedContent")
-  val contentDir =
+  val publicDir =
     args.singleOrNull()?.let(::Path) ?: run {
-      logger.error("Usage: SeedContent <content directory with reading/ and listening/>")
+      logger.error("Usage: SeedContent <public content directory with reading/ and listening/>")
       exitProcess(1)
     }
+  val privateDir = AppConfig.contentDirFromEnvironment()
   val databaseConfig =
     AppConfig.databaseFromEnvironment().getOrElse { error ->
       logger.error("Invalid configuration: {}", error.message)
@@ -29,21 +29,18 @@ fun main(args: Array<String>) {
       exitProcess(1)
     }
 
-  val readingDir = contentDir.resolve("reading")
-  val listeningDir = contentDir.resolve("listening")
-  val seeded =
-    database.use { db ->
-      runBlocking {
-        coroutineBinding {
-          ReadingContentSeeder(db).seed(readingDir).bind() to ListeningContentSeeder(db).seed(listeningDir).bind()
-        }
-      }
-    }
-  val (readingCount, listeningCount) =
+  if (!privateDir.isDirectory()) logger.warn("CONTENT_DIR {} does not exist; no private content seeded", privateDir)
+  val seeded = database.use { db -> runBlocking { ContentSeeder(db).seed(publicDir, privateDir) } }
+  val (public, private) =
     seeded.getOrElse { error ->
       logger.error(error.message, error.cause)
       exitProcess(1)
     }
-  logger.info("Seeded {} reading tests from {}", readingCount, readingDir)
-  logger.info("Seeded {} listening tests from {}", listeningCount, listeningDir)
+  logger.info("Seeded {} reading and {} listening public tests from {}", public.reading, public.listening, publicDir)
+  logger.info(
+    "Seeded {} reading and {} listening private tests from {}",
+    private.reading,
+    private.listening,
+    privateDir,
+  )
 }

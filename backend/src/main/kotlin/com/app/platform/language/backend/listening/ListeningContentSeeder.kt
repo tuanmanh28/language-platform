@@ -1,10 +1,13 @@
 package com.app.platform.language.backend.listening
 
+import com.app.platform.language.backend.audio.isPrivateAudioPath
 import com.app.platform.language.backend.common.SeedError
 import com.app.platform.language.backend.common.loadContentFiles
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ListeningTest
+import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.coroutines.runSuspendCatching
@@ -16,36 +19,62 @@ import java.nio.file.Path
 class ListeningContentSeeder(
   private val database: AppDatabase,
 ) {
-  suspend fun seed(directory: Path): Result<Int, SeedError> =
-    loadContentFiles(directory, ListeningTest.serializer()).andThen { tests ->
-      runSuspendCatching { database.tx { tests.forEach { upsert(it) } } }
-        .map { tests.size }
-        .mapError(SeedError::WriteFailed)
+  fun load(directory: Path): Result<List<ListeningTest>, SeedError> =
+    loadContentFiles(directory, ListeningTest.serializer())
+
+  suspend fun seed(
+    directory: Path,
+    visibility: Visibility,
+  ): Result<Int, SeedError> = load(directory).andThen { seed(it, visibility) }
+
+  suspend fun seed(
+    tests: List<ListeningTest>,
+    visibility: Visibility,
+  ): Result<Int, SeedError> {
+    if (visibility == Visibility.PRIVATE) invalidPrivateAudioPath(tests)?.let { return Err(it) }
+    return runSuspendCatching { database.tx { tests.forEach { upsert(it, visibility) } } }
+      .map { tests.size }
+      .mapError(SeedError::WriteFailed)
+  }
+
+  // Private audio is served from <test-id>/<file name> in CONTENT_DIR/audio or the R2 bucket, so other paths never play.
+  private fun invalidPrivateAudioPath(tests: List<ListeningTest>): SeedError? =
+    tests.firstNotNullOfOrNull { test ->
+      test.sections
+        .map { it.audioUrl }
+        .find { !isPrivateAudioPath(it) }
+        ?.let { SeedError.InvalidPrivateAudioPath(test.id, it) }
     }
 
-  private fun JdbcTransaction.upsert(test: ListeningTest) {
+  private fun JdbcTransaction.upsert(
+    test: ListeningTest,
+    visibility: Visibility,
+  ) {
     exec(
       UPSERT_SQL,
       listOf(
         ListeningTestsTable.id.columnType to test.id,
         ListeningTestsTable.title.columnType to test.title,
         ListeningTestsTable.content.columnType to ContentJson.encodeToString(ListeningTest.serializer(), test),
+        ListeningTestsTable.visibility.columnType to visibility.id,
       ),
     )
   }
 
   private companion object {
-    // Only rows whose content changed are updated, so reseeding the same files never bumps the version.
+    // Only changed rows are updated, so reseeding the same files never bumps the version.
     val UPSERT_SQL =
       """
-      INSERT INTO listening_tests (id, title, content, published)
-      VALUES (?, ?, CAST(? AS JSONB), TRUE)
+      INSERT INTO listening_tests (id, title, content, visibility, published)
+      VALUES (?, ?, CAST(? AS JSONB), ?, TRUE)
       ON CONFLICT (id) DO UPDATE SET
         title = EXCLUDED.title,
         content = EXCLUDED.content,
+        visibility = EXCLUDED.visibility,
         version = listening_tests.version + 1,
         updated_at = now()
-      WHERE listening_tests.content <> EXCLUDED.content
+      WHERE (listening_tests.content, listening_tests.visibility)
+        IS DISTINCT FROM (EXCLUDED.content, EXCLUDED.visibility)
       """.trimIndent()
   }
 }

@@ -101,7 +101,15 @@ class ListeningRoutesTest {
   fun storeFailureIsInternalError() =
     testApplication {
       val store = FakeListeningContentStore().apply { nextError = IllegalStateException("store is down") }
-      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config, listeningContentStore = store) }
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          config,
+          listeningContentStore = store,
+        )
+      }
 
       val response = jsonClient().get("/api/v1/listening/tests")
 

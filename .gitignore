@@ -41,3 +41,13 @@ node_modules/
 !.env.example
 __pycache__/
 /.worktrees/
+
+# Private IELTS material belongs in CONTENT_DIR outside the repo; never commit it even if copied here by mistake
+LanguagePlatform/
+private-content/
+/content/audio/
+/content/work/
+*.mp3
+*.m4a
+*.wav
+*.pdf

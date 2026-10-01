@@ -34,7 +34,10 @@ paths:
     get:
       tags: [reading]
       operationId: listReadingTests
-      summary: List published reading tests
+      summary: List published reading tests, including private ones for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/IfNoneMatch"
       responses:
@@ -59,7 +62,10 @@ paths:
     get:
       tags: [reading]
       operationId: getReadingTest
-      summary: Get a reading test with its passages and questions
+      summary: Get a reading test with its passages and questions; private tests are 404 except for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/TestId"
         - $ref: "#/components/parameters/IfNoneMatch"
@@ -85,7 +91,10 @@ paths:
     post:
       tags: [reading]
       operationId: submitReadingAnswers
-      summary: Score answers to a reading test
+      summary: Score answers to a reading test; private tests are 404 except for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/TestId"
       requestBody:
@@ -111,7 +120,10 @@ paths:
     get:
       tags: [listening]
       operationId: listListeningTests
-      summary: List published listening tests
+      summary: List published listening tests, including private ones for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/IfNoneMatch"
       responses:
@@ -136,7 +148,12 @@ paths:
     get:
       tags: [listening]
       operationId: getListeningTest
-      summary: Get a listening test with its sections, absolute audio URLs, transcripts and questions
+      summary: >-
+        Get a listening test with its sections, absolute audio URLs, transcripts and questions;
+        private tests are 404 except for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/TestId"
         - $ref: "#/components/parameters/IfNoneMatch"
@@ -162,7 +179,10 @@ paths:
     post:
       tags: [listening]
       operationId: submitListeningAnswers
-      summary: Score answers to a listening test
+      summary: Score answers to a listening test; private tests are 404 except for owners
+      security:
+        - {}
+        - firebase: []
       parameters:
         - $ref: "#/components/parameters/TestId"
       requestBody:
@@ -182,6 +202,56 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "404":
           $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/listening/audio/{testId}/{fileName}:
+    get:
+      tags: [listening]
+      operationId: streamPrivateListeningAudio
+      summary: >-
+        Stream private section audio from CONTENT_DIR/audio to the owner; only mounted with AUDIO_STORAGE=local
+      security:
+        - firebase: []
+      parameters:
+        - name: testId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fileName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Range
+          in: header
+          required: false
+          description: Byte range to seek within the file
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The audio file
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        "206":
+          description: The requested byte range of the audio file
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No such file, or the signed-in user is not an owner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
         "500":
           $ref: "#/components/responses/InternalError"
   /api/v1/me:
@@ -306,7 +376,9 @@ components:
       schema:
         type: string
     CacheControl:
-      description: Always "public, no-cache", so clients revalidate with the ETag
+      description: >-
+        "public, no-cache" for anonymous requests and "private, no-cache" for signed-in ones, so clients revalidate
+        with the ETag and shared caches never store private content
       schema:
         type: string
   responses:
@@ -324,7 +396,8 @@ components:
           schema:
             $ref: "#/components/schemas/ApiError"
     Unauthorized:
-      description: Missing, invalid or expired Firebase ID token
+      description: >-
+        Missing, invalid or expired Firebase ID token; an invalid token is rejected even where signing in is optional
     NotFound:
       description: Test not found
       content:
@@ -543,7 +616,9 @@ components:
         audioUrl:
           type: string
           format: uri
-          description: Absolute URL of the section audio, resolved against AUDIO_BASE_URL
+          description: >-
+            Absolute URL of the section audio: resolved against AUDIO_BASE_URL for public tests; for private tests
+            a short-lived presigned R2 URL or the authenticated local streaming endpoint
         durationSeconds:
           type: integer
         transcript:

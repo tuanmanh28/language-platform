@@ -1,11 +1,13 @@
 package com.app.platform.language.backend.listening
 
 import com.app.platform.language.backend.common.SeedError
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.core.model.BundledListeningTests
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ListeningTest
+import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.getError
 import kotlinx.coroutines.test.runTest
@@ -34,15 +36,15 @@ class ListeningContentSeederTest {
   @Test
   fun seedingInsertsEveryContentFileAsPublished() =
     runTest {
-      assertEquals(Ok(BundledListeningTests.all.size), seeder.seed(listeningContentDir))
+      assertEquals(Ok(BundledListeningTests.all.size), seeder.seed(listeningContentDir, Visibility.PUBLIC))
       assertEquals(bundledRows, storedRows())
     }
 
   @Test
   fun seedingTwiceCreatesNoDuplicatesAndKeepsVersion() =
     runTest {
-      seeder.seed(listeningContentDir)
-      seeder.seed(listeningContentDir)
+      seeder.seed(listeningContentDir, Visibility.PUBLIC)
+      seeder.seed(listeningContentDir, Visibility.PUBLIC)
 
       assertEquals(bundledRows, storedRows())
     }
@@ -51,13 +53,34 @@ class ListeningContentSeederTest {
   fun changedContentBumpsVersion() =
     runTest {
       writeContent(sample)
-      seeder.seed(tempDir)
+      seeder.seed(tempDir, Visibility.PUBLIC)
       writeContent(sample.copy(title = "Revised"))
 
-      seeder.seed(tempDir)
+      seeder.seed(tempDir, Visibility.PUBLIC)
 
       assertEquals(listOf(StoredRow(sample.id, 2, isPublished = true)), storedRows())
       assertEquals("Revised", DatabaseListeningContentStore(database).listeningTest(sample.id)?.test?.title)
+    }
+
+  @Test
+  fun privateTestNeedsAudioAtTestIdAndFileName() =
+    runTest {
+      writeContent(sample)
+
+      assertEquals(
+        Err(SeedError.InvalidPrivateAudioPath(sample.id, sample.sections.first().audioUrl)),
+        seeder.seed(tempDir, Visibility.PRIVATE),
+      )
+      assertEquals(emptyList(), storedRows())
+    }
+
+  @Test
+  fun privateTestWithServableAudioIsStored() =
+    runTest {
+      val sections = sample.sections.map { it.copy(audioUrl = "${sample.id}/section-${it.number}.mp3") }
+      writeContent(sample.copy(sections = sections))
+
+      assertEquals(Ok(1), seeder.seed(tempDir, Visibility.PRIVATE))
     }
 
   @Test
@@ -65,14 +88,14 @@ class ListeningContentSeederTest {
     runTest {
       tempDir.resolve("broken.json").writeText("{ not a listening test")
 
-      assertIs<SeedError.InvalidContent>(seeder.seed(tempDir).getError())
+      assertIs<SeedError.InvalidContent>(seeder.seed(tempDir, Visibility.PUBLIC).getError())
       assertEquals(emptyList(), storedRows())
     }
 
   @Test
   fun missingDirectoryIsUnreadable() =
     runTest {
-      assertIs<SeedError.UnreadableDirectory>(seeder.seed(tempDir.resolve("missing")).getError())
+      assertIs<SeedError.UnreadableDirectory>(seeder.seed(tempDir.resolve("missing"), Visibility.PUBLIC).getError())
     }
 
   private fun writeContent(test: ListeningTest) {

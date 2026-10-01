@@ -1,6 +1,7 @@
 package com.app.platform.language.backend.reading
 
 import com.app.platform.language.backend.common.SeedError
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.core.model.BundledReadingTests
@@ -33,7 +34,7 @@ class ReadingContentSeederTest {
   @Test
   fun seedingInsertsEveryContentFileAsPublished() =
     runTest {
-      val seeded = seeder.seed(readingContentDir)
+      val seeded = seeder.seed(readingContentDir, Visibility.PUBLIC)
 
       assertEquals(Ok(BundledReadingTests.all.size), seeded)
       assertEquals(bundledRows, storedRows())
@@ -42,8 +43,8 @@ class ReadingContentSeederTest {
   @Test
   fun seedingTwiceCreatesNoDuplicatesAndKeepsVersion() =
     runTest {
-      seeder.seed(readingContentDir)
-      seeder.seed(readingContentDir)
+      seeder.seed(readingContentDir, Visibility.PUBLIC)
+      seeder.seed(readingContentDir, Visibility.PUBLIC)
 
       assertEquals(bundledRows, storedRows())
     }
@@ -52,10 +53,10 @@ class ReadingContentSeederTest {
   fun changedContentBumpsVersion() =
     runTest {
       writeContent(sample)
-      seeder.seed(tempDir)
+      seeder.seed(tempDir, Visibility.PUBLIC)
       writeContent(sample.copy(title = "Rooftop Farming, Revised"))
 
-      seeder.seed(tempDir)
+      seeder.seed(tempDir, Visibility.PUBLIC)
 
       assertEquals(listOf(StoredRow(sample.id, 2, isPublished = true)), storedRows())
       assertEquals("Rooftop Farming, Revised", DatabaseContentStore(database).readingTest(sample.id)?.test?.title)
@@ -66,14 +67,14 @@ class ReadingContentSeederTest {
     runTest {
       tempDir.resolve("broken.json").writeText("{ not a reading test")
 
-      assertIs<SeedError.InvalidContent>(seeder.seed(tempDir).getError())
+      assertIs<SeedError.InvalidContent>(seeder.seed(tempDir, Visibility.PUBLIC).getError())
       assertEquals(emptyList(), storedRows())
     }
 
   @Test
   fun missingDirectoryIsUnreadable() =
     runTest {
-      assertIs<SeedError.UnreadableDirectory>(seeder.seed(tempDir.resolve("missing")).getError())
+      assertIs<SeedError.UnreadableDirectory>(seeder.seed(tempDir.resolve("missing"), Visibility.PUBLIC).getError())
     }
 
   private fun writeContent(test: ReadingTest) {

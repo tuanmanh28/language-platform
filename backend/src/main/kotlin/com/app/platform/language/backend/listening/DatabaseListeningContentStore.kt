@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.listening
 
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ListeningTest
@@ -33,5 +34,6 @@ class DatabaseListeningContentStore(
     StoredListeningTest(
       test = ContentJson.decodeFromString(ListeningTest.serializer(), this[ListeningTestsTable.content]),
       version = this[ListeningTestsTable.version],
+      visibility = Visibility.fromId(this[ListeningTestsTable.visibility]),
     )
 }

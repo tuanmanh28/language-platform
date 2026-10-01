@@ -5,6 +5,7 @@ import com.app.platform.language.core.model.ListeningError
 import com.app.platform.language.core.model.SubmitAnswersRequest
 import com.github.michaelbull.result.mapBoth
 import io.ktor.server.application.log
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -17,14 +18,14 @@ import io.ktor.server.util.getOrFail
 fun Route.listeningRoutes(service: ListeningService) {
   route("/api/v1/listening/tests") {
     get {
-      service.listTests().mapBoth(
+      service.listTests(call.principal()).mapBoth(
         success = { tests -> call.respondVersioned(tests) },
         failure = { error -> call.respondError(error) },
       )
     }
 
     get("/{id}") {
-      service.getTest(call.parameters.getOrFail("id")).mapBoth(
+      service.getTest(call.parameters.getOrFail("id"), call.principal()).mapBoth(
         success = { test -> call.respondVersioned(test) },
         failure = { error -> call.respondError(error) },
       )
@@ -32,7 +33,7 @@ fun Route.listeningRoutes(service: ListeningService) {
 
     post("/{id}/submit") {
       val request = call.receive<SubmitAnswersRequest>()
-      service.submit(call.parameters.getOrFail("id"), request).mapBoth(
+      service.submit(call.parameters.getOrFail("id"), request, call.principal()).mapBoth(
         success = { result -> call.respond(result) },
         failure = { error -> call.respondError(error) },
       )

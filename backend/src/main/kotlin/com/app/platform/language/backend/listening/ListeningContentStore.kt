@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.listening
 
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.core.model.ListeningTest
 
 interface ListeningContentStore {
@@ -11,4 +12,5 @@ interface ListeningContentStore {
 data class StoredListeningTest(
   val test: ListeningTest,
   val version: Int,
+  val visibility: Visibility,
 )

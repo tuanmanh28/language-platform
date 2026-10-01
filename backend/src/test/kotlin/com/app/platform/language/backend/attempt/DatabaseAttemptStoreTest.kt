@@ -1,6 +1,7 @@
 package com.app.platform.language.backend.attempt
 
 import com.app.platform.language.backend.auth.AuthIdentity
+import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.reading.ReadingContentSeeder
@@ -41,7 +42,7 @@ class DatabaseAttemptStoreTest {
   fun seedContent() =
     runTest {
       PostgresTestDatabase.clean()
-      ReadingContentSeeder(database).seed(readingContentDir).getOrElse { fail(it.message) }
+      ReadingContentSeeder(database).seed(readingContentDir, Visibility.PUBLIC).getOrElse { fail(it.message) }
     }
 
   @Test

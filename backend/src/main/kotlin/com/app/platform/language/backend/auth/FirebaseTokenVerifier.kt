@@ -50,7 +50,14 @@ class FirebaseTokenVerifier(
     return if (uid == null) {
       Err(TokenError.Invalid("Token has no valid subject"))
     } else {
-      Ok(AuthIdentity(uid = uid, email = getClaim("email").asString(), displayName = getClaim("name").asString()))
+      Ok(
+        AuthIdentity(
+          uid = uid,
+          email = getClaim("email").asString(),
+          displayName = getClaim("name").asString(),
+          isEmailVerified = getClaim("email_verified").asBoolean() ?: false,
+        ),
+      )
     }
   }
 
