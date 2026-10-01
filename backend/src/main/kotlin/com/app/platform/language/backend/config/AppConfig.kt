@@ -10,6 +10,7 @@ data class AppConfig(
   val env: AppEnv,
   val database: DatabaseConfig,
   val allowedOrigins: AllowedOrigins,
+  val contentSource: ContentSource,
 ) {
   companion object {
     private const val DEFAULT_PORT = 8080
@@ -17,7 +18,7 @@ data class AppConfig(
       DatabaseConfig(url = "jdbc:postgresql://localhost:5432/language_platform", user = "app", password = "app")
     private val originPattern = Regex("https?://[a-z0-9.-]+(:\\d{1,5})?")
 
-    val local = AppConfig(DEFAULT_PORT, AppEnv.LOCAL, localDatabase, AllowedOrigins.All)
+    val local = AppConfig(DEFAULT_PORT, AppEnv.LOCAL, localDatabase, AllowedOrigins.All, ContentSource.DB)
 
     fun fromEnvironment(): Result<AppConfig, ConfigError> = parse(System.getenv())
 
@@ -35,8 +36,14 @@ data class AppConfig(
               password = values.valueOrLocalDefault("DATABASE_PASSWORD", env, localDatabase.password).bind(),
             ),
           allowedOrigins = parseAllowedOrigins(values["CORS_ALLOWED_ORIGINS"], env).bind(),
+          contentSource = parseContentSource(values["CONTENT_SOURCE"]).bind(),
         )
       }
+    }
+
+    private fun parseContentSource(value: String?): Result<ContentSource, ConfigError> {
+      if (value == null) return Ok(ContentSource.DB)
+      return ContentSource.fromId(value)?.let(::Ok) ?: Err(ConfigError.Invalid("CONTENT_SOURCE", value))
     }
 
     private fun parseEnv(value: String?): Result<AppEnv, ConfigError> {

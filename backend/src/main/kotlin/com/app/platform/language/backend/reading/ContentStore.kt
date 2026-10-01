@@ -3,7 +3,12 @@ package com.app.platform.language.backend.reading
 import com.app.platform.language.core.model.ReadingTest
 
 interface ContentStore {
-  fun readingTests(): List<ReadingTest>
+  suspend fun readingTests(): List<StoredReadingTest>
 
-  fun readingTest(id: String): ReadingTest?
+  suspend fun readingTest(id: String): StoredReadingTest?
 }
+
+data class StoredReadingTest(
+  val test: ReadingTest,
+  val version: Int,
+)

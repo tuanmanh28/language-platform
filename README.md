@@ -54,6 +54,7 @@ Data flow: the UI only renders the ViewModel's `state` (a StateFlow in `shared`)
 
 ```bash
 docker compose up db                      # PostgreSQL 17 on localhost:5432
+./gradlew :backend:seedContent            # upsert content/reading/*.json into the database (idempotent)
 ./gradlew :backend:run                    # run directly, http://localhost:8080/health
 # or everything with Docker:
 ./gradlew :backend:shadowJar && docker compose up --build
@@ -78,6 +79,11 @@ Configuration (environment variables; the server refuses to start on an invalid 
 | `DATABASE_USER` | `app` | Required outside `local` |
 | `DATABASE_PASSWORD` | `app` | Required outside `local` |
 | `CORS_ALLOWED_ORIGINS` | `*` in `local`, none elsewhere | Comma-separated origins (`https://app.example.com`); `*` only in `local` |
+| `CONTENT_SOURCE` | `db` | `db` serves published tests from PostgreSQL; `bundled` serves the tests compiled into `core/model` |
+
+Seeding publishes new tests and bumps a test's `version` only when its content changed. The reading `GET` endpoints
+return an `ETag` derived from that version with `Cache-Control: public, no-cache`, and answer `304` to a matching
+`If-None-Match`.
 
 Every response carries an `X-Request-Id` header (taken from the request when valid, generated otherwise); the same id
 appears in the logs.

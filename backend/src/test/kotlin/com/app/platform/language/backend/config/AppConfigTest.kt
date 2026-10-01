@@ -16,6 +16,7 @@ class AppConfigTest {
       "DATABASE_USER" to "api",
       "DATABASE_PASSWORD" to "s3cret",
       "CORS_ALLOWED_ORIGINS" to "https://app.example.com, https://admin.example.com:8443",
+      "CONTENT_SOURCE" to "bundled",
     )
 
   @Test
@@ -41,6 +42,7 @@ class AppConfigTest {
             password = "s3cret",
           ),
         allowedOrigins = AllowedOrigins.Only(setOf("https://app.example.com", "https://admin.example.com:8443")),
+        contentSource = ContentSource.BUNDLED,
       )
 
     assertEquals(Ok(expected), AppConfig.parse(prodVariables))
@@ -111,6 +113,21 @@ class AppConfigTest {
     assertEquals(
       Err(ConfigError.Invalid("CORS_ALLOWED_ORIGINS", "app.example.com/path")),
       AppConfig.parse(mapOf("CORS_ALLOWED_ORIGINS" to "https://ok.example.com,app.example.com/path")),
+    )
+  }
+
+  @Test
+  fun contentSourceDefaultsToDatabase() {
+    val config = AppConfig.parse(prodVariables - "CONTENT_SOURCE")
+
+    assertEquals(Ok(ContentSource.DB), config.map { it.contentSource })
+  }
+
+  @Test
+  fun unknownContentSourceIsInvalid() {
+    assertEquals(
+      Err(ConfigError.Invalid("CONTENT_SOURCE", "s3")),
+      AppConfig.parse(mapOf("CONTENT_SOURCE" to "s3")),
     )
   }
 

@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.fake.FakeContentStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ApiError
@@ -12,9 +13,12 @@ import com.app.platform.language.core.model.SubmitAnswersRequest
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
@@ -42,6 +46,68 @@ class ReadingRoutesTest {
 
       assertEquals(BundledReadingTests.all.size, list.size)
       assertEquals(list.first().questionCount, test.questionCount)
+    }
+
+  @Test
+  fun testResponseCarriesVersionEtagAndCacheControl() =
+    testApplication {
+      application { module(FakeDatabaseHealth()) }
+
+      val response = jsonClient().get("/api/v1/reading/tests/${sample.id}")
+
+      assertEquals("\"1\"", response.headers[HttpHeaders.ETag])
+      assertEquals("public, no-cache", response.headers[HttpHeaders.CacheControl])
+    }
+
+  @Test
+  fun matchingEtagIsNotModified() =
+    testApplication {
+      application { module(FakeDatabaseHealth()) }
+      val client = jsonClient()
+      val etag = client.get("/api/v1/reading/tests").headers[HttpHeaders.ETag]
+
+      val response = client.get("/api/v1/reading/tests") { header(HttpHeaders.IfNoneMatch, etag) }
+
+      assertEquals(HttpStatusCode.NotModified, response.status)
+      assertEquals(etag, response.headers[HttpHeaders.ETag])
+      assertEquals("", response.bodyAsText())
+    }
+
+  @Test
+  fun weakMatchInEtagListIsNotModified() =
+    testApplication {
+      application { module(FakeDatabaseHealth()) }
+
+      val response =
+        jsonClient().get("/api/v1/reading/tests/${sample.id}") {
+          header(HttpHeaders.IfNoneMatch, "\"0\", W/\"1\"")
+        }
+
+      assertEquals(HttpStatusCode.NotModified, response.status)
+    }
+
+  @Test
+  fun staleEtagGetsFullResponse() =
+    testApplication {
+      application { module(FakeDatabaseHealth()) }
+
+      val response =
+        jsonClient().get("/api/v1/reading/tests/${sample.id}") { header(HttpHeaders.IfNoneMatch, "\"0\"") }
+
+      assertEquals(HttpStatusCode.OK, response.status)
+      assertEquals(sample, response.body<ReadingTest>())
+    }
+
+  @Test
+  fun storeFailureIsInternalError() =
+    testApplication {
+      val store = FakeContentStore().apply { nextError = IllegalStateException("store is down") }
+      application { module(FakeDatabaseHealth(), contentStore = store) }
+
+      val response = jsonClient().get("/api/v1/reading/tests")
+
+      assertEquals(HttpStatusCode.InternalServerError, response.status)
+      assertEquals(ApiError("Internal error"), response.body<ApiError>())
     }
 
   @Test

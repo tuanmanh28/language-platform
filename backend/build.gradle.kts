@@ -58,9 +58,21 @@ tasks.processResources {
   from(writeBuildInfo)
 }
 
+val readingContentDir = rootDir.resolve("content/reading")
+
+tasks.register<JavaExec>("seedContent") {
+  group = "application"
+  description = "Upserts content/reading/*.json into the database configured by the environment."
+  classpath = sourceSets.main.get().runtimeClasspath
+  mainClass.set("com.app.platform.language.backend.SeedContentKt")
+  args(readingContentDir.path)
+}
+
 tasks.test {
   useJUnitPlatform()
   systemProperty("backend.expectedVersion", backendVersion)
+  systemProperty("backend.readingContentDir", readingContentDir.path)
+  inputs.dir(readingContentDir)
 }
 
 tasks.named<ShadowJar>("shadowJar") {

@@ -2,6 +2,7 @@ package com.app.platform.language.backend
 
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.BuildInfo
+import com.app.platform.language.backend.config.ContentSource
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.health.DatabaseHealth
 import com.app.platform.language.backend.health.healthRoutes
@@ -11,6 +12,7 @@ import com.app.platform.language.backend.plugins.configureSerialization
 import com.app.platform.language.backend.plugins.configureStatusPages
 import com.app.platform.language.backend.reading.BundledContentStore
 import com.app.platform.language.backend.reading.ContentStore
+import com.app.platform.language.backend.reading.DatabaseContentStore
 import com.app.platform.language.backend.reading.ReadingService
 import com.app.platform.language.backend.reading.readingRoutes
 import com.github.michaelbull.result.getOrElse
@@ -52,9 +54,18 @@ fun main() {
     },
   ) {
     monitor.subscribe(ApplicationStopped) { database.close() }
-    module(DatabaseHealth { database.isReachable() }, config)
+    module(DatabaseHealth { database.isReachable() }, config, contentStore(config.contentSource, database))
   }.start(wait = true)
 }
+
+private fun contentStore(
+  source: ContentSource,
+  database: AppDatabase,
+): ContentStore =
+  when (source) {
+    ContentSource.DB -> DatabaseContentStore(database)
+    ContentSource.BUNDLED -> BundledContentStore()
+  }
 
 fun Application.module(
   databaseHealth: DatabaseHealth,
