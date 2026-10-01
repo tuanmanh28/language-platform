@@ -3,6 +3,7 @@ package com.app.platform.language.backend.listening
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
@@ -49,6 +50,7 @@ class ListeningFromDatabaseTest {
         module(
           FakeDatabaseHealth(),
           FakeUserStore(),
+          FakeAttemptStore(),
           config,
           listeningContentStore = DatabaseListeningContentStore(database),
         )

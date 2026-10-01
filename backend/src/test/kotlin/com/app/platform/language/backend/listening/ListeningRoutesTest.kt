@@ -1,6 +1,7 @@
 package com.app.platform.language.backend.listening
 
 import com.app.platform.language.backend.config.AppConfig
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeListeningContentStore
 import com.app.platform.language.backend.fake.FakeUserStore
@@ -41,7 +42,7 @@ class ListeningRoutesTest {
   @Test
   fun listsBundledTests() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val list = jsonClient().get("/api/v1/listening/tests").body<List<ListeningTestSummary>>()
 
@@ -51,7 +52,7 @@ class ListeningRoutesTest {
   @Test
   fun testIsServedWithAbsoluteAudioUrls() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val test = jsonClient().get("/api/v1/listening/tests/${sample.id}").body<ListeningTest>()
 
@@ -65,7 +66,7 @@ class ListeningRoutesTest {
   @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val response = jsonClient().get("/api/v1/listening/tests/${sample.id}")
 
@@ -76,7 +77,7 @@ class ListeningRoutesTest {
   @Test
   fun matchingEtagIsNotModified() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
       val client = jsonClient()
       val etag = client.get("/api/v1/listening/tests").headers[HttpHeaders.ETag]
 
@@ -88,7 +89,7 @@ class ListeningRoutesTest {
   @Test
   fun unknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val response = jsonClient().get("/api/v1/listening/tests/nope")
 
@@ -100,7 +101,7 @@ class ListeningRoutesTest {
   fun storeFailureIsInternalError() =
     testApplication {
       val store = FakeListeningContentStore().apply { nextError = IllegalStateException("store is down") }
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config, listeningContentStore = store) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config, listeningContentStore = store) }
 
       val response = jsonClient().get("/api/v1/listening/tests")
 
@@ -111,7 +112,7 @@ class ListeningRoutesTest {
   @Test
   fun submitScoresWithSharedEngine() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
       val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }
 
       val result =
@@ -128,7 +129,7 @@ class ListeningRoutesTest {
   @Test
   fun submitToUnknownTestIsNotFound() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val response =
         jsonClient().post("/api/v1/listening/tests/nope/submit") {
@@ -142,7 +143,7 @@ class ListeningRoutesTest {
   @Test
   fun malformedSubmitBodyIsBadRequest() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore(), config) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), config) }
 
       val response =
         jsonClient().post("/api/v1/listening/tests/${sample.id}/submit") {
