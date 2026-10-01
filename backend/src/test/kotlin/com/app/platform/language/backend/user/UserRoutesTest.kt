@@ -2,6 +2,7 @@ package com.app.platform.language.backend.user
 
 import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.auth.TokenError
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeTokenVerifier
 import com.app.platform.language.backend.fake.FakeUserStore
@@ -28,7 +29,7 @@ class UserRoutesTest {
   private val store = FakeUserStore()
 
   private fun ApplicationTestBuilder.start() {
-    application { module(FakeDatabaseHealth(), store, tokenVerifier = verifier) }
+    application { module(FakeDatabaseHealth(), store, FakeAttemptStore(), tokenVerifier = verifier) }
   }
 
   private fun ApplicationTestBuilder.jsonClient() = createClient { install(ContentNegotiation) { json(ContentJson) } }

@@ -2,6 +2,7 @@ package com.app.platform.language.backend.plugins
 
 import com.app.platform.language.backend.config.AllowedOrigins
 import com.app.platform.language.backend.config.AppConfig
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
@@ -52,6 +53,13 @@ class CorsTest {
     }
 
   private fun ApplicationTestBuilder.useAllowedOrigins(allowedOrigins: AllowedOrigins) {
-    application { module(FakeDatabaseHealth(), FakeUserStore(), AppConfig.local.copy(allowedOrigins = allowedOrigins)) }
+    application {
+      module(
+        FakeDatabaseHealth(),
+        FakeUserStore(),
+        FakeAttemptStore(),
+        AppConfig.local.copy(allowedOrigins = allowedOrigins),
+      )
+    }
   }
 }

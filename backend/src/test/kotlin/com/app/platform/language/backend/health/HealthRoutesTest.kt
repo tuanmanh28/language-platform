@@ -2,6 +2,7 @@ package com.app.platform.language.backend.health
 
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.AppEnv
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
@@ -20,7 +21,14 @@ class HealthRoutesTest {
     checkNotNull(System.getProperty("backend.expectedVersion")) { "Run through Gradle, which sets the version" }
 
   private fun ApplicationTestBuilder.startWith(databaseHealth: DatabaseHealth) =
-    application { module(databaseHealth, FakeUserStore(), AppConfig.local.copy(env = AppEnv.STAGING)) }
+    application {
+      module(
+        databaseHealth,
+        FakeUserStore(),
+        FakeAttemptStore(),
+        AppConfig.local.copy(env = AppEnv.STAGING),
+      )
+    }
 
   private fun ApplicationTestBuilder.jsonClient() = createClient { install(ContentNegotiation) { json() } }
 

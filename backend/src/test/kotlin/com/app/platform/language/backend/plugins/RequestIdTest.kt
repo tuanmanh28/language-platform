@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.plugins
 
+import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
 import com.app.platform.language.backend.module
@@ -16,7 +17,7 @@ class RequestIdTest {
   @Test
   fun requestIdIsGeneratedWhenAbsent() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
 
       val requestId = client.get("/health").headers[HttpHeaders.XRequestId]
 
@@ -26,7 +27,7 @@ class RequestIdTest {
   @Test
   fun incomingRequestIdIsEchoed() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
 
       val response = client.get("/health") { header(HttpHeaders.XRequestId, "client-abc_123") }
 
@@ -36,7 +37,7 @@ class RequestIdTest {
   @Test
   fun unsafeRequestIdIsReplacedWithGeneratedOne() =
     testApplication {
-      application { module(FakeDatabaseHealth(), FakeUserStore()) }
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore()) }
 
       val response = client.get("/health") { header(HttpHeaders.XRequestId, "bad id\"}") }
 

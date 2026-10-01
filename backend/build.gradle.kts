@@ -39,6 +39,7 @@ dependencies {
   implementation(libs.logstash.logback.encoder)
   implementation(libs.exposed.core)
   implementation(libs.exposed.jdbc)
+  implementation(libs.exposed.java.time)
   implementation(libs.flyway.core)
   implementation(libs.hikari)
   runtimeOnly(libs.flyway.database.postgresql)

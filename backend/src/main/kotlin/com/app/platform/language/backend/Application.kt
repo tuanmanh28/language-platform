@@ -1,5 +1,9 @@
 package com.app.platform.language.backend
 
+import com.app.platform.language.backend.attempt.AttemptService
+import com.app.platform.language.backend.attempt.AttemptStore
+import com.app.platform.language.backend.attempt.DatabaseAttemptStore
+import com.app.platform.language.backend.attempt.attemptRoutes
 import com.app.platform.language.backend.auth.FirebaseTokenVerifier
 import com.app.platform.language.backend.auth.TokenVerifier
 import com.app.platform.language.backend.config.AppConfig
@@ -71,6 +75,7 @@ fun main() {
     module(
       databaseHealth = DatabaseHealth { database.isReachable() },
       userStore = DatabaseUserStore(database),
+      attemptStore = DatabaseAttemptStore(database),
       config = config,
       contentStore = contentStore(config.contentSource, database),
       listeningContentStore = listeningContentStore(config.contentSource, database),
@@ -99,6 +104,7 @@ private fun listeningContentStore(
 fun Application.module(
   databaseHealth: DatabaseHealth,
   userStore: UserStore,
+  attemptStore: AttemptStore,
   config: AppConfig = AppConfig.local,
   contentStore: ContentStore = BundledContentStore(),
   listeningContentStore: ListeningContentStore = BundledListeningContentStore(),
@@ -113,12 +119,14 @@ fun Application.module(
   val readingService = ReadingService(contentStore)
   val listeningService = ListeningService(listeningContentStore, config.audioBaseUrl)
   val userService = UserService(userStore)
+  val attemptService = AttemptService(attemptStore, contentStore)
   routing {
     healthRoutes(BuildInfo.version, config.env, databaseHealth)
     readingRoutes(readingService)
     listeningRoutes(listeningService)
     authenticatedUser(userService) {
       userRoutes()
+      attemptRoutes(attemptService)
     }
     docsRoutes(config.env)
   }
