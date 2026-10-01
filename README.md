@@ -104,6 +104,13 @@ Running on a real device requires setting your Team under *Signing & Capabilitie
 ./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test
 ```
 
+## Planning and AI agents
+
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — phases, priorities and architecture decisions.
+- [`docs/backlog/`](docs/backlog/README.md) — small tasks with acceptance criteria and verify commands (current focus: backend + Android).
+- [`scripts/agents/`](scripts/agents/README.md) — runs several Claude Code agents in parallel on ready tasks, one git worktree each.
+- [`CLAUDE.md`](CLAUDE.md) — rules every AI agent follows in this repo.
+
 ## Adding a test
 
 1. Add a JSON file to `content/reading/` following `content/schema/reading-test.schema.json`

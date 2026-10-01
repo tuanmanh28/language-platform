@@ -1,6 +1,9 @@
 # Reference clone of PeopleInSpace — not part of this repo
 /_reference/
 
+# AI agent orchestrator state and logs (scripts/agents)
+/.agents/
+
 # Gradle / Kotlin
 .gradle/
 build/
