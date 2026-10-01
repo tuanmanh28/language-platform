@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.plugins
 
+import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.module
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -14,7 +15,7 @@ class RequestIdTest {
   @Test
   fun requestIdIsGeneratedWhenAbsent() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val requestId = client.get("/health").headers[HttpHeaders.XRequestId]
 
@@ -24,7 +25,7 @@ class RequestIdTest {
   @Test
   fun incomingRequestIdIsEchoed() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val response = client.get("/health") { header(HttpHeaders.XRequestId, "client-abc_123") }
 
@@ -34,7 +35,7 @@ class RequestIdTest {
   @Test
   fun unsafeRequestIdIsReplacedWithGeneratedOne() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val response = client.get("/health") { header(HttpHeaders.XRequestId, "bad id\"}") }
 

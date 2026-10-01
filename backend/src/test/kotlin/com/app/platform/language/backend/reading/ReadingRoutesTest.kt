@@ -1,5 +1,6 @@
 package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ApiError
 import com.app.platform.language.core.model.BundledReadingTests
@@ -33,7 +34,7 @@ class ReadingRoutesTest {
   @Test
   fun listsAndServesBundledTests() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
       val client = jsonClient()
 
       val list = client.get("/api/v1/reading/tests").body<List<ReadingTestSummary>>()
@@ -46,7 +47,7 @@ class ReadingRoutesTest {
   @Test
   fun unknownTestIsNotFound() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val response = jsonClient().get("/api/v1/reading/tests/nope")
 
@@ -57,7 +58,7 @@ class ReadingRoutesTest {
   @Test
   fun submitScoresWithSharedEngine() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
       val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }
 
       val result =
@@ -74,7 +75,7 @@ class ReadingRoutesTest {
   @Test
   fun submitToUnknownTestIsNotFound() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val response =
         jsonClient().post("/api/v1/reading/tests/nope/submit") {
@@ -88,7 +89,7 @@ class ReadingRoutesTest {
   @Test
   fun malformedSubmitBodyIsBadRequest() =
     testApplication {
-      application { module() }
+      application { module(FakeDatabaseHealth()) }
 
       val response =
         jsonClient().post("/api/v1/reading/tests/${sample.id}/submit") {

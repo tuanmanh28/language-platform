@@ -2,6 +2,8 @@ package com.app.platform.language.backend
 
 import com.app.platform.language.backend.config.AppConfig
 import com.app.platform.language.backend.config.BuildInfo
+import com.app.platform.language.backend.database.AppDatabase
+import com.app.platform.language.backend.health.DatabaseHealth
 import com.app.platform.language.backend.health.healthRoutes
 import com.app.platform.language.backend.plugins.configureCors
 import com.app.platform.language.backend.plugins.configureMonitoring
@@ -13,6 +15,7 @@ import com.app.platform.language.backend.reading.ReadingService
 import com.app.platform.language.backend.reading.readingRoutes
 import com.github.michaelbull.result.getOrElse
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.engine.connector
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -31,6 +34,11 @@ fun main() {
       exitProcess(1)
     }
   logger.info("Starting version {} in {} on port {}", BuildInfo.version, config.env.id, config.port)
+  val database =
+    AppDatabase.connect(config.database).getOrElse { error ->
+      logger.error(error.message, error.cause)
+      exitProcess(1)
+    }
 
   embeddedServer(
     Netty,
@@ -43,11 +51,13 @@ fun main() {
       shutdownTimeout = SHUTDOWN_TIMEOUT_MILLIS
     },
   ) {
-    module(config)
+    monitor.subscribe(ApplicationStopped) { database.close() }
+    module(DatabaseHealth { database.isReachable() }, config)
   }.start(wait = true)
 }
 
 fun Application.module(
+  databaseHealth: DatabaseHealth,
   config: AppConfig = AppConfig.local,
   contentStore: ContentStore = BundledContentStore(),
 ) {
@@ -58,7 +68,7 @@ fun Application.module(
 
   val readingService = ReadingService(contentStore)
   routing {
-    healthRoutes(BuildInfo.version, config.env)
+    healthRoutes(BuildInfo.version, config.env, databaseHealth)
     readingRoutes(readingService)
   }
 }

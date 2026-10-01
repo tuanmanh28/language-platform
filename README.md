@@ -53,8 +53,9 @@ Data flow: the UI only renders the ViewModel's `state` (a StateFlow in `shared`)
 ### 1. Backend
 
 ```bash
+docker compose up db                      # PostgreSQL 17 on localhost:5432
 ./gradlew :backend:run                    # run directly, http://localhost:8080/health
-# or with Docker:
+# or everything with Docker:
 ./gradlew :backend:shadowJar && docker compose up --build
 ```
 
@@ -62,7 +63,7 @@ Phase 1 API:
 
 | Method | Path | Description |
 | --- | --- | --- |
-| GET | `/health` | Liveness check: `{"status", "version", "env"}` |
+| GET | `/health` | `{"status", "version", "env", "database"}`; `503` with `"status": "degraded"` when the database is down |
 | GET | `/api/v1/reading/tests` | List tests |
 | GET | `/api/v1/reading/tests/{id}` | Test details |
 | POST | `/api/v1/reading/tests/{id}/submit` | Score answers (`{"answers": {"q1": "TRUE", ...}}`) |

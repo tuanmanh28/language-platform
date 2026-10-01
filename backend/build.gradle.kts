@@ -22,6 +22,7 @@ dependencies {
   implementation(projects.core.model)
   implementation(projects.core.examEngine)
 
+  implementation(libs.kotlinx.coroutines.core)
   implementation(libs.ktor.server.core)
   implementation(libs.ktor.server.netty)
   implementation(libs.ktor.server.cors)
@@ -32,10 +33,18 @@ dependencies {
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.logback.classic)
   implementation(libs.logstash.logback.encoder)
+  implementation(libs.exposed.core)
+  implementation(libs.exposed.jdbc)
+  implementation(libs.flyway.core)
+  implementation(libs.hikari)
+  runtimeOnly(libs.flyway.database.postgresql)
+  runtimeOnly(libs.postgresql)
 
   testImplementation(kotlin("test"))
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.ktor.server.test.host)
   testImplementation(libs.ktor.client.content.negotiation)
+  testImplementation(libs.testcontainers.postgresql)
 }
 
 val backendVersion = version.toString()
