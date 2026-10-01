@@ -59,10 +59,15 @@ import org.koin.core.parameter.parametersOf
 private val TwoPaneMinWidth = 840.dp
 
 @Composable
-fun ReadingSessionScreen(testId: String, onExit: () -> Unit) {
-    val viewModel = koinViewModel<ReadingSessionViewModel>(key = "reading-session-$testId") {
-        parametersOf(testId)
-    }
+fun ReadingSessionScreen(
+    testId: String,
+    onExit: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val viewModel =
+        koinViewModel<ReadingSessionViewModel>(key = "reading-session-$testId") {
+            parametersOf(testId)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     DisposableEffect(viewModel) {
@@ -71,27 +76,37 @@ fun ReadingSessionScreen(testId: String, onExit: () -> Unit) {
     }
     PlatformBackHandler(onBack = onExit)
 
-    when (val current = state) {
-        ReadingSessionUiState.Loading -> Box(Modifier.fillMaxSize()) {
-            CircularProgressIndicator(Modifier.align(Alignment.Center))
+    Box(modifier.fillMaxSize()) {
+        when (val current = state) {
+            ReadingSessionUiState.Loading -> {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            }
+
+            is ReadingSessionUiState.Error -> {
+                ErrorState(
+                    current.message,
+                    onRetry = viewModel::retry,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+
+            is ReadingSessionUiState.InProgress -> {
+                InProgressContent(
+                    state = current,
+                    onAnswer = viewModel::answer,
+                    onSubmit = viewModel::submit,
+                    onExit = onExit,
+                )
+            }
+
+            is ReadingSessionUiState.Finished -> {
+                ReadingResultScreen(
+                    state = current,
+                    onRestart = viewModel::restart,
+                    onExit = onExit,
+                )
+            }
         }
-
-        is ReadingSessionUiState.Error -> Box(Modifier.fillMaxSize()) {
-            ErrorState(current.message, onRetry = viewModel::retry, modifier = Modifier.align(Alignment.Center))
-        }
-
-        is ReadingSessionUiState.InProgress -> InProgressContent(
-            state = current,
-            onAnswer = viewModel::answer,
-            onSubmit = viewModel::submit,
-            onExit = onExit,
-        )
-
-        is ReadingSessionUiState.Finished -> ReadingResultScreen(
-            state = current,
-            onRestart = viewModel::restart,
-            onExit = onExit,
-        )
     }
 }
 
@@ -105,6 +120,8 @@ private fun InProgressContent(
 ) {
     var confirmSubmit by remember { mutableStateOf(false) }
     val total = state.test.questionCount
+    val isTimeRunningOut = state.remainingSeconds <= 60
+    val timerColor = if (isTimeRunningOut) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
 
     Scaffold(
         topBar = {
@@ -115,7 +132,7 @@ private fun InProgressContent(
                     Text(
                         text = state.remainingLabel,
                         style = MaterialTheme.typography.titleMedium,
-                        color = if (state.remainingSeconds <= 60) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                        color = timerColor,
                     )
                     Spacer(Modifier.width(12.dp))
                     Button(onClick = { confirmSubmit = true }) { Text("Nộp bài") }
@@ -153,16 +170,22 @@ private fun InProgressContent(
 
     if (confirmSubmit) {
         val unanswered = total - state.answeredCount
+        val hasUnanswered = unanswered > 0
+        val message =
+            if (hasUnanswered) {
+                "Bạn còn $unanswered/$total câu chưa trả lời."
+            } else {
+                "Bạn đã trả lời đủ $total câu."
+            }
         AlertDialog(
             onDismissRequest = { confirmSubmit = false },
             title = { Text("Nộp bài?") },
-            text = {
-                Text(
-                    if (unanswered > 0) "Bạn còn $unanswered/$total câu chưa trả lời." else "Bạn đã trả lời đủ $total câu.",
-                )
-            },
+            text = { Text(message) },
             confirmButton = {
-                Button(onClick = { confirmSubmit = false; onSubmit() }) { Text("Nộp bài") }
+                Button(onClick = {
+                    confirmSubmit = false
+                    onSubmit()
+                }) { Text("Nộp bài") }
             },
             dismissButton = {
                 TextButton(onClick = { confirmSubmit = false }) { Text("Làm tiếp") }
@@ -182,12 +205,13 @@ private fun LazyListScope.passages(passages: List<Passage>) {
         }
         items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
             Text(
-                text = buildAnnotatedString {
-                    paragraph.label?.let { label ->
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("$label  ") }
-                    }
-                    append(paragraph.text)
-                },
+                text =
+                    buildAnnotatedString {
+                        paragraph.label?.let { label ->
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("$label  ") }
+                        }
+                        append(paragraph.text)
+                    },
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(bottom = 12.dp),
             )
@@ -232,40 +256,52 @@ private fun QuestionItem(
 
         when (group.type) {
             QuestionType.TRUE_FALSE_NOT_GIVEN,
-            QuestionType.YES_NO_NOT_GIVEN -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                group.type.fixedChoices.forEach { choice ->
-                    FilterChip(
-                        selected = answer.equals(choice, ignoreCase = true),
-                        onClick = { onAnswer(choice) },
-                        label = { Text(choice) },
-                    )
-                }
-            }
-
-            QuestionType.MULTIPLE_CHOICE -> Column {
-                question.options.forEach { option ->
-                    val selected = answer == option.key
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(selected = selected, onClick = { onAnswer(option.key) }, role = Role.RadioButton),
-                    ) {
-                        RadioButton(selected = selected, onClick = null)
-                        Text("${option.key}. ${option.text}", style = MaterialTheme.typography.bodyMedium)
+            QuestionType.YES_NO_NOT_GIVEN,
+            -> {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    group.type.fixedChoices.forEach { choice ->
+                        FilterChip(
+                            selected = answer.equals(choice, ignoreCase = true),
+                            onClick = { onAnswer(choice) },
+                            label = { Text(choice) },
+                        )
                     }
                 }
             }
 
-            QuestionType.SENTENCE_COMPLETION -> OutlinedTextField(
-                value = answer,
-                onValueChange = onAnswer,
-                singleLine = true,
-                placeholder = {
-                    Text(group.maxWords?.let { "Tối đa $it từ" } ?: "Câu trả lời")
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
+            QuestionType.MULTIPLE_CHOICE -> {
+                Column {
+                    question.options.forEach { option ->
+                        val selected = answer == option.key
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .selectable(
+                                        selected = selected,
+                                        onClick = { onAnswer(option.key) },
+                                        role = Role.RadioButton,
+                                    ),
+                        ) {
+                            RadioButton(selected = selected, onClick = null)
+                            Text("${option.key}. ${option.text}", style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+            }
+
+            QuestionType.SENTENCE_COMPLETION -> {
+                OutlinedTextField(
+                    value = answer,
+                    onValueChange = onAnswer,
+                    singleLine = true,
+                    placeholder = {
+                        Text(group.maxWords?.let { "Tối đa $it từ" } ?: "Câu trả lời")
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-import SwiftUI
 import Shared
+import SwiftUI
 
 struct ReadingResultView: View {
     let finished: ReadingSessionUiState.Finished

@@ -24,20 +24,24 @@ import org.koin.dsl.module
 /** Provides the platform-specific [HttpClientEngine] and [SqlDriver]. */
 expect fun platformModule(): Module
 
-fun sharedModule(config: ApiConfig): Module = module {
-    single { config }
-    single { ContentJson }
-    single { createHttpClient(get<HttpClientEngine>(), get(), get()) }
-    single<ReadingApi> { KtorReadingApi(get(), get()) }
-    single { LanguagePlatformDatabase(get<SqlDriver>()) }
-    single { ReadingRepository(get(), get(), get()) }
+fun sharedModule(config: ApiConfig): Module =
+    module {
+        single { config }
+        single { ContentJson }
+        single { createHttpClient(get<HttpClientEngine>(), get(), get()) }
+        single<ReadingApi> { KtorReadingApi(get(), get()) }
+        single { LanguagePlatformDatabase(get<SqlDriver>()) }
+        single { ReadingRepository(get(), get(), get()) }
 
-    viewModel { ReadingTestListViewModel(get()) }
-    viewModel { (testId: String) -> ReadingSessionViewModel(testId, get()) }
-}
+        viewModel { ReadingTestListViewModel(get()) }
+        viewModel { (testId: String) -> ReadingSessionViewModel(testId, get()) }
+    }
 
 /** Call once at startup (Application.onCreate, main(), or the SwiftUI App init). */
-fun initKoin(config: ApiConfig, appDeclaration: KoinAppDeclaration = {}): KoinApplication =
+fun initKoin(
+    config: ApiConfig,
+    appDeclaration: KoinAppDeclaration = {},
+): KoinApplication =
     startKoin {
         appDeclaration()
         modules(sharedModule(config), platformModule())

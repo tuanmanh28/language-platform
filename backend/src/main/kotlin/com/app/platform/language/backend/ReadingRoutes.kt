@@ -16,11 +16,13 @@ import io.ktor.server.util.getOrFail
 /** Source of tests. Phase 1 serves the bundled tests; next step is PostgreSQL + an admin CMS. */
 interface ContentStore {
     fun readingTests(): List<ReadingTest>
+
     fun readingTest(id: String): ReadingTest?
 }
 
 class BundledContentStore : ContentStore {
     override fun readingTests(): List<ReadingTest> = BundledReadingTests.all
+
     override fun readingTest(id: String): ReadingTest? = BundledReadingTests.find(id)
 }
 

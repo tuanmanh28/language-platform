@@ -24,7 +24,9 @@ data class TestListResult(
     val source: DataSource,
 )
 
-class TestNotFoundException(id: String) : Exception("Không tìm thấy đề $id")
+class TestNotFoundException(
+    id: String,
+) : Exception("Không tìm thấy đề $id")
 
 /**
  * Offline-first: try the network, then the SQLite cache, then the bundled tests.
@@ -48,9 +50,10 @@ class ReadingRepository(
             log.w(e) { "listTests failed, falling back to offline data" }
         }
 
-        val cached = withContext(Dispatchers.Default) {
-            queries.selectAllTests().executeAsList().mapNotNull(::decodeTestOrNull)
-        }
+        val cached =
+            withContext(Dispatchers.Default) {
+                queries.selectAllTests().executeAsList().mapNotNull(::decodeTestOrNull)
+            }
         val merged = (cached + BundledReadingTests.all).distinctBy { it.id }
         return TestListResult(
             tests = merged.map { it.toSummary() },
@@ -78,13 +81,17 @@ class ReadingRepository(
             log.w(e) { "getTest($id) failed, falling back to offline data" }
         }
 
-        val cached = withContext(Dispatchers.Default) {
-            queries.selectTest(id).executeAsOneOrNull()?.let(::decodeTestOrNull)
-        }
+        val cached =
+            withContext(Dispatchers.Default) {
+                queries.selectTest(id).executeAsOneOrNull()?.let(::decodeTestOrNull)
+            }
         return cached ?: BundledReadingTests.find(id) ?: throw TestNotFoundException(id)
     }
 
-    suspend fun saveAttempt(result: ReadingResult, answers: Map<String, String>) {
+    suspend fun saveAttempt(
+        result: ReadingResult,
+        answers: Map<String, String>,
+    ) {
         withContext(Dispatchers.Default) {
             queries.insertAttempt(
                 testId = result.testId,
@@ -97,9 +104,10 @@ class ReadingRepository(
         }
     }
 
-    suspend fun attemptCount(testId: String): Long = withContext(Dispatchers.Default) {
-        queries.countAttempts(testId).executeAsOne()
-    }
+    suspend fun attemptCount(testId: String): Long =
+        withContext(Dispatchers.Default) {
+            queries.countAttempts(testId).executeAsOne()
+        }
 
     private fun decodeTestOrNull(raw: String): ReadingTest? =
         runCatching { json.decodeFromString(ReadingTest.serializer(), raw) }

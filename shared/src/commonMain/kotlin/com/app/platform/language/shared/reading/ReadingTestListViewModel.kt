@@ -13,7 +13,11 @@ import kotlinx.coroutines.launch
 
 sealed class ReadingTestListUiState {
     data object Loading : ReadingTestListUiState()
-    data class Error(val message: String) : ReadingTestListUiState()
+
+    data class Error(
+        val message: String,
+    ) : ReadingTestListUiState()
+
     data class Success(
         val tests: List<ReadingTestSummary>,
         /** True when showing cached/bundled tests because the server could not be reached. */
@@ -24,7 +28,6 @@ sealed class ReadingTestListUiState {
 class ReadingTestListViewModel(
     private val repository: ReadingRepository,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow<ReadingTestListUiState>(ReadingTestListUiState.Loading)
     val state: StateFlow<ReadingTestListUiState> = _state.asStateFlow()
 
@@ -37,17 +40,18 @@ class ReadingTestListViewModel(
             if (_state.value !is ReadingTestListUiState.Success) {
                 _state.value = ReadingTestListUiState.Loading
             }
-            _state.value = try {
-                val result = repository.loadTests()
-                ReadingTestListUiState.Success(
-                    tests = result.tests,
-                    isOffline = result.source != DataSource.NETWORK,
-                )
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                ReadingTestListUiState.Error(e.message ?: "Đã có lỗi xảy ra")
-            }
+            _state.value =
+                try {
+                    val result = repository.loadTests()
+                    ReadingTestListUiState.Success(
+                        tests = result.tests,
+                        isOffline = result.source != DataSource.NETWORK,
+                    )
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    ReadingTestListUiState.Error(e.message ?: "Đã có lỗi xảy ra")
+                }
         }
     }
 }

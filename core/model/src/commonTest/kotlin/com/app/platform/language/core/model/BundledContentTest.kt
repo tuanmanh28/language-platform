@@ -4,7 +4,6 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class BundledContentTest {
-
     @Test
     fun bundledTestsParseAndAreConsistent() {
         val tests = BundledReadingTests.all
@@ -24,12 +23,16 @@ class BundledContentTest {
             questions.forEach { q ->
                 assertTrue(q.acceptedAnswers.isNotEmpty(), "${test.id}/${q.id}: missing answer key")
             }
-            test.passages.flatMap { it.questionGroups }
+            test.passages
+                .flatMap { it.questionGroups }
                 .filter { it.type == QuestionType.MULTIPLE_CHOICE }
                 .flatMap { it.questions }
                 .forEach { q ->
                     val keys = q.options.map { it.key }
-                    assertTrue(q.acceptedAnswers.all { it in keys }, "${test.id}/${q.id}: answer is not one of the option keys")
+                    assertTrue(
+                        q.acceptedAnswers.all { it in keys },
+                        "${test.id}/${q.id}: answer is not one of the option keys",
+                    )
                 }
         }
     }

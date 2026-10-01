@@ -29,10 +29,14 @@ fun main() {
 }
 
 @Serializable
-data class ApiError(val message: String)
+data class ApiError(
+    val message: String,
+)
 
 @Serializable
-data class HealthResponse(val status: String)
+data class HealthResponse(
+    val status: String,
+)
 
 fun Application.module(contentStore: ContentStore = BundledContentStore()) {
     install(ContentNegotiation) {

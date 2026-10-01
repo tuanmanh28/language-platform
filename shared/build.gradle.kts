@@ -11,8 +11,14 @@ kotlin {
 
     android {
         namespace = "com.app.platform.language.shared"
-        compileSdk = libs.versions.compileSdk.get().toInt()
-        minSdk = libs.versions.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
     }
 
     // Desktop (Windows) runs on the JVM

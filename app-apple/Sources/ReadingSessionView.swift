@@ -1,5 +1,5 @@
-import SwiftUI
 import Shared
+import SwiftUI
 
 struct ReadingSessionView: View {
     let testId: String
@@ -9,10 +9,11 @@ struct ReadingSessionView: View {
 
     init(testId: String) {
         self.testId = testId
-        _holder = StateObject(wrappedValue: ViewModelHolder(
-            ViewModels.shared.readingSession(testId: testId),
-            onRelease: { $0.stop() }
-        ))
+        _holder = StateObject(
+            wrappedValue: ViewModelHolder(
+                ViewModels.shared.readingSession(testId: testId),
+                onRelease: { $0.stop() }
+            ))
     }
 
     private var viewModel: ReadingSessionViewModel { holder.viewModel }
@@ -90,9 +91,10 @@ private struct InProgressView: View {
         } message: {
             let total = session.test.questionCount
             let unanswered = total - session.answeredCount
-            Text(unanswered > 0
-                 ? "Bạn còn \(unanswered)/\(total) câu chưa trả lời."
-                 : "Bạn đã trả lời đủ \(total) câu.")
+            Text(
+                unanswered > 0
+                    ? "Bạn còn \(unanswered)/\(total) câu chưa trả lời."
+                    : "Bạn đã trả lời đủ \(total) câu.")
         }
     }
 }

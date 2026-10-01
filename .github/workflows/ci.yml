@@ -25,6 +25,9 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v6
 
+      - name: Check Kotlin formatting
+        run: ./gradlew spotlessCheck
+
       - name: Unit tests (core, shared, backend)
         run: ./gradlew :core:model:jvmTest :core:exam-engine:jvmTest :shared:jvmTest :backend:test
 
@@ -53,6 +56,9 @@ jobs:
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ hashFiles('gradle/libs.versions.toml') }}
+
+      - name: Check Swift formatting
+        run: xcrun swift-format lint --strict --recursive app-apple/Sources
 
       - name: Generate Xcode project
         run: |

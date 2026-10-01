@@ -11,6 +11,9 @@ skie = "0.10.15"
 kermit = "2.2.0"
 shadowPlugin = "9.6.1"
 logback = "1.6.5"
+spotless = "8.10.3"
+ktlint = "1.8.0"
+composeRulesKtlint = "0.6.7"
 
 androidxActivity = "1.13.0"
 androidxLifecycleKMP = "2.11.0"
@@ -61,6 +64,8 @@ androidx-lifecycle-viewmodel-kmp = { module = "org.jetbrains.androidx.lifecycle:
 androidx-lifecycle-viewmodel-compose-kmp = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycleKMP" }
 androidx-lifecycle-runtime-compose-kmp = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycleKMP" }
 
+compose-rules-ktlint = { module = "io.nlopez.compose.rules:ktlint", version.ref = "composeRulesKtlint" }
+
 [bundles]
 ktor-client-common = ["ktor-client-core", "ktor-client-content-negotiation", "ktor-client-logging", "ktor-serialization-kotlinx-json"]
 
@@ -74,3 +79,4 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-multip
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
 shadowPlugin = { id = "com.gradleup.shadow", version.ref = "shadowPlugin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

@@ -11,23 +11,25 @@ import androidx.compose.ui.graphics.Color
 private val Brand = Color(0xFF2457C5)
 private val BrandDark = Color(0xFFB3C5FF)
 
-private val LightColors = lightColorScheme(
-    primary = Brand,
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFFDBE1FF),
-    onPrimaryContainer = Color(0xFF00174B),
-    secondary = Color(0xFF00687A),
-    error = Color(0xFFBA1A1A),
-)
+private val LightColors =
+    lightColorScheme(
+        primary = Brand,
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFFDBE1FF),
+        onPrimaryContainer = Color(0xFF00174B),
+        secondary = Color(0xFF00687A),
+        error = Color(0xFFBA1A1A),
+    )
 
-private val DarkColors = darkColorScheme(
-    primary = BrandDark,
-    onPrimary = Color(0xFF002A78),
-    primaryContainer = Color(0xFF003EA8),
-    onPrimaryContainer = Color(0xFFDBE1FF),
-    secondary = Color(0xFF55D6F4),
-    error = Color(0xFFFFB4AB),
-)
+private val DarkColors =
+    darkColorScheme(
+        primary = BrandDark,
+        onPrimary = Color(0xFF002A78),
+        primaryContainer = Color(0xFF003EA8),
+        onPrimaryContainer = Color(0xFFDBE1FF),
+        secondary = Color(0xFF55D6F4),
+        error = Color(0xFFFFB4AB),
+    )
 
 /** Correct/wrong colors on the result screen. */
 object ResultColors {

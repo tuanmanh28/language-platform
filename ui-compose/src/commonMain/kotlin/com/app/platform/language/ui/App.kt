@@ -16,7 +16,10 @@ import com.app.platform.language.ui.theme.LanguagePlatformTheme
 
 private sealed interface Screen {
     data object TestList : Screen
-    data class Session(val testId: String) : Screen
+
+    data class Session(
+        val testId: String,
+    ) : Screen
 }
 
 /** Root composable for Android and Desktop. Koin must be started first (initKoin). */
@@ -26,14 +29,19 @@ fun LanguagePlatformApp() {
         var screen by remember { mutableStateOf<Screen>(Screen.TestList) }
 
         when (val current = screen) {
-            Screen.TestList -> ReadingTestListScreen(
-                onOpenTest = { testId -> screen = Screen.Session(testId) },
-            )
-            is Screen.Session -> ScopedViewModels(key = current) {
-                ReadingSessionScreen(
-                    testId = current.testId,
-                    onExit = { screen = Screen.TestList },
+            Screen.TestList -> {
+                ReadingTestListScreen(
+                    onOpenTest = { testId -> screen = Screen.Session(testId) },
                 )
+            }
+
+            is Screen.Session -> {
+                ScopedViewModels(key = current) {
+                    ReadingSessionScreen(
+                        testId = current.testId,
+                        onExit = { screen = Screen.TestList },
+                    )
+                }
             }
         }
     }
@@ -45,12 +53,16 @@ fun LanguagePlatformApp() {
  * Once the app has more screens, replace this with navigation-compose (each back-stack entry owns a store).
  */
 @Composable
-private fun ScopedViewModels(key: Any, content: @Composable () -> Unit) {
-    val owner = remember(key) {
-        object : ViewModelStoreOwner {
-            override val viewModelStore: ViewModelStore = ViewModelStore()
+private fun ScopedViewModels(
+    key: Any,
+    content: @Composable () -> Unit,
+) {
+    val owner =
+        remember(key) {
+            object : ViewModelStoreOwner {
+                override val viewModelStore: ViewModelStore = ViewModelStore()
+            }
         }
-    }
     DisposableEffect(owner) {
         onDispose { owner.viewModelStore.clear() }
     }
@@ -61,4 +73,7 @@ private fun ScopedViewModels(key: Any, content: @Composable () -> Unit) {
 
 /** System Back button (Android). Desktop has none, so it is a no-op there. */
 @Composable
-internal expect fun PlatformBackHandler(enabled: Boolean = true, onBack: () -> Unit)
+internal expect fun PlatformBackHandler(
+    enabled: Boolean = true,
+    onBack: () -> Unit,
+)

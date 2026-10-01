@@ -19,22 +19,25 @@ data class ReadingTest(
     val questionCount: Int
         get() = passages.sumOf { passage -> passage.questionGroups.sumOf { it.questions.size } }
 
-    fun allQuestions(): List<Question> =
-        passages.flatMap { passage -> passage.questionGroups.flatMap { it.questions } }
+    fun allQuestions(): List<Question> = passages.flatMap { passage -> passage.questionGroups.flatMap { it.questions } }
 
-    fun toSummary(): ReadingTestSummary = ReadingTestSummary(
-        id = id,
-        title = title,
-        module = module,
-        timeLimitMinutes = timeLimitMinutes,
-        questionCount = questionCount,
-    )
+    fun toSummary(): ReadingTestSummary =
+        ReadingTestSummary(
+            id = id,
+            title = title,
+            module = module,
+            timeLimitMinutes = timeLimitMinutes,
+            questionCount = questionCount,
+        )
 }
 
 @Serializable
 enum class IeltsModule {
-    @SerialName("academic") ACADEMIC,
-    @SerialName("general_training") GENERAL_TRAINING,
+    @SerialName("academic")
+    ACADEMIC,
+
+    @SerialName("general_training")
+    GENERAL_TRAINING,
 }
 
 @Serializable
@@ -64,18 +67,28 @@ data class QuestionGroup(
 
 @Serializable
 enum class QuestionType {
-    @SerialName("multiple_choice") MULTIPLE_CHOICE,
-    @SerialName("true_false_not_given") TRUE_FALSE_NOT_GIVEN,
-    @SerialName("yes_no_not_given") YES_NO_NOT_GIVEN,
-    @SerialName("sentence_completion") SENTENCE_COMPLETION;
+    @SerialName("multiple_choice")
+    MULTIPLE_CHOICE,
+
+    @SerialName("true_false_not_given")
+    TRUE_FALSE_NOT_GIVEN,
+
+    @SerialName("yes_no_not_given")
+    YES_NO_NOT_GIVEN,
+
+    @SerialName("sentence_completion")
+    SENTENCE_COMPLETION,
+
+    ;
 
     /** Fixed choices for TRUE/FALSE/NOT GIVEN and YES/NO/NOT GIVEN; empty for other types. */
     val fixedChoices: List<String>
-        get() = when (this) {
-            TRUE_FALSE_NOT_GIVEN -> listOf("TRUE", "FALSE", "NOT GIVEN")
-            YES_NO_NOT_GIVEN -> listOf("YES", "NO", "NOT GIVEN")
-            MULTIPLE_CHOICE, SENTENCE_COMPLETION -> emptyList()
-        }
+        get() =
+            when (this) {
+                TRUE_FALSE_NOT_GIVEN -> listOf("TRUE", "FALSE", "NOT GIVEN")
+                YES_NO_NOT_GIVEN -> listOf("YES", "NO", "NOT GIVEN")
+                MULTIPLE_CHOICE, SENTENCE_COMPLETION -> emptyList()
+            }
 }
 
 @Serializable

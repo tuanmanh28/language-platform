@@ -20,7 +20,9 @@ import kotlinx.coroutines.launch
 sealed class ReadingSessionUiState {
     data object Loading : ReadingSessionUiState()
 
-    data class Error(val message: String) : ReadingSessionUiState()
+    data class Error(
+        val message: String,
+    ) : ReadingSessionUiState()
 
     data class InProgress(
         val test: ReadingTest,
@@ -53,7 +55,6 @@ class ReadingSessionViewModel(
     private val testId: String,
     private val repository: ReadingRepository,
 ) : ViewModel() {
-
     private val log = Logger.withTag("ReadingSession")
     private val _state = MutableStateFlow<ReadingSessionUiState>(ReadingSessionUiState.Loading)
     val state: StateFlow<ReadingSessionUiState> = _state.asStateFlow()
@@ -78,7 +79,10 @@ class ReadingSessionViewModel(
         timerJob = null
     }
 
-    fun answer(questionId: String, value: String) {
+    fun answer(
+        questionId: String,
+        value: String,
+    ) {
         _state.update { current ->
             if (current is ReadingSessionUiState.InProgress) {
                 current.copy(answers = current.answers + (questionId to value))
@@ -92,36 +96,39 @@ class ReadingSessionViewModel(
 
     /** Starts the test again from scratch (after submitting). */
     fun restart() {
-        val test = when (val current = _state.value) {
-            is ReadingSessionUiState.Finished -> current.test
-            is ReadingSessionUiState.InProgress -> current.test
-            else -> return
-        }
+        val test =
+            when (val current = _state.value) {
+                is ReadingSessionUiState.Finished -> current.test
+                is ReadingSessionUiState.InProgress -> current.test
+                else -> return
+            }
         timerJob?.cancel()
         timerJob = null
-        _state.value = ReadingSessionUiState.InProgress(
-            test = test,
-            answers = emptyMap(),
-            remainingSeconds = test.timeLimitMinutes * 60,
-        )
+        _state.value =
+            ReadingSessionUiState.InProgress(
+                test = test,
+                answers = emptyMap(),
+                remainingSeconds = test.timeLimitMinutes * 60,
+            )
         startTimerIfNeeded()
     }
 
     private fun load() {
         viewModelScope.launch {
             _state.value = ReadingSessionUiState.Loading
-            _state.value = try {
-                val test = repository.getTest(testId)
-                ReadingSessionUiState.InProgress(
-                    test = test,
-                    answers = emptyMap(),
-                    remainingSeconds = test.timeLimitMinutes * 60,
-                )
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                ReadingSessionUiState.Error(e.message ?: "Không tải được đề")
-            }
+            _state.value =
+                try {
+                    val test = repository.getTest(testId)
+                    ReadingSessionUiState.InProgress(
+                        test = test,
+                        answers = emptyMap(),
+                        remainingSeconds = test.timeLimitMinutes * 60,
+                    )
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    ReadingSessionUiState.Error(e.message ?: "Không tải được đề")
+                }
             startTimerIfNeeded()
         }
     }
@@ -130,19 +137,20 @@ class ReadingSessionViewModel(
         if (!isVisible || timerJob?.isActive == true) return
         if (_state.value !is ReadingSessionUiState.InProgress) return
 
-        timerJob = viewModelScope.launch {
-            while (isActive) {
-                delay(1_000)
-                val current = _state.value as? ReadingSessionUiState.InProgress ?: break
-                val remaining = current.remainingSeconds - 1
-                if (remaining <= 0) {
-                    _state.value = current.copy(remainingSeconds = 0)
-                    finish(timeExpired = true)
-                    break
+        timerJob =
+            viewModelScope.launch {
+                while (isActive) {
+                    delay(1_000)
+                    val current = _state.value as? ReadingSessionUiState.InProgress ?: break
+                    val remaining = current.remainingSeconds - 1
+                    if (remaining <= 0) {
+                        _state.value = current.copy(remainingSeconds = 0)
+                        finish(timeExpired = true)
+                        break
+                    }
+                    _state.value = current.copy(remainingSeconds = remaining)
                 }
-                _state.value = current.copy(remainingSeconds = remaining)
             }
-        }
     }
 
     private fun finish(timeExpired: Boolean) {

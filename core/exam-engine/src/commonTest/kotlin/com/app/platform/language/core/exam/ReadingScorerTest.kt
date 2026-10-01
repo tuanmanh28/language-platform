@@ -14,48 +14,62 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ReadingScorerTest {
-
-    private val test = ReadingTest(
-        id = "t1",
-        title = "Unit test",
-        timeLimitMinutes = 10,
-        passages = listOf(
-            Passage(
-                id = "p1",
-                title = "Passage",
-                paragraphs = listOf(Paragraph(text = "Text")),
-                questionGroups = listOf(
-                    QuestionGroup(
-                        id = "g1",
-                        type = QuestionType.TRUE_FALSE_NOT_GIVEN,
-                        instruction = "TFNG",
-                        questions = listOf(Question("q1", 1, "Statement", acceptedAnswers = listOf("TRUE"))),
-                    ),
-                    QuestionGroup(
-                        id = "g2",
-                        type = QuestionType.MULTIPLE_CHOICE,
-                        instruction = "MCQ",
-                        questions = listOf(
-                            Question(
-                                "q2", 2, "Pick one",
-                                options = listOf(ChoiceOption("A", "a"), ChoiceOption("B", "b")),
-                                acceptedAnswers = listOf("B"),
+    private val test =
+        ReadingTest(
+            id = "t1",
+            title = "Unit test",
+            timeLimitMinutes = 10,
+            passages =
+                listOf(
+                    Passage(
+                        id = "p1",
+                        title = "Passage",
+                        paragraphs = listOf(Paragraph(text = "Text")),
+                        questionGroups =
+                            listOf(
+                                QuestionGroup(
+                                    id = "g1",
+                                    type = QuestionType.TRUE_FALSE_NOT_GIVEN,
+                                    instruction = "TFNG",
+                                    questions =
+                                        listOf(
+                                            Question("q1", 1, "Statement", acceptedAnswers = listOf("TRUE")),
+                                        ),
+                                ),
+                                QuestionGroup(
+                                    id = "g2",
+                                    type = QuestionType.MULTIPLE_CHOICE,
+                                    instruction = "MCQ",
+                                    questions =
+                                        listOf(
+                                            Question(
+                                                "q2",
+                                                2,
+                                                "Pick one",
+                                                options = listOf(ChoiceOption("A", "a"), ChoiceOption("B", "b")),
+                                                acceptedAnswers = listOf("B"),
+                                            ),
+                                        ),
+                                ),
+                                QuestionGroup(
+                                    id = "g3",
+                                    type = QuestionType.SENTENCE_COMPLETION,
+                                    instruction = "NO MORE THAN TWO WORDS",
+                                    maxWords = 2,
+                                    questions =
+                                        listOf(
+                                            Question(
+                                                "q3",
+                                                3,
+                                                "Gap",
+                                                acceptedAnswers = listOf("tax reductions", "tax reduction"),
+                                            ),
+                                        ),
+                                ),
                             ),
-                        ),
-                    ),
-                    QuestionGroup(
-                        id = "g3",
-                        type = QuestionType.SENTENCE_COMPLETION,
-                        instruction = "NO MORE THAN TWO WORDS",
-                        maxWords = 2,
-                        questions = listOf(
-                            Question("q3", 3, "Gap", acceptedAnswers = listOf("tax reductions", "tax reduction")),
-                        ),
                     ),
                 ),
-            ),
-        ),
-    )
+        )
 
     @Test
     fun scoresNormalizedAnswers() {
@@ -84,7 +98,6 @@ class ReadingScorerTest {
 }
 
 class AnswerNormalizerTest {
-
     @Test
     fun normalizesCaseSpacingAndPunctuation() {
         assertEquals("the museum", AnswerNormalizer.normalize("  The   Museum. ", QuestionType.SENTENCE_COMPLETION))

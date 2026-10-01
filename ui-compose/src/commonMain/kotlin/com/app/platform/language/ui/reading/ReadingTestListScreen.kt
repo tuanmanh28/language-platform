@@ -35,11 +35,15 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReadingTestListScreen(onOpenTest: (String) -> Unit) {
+fun ReadingTestListScreen(
+    onOpenTest: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel = koinViewModel<ReadingTestListViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text("Luyện IELTS Reading") },
@@ -49,23 +53,29 @@ fun ReadingTestListScreen(onOpenTest: (String) -> Unit) {
     ) { padding ->
         Box(Modifier.fillMaxSize().padding(padding)) {
             when (val current = state) {
-                ReadingTestListUiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                ReadingTestListUiState.Loading -> {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
 
-                is ReadingTestListUiState.Error -> ErrorState(
-                    message = current.message,
-                    onRetry = viewModel::refresh,
-                    modifier = Modifier.align(Alignment.Center),
-                )
+                is ReadingTestListUiState.Error -> {
+                    ErrorState(
+                        message = current.message,
+                        onRetry = viewModel::refresh,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
 
-                is ReadingTestListUiState.Success -> LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    if (current.isOffline) {
-                        item(key = "offline-banner") { OfflineBanner() }
-                    }
-                    items(current.tests, key = { it.id }) { test ->
-                        TestCard(test = test, onClick = { onOpenTest(test.id) })
+                is ReadingTestListUiState.Success -> {
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        if (current.isOffline) {
+                            item(key = "offline-banner") { OfflineBanner() }
+                        }
+                        items(current.tests, key = { it.id }) { test ->
+                            TestCard(test = test, onClick = { onOpenTest(test.id) })
+                        }
                     }
                 }
             }
@@ -75,7 +85,10 @@ fun ReadingTestListScreen(onOpenTest: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TestCard(test: ReadingTestSummary, onClick: () -> Unit) {
+private fun TestCard(
+    test: ReadingTestSummary,
+    onClick: () -> Unit,
+) {
     Card(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
             Text(test.title, style = MaterialTheme.typography.titleMedium)
@@ -105,7 +118,11 @@ private fun OfflineBanner() {
 }
 
 @Composable
-internal fun ErrorState(message: String, onRetry: () -> Unit, modifier: Modifier = Modifier) {
+internal fun ErrorState(
+    message: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(message, style = MaterialTheme.typography.bodyLarge)
         Spacer(Modifier.height(12.dp))
@@ -113,7 +130,8 @@ internal fun ErrorState(message: String, onRetry: () -> Unit, modifier: Modifier
     }
 }
 
-internal fun IeltsModule.label(): String = when (this) {
-    IeltsModule.ACADEMIC -> "Academic"
-    IeltsModule.GENERAL_TRAINING -> "General Training"
-}
+internal fun IeltsModule.label(): String =
+    when (this) {
+        IeltsModule.ACADEMIC -> "Academic"
+        IeltsModule.GENERAL_TRAINING -> "General Training"
+    }

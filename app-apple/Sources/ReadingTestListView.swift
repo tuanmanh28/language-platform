@@ -1,5 +1,5 @@
-import SwiftUI
 import Shared
+import SwiftUI
 
 struct ReadingTestListView: View {
     @StateObject private var holder = ViewModelHolder(ViewModels.shared.readingTestList())
@@ -20,10 +20,12 @@ struct ReadingTestListView: View {
                     List {
                         if success.isOffline {
                             Section {
-                                Label("Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.",
-                                      systemImage: "wifi.slash")
-                                    .font(.callout)
-                                    .foregroundStyle(.secondary)
+                                Label(
+                                    "Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.",
+                                    systemImage: "wifi.slash"
+                                )
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
                             }
                         }
                         Section("Đề luyện") {

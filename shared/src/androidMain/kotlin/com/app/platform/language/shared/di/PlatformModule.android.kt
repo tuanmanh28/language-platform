@@ -10,9 +10,10 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 // Context is registered by androidContext(...) in the Application (see app-android).
-actual fun platformModule(): Module = module {
-    single<HttpClientEngine> { Android.create() }
-    single<SqlDriver> {
-        AndroidSqliteDriver(LanguagePlatformDatabase.Schema, get<Context>(), "language_platform.db")
+actual fun platformModule(): Module =
+    module {
+        single<HttpClientEngine> { Android.create() }
+        single<SqlDriver> {
+            AndroidSqliteDriver(LanguagePlatformDatabase.Schema, get<Context>(), "language_platform.db")
+        }
     }
-}

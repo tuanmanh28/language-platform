@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class BandScaleTest {
-
     @Test
     fun academicReadingBoundaries() {
         assertEquals(9.0, BandScale.readingBand(IeltsModule.ACADEMIC, 40, 40))
