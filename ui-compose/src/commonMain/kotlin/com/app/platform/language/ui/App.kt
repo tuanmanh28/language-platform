@@ -22,7 +22,6 @@ private sealed interface Screen {
   ) : Screen
 }
 
-/** Root composable for Android and Desktop. Koin must be started first (initKoin). */
 @Composable
 fun LanguagePlatformApp() {
   LanguagePlatformTheme {
@@ -47,11 +46,7 @@ fun LanguagePlatformApp() {
   }
 }
 
-/**
- * Gives each opened screen its own ViewModelStore, cleared when the screen is left.
- * Every visit to a test is a fresh attempt (the timer cannot be "paused" by leaving and coming back).
- * Once the app has more screens, replace this with navigation-compose (each back-stack entry owns a store).
- */
+// Each visit gets its own ViewModelStore, so reopening a test always starts a fresh attempt.
 @Composable
 private fun ScopedViewModels(
   key: Any,
@@ -71,7 +66,6 @@ private fun ScopedViewModels(
   }
 }
 
-/** System Back button (Android). Desktop has none, so it is a no-op there. */
 @Composable
 internal expect fun PlatformBackHandler(
   enabled: Boolean = true,

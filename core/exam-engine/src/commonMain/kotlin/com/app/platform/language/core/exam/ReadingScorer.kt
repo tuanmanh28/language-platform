@@ -6,12 +6,7 @@ import com.app.platform.language.core.model.QuestionResult
 import com.app.platform.language.core.model.ReadingResult
 import com.app.platform.language.core.model.ReadingTest
 
-/**
- * Scores a Reading test. The same code runs in the apps (offline scoring) and on the backend,
- * so results always match.
- */
 object ReadingScorer {
-  /** @param answers questionId -> raw answer entered by the learner. */
   fun score(
     test: ReadingTest,
     answers: Map<String, String>,

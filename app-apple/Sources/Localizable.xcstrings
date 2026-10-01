@@ -1,0 +1,161 @@
+{
+  "sourceLanguage" : "vi",
+  "strings" : {
+    "common_retry" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thử lại" } } }
+    },
+    "reading_common_error_not_found" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Không tìm thấy đề" } } }
+    },
+    "reading_common_error_offline" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Không kết nối được máy chủ" } } }
+    },
+    "reading_common_error_unexpected" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đã có lỗi xảy ra" } } }
+    },
+    "reading_common_module_academic" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Academic" } } }
+    },
+    "reading_common_module_general_training" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "General Training" } } }
+    },
+    "reading_list_offline_banner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không kết nối được máy chủ — đang dùng đề đã lưu trên máy."
+          }
+        }
+      }
+    },
+    "reading_list_refresh" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tải lại" } } }
+    },
+    "reading_list_section_title" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đề luyện" } } }
+    },
+    "reading_list_test_details" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "%1$@ · %2$d câu · %3$d phút" } } }
+    },
+    "reading_list_title" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Luyện IELTS Reading" } } }
+    },
+    "reading_result_accepted_answers" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đáp án: %1$@" } } }
+    },
+    "reading_result_back_to_list" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Về danh sách" } } }
+    },
+    "reading_result_correct" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đúng" } } }
+    },
+    "reading_result_correct_count" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đúng %1$d/%2$d câu" } } }
+    },
+    "reading_result_correct_mark" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "✓" } } }
+    },
+    "reading_result_details" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chi tiết" } } }
+    },
+    "reading_result_estimated_band" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Band ước tính" } } }
+    },
+    "reading_result_no_answer" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "—" } } }
+    },
+    "reading_result_question_number" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Câu %1$d" } } }
+    },
+    "reading_result_restart" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Làm lại" } } }
+    },
+    "reading_result_time_expired" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hết giờ — bài đã được nộp tự động." } }
+      }
+    },
+    "reading_result_title" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Kết quả" } } }
+    },
+    "reading_result_wrong" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Sai" } } }
+    },
+    "reading_result_wrong_mark" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "✗" } } }
+    },
+    "reading_result_your_answer" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn trả lời: %1$@" } } }
+    },
+    "reading_session_answer_placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Câu trả lời" } } }
+    },
+    "reading_session_continue" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Làm tiếp" } } }
+    },
+    "reading_session_exit" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thoát" } } }
+    },
+    "reading_session_max_words" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tối đa %1$d từ" } } }
+    },
+    "reading_session_option" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "%1$@. %2$@" } } }
+    },
+    "reading_session_question" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "%1$d. %2$@" } } }
+    },
+    "reading_session_submit" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nộp bài" } } }
+    },
+    "reading_session_submit_all_answered" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn đã trả lời đủ %1$d câu." } } }
+    },
+    "reading_session_submit_title" : {
+      "extractionState" : "manual",
+      "localizations" : { "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nộp bài?" } } }
+    },
+    "reading_session_submit_unanswered" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn còn %1$d/%2$d câu chưa trả lời." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

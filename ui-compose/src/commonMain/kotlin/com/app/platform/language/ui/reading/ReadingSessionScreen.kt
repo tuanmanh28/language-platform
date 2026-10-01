@@ -43,70 +43,102 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.app.platform.language.core.model.Paragraph
 import com.app.platform.language.core.model.Passage
 import com.app.platform.language.core.model.Question
 import com.app.platform.language.core.model.QuestionGroup
 import com.app.platform.language.core.model.QuestionType
+import com.app.platform.language.core.model.ReadingError
 import com.app.platform.language.shared.reading.ReadingSessionUiState
 import com.app.platform.language.shared.reading.ReadingSessionViewModel
 import com.app.platform.language.ui.PlatformBackHandler
+import com.app.platform.language.ui.resources.Res
+import com.app.platform.language.ui.resources.common_retry
+import com.app.platform.language.ui.resources.reading_session_answer_placeholder
+import com.app.platform.language.ui.resources.reading_session_continue
+import com.app.platform.language.ui.resources.reading_session_exit
+import com.app.platform.language.ui.resources.reading_session_max_words
+import com.app.platform.language.ui.resources.reading_session_option
+import com.app.platform.language.ui.resources.reading_session_question
+import com.app.platform.language.ui.resources.reading_session_submit
+import com.app.platform.language.ui.resources.reading_session_submit_all_answered
+import com.app.platform.language.ui.resources.reading_session_submit_title
+import com.app.platform.language.ui.resources.reading_session_submit_unanswered
+import com.app.platform.language.ui.theme.LanguagePlatformTheme
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-/** Screens wider than this (tablet, desktop) show the passage and questions side by side. */
 private val TwoPaneMinWidth = 840.dp
+private const val TIME_RUNNING_OUT_SECONDS = 60
 
 @Composable
-fun ReadingSessionScreen(
+internal fun ReadingSessionScreen(
   testId: String,
   onExit: () -> Unit,
-  modifier: Modifier = Modifier,
+  viewModel: ReadingSessionViewModel = koinViewModel(key = "reading-session-$testId") { parametersOf(testId) },
 ) {
-  val viewModel =
-    koinViewModel<ReadingSessionViewModel>(key = "reading-session-$testId") {
-      parametersOf(testId)
-    }
   val state by viewModel.state.collectAsStateWithLifecycle()
-
   DisposableEffect(viewModel) {
     viewModel.start()
     onDispose { viewModel.stop() }
   }
   PlatformBackHandler(onBack = onExit)
+  ReadingSessionScreen(
+    state = state,
+    onRetry = viewModel::retry,
+    onAnswer = viewModel::answer,
+    onSubmit = viewModel::submit,
+    onRestart = viewModel::restart,
+    onExit = onExit,
+  )
+}
 
-  Box(modifier.fillMaxSize()) {
-    when (val current = state) {
-      ReadingSessionUiState.Loading -> {
-        CircularProgressIndicator(Modifier.align(Alignment.Center))
-      }
-
-      is ReadingSessionUiState.Error -> {
-        ErrorState(
-          current.message,
-          onRetry = viewModel::retry,
-          modifier = Modifier.align(Alignment.Center),
-        )
-      }
-
-      is ReadingSessionUiState.InProgress -> {
-        InProgressContent(
-          state = current,
-          onAnswer = viewModel::answer,
-          onSubmit = viewModel::submit,
-          onExit = onExit,
-        )
-      }
-
-      is ReadingSessionUiState.Finished -> {
-        ReadingResultScreen(
-          state = current,
-          onRestart = viewModel::restart,
-          onExit = onExit,
-        )
-      }
+@Composable
+internal fun ReadingSessionScreen(
+  state: ReadingSessionUiState,
+  onRetry: () -> Unit,
+  onAnswer: (questionId: String, value: String) -> Unit,
+  onSubmit: () -> Unit,
+  onRestart: () -> Unit,
+  onExit: () -> Unit,
+) {
+  when (state) {
+    ReadingSessionUiState.Loading -> {
+      Box(Modifier.fillMaxSize()) { CircularProgressIndicator(Modifier.align(Alignment.Center)) }
     }
+
+    is ReadingSessionUiState.Failed -> {
+      FailedContent(state.error, onRetry, Modifier.fillMaxSize())
+    }
+
+    is ReadingSessionUiState.InProgress -> {
+      InProgressContent(state, onAnswer, onSubmit, onExit, Modifier.fillMaxSize())
+    }
+
+    is ReadingSessionUiState.Finished -> {
+      ReadingResultContent(state, onRestart, onExit, Modifier.fillMaxSize())
+    }
+  }
+}
+
+@Composable
+private fun FailedContent(
+  error: ReadingError,
+  onRetry: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Column(
+    modifier = modifier.padding(24.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(error.toUserMessage(), style = MaterialTheme.typography.bodyLarge)
+    Spacer(Modifier.height(12.dp))
+    Button(onClick = onRetry) { Text(stringResource(Res.string.common_retry)) }
   }
 }
 
@@ -117,25 +149,28 @@ private fun InProgressContent(
   onAnswer: (questionId: String, value: String) -> Unit,
   onSubmit: () -> Unit,
   onExit: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-  var confirmSubmit by remember { mutableStateOf(false) }
-  val total = state.test.questionCount
-  val isTimeRunningOut = state.remainingSeconds <= 60
-  val timerColor = if (isTimeRunningOut) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+  var isConfirmingSubmit by remember { mutableStateOf(false) }
+  val timerColor =
+    if (state.remainingSeconds <= TIME_RUNNING_OUT_SECONDS) {
+      MaterialTheme.colorScheme.error
+    } else {
+      MaterialTheme.colorScheme.onSurface
+    }
 
   Scaffold(
+    modifier = modifier,
     topBar = {
       TopAppBar(
         title = { Text(state.test.title, maxLines = 1) },
-        navigationIcon = { TextButton(onClick = onExit) { Text("Thoát") } },
+        navigationIcon = {
+          TextButton(onClick = onExit) { Text(stringResource(Res.string.reading_session_exit)) }
+        },
         actions = {
-          Text(
-            text = state.remainingLabel,
-            style = MaterialTheme.typography.titleMedium,
-            color = timerColor,
-          )
+          Text(text = state.remainingLabel, style = MaterialTheme.typography.titleMedium, color = timerColor)
           Spacer(Modifier.width(12.dp))
-          Button(onClick = { confirmSubmit = true }) { Text("Nộp bài") }
+          Button(onClick = { isConfirmingSubmit = true }) { Text(stringResource(Res.string.reading_session_submit)) }
           Spacer(Modifier.width(8.dp))
         },
       )
@@ -168,30 +203,43 @@ private fun InProgressContent(
     }
   }
 
-  if (confirmSubmit) {
-    val unanswered = total - state.answeredCount
-    val hasUnanswered = unanswered > 0
-    val message =
-      if (hasUnanswered) {
-        "Bạn còn $unanswered/$total câu chưa trả lời."
-      } else {
-        "Bạn đã trả lời đủ $total câu."
-      }
-    AlertDialog(
-      onDismissRequest = { confirmSubmit = false },
-      title = { Text("Nộp bài?") },
-      text = { Text(message) },
-      confirmButton = {
-        Button(onClick = {
-          confirmSubmit = false
-          onSubmit()
-        }) { Text("Nộp bài") }
+  if (isConfirmingSubmit) {
+    SubmitDialog(
+      state = state,
+      onConfirm = {
+        isConfirmingSubmit = false
+        onSubmit()
       },
-      dismissButton = {
-        TextButton(onClick = { confirmSubmit = false }) { Text("Làm tiếp") }
-      },
+      onDismiss = { isConfirmingSubmit = false },
     )
   }
+}
+
+@Composable
+private fun SubmitDialog(
+  state: ReadingSessionUiState.InProgress,
+  onConfirm: () -> Unit,
+  onDismiss: () -> Unit,
+) {
+  val total = state.test.questionCount
+  val unanswered = total - state.answeredCount
+  val message =
+    if (unanswered > 0) {
+      stringResource(Res.string.reading_session_submit_unanswered, unanswered, total)
+    } else {
+      stringResource(Res.string.reading_session_submit_all_answered, total)
+    }
+  AlertDialog(
+    onDismissRequest = onDismiss,
+    title = { Text(stringResource(Res.string.reading_session_submit_title)) },
+    text = { Text(message) },
+    confirmButton = {
+      Button(onClick = onConfirm) { Text(stringResource(Res.string.reading_session_submit)) }
+    },
+    dismissButton = {
+      TextButton(onClick = onDismiss) { Text(stringResource(Res.string.reading_session_continue)) }
+    },
+  )
 }
 
 private fun LazyListScope.passages(passages: List<Passage>) {
@@ -204,24 +252,33 @@ private fun LazyListScope.passages(passages: List<Passage>) {
       )
     }
     items(passage.paragraphs, key = { "paragraph-${passage.id}-${it.label}-${it.text.hashCode()}" }) { paragraph ->
-      Text(
-        text =
-          buildAnnotatedString {
-            paragraph.label?.let { label ->
-              withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("$label  ") }
-            }
-            append(paragraph.text)
-          },
-        style = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier.padding(bottom = 12.dp),
-      )
+      ParagraphText(paragraph, Modifier.padding(bottom = 12.dp))
     }
   }
 }
 
+@Composable
+private fun ParagraphText(
+  paragraph: Paragraph,
+  modifier: Modifier = Modifier,
+) {
+  Text(
+    text =
+      buildAnnotatedString {
+        paragraph.label?.let { label ->
+          withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(label) }
+          append("  ")
+        }
+        append(paragraph.text)
+      },
+    style = MaterialTheme.typography.bodyLarge,
+    modifier = modifier,
+  )
+}
+
 private fun LazyListScope.questions(
   state: ReadingSessionUiState.InProgress,
-  onAnswer: (String, String) -> Unit,
+  onAnswer: (questionId: String, value: String) -> Unit,
 ) {
   state.test.passages.flatMap { it.questionGroups }.forEach { group ->
     item(key = "group-${group.id}") {
@@ -237,71 +294,168 @@ private fun LazyListScope.questions(
         question = question,
         answer = state.answerFor(question.id),
         onAnswer = { onAnswer(question.id, it) },
+        modifier = Modifier.fillMaxWidth(),
       )
     }
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QuestionItem(
   group: QuestionGroup,
   question: Question,
   answer: String,
   onAnswer: (String) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-  Column(Modifier.fillMaxWidth()) {
-    Text("${question.number}. ${question.prompt}", style = MaterialTheme.typography.bodyLarge)
+  Column(modifier) {
+    Text(
+      stringResource(Res.string.reading_session_question, question.number, question.prompt),
+      style = MaterialTheme.typography.bodyLarge,
+    )
     Spacer(Modifier.height(8.dp))
 
     when (group.type) {
       QuestionType.TRUE_FALSE_NOT_GIVEN,
       QuestionType.YES_NO_NOT_GIVEN,
-      -> {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-          group.type.fixedChoices.forEach { choice ->
-            FilterChip(
-              selected = answer.equals(choice, ignoreCase = true),
-              onClick = { onAnswer(choice) },
-              label = { Text(choice) },
-            )
-          }
-        }
-      }
+      -> FixedChoiceAnswer(group.type.fixedChoices, answer, onAnswer)
 
-      QuestionType.MULTIPLE_CHOICE -> {
-        Column {
-          question.options.forEach { option ->
-            val selected = answer == option.key
-            Row(
-              verticalAlignment = Alignment.CenterVertically,
-              modifier =
-                Modifier
-                  .fillMaxWidth()
-                  .selectable(
-                    selected = selected,
-                    onClick = { onAnswer(option.key) },
-                    role = Role.RadioButton,
-                  ),
-            ) {
-              RadioButton(selected = selected, onClick = null)
-              Text("${option.key}. ${option.text}", style = MaterialTheme.typography.bodyMedium)
-            }
-          }
-        }
-      }
+      QuestionType.MULTIPLE_CHOICE -> MultipleChoiceAnswer(question, answer, onAnswer, Modifier.fillMaxWidth())
 
-      QuestionType.SENTENCE_COMPLETION -> {
-        OutlinedTextField(
-          value = answer,
-          onValueChange = onAnswer,
-          singleLine = true,
-          placeholder = {
-            Text(group.maxWords?.let { "Tối đa $it từ" } ?: "Câu trả lời")
-          },
-          modifier = Modifier.fillMaxWidth(),
+      QuestionType.SENTENCE_COMPLETION -> CompletionAnswer(group.maxWords, answer, onAnswer, Modifier.fillMaxWidth())
+    }
+  }
+}
+
+@Composable
+private fun FixedChoiceAnswer(
+  choices: List<String>,
+  answer: String,
+  onAnswer: (String) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    choices.forEach { choice ->
+      FilterChip(
+        selected = answer.equals(choice, ignoreCase = true),
+        onClick = { onAnswer(choice) },
+        label = { Text(choice) },
+      )
+    }
+  }
+}
+
+@Composable
+private fun MultipleChoiceAnswer(
+  question: Question,
+  answer: String,
+  onAnswer: (String) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Column(modifier) {
+    question.options.forEach { option ->
+      val isSelected = answer == option.key
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .selectable(selected = isSelected, onClick = { onAnswer(option.key) }, role = Role.RadioButton),
+      ) {
+        RadioButton(selected = isSelected, onClick = null)
+        Text(
+          stringResource(Res.string.reading_session_option, option.key, option.text),
+          style = MaterialTheme.typography.bodyMedium,
         )
       }
     }
+  }
+}
+
+@Composable
+private fun CompletionAnswer(
+  maxWords: Int?,
+  answer: String,
+  onAnswer: (String) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  OutlinedTextField(
+    value = answer,
+    onValueChange = onAnswer,
+    singleLine = true,
+    placeholder = {
+      Text(
+        if (maxWords != null) {
+          stringResource(Res.string.reading_session_max_words, maxWords)
+        } else {
+          stringResource(Res.string.reading_session_answer_placeholder)
+        },
+      )
+    },
+    modifier = modifier,
+  )
+}
+
+@Preview
+@Composable
+private fun ReadingSessionLoadingPreview() {
+  LanguagePlatformTheme {
+    ReadingSessionScreen(ReadingSessionUiState.Loading, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionLoadingDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingSessionScreen(ReadingSessionUiState.Loading, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionFailedPreview() {
+  LanguagePlatformTheme {
+    ReadingSessionScreen(ReadingPreviewData.sessionFailed, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionFailedDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingSessionScreen(ReadingPreviewData.sessionFailed, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionInProgressPreview() {
+  LanguagePlatformTheme {
+    ReadingSessionScreen(ReadingPreviewData.sessionInProgress, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionInProgressDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingSessionScreen(ReadingPreviewData.sessionInProgress, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionFinishedPreview() {
+  LanguagePlatformTheme {
+    ReadingSessionScreen(ReadingPreviewData.sessionFinished, {}, { _, _ -> }, {}, {}, {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingSessionFinishedDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingSessionScreen(ReadingPreviewData.sessionFinished, {}, { _, _ -> }, {}, {}, {})
   }
 }

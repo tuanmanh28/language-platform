@@ -4,56 +4,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.app.platform.language.core.exam.ReadingScorer
-import com.app.platform.language.core.model.ReadingResult
 import com.app.platform.language.core.model.ReadingTest
-import com.app.platform.language.shared.data.ReadingRepository
-import kotlinx.coroutines.CancellationException
+import com.app.platform.language.shared.reading.data.ReadingRepository
+import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.onErr
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
-sealed class ReadingSessionUiState {
-  data object Loading : ReadingSessionUiState()
-
-  data class Error(
-    val message: String,
-  ) : ReadingSessionUiState()
-
-  data class InProgress(
-    val test: ReadingTest,
-    /** questionId -> current answer. */
-    val answers: Map<String, String>,
-    val remainingSeconds: Int,
-  ) : ReadingSessionUiState() {
-    val answeredCount: Int get() = answers.count { it.value.isNotBlank() }
-
-    /** "mm:ss" — formatted in shared so every platform shows the same thing. */
-    val remainingLabel: String get() = formatSeconds(remainingSeconds)
-
-    fun answerFor(questionId: String): String = answers[questionId].orEmpty()
-  }
-
-  data class Finished(
-    val test: ReadingTest,
-    val result: ReadingResult,
-    val timeExpired: Boolean,
-  ) : ReadingSessionUiState()
-}
-
-/**
- * One Reading attempt: loads the test, counts down, keeps answers, scores with [ReadingScorer].
- *
- * Timer lifecycle: the UI calls [start] when the screen appears and [stop] when it disappears
- * (SwiftUI: onAppear/onDisappear, Compose: DisposableEffect).
- */
-class ReadingSessionViewModel(
+class ReadingSessionViewModel internal constructor(
   private val testId: String,
   private val repository: ReadingRepository,
+  private val clock: Clock,
 ) : ViewModel() {
   private val log = Logger.withTag("ReadingSession")
   private val _state = MutableStateFlow<ReadingSessionUiState>(ReadingSessionUiState.Loading)
@@ -75,8 +45,7 @@ class ReadingSessionViewModel(
 
   fun stop() {
     isVisible = false
-    timerJob?.cancel()
-    timerJob = null
+    stopTimer()
   }
 
   fun answer(
@@ -92,90 +61,74 @@ class ReadingSessionViewModel(
     }
   }
 
-  fun submit() = finish(timeExpired = false)
+  fun submit() = finish(isTimeExpired = false)
 
-  /** Starts the test again from scratch (after submitting). */
   fun restart() {
     val test =
       when (val current = _state.value) {
         is ReadingSessionUiState.Finished -> current.test
         is ReadingSessionUiState.InProgress -> current.test
-        else -> return
+        ReadingSessionUiState.Loading, is ReadingSessionUiState.Failed -> return
       }
-    timerJob?.cancel()
-    timerJob = null
-    _state.value =
-      ReadingSessionUiState.InProgress(
-        test = test,
-        answers = emptyMap(),
-        remainingSeconds = test.timeLimitMinutes * 60,
-      )
-    startTimerIfNeeded()
+    begin(test)
   }
 
   private fun load() {
     viewModelScope.launch {
       _state.value = ReadingSessionUiState.Loading
-      _state.value =
-        try {
-          val test = repository.getTest(testId)
-          ReadingSessionUiState.InProgress(
-            test = test,
-            answers = emptyMap(),
-            remainingSeconds = test.timeLimitMinutes * 60,
-          )
-        } catch (e: CancellationException) {
-          throw e
-        } catch (e: Exception) {
-          ReadingSessionUiState.Error(e.message ?: "Không tải được đề")
-        }
-      startTimerIfNeeded()
+      repository.getTest(testId).mapBoth(
+        success = { test -> begin(test) },
+        failure = { error -> _state.value = ReadingSessionUiState.Failed(error) },
+      )
     }
   }
 
-  private fun startTimerIfNeeded() {
-    if (!isVisible || timerJob?.isActive == true) return
-    if (_state.value !is ReadingSessionUiState.InProgress) return
+  private fun begin(test: ReadingTest) {
+    stopTimer()
+    val timeLimit = test.timeLimitMinutes.minutes
+    _state.value =
+      ReadingSessionUiState.InProgress(
+        test = test,
+        answers = emptyMap(),
+        remainingSeconds = timeLimit.inWholeSeconds.toInt(),
+      )
+    startTimerIfNeeded()
+  }
 
+  // The deadline is re-derived on every start so the countdown pauses while the screen is hidden.
+  private fun startTimerIfNeeded() {
+    if (!isVisible || timerJob != null) return
+    val current = _state.value as? ReadingSessionUiState.InProgress ?: return
+    val deadline = clock.now() + current.remainingSeconds.seconds
     timerJob =
       viewModelScope.launch {
-        while (isActive) {
-          delay(1_000)
-          val current = _state.value as? ReadingSessionUiState.InProgress ?: break
-          val remaining = current.remainingSeconds - 1
-          if (remaining <= 0) {
-            _state.value = current.copy(remainingSeconds = 0)
-            finish(timeExpired = true)
-            break
+        do {
+          delay(1.seconds)
+          // Rounds up because delay() resumes slightly late, which would otherwise skip a second.
+          val remainingSeconds = ceil((deadline - clock.now()) / 1.seconds).toInt().coerceAtLeast(0)
+          _state.update { state ->
+            (state as? ReadingSessionUiState.InProgress)?.copy(remainingSeconds = remainingSeconds) ?: state
           }
-          _state.value = current.copy(remainingSeconds = remaining)
-        }
+        } while (remainingSeconds > 0)
+        finish(isTimeExpired = true)
       }
   }
 
-  private fun finish(timeExpired: Boolean) {
-    val current = _state.value as? ReadingSessionUiState.InProgress ?: return
+  private fun stopTimer() {
     timerJob?.cancel()
     timerJob = null
+  }
+
+  private fun finish(isTimeExpired: Boolean) {
+    val current = _state.value as? ReadingSessionUiState.InProgress ?: return
+    stopTimer()
 
     val result = ReadingScorer.score(current.test, current.answers)
-    _state.value = ReadingSessionUiState.Finished(current.test, result, timeExpired)
-
+    _state.value = ReadingSessionUiState.Finished(current.test, result, isTimeExpired)
     viewModelScope.launch {
-      try {
-        repository.saveAttempt(result, current.answers)
-      } catch (e: CancellationException) {
-        throw e
-      } catch (e: Exception) {
-        log.w(e) { "Could not save attempt" }
-      }
+      repository
+        .saveAttempt(result, current.answers)
+        .onErr { error -> log.w { "Saving attempt for ${result.testId} failed ($error)" } }
     }
   }
-}
-
-internal fun formatSeconds(totalSeconds: Int): String {
-  val safe = totalSeconds.coerceAtLeast(0)
-  val minutes = safe / 60
-  val seconds = safe % 60
-  return "${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}"
 }

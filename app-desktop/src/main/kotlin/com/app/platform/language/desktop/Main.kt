@@ -9,7 +9,6 @@ import com.app.platform.language.shared.network.ApiConfig
 import com.app.platform.language.ui.LanguagePlatformApp
 
 fun main() {
-  // Override with the API_BASE_URL environment variable when needed (e.g. to point at staging).
   val baseUrl = System.getenv("API_BASE_URL") ?: "http://localhost:8080"
   initKoin(ApiConfig(baseUrl = baseUrl, enableNetworkLogs = true))
 

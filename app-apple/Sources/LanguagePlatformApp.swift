@@ -20,8 +20,7 @@ struct LanguagePlatformApp: App {
 enum ApiEnvironment {
   static var baseUrl: String {
     #if DEBUG
-    // The iOS Simulator and the Mac app reach a backend running on this machine via localhost.
-    // On a real iPhone, use the LAN IP of the machine running the backend.
+    // Simulator and Mac reach a local backend via localhost; a real iPhone needs this machine's LAN IP.
     return "http://localhost:8080"
     #else
     return "https://api.example.com"

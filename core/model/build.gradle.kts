@@ -4,9 +4,7 @@ plugins {
   alias(libs.plugins.kotlinx.serialization)
 }
 
-// Sample tests in /content/reading/*.json are embedded into code at build time, so the apps work
-// offline on first launch and the backend serves the same source of truth.
-// Values are declared INSIDE register {} so doLast only captures locals (configuration-cache safe).
+// Embeds content/reading/*.json so the apps work offline on first launch; locals keep doLast configuration-cache safe.
 val generateBundledContent =
   tasks.register("generateBundledContent") {
     val contentDir = rootProject.layout.projectDirectory.dir("content/reading")
@@ -79,6 +77,8 @@ kotlin {
       kotlin.srcDir(generateBundledContent)
       dependencies {
         api(libs.kotlinx.serialization.json)
+        api(libs.kotlin.result)
+        api(libs.kotlin.result.coroutines)
       }
     }
     commonTest.dependencies {

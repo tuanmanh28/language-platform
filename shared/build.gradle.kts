@@ -21,10 +21,8 @@ kotlin {
         .toInt()
   }
 
-  // Desktop (Windows) runs on the JVM
   jvm()
 
-  // iOS + macOS: exports the "Shared" framework for the SwiftUI app (see app-apple/)
   listOf(
     iosArm64(),
     iosSimulatorArm64(),
@@ -55,6 +53,8 @@ kotlin {
     commonTest.dependencies {
       implementation(kotlin("test"))
       implementation(libs.kotlinx.coroutines.test)
+      implementation(libs.turbine)
+      implementation(libs.ktor.client.mock)
     }
     androidMain.dependencies {
       implementation(libs.ktor.client.android)
@@ -77,12 +77,5 @@ sqldelight {
     create("LanguagePlatformDatabase") {
       packageName.set("com.app.platform.language.shared.db")
     }
-  }
-}
-
-skie {
-  features {
-    // Enables Observing(viewModel.state) { ... } in SwiftUI
-    enableSwiftUIObservingPreview = true
   }
 }

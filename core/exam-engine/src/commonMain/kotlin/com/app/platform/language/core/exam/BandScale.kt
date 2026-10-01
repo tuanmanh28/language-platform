@@ -4,16 +4,10 @@ import com.app.platform.language.core.model.IeltsModule
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
-/**
- * Converts a raw score (correct answers out of 40) to a band.
- *
- * The tables below are the widely published REFERENCE conversions; the official IELTS tables vary
- * slightly per test. Results shown to users must be labelled "estimated band".
- */
+// Published reference conversions; official tables vary per test, so the apps label bands as estimates.
 object BandScale {
   const val FULL_TEST_QUESTIONS = 40
 
-  /** (minimum correct answers out of 40, band), sorted descending. */
   private val academicReading =
     listOf(
       39 to 9.0,
@@ -95,10 +89,7 @@ object BandScale {
     total: Int,
   ): Double = lookup(listening, scaleToFullTest(correct, total))
 
-  /**
-   * Overall band = mean of the four skills, rounded the IELTS way:
-   * fraction < .25 -> .0, < .75 -> .5, otherwise up to the next whole band.
-   */
+  // IELTS rounding of the mean: fraction < .25 -> .0, < .75 -> .5, otherwise up to the next whole band.
   fun overallBand(
     listening: Double,
     reading: Double,
@@ -115,7 +106,6 @@ object BandScale {
     }
   }
 
-  /** Short practice tests (e.g. 13 questions) are scaled to 40 questions to estimate a band. */
   internal fun scaleToFullTest(
     correct: Int,
     total: Int,
@@ -126,6 +116,7 @@ object BandScale {
     return (correct * FULL_TEST_QUESTIONS.toDouble() / total).roundToInt()
   }
 
+  // Tables are sorted by descending minimum score, so the first row reached is the band.
   private fun lookup(
     table: List<Pair<Int, Double>>,
     raw: Int,

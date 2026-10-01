@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Placeholder colors for Phase 1 — replace with the real design system once designs exist.
+// Placeholder colors until the design system defines real tokens.
 private val Brand = Color(0xFF2457C5)
 private val BrandDark = Color(0xFFB3C5FF)
 
@@ -31,7 +31,6 @@ private val DarkColors =
     error = Color(0xFFFFB4AB),
   )
 
-/** Correct/wrong colors on the result screen. */
 object ResultColors {
   val correct = Color(0xFF1B7F3B)
   val wrong = Color(0xFFBA1A1A)

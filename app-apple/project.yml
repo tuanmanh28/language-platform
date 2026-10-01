@@ -6,6 +6,7 @@ name: LanguagePlatform
 options:
   bundleIdPrefix: com.app.platform.language
   createIntermediateGroups: true
+  developmentLanguage: vi
   deploymentTarget:
     iOS: "17.0"
     macOS: "14.0"

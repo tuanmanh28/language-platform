@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,60 +24,75 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.app.platform.language.core.model.IeltsModule
 import com.app.platform.language.core.model.ReadingTestSummary
 import com.app.platform.language.shared.reading.ReadingTestListUiState
 import com.app.platform.language.shared.reading.ReadingTestListViewModel
+import com.app.platform.language.ui.resources.Res
+import com.app.platform.language.ui.resources.reading_list_offline_banner
+import com.app.platform.language.ui.resources.reading_list_refresh
+import com.app.platform.language.ui.resources.reading_list_section_title
+import com.app.platform.language.ui.resources.reading_list_test_details
+import com.app.platform.language.ui.resources.reading_list_title
+import com.app.platform.language.ui.theme.LanguagePlatformTheme
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+internal fun ReadingTestListScreen(
+  onOpenTest: (String) -> Unit,
+  viewModel: ReadingTestListViewModel = koinViewModel(),
+) {
+  val state by viewModel.state.collectAsStateWithLifecycle()
+  ReadingTestListScreen(state = state, onRefresh = viewModel::refresh, onOpenTest = onOpenTest)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReadingTestListScreen(
+internal fun ReadingTestListScreen(
+  state: ReadingTestListUiState,
+  onRefresh: () -> Unit,
   onOpenTest: (String) -> Unit,
-  modifier: Modifier = Modifier,
 ) {
-  val viewModel = koinViewModel<ReadingTestListViewModel>()
-  val state by viewModel.state.collectAsStateWithLifecycle()
-
   Scaffold(
-    modifier = modifier,
+    modifier = Modifier.fillMaxSize(),
     topBar = {
       TopAppBar(
-        title = { Text("Luyện IELTS Reading") },
-        actions = { TextButton(onClick = viewModel::refresh) { Text("Tải lại") } },
+        title = { Text(stringResource(Res.string.reading_list_title)) },
+        actions = { TextButton(onClick = onRefresh) { Text(stringResource(Res.string.reading_list_refresh)) } },
       )
     },
   ) { padding ->
     Box(Modifier.fillMaxSize().padding(padding)) {
-      when (val current = state) {
-        ReadingTestListUiState.Loading -> {
-          CircularProgressIndicator(Modifier.align(Alignment.Center))
-        }
-
-        is ReadingTestListUiState.Error -> {
-          ErrorState(
-            message = current.message,
-            onRetry = viewModel::refresh,
-            modifier = Modifier.align(Alignment.Center),
-          )
-        }
-
-        is ReadingTestListUiState.Success -> {
-          LazyColumn(
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-          ) {
-            if (current.isOffline) {
-              item(key = "offline-banner") { OfflineBanner() }
-            }
-            items(current.tests, key = { it.id }) { test ->
-              TestCard(test = test, onClick = { onOpenTest(test.id) })
-            }
-          }
-        }
+      when (state) {
+        ReadingTestListUiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+        is ReadingTestListUiState.Ready -> ReadyContent(state, onOpenTest, Modifier.fillMaxSize())
       }
+    }
+  }
+}
+
+@Composable
+private fun ReadyContent(
+  state: ReadingTestListUiState.Ready,
+  onOpenTest: (String) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  LazyColumn(
+    modifier = modifier,
+    contentPadding = PaddingValues(16.dp),
+    verticalArrangement = Arrangement.spacedBy(12.dp),
+  ) {
+    if (state.isOffline) {
+      item(key = "offline-banner") { OfflineBanner(Modifier.fillMaxWidth()) }
+    }
+    item(key = "section-title") {
+      Text(stringResource(Res.string.reading_list_section_title), style = MaterialTheme.typography.titleSmall)
+    }
+    items(state.tests, key = { it.id }) { test ->
+      TestCard(test = test, onClick = { onOpenTest(test.id) }, modifier = Modifier.fillMaxWidth())
     }
   }
 }
@@ -88,13 +102,20 @@ fun ReadingTestListScreen(
 private fun TestCard(
   test: ReadingTestSummary,
   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-  Card(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+  Card(onClick = onClick, modifier = modifier) {
     Column(Modifier.padding(16.dp)) {
       Text(test.title, style = MaterialTheme.typography.titleMedium)
       Spacer(Modifier.height(4.dp))
       Text(
-        text = "${test.module.label()} · ${test.questionCount} câu · ${test.timeLimitMinutes} phút",
+        text =
+          stringResource(
+            Res.string.reading_list_test_details,
+            test.module.label(),
+            test.questionCount,
+            test.timeLimitMinutes,
+          ),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
@@ -103,35 +124,80 @@ private fun TestCard(
 }
 
 @Composable
-private fun OfflineBanner() {
+private fun OfflineBanner(modifier: Modifier = Modifier) {
   Surface(
     color = MaterialTheme.colorScheme.secondaryContainer,
     shape = MaterialTheme.shapes.medium,
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier,
   ) {
     Text(
-      text = "Không kết nối được máy chủ — đang dùng đề đã lưu trên máy.",
+      text = stringResource(Res.string.reading_list_offline_banner),
       style = MaterialTheme.typography.bodyMedium,
       modifier = Modifier.padding(12.dp),
     )
   }
 }
 
+@Preview
 @Composable
-internal fun ErrorState(
-  message: String,
-  onRetry: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  Column(modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-    Text(message, style = MaterialTheme.typography.bodyLarge)
-    Spacer(Modifier.height(12.dp))
-    Button(onClick = onRetry) { Text("Thử lại") }
+private fun ReadingTestListLoadingPreview() {
+  LanguagePlatformTheme {
+    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {})
   }
 }
 
-internal fun IeltsModule.label(): String =
-  when (this) {
-    IeltsModule.ACADEMIC -> "Academic"
-    IeltsModule.GENERAL_TRAINING -> "General Training"
+@Preview
+@Composable
+private fun ReadingTestListLoadingDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingTestListScreen(state = ReadingTestListUiState.Loading, onRefresh = {}, onOpenTest = {})
   }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListReadyPreview() {
+  LanguagePlatformTheme {
+    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListReadyDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingTestListScreen(state = ReadingPreviewData.listReady, onRefresh = {}, onOpenTest = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListEmptyPreview() {
+  LanguagePlatformTheme {
+    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListEmptyDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingTestListScreen(state = ReadingPreviewData.listEmpty, onRefresh = {}, onOpenTest = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListOfflinePreview() {
+  LanguagePlatformTheme {
+    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingTestListOfflineDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingTestListScreen(state = ReadingPreviewData.listOffline, onRefresh = {}, onOpenTest = {})
+  }
+}

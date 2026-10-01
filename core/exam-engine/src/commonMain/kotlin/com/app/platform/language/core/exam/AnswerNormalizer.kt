@@ -2,10 +2,6 @@ package com.app.platform.language.core.exam
 
 import com.app.platform.language.core.model.QuestionType
 
-/**
- * Normalises answers before comparison so that "The Museum." and "the museum" count as equal.
- * Applied to both the learner's answer and the answer key.
- */
 object AnswerNormalizer {
   private val whitespace = Regex("\\s+")
   private const val EDGE_PUNCTUATION = ".,;:!?\"'()[]"

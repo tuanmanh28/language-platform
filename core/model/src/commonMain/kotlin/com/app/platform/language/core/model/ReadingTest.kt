@@ -3,10 +3,6 @@ package com.app.platform.language.core.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * A Reading test. Matches content/schema/reading-test.schema.json.
- * Tests are data (not hard-coded in the apps), so new tests ship without an app release.
- */
 @Serializable
 data class ReadingTest(
   val id: String,
@@ -48,7 +44,6 @@ data class Passage(
   val questionGroups: List<QuestionGroup>,
 )
 
-/** [label] is A, B, C… used by matching questions; may be null. */
 @Serializable
 data class Paragraph(
   val label: String? = null,
@@ -60,7 +55,6 @@ data class QuestionGroup(
   val id: String,
   val type: QuestionType,
   val instruction: String,
-  /** Word limit for completion questions, e.g. "NO MORE THAN TWO WORDS" = 2. */
   val maxWords: Int? = null,
   val questions: List<Question>,
 )
@@ -81,7 +75,6 @@ enum class QuestionType {
 
   ;
 
-  /** Fixed choices for TRUE/FALSE/NOT GIVEN and YES/NO/NOT GIVEN; empty for other types. */
   val fixedChoices: List<String>
     get() =
       when (this) {
@@ -96,12 +89,8 @@ data class Question(
   val id: String,
   val number: Int,
   val prompt: String,
-  /** Only used by multiple_choice. */
   val options: List<ChoiceOption> = emptyList(),
-  /**
-   * Accepted answers. Phase 1 ships them to the client for offline scoring;
-   * scoring moves to the server once Premium accounts exist.
-   */
+  // Shipped to the apps for offline scoring until Premium accounts move scoring to the server.
   val acceptedAnswers: List<String>,
   val explanation: String? = null,
 )

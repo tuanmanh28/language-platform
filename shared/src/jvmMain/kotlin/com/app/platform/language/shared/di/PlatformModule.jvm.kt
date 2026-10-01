@@ -9,7 +9,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.io.File
 
-// Desktop (Windows/macOS/Linux via the JVM). The DB lives in the user's app-data directory.
 actual fun platformModule(): Module =
   module {
     single<HttpClientEngine> { Java.create() }
@@ -17,7 +16,6 @@ actual fun platformModule(): Module =
       val file = File(appDataDirectory(), "language_platform.db")
       val isNewDatabase = !file.exists()
       JdbcSqliteDriver("jdbc:sqlite:${file.absolutePath}").also { driver ->
-        // TODO: when the schema changes, add .sqm migrations and call Schema.migrate(...)
         if (isNewDatabase) LanguagePlatformDatabase.Schema.create(driver)
       }
     }

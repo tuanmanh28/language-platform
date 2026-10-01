@@ -5,8 +5,7 @@ plugins {
   alias(libs.plugins.compose.compiler)
 }
 
-// Compose UI shared by Android (app-android) and Desktop/Windows (app-desktop).
-// iOS/macOS do NOT use this module — Apple platforms use native SwiftUI (app-apple).
+// Apple platforms use SwiftUI (app-apple), so this module only targets Android and Desktop.
 kotlin {
   jvmToolchain(17)
 
@@ -20,6 +19,9 @@ kotlin {
       libs.versions.minSdk
         .get()
         .toInt()
+    androidResources {
+      enable = true
+    }
   }
   jvm()
 
@@ -31,6 +33,8 @@ kotlin {
       implementation(compose.foundation)
       implementation(compose.material3)
       implementation(compose.ui)
+      implementation(libs.compose.components.resources)
+      implementation(libs.compose.ui.tooling.preview)
 
       implementation(libs.androidx.lifecycle.viewmodel.compose.kmp)
       implementation(libs.androidx.lifecycle.runtime.compose.kmp)
@@ -41,4 +45,8 @@ kotlin {
       implementation(libs.androidx.activity.compose)
     }
   }
+}
+
+compose.resources {
+  packageOfResClass = "com.app.platform.language.ui.resources"
 }

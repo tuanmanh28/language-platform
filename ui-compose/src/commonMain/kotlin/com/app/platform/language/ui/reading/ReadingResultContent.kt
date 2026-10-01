@@ -1,0 +1,175 @@
+package com.app.platform.language.ui.reading
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.app.platform.language.core.model.QuestionResult
+import com.app.platform.language.shared.reading.ReadingSessionUiState
+import com.app.platform.language.ui.resources.Res
+import com.app.platform.language.ui.resources.reading_result_accepted_answers
+import com.app.platform.language.ui.resources.reading_result_back_to_list
+import com.app.platform.language.ui.resources.reading_result_correct
+import com.app.platform.language.ui.resources.reading_result_correct_count
+import com.app.platform.language.ui.resources.reading_result_correct_mark
+import com.app.platform.language.ui.resources.reading_result_details
+import com.app.platform.language.ui.resources.reading_result_estimated_band
+import com.app.platform.language.ui.resources.reading_result_no_answer
+import com.app.platform.language.ui.resources.reading_result_question_number
+import com.app.platform.language.ui.resources.reading_result_restart
+import com.app.platform.language.ui.resources.reading_result_time_expired
+import com.app.platform.language.ui.resources.reading_result_title
+import com.app.platform.language.ui.resources.reading_result_wrong
+import com.app.platform.language.ui.resources.reading_result_wrong_mark
+import com.app.platform.language.ui.resources.reading_result_your_answer
+import com.app.platform.language.ui.theme.LanguagePlatformTheme
+import com.app.platform.language.ui.theme.ResultColors
+import org.jetbrains.compose.resources.stringResource
+
+private const val ACCEPTED_ANSWERS_SEPARATOR = " / "
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ReadingResultContent(
+  state: ReadingSessionUiState.Finished,
+  onRestart: () -> Unit,
+  onExit: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Scaffold(
+    modifier = modifier,
+    topBar = { TopAppBar(title = { Text(stringResource(Res.string.reading_result_title)) }) },
+  ) { padding ->
+    LazyColumn(
+      modifier = Modifier.fillMaxSize().padding(padding),
+      contentPadding = PaddingValues(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      item(key = "summary") {
+        ResultSummary(state, onRestart, onExit, Modifier.fillMaxWidth())
+      }
+      item(key = "details-title") {
+        Text(
+          stringResource(Res.string.reading_result_details),
+          style = MaterialTheme.typography.titleSmall,
+          modifier = Modifier.padding(top = 8.dp),
+        )
+      }
+      items(state.result.questionResults, key = { it.questionId }) { item ->
+        QuestionResultRow(item, Modifier.fillMaxWidth())
+      }
+    }
+  }
+}
+
+@Composable
+private fun ResultSummary(
+  state: ReadingSessionUiState.Finished,
+  onRestart: () -> Unit,
+  onExit: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  val result = state.result
+  Card(modifier) {
+    Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+      Text(stringResource(Res.string.reading_result_estimated_band), style = MaterialTheme.typography.labelLarge)
+      Text(result.band.toString(), style = MaterialTheme.typography.displayLarge)
+      Text(
+        stringResource(Res.string.reading_result_correct_count, result.correctCount, result.totalQuestions),
+        style = MaterialTheme.typography.titleMedium,
+      )
+      if (state.isTimeExpired) {
+        Spacer(Modifier.height(8.dp))
+        Text(stringResource(Res.string.reading_result_time_expired), color = MaterialTheme.colorScheme.error)
+      }
+      Spacer(Modifier.height(16.dp))
+      Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        OutlinedButton(onClick = onExit) { Text(stringResource(Res.string.reading_result_back_to_list)) }
+        Button(onClick = onRestart) { Text(stringResource(Res.string.reading_result_restart)) }
+      }
+    }
+  }
+}
+
+@Composable
+private fun QuestionResultRow(
+  item: QuestionResult,
+  modifier: Modifier = Modifier,
+) {
+  val verdict =
+    stringResource(if (item.isCorrect) Res.string.reading_result_correct else Res.string.reading_result_wrong)
+  Row(modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
+    Text(
+      text =
+        stringResource(
+          if (item.isCorrect) Res.string.reading_result_correct_mark else Res.string.reading_result_wrong_mark,
+        ),
+      color = if (item.isCorrect) ResultColors.correct else ResultColors.wrong,
+      style = MaterialTheme.typography.titleMedium,
+      modifier = Modifier.semantics { contentDescription = verdict },
+    )
+    Spacer(Modifier.width(12.dp))
+    Column {
+      Text(
+        stringResource(Res.string.reading_result_question_number, item.number),
+        style = MaterialTheme.typography.titleSmall,
+      )
+      Text(
+        stringResource(
+          Res.string.reading_result_your_answer,
+          item.userAnswer ?: stringResource(Res.string.reading_result_no_answer),
+        ),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      if (!item.isCorrect) {
+        Text(
+          stringResource(
+            Res.string.reading_result_accepted_answers,
+            item.acceptedAnswers.joinToString(ACCEPTED_ANSWERS_SEPARATOR),
+          ),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+      }
+    }
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingResultContentPreview() {
+  LanguagePlatformTheme {
+    ReadingResultContent(ReadingPreviewData.sessionFinished, onRestart = {}, onExit = {})
+  }
+}
+
+@Preview
+@Composable
+private fun ReadingResultContentDarkPreview() {
+  LanguagePlatformTheme(darkTheme = true) {
+    ReadingResultContent(ReadingPreviewData.sessionFinished, onRestart = {}, onExit = {})
+  }
+}

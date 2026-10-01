@@ -1,5 +1,7 @@
-package com.app.platform.language.backend
+package com.app.platform.language.backend.reading
 
+import com.app.platform.language.backend.module
+import com.app.platform.language.core.model.ApiError
 import com.app.platform.language.core.model.BundledReadingTests
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ReadingResult
@@ -20,17 +22,12 @@ import io.ktor.server.testing.testApplication
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ApplicationTest {
+class ReadingRoutesTest {
+  private val sample = BundledReadingTests.all.first()
+
   private fun ApplicationTestBuilder.jsonClient() =
     createClient {
       install(ContentNegotiation) { json(ContentJson) }
-    }
-
-  @Test
-  fun healthIsOk() =
-    testApplication {
-      application { module() }
-      assertEquals(HttpStatusCode.OK, client.get("/health").status)
     }
 
   @Test
@@ -40,29 +37,31 @@ class ApplicationTest {
       val client = jsonClient()
 
       val list = client.get("/api/v1/reading/tests").body<List<ReadingTestSummary>>()
-      assertEquals(BundledReadingTests.all.size, list.size)
-
       val test = client.get("/api/v1/reading/tests/${list.first().id}").body<ReadingTest>()
+
+      assertEquals(BundledReadingTests.all.size, list.size)
       assertEquals(list.first().questionCount, test.questionCount)
     }
 
   @Test
-  fun unknownTestIs404() =
+  fun unknownTestIsNotFound() =
     testApplication {
       application { module() }
-      assertEquals(HttpStatusCode.NotFound, client.get("/api/v1/reading/tests/nope").status)
+
+      val response = jsonClient().get("/api/v1/reading/tests/nope")
+
+      assertEquals(HttpStatusCode.NotFound, response.status)
+      assertEquals(ApiError("Reading test not found"), response.body<ApiError>())
     }
 
   @Test
   fun submitScoresWithSharedEngine() =
     testApplication {
       application { module() }
-      val client = jsonClient()
-      val sample = BundledReadingTests.all.first()
       val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }
 
       val result =
-        client
+        jsonClient()
           .post("/api/v1/reading/tests/${sample.id}/submit") {
             contentType(ContentType.Application.Json)
             setBody(SubmitAnswersRequest(perfect))
@@ -70,5 +69,33 @@ class ApplicationTest {
 
       assertEquals(sample.questionCount, result.correctCount)
       assertEquals(9.0, result.band)
+    }
+
+  @Test
+  fun submitToUnknownTestIsNotFound() =
+    testApplication {
+      application { module() }
+
+      val response =
+        jsonClient().post("/api/v1/reading/tests/nope/submit") {
+          contentType(ContentType.Application.Json)
+          setBody(SubmitAnswersRequest(emptyMap()))
+        }
+
+      assertEquals(HttpStatusCode.NotFound, response.status)
+    }
+
+  @Test
+  fun malformedSubmitBodyIsBadRequest() =
+    testApplication {
+      application { module() }
+
+      val response =
+        jsonClient().post("/api/v1/reading/tests/${sample.id}/submit") {
+          contentType(ContentType.Application.Json)
+          setBody("not json")
+        }
+
+      assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 }

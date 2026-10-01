@@ -9,7 +9,6 @@ import io.ktor.client.engine.android.Android
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-// Context is registered by androidContext(...) in the Application (see app-android).
 actual fun platformModule(): Module =
   module {
     single<HttpClientEngine> { Android.create() }
