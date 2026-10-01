@@ -26,7 +26,8 @@ backlog ──► ready tasks ──► agent per worktree ──► verify ─�
 Runs the whole backlog unattended: starts ready tasks, verifies, runs the mandatory review (agents fix findings), then
 squash-merges into `main` and pushes. A branch that conflicts with a newer `main` goes back to its agent to merge `main`
 and resolve. A failed task is retried once from a fresh branch; re-running the command retries failed tasks again.
-It stops when everything is merged and sends a macOS notification for blocked or failed tasks. Keeps the Mac awake
+When Claude's usage limit is reached, the task waits 30 minutes and continues on the same branch (a review waits the
+same way) instead of failing, so an overnight run resumes on its own. It stops when everything is merged and sends a macOS notification for blocked or failed tasks. Keeps the Mac awake
 (`caffeinate`). Leave the main checkout alone while it runs; merges wait while it has uncommitted changes.
 
 ## Daily use

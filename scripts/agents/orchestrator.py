@@ -64,6 +64,8 @@ DISALLOWED_TOOLS = [
 LOCAL_FILES = ["local.properties", "app-android/google-services.json"]
 
 AUTO_RETRIES = 1
+LIMIT_WAIT_SECONDS = 30 * 60
+LIMIT_PATTERN = re.compile(r"usage limit|limit reached|rate.?limit|overloaded|resets? at", re.IGNORECASE)
 CONFLICT_ROUNDS = 2
 
 REVIEW_FIX_PROMPT = ("\n\nThe mandatory code review rejected your previous attempt. Fix every finding below, "
@@ -162,7 +164,8 @@ class Orchestrator:
         return False
 
     def is_ready(self, task_id: str) -> bool:
-        if self.entry(task_id).get("status", "pending") != "pending":
+        e = self.entry(task_id)
+        if e.get("status", "pending") != "pending" or time.time() < e.get("not_before", 0):
             return False
         return all(self.is_merged(dep) for dep in self.tasks[task_id]["deps"])
 
@@ -200,6 +203,7 @@ class Orchestrator:
         with open(log, "a" if extra else "w") as fh:
             proc = subprocess.Popen(cmd, cwd=wt, stdout=fh, stderr=subprocess.STDOUT,
                                     stdin=subprocess.DEVNULL, start_new_session=True)
+        e.pop("not_before", None)
         e.update(status="running", pid=proc.pid, branch=br, worktree=str(wt), log=str(log),
                  started_at=now(), finished_at=None, note="Continuing: " + extra.strip()[:60] + "…" if extra else None)
         self.save()
@@ -226,7 +230,10 @@ class Orchestrator:
         e = self.entry(task_id)
         wt = Path(e["worktree"])
         e["finished_at"] = now()
-        if (wt / "BLOCKED.md").exists():
+        if self.hit_limit(Path(e["log"])):
+            e.update(status="pending", not_before=time.time() + LIMIT_WAIT_SECONDS,
+                     note="Claude usage limit reached — continuing on the same branch later")
+        elif (wt / "BLOCKED.md").exists():
             e.update(status="blocked", note="Agent wrote BLOCKED.md")
         elif sh(["git", "rev-list", "--count", f"{MAIN_BRANCH}..HEAD"], wt).stdout.strip() == "0":
             e.update(status="failed", note="Agent made no commit (see logs)")
@@ -275,7 +282,10 @@ class Orchestrator:
     def finish_review(self, task_id: str) -> None:
         e = self.entry(task_id)
         verdict = self.read_verdict(self.logs_dir / f"{task_id}.review.json")
-        if verdict is None:
+        if verdict is None and self.hit_limit(self.logs_dir / f"{task_id}.review.json"):
+            e.update(status="verified", not_before=time.time() + LIMIT_WAIT_SECONDS,
+                     note="Claude usage limit reached during review — reviewing again later")
+        elif verdict is None:
             e.update(status="failed", note="Review output unreadable, see logs/<id>.review.json")
         else:
             report = self.logs_dir / f"{task_id}.review.md"
@@ -294,6 +304,25 @@ class Orchestrator:
                 e.update(status="failed", note=f"Review rejected after {REVIEW_ROUNDS} fix rounds, see {report.name}")
         self.save()
         print(f"■ {task_id}: {e['status']} — {e.get('note')}")
+
+    @staticmethod
+    def hit_limit(log: Path) -> bool:
+        """True when the run's final result is an error caused by a usage or rate limit."""
+        try:
+            with open(log, "rb") as fh:
+                fh.seek(max(0, log.stat().st_size - 16384))
+                lines = fh.read().decode("utf-8", "replace").splitlines()
+        except OSError:
+            return False
+        for line in reversed(lines):
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(event, dict) and event.get("type") == "result":
+                failed = event.get("is_error") or event.get("subtype", "success") != "success"
+                return bool(failed and LIMIT_PATTERN.search(str(event.get("result", ""))))
+        return False
 
     @staticmethod
     def read_verdict(path: Path) -> dict | None:
@@ -345,6 +374,10 @@ class Orchestrator:
                             self.finish(tid)
                         else:
                             self.finish_review(tid)
+                for tid, e in list(self.state.items()):
+                    if e.get("status") == "verified" and e.get("not_before") and time.time() >= e["not_before"]:
+                        e.pop("not_before")
+                        self.start_review(tid)
                 if auto:
                     self.auto_advance(eligible, push)
                 running = [t for t, e in self.state.items() if e.get("status") in ACTIVE]
