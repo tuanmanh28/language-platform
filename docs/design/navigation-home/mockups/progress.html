@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiến độ — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --correct-container: #C2F0E7;
+  --wrong: #A52E17; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --info: #005E9F; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4;
+  --bar: rgba(244, 244, 247, 0.78);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --correct-container: #005046;
+  --wrong: #FF8E6B; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --info: #A2C9FF; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33;
+  --bar: rgba(11, 11, 14, 0.72);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; flex-wrap: wrap; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.btn-block { width: 100%; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.pbar { height: 6px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.pbar > i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; gap: 8px; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 16px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.banner { display: flex; gap: 12px; align-items: center; min-height: 56px; padding: 10px 14px; border-radius: 14px; background: var(--info-container); color: var(--on-info-container); margin-bottom: 16px; }
+.banner .ms { color: var(--info); }
+.skel { background: var(--surface-high); border-radius: 10px; position: relative; overflow: hidden; }
+.skel::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent); animation: shimmer 1.2s cubic-bezier(0.2, 0, 0, 1) infinite; }
+.reduce .skel::after { animation: none; display: none; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 24px; }
+.error-icon { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; margin-bottom: 8px; background: var(--wrong-container); color: var(--on-wrong-container); }
+.roller { display: inline-flex; overflow: hidden; line-height: 1.2; height: 1.2em; vertical-align: bottom; }
+.roller .digit { display: inline-block; height: 1.2em; overflow: hidden; }
+.roller .digits { display: flex; flex-direction: column; }
+.roller .digits span { height: 1.2em; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.main { flex: 1; position: relative; }
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.desktop .screen { padding: 8px 32px 40px; }
+.content { max-width: 1080px; margin: 0 auto; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.desktop .topbar { height: 52px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 48px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.desktop .topbar .back { bottom: 2px; font-size: 15px; }
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 4px 0; display: flex; z-index: 40;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--outline-variant); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 50px; justify-content: center; color: var(--on-surface-variant); font-size: 12px; line-height: 16px; font-weight: 500; }
+.tab .ms { font-size: 28px; }
+.tab[aria-selected="true"] { color: var(--primary); }
+.tab[aria-selected="true"] .ms, .side-item[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.sidebar { width: 248px; flex: none; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-low); border-right: 1px solid var(--outline-variant); position: relative; z-index: 40; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 12px 16px; }
+.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.side-search { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px; margin: 0 0 12px; border-radius: 10px; background: var(--surface-high); color: var(--on-surface-variant); font-size: 15px; width: 100%; text-align: left; }
+.side-search kbd { margin-left: auto; font: inherit; font-size: 12px; padding: 1px 6px; border-radius: 6px; background: var(--card); }
+.side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--on-surface-variant); width: 100%; text-align: left; }
+.side-item[aria-selected="true"] { background: var(--primary-container); color: var(--on-primary-container); font-weight: 600; }
+.side-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.side-item kbd { margin-left: auto; font: inherit; font-size: 12px; opacity: 0; transition: opacity 100ms; }
+.side-item:hover kbd, .side-item:focus-visible kbd { opacity: 0.7; }
+.tab { position: relative; }
+.badge { position: absolute; top: 0; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 11px; line-height: 18px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+.side-item .badge { position: static; margin-left: auto; }
+.side-item .badge + kbd { margin-left: 8px; }
+.lt { padding: 8px 20px 4px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.desktop .lt { padding: 24px 0 8px; }
+.pad { padding: 8px 20px 0; display: flex; flex-direction: column; }
+.desktop .pad { padding: 8px 0 0; }
+.two { display: grid; grid-template-columns: 7fr 5fr; gap: 24px; align-items: start; }
+.two > div > .section-h:first-child { margin-top: 0; }
+
+.seg { display: flex; padding: 4px; border-radius: 14px; background: var(--surface-high); position: relative; margin-bottom: 16px; }
+.desktop .seg { width: 360px; }
+.seg button { flex: 1; height: 36px; border-radius: 10px; font-size: 15px; font-weight: 600; position: relative; z-index: 1; color: var(--on-surface-variant); }
+.seg button[aria-checked="true"] { color: var(--on-surface); }
+.seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 10px; background: var(--surface-bright); box-shadow: 0 1px 2px #0000000A, 0 4px 16px #0000000F; }
+.band-card { padding: 20px; }
+.band-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.band-tile { background: var(--surface-high); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 2px; text-align: left; border: 2px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.band-tile[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); color: var(--on-primary-container); }
+.band-tile[aria-pressed="true"] .muted { color: inherit; opacity: 0.85; }
+.band-tile .num { font-size: 30px; line-height: 36px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.delta { display: inline-flex; align-items: center; gap: 2px; }
+.delta .ms { font-size: 16px; }
+.chart-card { padding: 16px 16px 12px; position: relative; }
+.chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; padding: 0 4px 8px; }
+.chart { width: 100%; height: 160px; display: block; overflow: visible; }
+.desktop .chart { height: 200px; }
+.chart .grid { stroke: var(--outline-variant); stroke-width: 1; }
+.chart .axis { fill: var(--on-surface-variant); font-size: 12px; font-weight: 500; font-family: 'Be Vietnam Pro', sans-serif; }
+.chart .line { fill: none; stroke: var(--primary); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.chart .pt { fill: var(--card); stroke: var(--primary); stroke-width: 2.5; }
+.chart .pt.last { fill: var(--primary); }
+.chart .pt-hit { fill: transparent; cursor: pointer; outline: none; }
+.chart .pt-hit:focus-visible + .pt, .chart .pt-hit:hover + .pt { stroke-width: 4; }
+.chart .target { stroke: var(--tertiary); stroke-width: 2; stroke-dasharray: 6 5; }
+.chart .target-label { fill: var(--tertiary); font-size: 12px; font-weight: 600; font-family: 'Be Vietnam Pro', sans-serif; }
+.chart .value-label { fill: var(--primary); font-size: 13px; font-weight: 700; font-family: 'Be Vietnam Pro', sans-serif; }
+.bars { position: relative; height: 160px; display: flex; align-items: flex-end; gap: 10px; padding: 0 4px 22px; }
+.desktop .bars { height: 200px; }
+.bar-col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; outline: none; }
+.bar-col i { display: block; width: 100%; max-width: 36px; border-radius: 6px 6px 2px 2px; background: var(--primary); transform-origin: 50% 100%; }
+.bar-col i.zero { background: var(--surface-high); }
+.bar-col span { position: absolute; bottom: -20px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--on-surface-variant); white-space: nowrap; }
+.bar-col:focus-visible i, .bar-col:hover i { filter: brightness(1.1); box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--primary); }
+.goal-line { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--tertiary); pointer-events: none; }
+.goal-line span { position: absolute; right: 0; top: -20px; font-size: 12px; font-weight: 600; color: var(--tertiary); background: var(--card); padding: 0 4px; }
+.tooltip { position: absolute; z-index: 30; padding: 6px 10px; border-radius: 10px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; line-height: 18px; white-space: nowrap; pointer-events: none; transform: translate(-50%, -100%); }
+.table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.table th, .table td { text-align: left; padding: 8px 4px; border-top: 1px solid var(--outline-variant); font-variant-numeric: tabular-nums; }
+.table th { color: var(--on-surface-variant); font-weight: 500; font-size: 13px; }
+.acc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.acc-trend { display: inline-flex; align-items: center; gap: 2px; font-weight: 600; }
+.acc-trend.up { color: var(--correct); }
+.acc-trend.down { color: var(--wrong); }
+.cal { padding: 16px 20px 20px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
+.cal-grid .dow { text-align: center; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--on-surface-variant); }
+.day { aspect-ratio: 1; border-radius: 10px; display: grid; place-items: center; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--on-surface-variant); position: relative; max-height: 44px; padding-bottom: 6px; }
+.day.light, .day.strong { padding-bottom: 8px; }
+.day.light { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.day.light::after, .day.strong::after { content: ''; position: absolute; bottom: 5px; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 999px; background: var(--on-tertiary-container); }
+.day.strong { background: var(--tertiary); color: var(--on-tertiary); font-weight: 700; }
+.day.strong::after { margin-left: -5px; background: var(--on-tertiary); box-shadow: 6px 0 0 var(--on-tertiary); }
+.day.rest { box-shadow: inset 0 0 0 1.5px var(--outline); padding-bottom: 0; }
+.day.rest::after { content: 'bedtime'; font-family: 'Material Symbols Rounded'; position: absolute; top: 1px; right: 2px; font-size: 14px; line-height: 1; }
+.day.future { opacity: 0.38; }
+.day.today { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--on-surface); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: var(--on-surface-variant); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; position: relative; }
+.legend i.dot1::after, .legend i.dot2::after { content: ''; position: absolute; bottom: 3px; left: 50%; width: 3px; height: 3px; margin-left: -1.5px; border-radius: 999px; background: var(--on-tertiary-container); }
+.legend i.dot2::after { margin-left: -4px; background: var(--on-tertiary); box-shadow: 5px 0 0 var(--on-tertiary); }
+.hint { padding: 20px; display: flex; gap: 14px; align-items: flex-start; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Tiến độ</strong><span>Mockup · <a href="../README.md">spec §5.6–5.7</a> · đổi khoảng thời gian, chọn kỹ năng, rê/Tab qua cột và điểm, "Xem dạng bảng", chạm dạng câu hỏi · <a href="navigation.html">Điều hướng</a></span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Trạng thái</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const STATES = [['content', 'Bình thường'], ['little', 'Ít dữ liệu'], ['empty', 'Chưa có bài'], ['loading', 'Đang tải'], ['error', 'Lỗi'], ['offline', 'Ngoại tuyến']];
+const ui = { theme: 'light', frame: 'both', state: 'content' };
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (!device.classList.contains('phone')) return;
+  log(`<span class="ms sm">vibration</span> Rung: ${kind}`);
+}
+
+function log(html) {
+  const el = document.querySelector('.haptic-log');
+  el.innerHTML = html;
+  el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(log.timer);
+  log.timer = setTimeout(() => { el.textContent = ''; }, 2400);
+}
+
+function roller(text) {
+  const parts = [...String(text)].map((ch) => (/\d/.test(ch)
+    ? `<span class="digit" aria-hidden="true"><span class="digits" data-digit="${ch}">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
+    : `<span aria-hidden="true">${ch}</span>`));
+  return `<span class="roller tnum">${parts.join('')}<span class="sr">${text}</span></span>`;
+}
+
+function roll(el) {
+  el.querySelectorAll('.digits').forEach((col, i) => {
+    const target = `translateY(-${Number(col.dataset.digit) * 1.2}em)`;
+    col.style.transform = target;
+    play(col, [{ transform: 'translateY(0)' }, { transform: target }], 'gentle', { delay: 150 + i * 40 });
+  });
+}
+
+const RANGES = [['7', '7 ngày'], ['30', '30 ngày'], ['all', 'Tất cả']];
+const SKILLS = ['Reading', 'Listening', 'Writing'];
+const TARGET = 7;
+const DATA = {
+  content: {
+    band: {
+      Reading: { '7': [6.0, 6.5, 7.0], '30': [5.5, 6.0, 6.0, 6.5, 6.0, 6.5, 7.0], all: [5.0, 5.5, 5.5, 6.0, 5.5, 6.0, 6.0, 6.5, 6.0, 6.5, 7.0] },
+      Listening: { '7': [6.0, 6.0], '30': [5.5, 6.0, 5.5, 6.0, 6.0], all: [5.0, 5.0, 5.5, 5.5, 6.0, 5.5, 6.0, 6.0] },
+      Writing: { '7': [5.5], '30': [5.0, 5.5, 5.5], all: [4.5, 5.0, 5.0, 5.5, 5.5] },
+    },
+    estimate: { '7': ['6.5', '6.0', '5.5'], '30': ['6.5', '6.0', '5.5'], all: ['6.5', '6.0', '5.5'] },
+    deltas: { '7': [0.5, 0, 0], '30': [0.5, 0, 0.5], all: [1.5, 1.0, 1.0] },
+    time: {
+      '7': { labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], values: [24, 31, 0, 22, 18, 0, 0], goal: 20, unit: 'phút/ngày', total: '1 giờ 35 phút tuần này · trung bình 19 phút/ngày' },
+      '30': { labels: ['7/9', '14/9', '21/9', '28/9'], values: [16, 21, 24, 19], goal: 20, unit: 'phút/ngày, trung bình theo tuần', total: '9 giờ 50 phút trong 30 ngày · trung bình 20 phút/ngày' },
+      all: { labels: ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], values: [9, 12, 15, 18, 20, 19], goal: 20, unit: 'phút/ngày, trung bình theo tháng', total: '42 giờ từ tháng 5 · trung bình 16 phút/ngày' },
+    },
+    accuracy: {
+      '7': [['Matching Headings', 58, 6, 12], ['Sentence Completion', 71, 0, 9], ['TRUE / FALSE / NOT GIVEN', 74, 3, 14], ['Multiple Choice', 80, -2, 10]],
+      '30': [['Matching Headings', 58, 6, 31], ['Sentence Completion', 69, 2, 24], ['TRUE / FALSE / NOT GIVEN', 72, 4, 40], ['Summary Completion', 77, 5, 18], ['Multiple Choice', 81, 1, 26]],
+      all: [['Matching Headings', 52, 12, 88], ['Sentence Completion', 66, 9, 70], ['TRUE / FALSE / NOT GIVEN', 70, 10, 120], ['Summary Completion', 75, 7, 54], ['Multiple Choice', 79, 6, 90]],
+    },
+    history: [['Cambridge 18 · Test 1 · Reading', 'Hôm qua · 30/40 câu', '7.0'], ['Cambridge 17 · Test 3 · Listening', '28/9 · 27/40 câu', '6.0'], ['Cambridge 17 · Test 2 · Reading', '25/9 · 28/40 câu', '6.5'], ['Cambridge 17 · Writing Task 2', '23/9 · đã chấm', '5.5'], ['Cambridge 17 · Test 1 · Reading', '20/9 · 26/40 câu', '6.0']],
+    streak: 12,
+  },
+};
+DATA.little = {
+  band: { Reading: { '7': [6.0], '30': [6.0], all: [6.0] }, Listening: { '7': [], '30': [], all: [] }, Writing: { '7': [], '30': [], all: [] } },
+  estimate: { '7': ['6.0', '—', '—'], '30': ['6.0', '—', '—'], all: ['6.0', '—', '—'] },
+  deltas: { '7': [null, null, null], '30': [null, null, null], all: [null, null, null] },
+  time: {
+    '7': { labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], values: [0, 0, 0, 25, 12, 0, 0], goal: 20, unit: 'phút/ngày', total: '37 phút tuần này' },
+    '30': { labels: ['7/9', '14/9', '21/9', '28/9'], values: [0, 0, 0, 9], goal: 20, unit: 'phút/ngày, trung bình theo tuần', total: '37 phút trong 30 ngày' },
+    all: { labels: ['T9', 'T10'], values: [0, 9], goal: 20, unit: 'phút/ngày, trung bình theo tháng', total: '37 phút từ khi bắt đầu' },
+  },
+  accuracy: { '7': [['TRUE / FALSE / NOT GIVEN', 67, null, 6], ['Matching Headings', 71, null, 7]], '30': [['TRUE / FALSE / NOT GIVEN', 67, null, 6], ['Matching Headings', 71, null, 7]], all: [['TRUE / FALSE / NOT GIVEN', 67, null, 6], ['Matching Headings', 71, null, 7]] },
+  history: [['Cambridge 18 · Test 1 · Reading', 'Hôm qua · 26/40 câu', '6.0']],
+  streak: 2,
+};
+DATA.offline = DATA.content;
+
+function bandTiles(d, range, selected) {
+  return SKILLS.map((skill, i) => {
+    const delta = d.deltas[range][i];
+    const deltaText = delta === null ? 'Chưa có bài' : delta > 0 ? `<span class="delta"><span class="ms">arrow_upward</span>${delta.toFixed(1)}</span>` : delta < 0 ? `<span class="delta"><span class="ms">arrow_downward</span>${(-delta).toFixed(1)}</span>` : 'Giữ nguyên';
+    const spoken = delta === null ? 'chưa có bài' : delta > 0 ? `tăng ${delta.toFixed(1)}` : delta < 0 ? `giảm ${(-delta).toFixed(1)}` : 'giữ nguyên';
+    const value = d.estimate[range][i];
+    return `<button class="band-tile" aria-pressed="${skill === selected}" data-skill="${skill}" aria-label="${skill}, band ${value === '—' ? 'chưa có' : value}, ${spoken}">
+      <span class="t-footnote muted">${skill}</span><span class="num">${value === '—' ? '—' : roller(value)}</span><span class="t-caption muted">${deltaText}</span></button>`;
+  }).join('');
+}
+
+function lineChart(points, width, height) {
+  const pad = { l: 28, r: 44, t: 16, b: 22 };
+  const min = 4, max = 8;
+  const x = (i) => pad.l + (points.length === 1 ? (width - pad.l - pad.r) / 2 : (i / (points.length - 1)) * (width - pad.l - pad.r));
+  const y = (v) => pad.t + (1 - (v - min) / (max - min)) * (height - pad.t - pad.b);
+  const grid = [4, 5, 6, 7, 8].map((v) => `<line class="grid" x1="${pad.l}" x2="${width - pad.r}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="0" y="${y(v) + 4}">${v.toFixed(1)}</text>`).join('');
+  const path = points.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+  const dots = points.map((v, i) => `<circle class="pt-hit" cx="${x(i)}" cy="${y(v)}" r="14" tabindex="0" role="img" aria-label="Bài ${i + 1}: band ${v.toFixed(1)}" data-tip="Bài ${i + 1} · Band ${v.toFixed(1)}"/><circle class="pt ${i === points.length - 1 ? 'last' : ''}" cx="${x(i)}" cy="${y(v)}" r="${i === points.length - 1 ? 6 : 4.5}"/>`).join('');
+  const last = points[points.length - 1];
+  return `<svg class="chart" viewBox="0 0 ${width} ${height}">${grid}
+    <line class="target" x1="${pad.l}" x2="${width - pad.r}" y1="${y(TARGET)}" y2="${y(TARGET)}"/><text class="target-label" x="${width - pad.r + 6}" y="${y(TARGET) + 4}">Mục tiêu</text>
+    <path class="line" d="${path}" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:0"/>${dots}
+    <text class="value-label" x="${x(points.length - 1)}" y="${y(last) - 12}" text-anchor="middle">${last.toFixed(1)}</text></svg>`;
+}
+
+function trendSummary(skill, points, range) {
+  const span = { '7': '7 ngày', '30': '30 ngày', all: 'từ khi bắt đầu' }[range];
+  const diff = points[points.length - 1] - points[0];
+  const verb = diff > 0 ? `tăng ${diff.toFixed(1)}` : diff < 0 ? `giảm ${(-diff).toFixed(1)}` : 'giữ nguyên';
+  return `${skill} ${verb} ${range === 'all' ? span : `trong ${span} qua`}`;
+}
+
+function trendCard(frame, d, range, skill, asTable) {
+  const points = d.band[skill][range];
+  if (points.length < 3) {
+    const need = 3 - points.length;
+    return `<article class="card hint" data-chart="trend"><span class="tile primary"><span class="ms">insights</span></span><div><h3 class="t-headline">Xu hướng band ${skill}</h3>
+      <p class="t-subheadline muted">Làm thêm ${need} bài ${skill} để thấy xu hướng band.</p></div></article>`;
+  }
+  const summary = trendSummary(skill, points, range);
+  const width = frame === 'phone' ? 318 : 520;
+  const body = asTable
+    ? `<table class="table"><thead><tr><th>Bài</th><th>Band ${skill}</th></tr></thead><tbody>${points.map((v, i) => `<tr><td>Bài ${i + 1}</td><td>${v.toFixed(1)}</td></tr>`).join('')}</tbody></table>`
+    : `<div aria-label="Biểu đồ band ${skill}: ${summary}, mục tiêu ${TARGET.toFixed(1)}" role="figure">${lineChart(points, width, frame === 'phone' ? 160 : 200)}</div>`;
+  return `<article class="card chart-card" data-chart="trend"><div class="chart-head"><div><h3 class="t-headline">Xu hướng band</h3><p class="t-footnote muted" data-summary>${summary} · mục tiêu ${TARGET.toFixed(1)}</p></div>
+    <button class="btn btn-text" style="height:32px;padding:0" data-table="trend" aria-pressed="${asTable}">${asTable ? 'Xem biểu đồ' : 'Xem dạng bảng'}</button></div><div data-chart-body>${body}</div></article>`;
+}
+
+function timeCard(d, range, asTable, frame) {
+  const t = d.time[range];
+  const max = 40;
+  const chartHeight = frame === 'phone' ? 138 : 178;
+  const body = asTable
+    ? `<table class="table"><thead><tr><th>Thời gian</th><th>Phút</th></tr></thead><tbody>${t.labels.map((l, i) => `<tr><td>${l}</td><td>${t.values[i]}</td></tr>`).join('')}</tbody></table>`
+    : `<div class="bars" role="figure" aria-label="Thời gian học, ${t.unit}: ${t.total}. Mục tiêu ${t.goal} phút mỗi ngày">
+      <div class="goal-line" style="bottom:${22 + (t.goal / max) * chartHeight}px"><span>Mục tiêu ${t.goal} phút</span></div>
+      ${t.labels.map((l, i) => `<div class="bar-col" tabindex="0" role="img" aria-label="${l}: ${t.values[i]} phút" data-tip="${l} · ${t.values[i]} phút"><i class="${t.values[i] ? '' : 'zero'}" style="height:${Math.max(4, (t.values[i] / max) * chartHeight)}px" data-h="${Math.max(4, (t.values[i] / max) * chartHeight)}"></i><span>${l}</span></div>`).join('')}</div>`;
+  return `<article class="card chart-card" data-chart="time"><div class="chart-head"><div><h3 class="t-headline">Thời gian học</h3><p class="t-footnote muted">${t.total}</p></div>
+    <button class="btn btn-text" style="height:32px;padding:0" data-table="time" aria-pressed="${asTable}">${asTable ? 'Xem biểu đồ' : 'Xem dạng bảng'}</button></div><div data-chart-body>${body}</div></article>`;
+}
+
+function accuracyList(d, range) {
+  return `<div class="list" data-accuracy>${d.accuracy[range].map(([name, pct, delta, count]) => {
+    const trend = delta === null ? `<span class="t-footnote muted">${count} câu</span>`
+      : delta > 0 ? `<span class="t-footnote acc-trend up"><span class="ms sm">trending_up</span>+${delta}%</span><span class="t-footnote muted"> · ${count} câu</span>`
+        : delta < 0 ? `<span class="t-footnote acc-trend down"><span class="ms sm">trending_down</span>${delta}%</span><span class="t-footnote muted"> · ${count} câu</span>`
+          : `<span class="t-footnote muted">Giữ nguyên · ${count} câu</span>`;
+    const spoken = delta === null ? '' : delta > 0 ? `, tăng ${delta} phần trăm` : delta < 0 ? `, giảm ${-delta} phần trăm` : ', giữ nguyên';
+    return `<button class="row" data-action="type" data-name="${name}" aria-label="${name}, ${pct} phần trăm đúng${spoken}"><div class="grow"><div class="acc-top"><span class="t-headline">${name}</span><span class="t-subheadline tnum">${pct}%</span></div>
+      <div class="pbar" style="margin:8px 0 6px"><i style="width:${pct}%"></i></div><div>${trend}</div></div><span class="ms chev">chevron_right</span></button>`;
+  }).join('')}</div>`;
+}
+
+function calendar(d) {
+  const start = new Date(2026, 7, 31);
+  const today = new Date(2026, 9, 2);
+  const studied = d.streak === 12
+    ? (date) => {
+      const day = date.getDate(), month = date.getMonth();
+      if (month === 8 && day === 30) return 'rest';
+      if (date > today) return 'future';
+      if ((month === 8 && day >= 21) || month === 9) return [1, 2, 22, 24, 26, 29].includes(day) ? 'strong' : 'light';
+      if (month === 8 && [1, 2, 4, 7, 8, 9, 11, 14, 15, 16, 18].includes(day)) return day % 3 === 0 ? 'strong' : 'light';
+      return '';
+    }
+    : (date) => {
+      if (date > today) return 'future';
+      return date.getMonth() === 9 ? (date.getDate() === 1 ? 'strong' : 'light') : '';
+    };
+  const days = Array.from({ length: 35 }, (_, i) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + i));
+  const label = { strong: '30 phút trở lên', light: 'dưới 30 phút', rest: 'ngày nghỉ, chuỗi vẫn giữ', future: 'chưa tới', '': 'không học' };
+  return `<article class="card cal" data-stagger><div style="display:flex;justify-content:space-between;align-items:baseline"><h3 class="t-headline">Chuỗi ${d.streak} ngày</h3><span class="t-footnote muted">Kỷ lục 21 ngày</span></div>
+    <p class="t-footnote muted">31/8 – 4/10</p>
+    <div class="cal-grid" role="grid" aria-label="Lịch học 5 tuần">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((w) => `<span class="dow" aria-hidden="true">${w}</span>`).join('')}
+      ${days.map((date) => { const kind = studied(date); const isToday = date.getTime() === today.getTime(); return `<span class="day ${kind} ${isToday ? 'today' : ''}" role="gridcell" aria-label="Ngày ${date.getDate()} tháng ${date.getMonth() + 1}${isToday ? ', hôm nay' : ''}: ${label[kind]}">${date.getDate()}</span>`; }).join('')}</div>
+    <div class="legend" aria-hidden="true"><span><i style="box-shadow:inset 0 0 0 1px var(--outline-variant)"></i>Không học</span><span><i class="dot1" style="background:var(--tertiary-container)"></i>Dưới 30 phút</span><span><i class="dot2" style="background:var(--tertiary)"></i>30 phút trở lên</span><span><i style="box-shadow:inset 0 0 0 1.5px var(--outline)"></i>Ngày nghỉ (trăng)</span></div></article>`;
+}
+
+function history(d) {
+  return `<div class="list" data-stagger>${d.history.map(([t, s, band]) => `<button class="row" data-action="result" aria-label="${t}, ${s}, band ${band}"><span class="tile info"><span class="ms">${t.includes('Listening') ? 'headphones' : t.includes('Writing') ? 'edit_note' : 'menu_book'}</span></span><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="tag primary tnum">Band ${band}</span><span class="ms chev">chevron_right</span></button>`).join('')}</div>`;
+}
+
+function skeleton(frame) {
+  const block = (h, extra = '') => `<div class="skel" style="height:${h}px;${extra}"></div>`;
+  const tiles = `<div class="card" style="padding:20px;display:flex;flex-direction:column;gap:12px">${block(20, 'width:40%')}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${block(84)}${block(84)}${block(84)}</div></div>`;
+  const chart = `<div class="card" style="padding:20px;display:flex;flex-direction:column;gap:12px">${block(18, 'width:50%')}${block(frame === 'phone' ? 160 : 200, 'border-radius:12px')}</div>`;
+  const sr = '<span class="sr" role="status">Đang tải tiến độ</span>';
+  if (frame === 'desktop') return `${sr}<div class="two"><div style="display:flex;flex-direction:column;gap:24px">${tiles}${chart}</div><div style="display:flex;flex-direction:column;gap:24px">${chart}</div></div>`;
+  return `${sr}<div style="display:flex;flex-direction:column;gap:16px">${tiles}${chart}${chart}</div>`;
+}
+
+const ILLO_CHART = `<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+  <rect class="i1" x="14" y="20" width="92" height="80" rx="12"/>
+  <rect class="i3" x="28" y="64" width="12" height="24" rx="3"/><rect class="i3" x="48" y="54" width="12" height="34" rx="3"/><rect class="i2" x="68" y="42" width="12" height="46" rx="3"/>
+  <path class="is" d="M26 52 L46 40 L62 46 L92 28 M84 28 H92 V36"/>
+</svg>`;
+
+function body(frame, state, view) {
+  if (state === 'loading') return skeleton(frame);
+  if (state === 'error') {
+    return `<div class="empty" style="padding-top:${frame === 'phone' ? 120 : 160}px" role="alert"><div class="error-icon"><span class="ms lg">cloud_off</span></div>
+      <h2 class="t-title2">Chưa tải được tiến độ</h2><p class="t-callout muted">Kiểm tra kết nối rồi thử lại nhé.</p><button class="btn btn-primary" style="margin-top:16px" data-action="retry"><span class="ms">refresh</span>Thử lại</button></div>`;
+  }
+  if (state === 'empty') {
+    const size = frame === 'phone' ? 120 : 160;
+    return `<div class="card empty" data-stagger style="padding:40px 24px">${ILLO_CHART.replace('width="120" height="120"', `width="${size}" height="${size}"`)}
+      <h2 class="t-title1" style="margin-top:8px">Tiến độ sẽ hiện ở đây</h2><p class="t-callout muted" style="max-width:360px">Sau bài làm đầu tiên, bạn sẽ thấy band ước tính và dạng câu hỏi cần luyện.</p>
+      <button class="btn btn-primary" style="margin-top:16px"><span class="ms">play_arrow</span>Làm bài đầu tiên</button></div>`;
+  }
+  const d = DATA[state];
+  const banner = state === 'offline' ? '<div class="banner" data-stagger role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>' : '';
+  const seg = `<div class="seg" role="radiogroup" aria-label="Khoảng thời gian" data-stagger><span class="seg-ind"></span>${RANGES.map(([v, n]) => `<button role="radio" aria-checked="${v === view.range}" data-range="${v}">${n}</button>`).join('')}</div>`;
+  const band = `<article class="card band-card" data-stagger><div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="t-headline">Band ước tính</h2><span class="t-footnote muted">Mục tiêu ${TARGET.toFixed(1)}</span></div>
+    <div class="band-tiles" data-tiles>${bandTiles(d, view.range, view.skill)}</div></article>`;
+  const trend = `<div class="section-h" data-stagger><h2 class="t-title3">Xu hướng</h2></div><div data-stagger data-trend>${trendCard(frame, d, view.range, view.skill, view.tables.trend)}</div>`;
+  const time = `<div class="section-h" data-stagger><h2 class="t-title3">Thời gian học</h2></div><div data-stagger data-time>${timeCard(d, view.range, view.tables.time, frame)}</div>`;
+  const acc = `<div class="section-h" data-stagger><h2 class="t-title3">Độ chính xác theo dạng câu hỏi</h2></div><div data-stagger data-acc>${accuracyList(d, view.range)}</div>`;
+  const streak = `<div class="section-h" data-stagger><h2 class="t-title3">Chuỗi ngày</h2></div>${calendar(d)}`;
+  const hist = `<div class="section-h" data-stagger><h2 class="t-title3">Lịch sử bài làm</h2>${d.history.length > 1 ? '<button class="btn btn-text" style="height:32px;padding:0">Xem tất cả</button>' : ''}</div>${history(d)}`;
+  if (frame === 'desktop') return `${banner}${seg}<div class="two"><div>${band}${trend}${acc}</div><div>${time}${streak}${hist}</div></div>`;
+  return `${banner}${seg}${band}${trend}${time}${acc}${streak}${hist}`;
+}
+
+function view(frame, state, v) {
+  const updated = state === 'offline' ? '<div class="t-footnote muted" style="font-weight:600">Cập nhật lúc 8:12</div>' : '';
+  const search = frame === 'phone' ? '<button class="icon-btn" aria-label="Tìm kiếm"><span class="ms">search</span></button>' : '';
+  return `<div class="lt" data-stagger><div>${updated}<h1 class="t-large-title">Tiến độ</h1></div>${search}</div><div class="pad">${body(frame, state, v)}</div>`;
+}
+
+const DESTINATIONS = [['home', 'Hôm nay', 'wb_sunny'], ['practice', 'Luyện đề', 'menu_book'], ['vocab', 'Từ vựng', 'style'], ['progress', 'Tiến độ', 'monitoring'], ['me', 'Tôi', 'person']];
+const navBadge = (key) => (key === 'vocab' ? '<span class="badge" aria-hidden="true">24</span>' : '');
+const navLabel = (key, name) => (key === 'vocab' ? `${name}, 24 thẻ đến hạn` : name);
+
+function screen(frame, state, v) {
+  const base = `<div class="nav-host"><div class="layer base"><div class="topbar"><span class="t-headline bar-title">Tiến độ</span></div>
+    <div class="screen">${frame === 'desktop' ? `<div class="content view">${view(frame, state, v)}</div>` : `<div class="view">${view(frame, state, v)}</div>`}</div></div></div>`;
+  if (frame === 'phone') {
+    return `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${state === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>
+      ${base}<nav class="tabbar" role="tablist" aria-label="Điều hướng chính">${DESTINATIONS.map(([k, n, i]) => `<button class="tab" role="tab" aria-selected="${k === 'progress'}" aria-label="${navLabel(k, n)}"><span class="ms">${i}</span>${n}${navBadge(k)}</button>`).join('')}</nav><div class="home-ind"></div>`;
+  }
+  return `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS</span></div><div class="win-body"><nav class="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">L</span><span class="t-headline">Luyện IELTS</span></div><button class="side-search"><span class="ms sm">search</span>Tìm kiếm<kbd>⌘K</kbd></button>
+    <div role="tablist">${DESTINATIONS.map(([k, n, i], index) => `<button class="side-item" role="tab" aria-selected="${k === 'progress'}" aria-label="${navLabel(k, n)}" aria-keyshortcuts="Meta+${index + 1}"><span class="ms">${i}</span>${n}${navBadge(k)}<kbd>⌘${index + 1}</kbd></button>`).join('')}</div></nav><div class="main">${base}</div></div>`;
+}
+
+function placeSeg(device, animate) {
+  const group = device.querySelector('.seg');
+  if (!group) return;
+  const on = group.querySelector('[aria-checked="true"]');
+  const ind = group.querySelector('.seg-ind');
+  const from = ind.style.transform || `translateX(${on.offsetLeft}px)`;
+  const to = `translateX(${on.offsetLeft}px)`;
+  ind.style.width = `${on.offsetWidth}px`;
+  ind.style.transform = to;
+  if (animate) play(ind, [{ transform: from }, { transform: to }], 'snappy');
+}
+
+function drawCharts(root, first) {
+  root.querySelectorAll('.chart .line').forEach((line) => play(line, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], 'gentle', { delay: first ? 150 : 0, fallback: [{ strokeDashoffset: 0 }, { strokeDashoffset: 0 }] }));
+  root.querySelectorAll('.chart .pt, .chart .value-label').forEach((pt, i) => play(pt, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.medium, easing: EASING.standard, delay: (first ? 300 : 150) + i * 20 }));
+}
+
+function growBars(root, previous) {
+  root.querySelectorAll('.bar-col i').forEach((bar, i) => {
+    const h = Number(bar.dataset.h);
+    const from = previous && previous[i] !== undefined ? previous[i] : 0;
+    play(bar, [{ transform: `scaleY(${Math.max(0, from / h)})` }, { transform: 'scaleY(1)' }], 'smooth', { delay: previous ? 0 : 120 + i * STAGGER });
+  });
+}
+
+function mount(device, frame) {
+  const v = { range: '30', skill: 'Reading', tables: { trend: false, time: false } };
+  device.innerHTML = screen(frame, ui.state, v);
+  const baseLayer = device.querySelector('.layer.base');
+  const scroller = baseLayer.querySelector('.screen');
+  scroller.addEventListener('scroll', () => baseLayer.classList.toggle('scrolled', scroller.scrollTop > 44));
+  const d = DATA[ui.state];
+  placeSeg(device, false);
+  device.querySelectorAll('[data-stagger]').forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER }));
+  device.querySelectorAll('.roller').forEach(roll);
+  device.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle', { delay: 120 }));
+  drawCharts(device, true);
+  growBars(device);
+  const swap = async (selector, html, before) => {
+    const host = device.querySelector(selector);
+    await play(host, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
+    host.innerHTML = html;
+    play(host, [{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: EASING.decelerate });
+    if (before) before(host);
+  };
+  const barHeights = () => [...device.querySelectorAll('.bar-col i')].map((b) => Number(b.dataset.h));
+  device.addEventListener('click', (event) => {
+    const range = event.target.closest('[data-range]');
+    if (range && d) {
+      if (range.dataset.range === v.range) return;
+      v.range = range.dataset.range;
+      device.querySelectorAll('[data-range]').forEach((b) => b.setAttribute('aria-checked', String(b === range)));
+      placeSeg(device, true);
+      haptic(device, 'selection · CLOCK_TICK');
+      const tiles = device.querySelector('[data-tiles]');
+      tiles.innerHTML = bandTiles(d, v.range, v.skill);
+      tiles.querySelectorAll('.roller').forEach(roll);
+      const heights = barHeights();
+      swap('[data-trend]', trendCard(frame, d, v.range, v.skill, v.tables.trend), (host) => drawCharts(host));
+      const timeHost = device.querySelector('[data-time]');
+      timeHost.innerHTML = timeCard(d, v.range, v.tables.time, frame);
+      growBars(timeHost, heights);
+      swap('[data-acc]', accuracyList(d, v.range), (host) => host.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0.6)' }, { transform: 'scaleX(1)' }], 'smooth')));
+      return;
+    }
+    const tile = event.target.closest('[data-skill]');
+    if (tile && d) {
+      v.skill = tile.dataset.skill;
+      device.querySelectorAll('[data-skill]').forEach((b) => b.setAttribute('aria-pressed', String(b === tile)));
+      play(tile, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+      swap('[data-trend]', trendCard(frame, d, v.range, v.skill, v.tables.trend), (host) => drawCharts(host));
+      return;
+    }
+    const table = event.target.closest('[data-table]');
+    if (table && d) {
+      const which = table.dataset.table;
+      v.tables[which] = !v.tables[which];
+      if (which === 'trend') swap('[data-trend]', trendCard(frame, d, v.range, v.skill, v.tables.trend), (host) => drawCharts(host));
+      else swap('[data-time]', timeCard(d, v.range, v.tables.time, frame), (host) => growBars(host));
+      return;
+    }
+    const row = event.target.closest('[data-action="type"]');
+    if (row) return push(device, frame, typeDetail(frame, row.dataset.name));
+    if (event.target.closest('[data-action="result"]')) return log('Mở kết quả bài làm (DS-03)');
+    if (event.target.closest('[data-action="retry"]')) { ui.state = 'loading'; syncControls(); render(); setTimeout(() => { ui.state = 'content'; syncControls(); render(); }, 1400); }
+  });
+  const tip = (event, show) => {
+    const target = event.target.closest && event.target.closest('[data-tip]');
+    if (!target) return;
+    device.querySelectorAll('.tooltip').forEach((t) => t.remove());
+    if (!show || frame === 'phone') return;
+    const scale = Number(device.dataset.scale);
+    const rect = target.getBoundingClientRect(), d0 = device.getBoundingClientRect();
+    const el = document.createElement('div');
+    el.className = 'tooltip';
+    el.textContent = target.dataset.tip;
+    el.style.left = `${(rect.left + rect.width / 2 - d0.left) / scale}px`;
+    el.style.top = `${(rect.top - d0.top) / scale - 6}px`;
+    device.append(el);
+    play(el, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.instant, easing: EASING.standard });
+  };
+  device.addEventListener('pointerover', (e) => tip(e, true));
+  device.addEventListener('pointerout', (e) => tip(e, false));
+  device.addEventListener('focusin', (e) => tip(e, true));
+  device.addEventListener('focusout', (e) => tip(e, false));
+  device.addEventListener('keydown', (event) => {
+    const target = event.target.closest('[data-tip]');
+    if (!target || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    const all = [...target.closest('[data-chart-body]').querySelectorAll('[data-tip]')];
+    const next = all[all.indexOf(target) + (event.key === 'ArrowRight' ? 1 : -1)];
+    if (next) next.focus();
+  });
+}
+
+function typeDetail(frame, name) {
+  const top = frame === 'phone' ? 104 : 72;
+  return `<div class="topbar solid"><button class="back" data-back aria-label="Quay lại Tiến độ"><span class="ms">chevron_left</span>Tiến độ</button><span class="t-headline bar-title">${name}</span></div>
+  <div class="screen" style="padding-top:${top}px"><div class="${frame === 'desktop' ? 'content' : ''}" style="padding:0 ${frame === 'phone' ? 20 : 0}px">
+    <article class="card" style="padding:20px;display:flex;flex-direction:column;gap:6px"><h1 class="t-title1">${name}</h1><p class="t-subheadline muted">Độ chính xác và mẹo cho dạng này</p>
+      <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}" style="margin-top:12px;align-self:flex-start"><span class="ms">play_arrow</span>Bắt đầu luyện 12 phút</button></article>
+    <div class="section-h"><h2 class="t-title3">Câu sai gần đây</h2></div>
+    <div class="list">${[['Cambridge 18 · Test 1 · Câu 21', 'Chọn iv · đáp án vii'], ['Cambridge 17 · Test 2 · Câu 15', 'Chọn ii · đáp án v']].map(([t, s]) => `<div class="row"><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="ms chev">chevron_right</span></div>`).join('')}</div>
+  </div></div>`;
+}
+
+function push(device, frame, html) {
+  const host = device.querySelector('.nav-host');
+  const base = host.querySelector('.layer.base');
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10;
+  page.innerHTML = html;
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  base.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(base, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  page.querySelector('[data-back]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    play(page, [{ transform: 'translateX(0)' }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+    play(base, [{ transform: 'translateX(-30%)' }, { transform: 'translateX(0)' }], 'smooth');
+    play(dim, [{ opacity: 0.08 }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+  });
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const SIZES = { phone: [390, 844], desktop: [1280, 800] };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const [width, height] = SIZES[frame];
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}"></div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  document.querySelector('[data-control="state"]').insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>

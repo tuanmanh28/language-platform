@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Điều hướng — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; flex-wrap: wrap; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.tb-btn.ghost { background: #E7E7EC; color: #18181D; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.map { max-width: 1280px; margin: 24px auto 0; padding: 0 20px; }
+.map details { background: #FFFFFF; border-radius: 14px; box-shadow: 0 1px 2px #0000000A, 0 4px 16px #0000000F; }
+.map summary { padding: 14px 18px; font-weight: 600; font-size: 15px; cursor: pointer; }
+.map table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.map th, .map td { text-align: left; padding: 8px 18px; border-top: 1px solid #E7E7EC; vertical-align: middle; }
+.map th { color: #55555F; font-weight: 500; font-size: 12px; }
+.map td button, .map td a { padding: 5px 10px; border-radius: 8px; background: #E4E2FF; color: #16105A; font-weight: 600; font-size: 12px; text-decoration: none; display: inline-block; }
+.map code { font-size: 12px; background: #EDEDF1; padding: 1px 5px; border-radius: 4px; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; transition: background-color 250ms, color 250ms; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.tablet { width: 834px; height: 1112px; border-radius: 36px;
+  box-shadow: 0 0 0 12px #0E0E10, 0 0 0 13px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.tablet .status { height: 28px; padding: 6px 28px 0; font-size: 13px; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.tablet .status .ms { font-size: 15px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.tablet .home-ind { width: 200px; margin-left: -100px; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+.tablet .win-body { top: 0; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.desktop .btn-text { height: 36px; }
+.btn-block { width: 100%; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag .ms { font-size: 20px; margin-left: -4px; }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.pbar { height: 6px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.pbar > i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row.slim { min-height: 56px; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.tile.correct { background: var(--correct-container); color: var(--on-correct-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.tile.neutral { background: var(--surface-high); color: var(--on-surface-variant); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.row.done .t-headline { color: var(--on-surface-variant); }
+.done-mark { color: var(--correct); }
+.ring { display: block; transform: rotate(-90deg); }
+.ring .track { fill: none; stroke: var(--surface-high); }
+.ring .fill { fill: none; stroke: var(--primary); stroke-linecap: round; }
+.ring .fill.tertiary { stroke: var(--tertiary); }
+.roller { display: inline-flex; overflow: hidden; line-height: 1.2; height: 1.2em; vertical-align: bottom; }
+.roller .digit { display: inline-block; height: 1.2em; overflow: hidden; }
+.roller .digits { display: flex; flex-direction: column; }
+.roller .digits span { height: 1.2em; }
+
+.banner { display: flex; gap: 12px; align-items: center; min-height: 56px; padding: 10px 14px; border-radius: 14px;
+  background: var(--info-container); color: var(--on-info-container); transition: background-color 250ms, color 250ms; }
+.banner .ms { color: var(--info); transition: color 250ms; }
+.banner.ok { background: var(--correct-container); color: var(--on-correct-container); }
+.banner.ok .ms { color: var(--correct); }
+.banner-wrap { overflow: hidden; }
+.banner-wrap > .banner { margin-bottom: 16px; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer, .tablet .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+
+.panes { position: absolute; inset: 0; }
+.main { flex: 1; position: relative; }
+.pane { position: absolute; inset: 0; }
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.tablet .screen { padding: 36px 24px 40px; }
+.desktop .screen { padding: 8px 32px 40px; }
+.content { max-width: 1080px; margin: 0 auto; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.tablet .topbar { height: 80px; padding-top: 28px; }
+.desktop .topbar { height: 52px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 48px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.desktop .topbar .back { bottom: 2px; font-size: 15px; }
+
+.lt { padding: 8px 20px 4px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.tablet .lt { padding: 8px 0 4px; }
+.desktop .lt { padding: 24px 0 8px; }
+.lt-actions { display: flex; align-items: center; gap: 4px; margin-bottom: 0; }
+.pad { padding: 8px 20px 0; display: flex; flex-direction: column; }
+.tablet .pad, .desktop .pad { padding: 8px 0 0; }
+.streak { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 12px 0 8px; border-radius: 999px;
+  background: var(--tertiary-container); color: var(--on-tertiary-container); font-weight: 700; font-size: 15px; position: relative; margin: 6px 0; }
+.streak::before { content: ''; position: absolute; inset: -6px 0; }
+.streak .ms { color: var(--tertiary); font-size: 20px; }
+
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 4px 0; display: flex; z-index: 40;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid var(--outline-variant); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 50px; justify-content: center;
+  color: var(--on-surface-variant); font-size: 12px; line-height: 16px; font-weight: 500; position: relative; }
+.tab .ms { font-size: 28px; }
+.tab[aria-selected="true"] { color: var(--primary); }
+.tab[aria-selected="true"] .ms, .rail-item[aria-selected="true"] .ms, .side-item[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.badge { position: absolute; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--primary);
+  color: var(--on-primary); font-size: 11px; line-height: 18px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+.tab .badge { top: 0; left: calc(50% + 6px); }
+
+.rail { width: 80px; flex: none; padding: 40px 0 24px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--surface-low); border-right: 1px solid var(--outline-variant); position: relative; z-index: 40; }
+.rail .icon-btn { margin-bottom: 20px; }
+.rail-items { display: flex; flex-direction: column; gap: 12px; position: relative; }
+.rail-item { width: 80px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 0 4px; position: relative;
+  color: var(--on-surface-variant); font-size: 12px; line-height: 16px; font-weight: 500; z-index: 1; }
+.rail-item .pill { width: 56px; height: 32px; display: grid; place-items: center; border-radius: 999px; position: relative; }
+.rail-item:hover .pill { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.rail-item[aria-selected="true"] { color: var(--on-surface); font-weight: 600; }
+.rail-item[aria-selected="true"] .pill { color: var(--on-primary-container); }
+.rail-item .badge { top: -4px; left: 44px; }
+.rail-ind { position: absolute; left: 12px; top: 0; width: 56px; height: 32px; border-radius: 999px; background: var(--primary-container); z-index: 0; }
+.rail-streak { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--on-tertiary-container);
+  background: var(--tertiary-container); border-radius: 16px; padding: 8px 10px; font-weight: 700; font-size: 15px; }
+.rail-streak .ms { color: var(--tertiary); font-size: 22px; }
+
+.sidebar { width: 248px; flex: none; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px;
+  background: var(--surface-low); border-right: 1px solid var(--outline-variant); position: relative; z-index: 40; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 12px 16px; }
+.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--primary); color: var(--on-primary);
+  display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.side-search { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px; margin: 0 0 12px; border-radius: 10px;
+  background: var(--surface-high); color: var(--on-surface-variant); font-size: 15px; width: 100%; text-align: left; }
+.side-search kbd { margin-left: auto; font: inherit; font-size: 12px; padding: 1px 6px; border-radius: 6px; background: var(--card); }
+.side-items { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px; position: relative; z-index: 1;
+  font-size: 15px; font-weight: 500; color: var(--on-surface-variant); width: 100%; text-align: left; }
+.side-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.side-item[aria-selected="true"] { color: var(--on-primary-container); font-weight: 600; }
+.side-item[aria-selected="true"]:hover { background: none; }
+.side-item kbd { margin-left: auto; font: inherit; font-size: 12px; opacity: 0; transition: opacity 100ms; }
+.side-item:hover kbd, .side-item:focus-visible kbd { opacity: 0.7; }
+.side-item .badge { position: static; margin-left: auto; }
+.side-item:hover .badge + kbd { display: none; }
+.side-ind { position: absolute; left: 0; right: 0; top: 0; height: 48px; border-radius: 10px; background: var(--primary-container); z-index: 0; }
+.side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.sync { display: flex; align-items: center; gap: 8px; padding: 0 12px; color: var(--on-surface-variant); font-size: 13px; line-height: 18px; min-height: 24px; }
+.sync .ms { font-size: 18px; }
+.spinner { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--outline-variant); border-top-color: var(--primary); animation: spin 0.8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.continue { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+.continue .pbar { margin: 12px 0 4px; }
+.continue-foot { display: flex; align-items: center; gap: 4px; margin-bottom: 14px; }
+.desktop .continue .btn, .tablet .continue .btn { align-self: flex-start; }
+.goal { padding: 18px 20px; display: flex; gap: 18px; align-items: center; }
+.goal-ring { position: relative; width: 84px; height: 84px; flex: none; }
+.goal-ring .center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.two { display: grid; grid-template-columns: 7fr 5fr; gap: 24px; align-items: start; }
+.tablet .two { grid-template-columns: 1fr 1fr; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.cover { width: 36px; height: 46px; border-radius: 6px; background: var(--primary-container); color: var(--on-primary-container);
+  display: grid; place-items: center; font-weight: 700; font-size: 15px; flex: none; }
+.seg { display: flex; padding: 4px; border-radius: 14px; background: var(--surface-high); position: relative; }
+.seg button { flex: 1; height: 36px; border-radius: 10px; font-size: 15px; font-weight: 600; position: relative; z-index: 1; color: var(--on-surface-variant); }
+.seg button[aria-checked="true"] { color: var(--on-surface); }
+.seg .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 4px; border-radius: 10px; background: var(--surface-bright); box-shadow: 0 1px 2px #0000000A, 0 4px 16px #0000000F; }
+.chip-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+.chip-row::-webkit-scrollbar { display: none; }
+.chip { height: 40px; padding: 0 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline); font-size: 15px; font-weight: 600; white-space: nowrap; position: relative; flex: none; }
+.chip::before { content: ''; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; }
+.chip.on { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.band-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.band-tile { background: var(--surface-high); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.avatar { width: 56px; height: 56px; border-radius: 999px; background: var(--surface-high); color: var(--on-surface-variant); display: grid; place-items: center; flex: none; }
+
+.search-layer { position: absolute; inset: 0; z-index: 65; display: flex; flex-direction: column; }
+.search-layer .bg { position: absolute; inset: 0; background: var(--surface); }
+.search-head { position: relative; display: flex; align-items: center; gap: 4px; padding: 56px 8px 8px 16px; }
+.field { flex: 1; display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 8px 0 12px; border-radius: 12px; background: var(--surface-high); color: var(--on-surface-variant); }
+.field input { flex: 1; min-width: 0; height: 100%; outline: none; color: var(--on-surface); font-size: 17px; }
+.field input::placeholder { color: var(--on-surface-variant); }
+.field .clear { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 999px; position: relative; }
+.field .clear::before { content: ''; position: absolute; inset: -8px; }
+.search-scopes { position: relative; padding: 4px 16px 8px; }
+.search-scopes .chip { height: 34px; padding: 0 12px; font-size: 13px; }
+.search-note { position: relative; padding: 0 20px 8px; }
+.results { position: relative; flex: 1; overflow-y: auto; padding: 0 16px 40px; scrollbar-width: none; }
+.results::-webkit-scrollbar { display: none; }
+.r-group { margin-top: 16px; }
+.r-group h3 { padding: 0 4px 6px; }
+.r-row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 12px; width: 100%; text-align: left; border-radius: 12px; position: relative; z-index: 1; }
+.r-row b { font-weight: 700; color: var(--primary); }
+.phone .r-row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.r-ind { position: absolute; left: 0; right: 0; top: 0; border-radius: 12px; background: color-mix(in srgb, var(--on-surface) 12%, transparent); z-index: 0; pointer-events: none; }
+.morph { position: absolute; z-index: 66; background: var(--surface); overflow: hidden; }
+.morph .ghost { position: absolute; pointer-events: none; margin: 0; }
+.stub { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
+.phone .stub { padding-top: 50px; }
+.tablet .stub { padding-top: 28px; }
+.stub-bar { display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 8px 0 4px; border-bottom: 1px solid var(--outline-variant); background: var(--card); }
+.stub-body { flex: 1; display: grid; place-items: center; text-align: center; padding: 24px; }
+.recent { display: flex; gap: 8px; flex-wrap: wrap; }
+.r-empty { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.palette-layer { position: absolute; inset: 0; z-index: 65; display: flex; justify-content: center; align-items: flex-start; }
+.palette { position: relative; margin-top: 12vh; width: 640px; max-height: 520px; background: var(--card); border-radius: 20px; box-shadow: var(--shadow-raised); display: flex; flex-direction: column; overflow: hidden; }
+.dark .palette { background: var(--surface-high); }
+.palette .field { background: transparent; height: 60px; border-radius: 0; padding: 0 16px 0 20px; border-bottom: 1px solid var(--outline-variant); }
+.palette .results { padding: 4px 8px 8px; position: relative; }
+.palette .r-row { min-height: 48px; }
+.palette-foot { display: flex; gap: 16px; padding: 10px 20px; border-top: 1px solid var(--outline-variant); color: var(--on-surface-variant); font-size: 12px; }
+.palette-foot kbd { font: inherit; font-weight: 600; padding: 1px 6px; border-radius: 6px; background: var(--surface-high); }
+.dark .palette-foot kbd { background: var(--surface-highest); }
+.res-wrap { position: relative; }
+.toast { position: absolute; left: 50%; bottom: 110px; transform: translateX(-50%); z-index: 80; background: var(--inverse-surface); color: var(--inverse-on-surface);
+  padding: 12px 18px; border-radius: 14px; font-size: 15px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Điều hướng và khung ứng dụng</strong><span>Mockup · <a href="../README.md">spec</a> · bấm tab, bấm lại tab, tìm kiếm (⌘K), Back · <a href="home.html">Hôm nay</a> · <a href="onboarding.html">Onboarding</a> · <a href="progress.html">Tiến độ</a> · <a href="profile.html">Tôi</a></span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="tablet">Máy tính bảng</button><button data-value="desktop">Máy tính</button><button data-value="all">Tất cả</button></div>
+  <div class="tb-group" data-control="state"><span>Mạng</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn ghost" id="back">Nút Back (Android)</button>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<section class="map">
+  <details open>
+    <summary>Bản đồ chuyển cảnh — bấm "Phát" để xem trên mọi khung</summary>
+    <table>
+      <thead><tr><th>Từ</th><th>Đến</th><th>Kiểu chuyển</th><th>Token</th><th></th></tr></thead>
+      <tbody id="map-rows"></tbody>
+    </table>
+  </details>
+</section>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const STATES = [['online', 'Có mạng'], ['offline', 'Ngoại tuyến'], ['reconnected', 'Vừa kết nối lại'], ['syncing', 'Đang đồng bộ']];
+const FRAMES = ['phone', 'tablet', 'desktop'];
+const ui = { theme: 'light', frame: 'all', state: 'online' };
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (!device.classList.contains('phone')) return;
+  log(`<span class="ms sm">vibration</span> Rung: ${kind}`);
+}
+
+function log(html) {
+  const el = document.querySelector('.haptic-log');
+  el.innerHTML = html;
+  el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(log.timer);
+  log.timer = setTimeout(() => { el.textContent = ''; }, 2400);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function enter(root) {
+  root.querySelectorAll('[data-stagger]').forEach((el, i) => {
+    play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER });
+  });
+  root.querySelectorAll('.ring .fill').forEach((circle) => {
+    play(circle, [{ strokeDashoffset: circle.dataset.length }, { strokeDashoffset: circle.dataset.offset }], 'gentle', { delay: 120 });
+  });
+  root.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle', { delay: 120 }));
+  root.querySelectorAll('.roller').forEach(roll);
+}
+
+function roller(text) {
+  const parts = [...String(text)].map((ch) => (/\d/.test(ch)
+    ? `<span class="digit" aria-hidden="true"><span class="digits" data-digit="${ch}">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
+    : `<span aria-hidden="true">${ch}</span>`));
+  return `<span class="roller tnum">${parts.join('')}<span class="sr">${text}</span></span>`;
+}
+
+function roll(el) {
+  el.querySelectorAll('.digits').forEach((col, i) => {
+    const target = `translateY(-${Number(col.dataset.digit) * 1.2}em)`;
+    col.style.transform = target;
+    play(col, [{ transform: 'translateY(0)' }, { transform: target }], 'gentle', { delay: 150 + i * 40 });
+  });
+}
+
+function ring(size, stroke, fraction, tone = '') {
+  const radius = (size - stroke) / 2;
+  const length = 2 * Math.PI * radius;
+  const offset = length * (1 - fraction);
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+    <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"/>
+    <circle class="fill ${tone}" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"
+      stroke-dasharray="${length}" stroke-dashoffset="${offset}" data-length="${length}" data-offset="${offset}"/></svg>`;
+}
+
+const DESTINATIONS = [
+  ['home', 'Hôm nay', 'wb_sunny'], ['practice', 'Luyện đề', 'menu_book'], ['vocab', 'Từ vựng', 'style'],
+  ['progress', 'Tiến độ', 'monitoring'], ['me', 'Tôi', 'person'],
+];
+const DUE = 24;
+const titleOf = (key) => DESTINATIONS.find(([k]) => k === key)[1];
+
+function largeTitle(key, frame) {
+  const caption = key === 'home' ? '<div class="t-footnote muted" style="font-weight:600">Thứ Sáu, 2 tháng 10 · còn 71 ngày đến kỳ thi</div>' : '';
+  const actions = [];
+  if (frame === 'phone') actions.push(`<button class="icon-btn" data-action="search" aria-label="Tìm kiếm"><span class="ms">search</span></button>`);
+  if (key === 'home' && frame === 'phone') actions.push(`<button class="streak" data-action="streak" aria-label="Chuỗi 12 ngày, mở chi tiết"><span class="ms fill">local_fire_department</span><span class="tnum">12</span></button>`);
+  return `<div class="lt" data-stagger><div>${caption}<h1 class="t-large-title">${titleOf(key)}</h1></div><div class="lt-actions">${actions.join('')}</div></div>`;
+}
+
+function bannerHTML(state) {
+  if (state === 'offline') return `<div class="banner-wrap"><div class="banner" role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div></div>`;
+  if (state === 'reconnected') return `<div class="banner-wrap" data-reconnect><div class="banner" role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div></div>`;
+  return '';
+}
+
+function homeView(frame) {
+  const hero = `<article class="card continue" data-stagger data-source="continue">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span class="tag primary"><span class="ms">edit</span>Đang làm</span><span class="t-footnote muted">Hôm qua, 21:40</span></div>
+    <h2 class="t-title2">Cambridge 18 · Test 2</h2><p class="t-subheadline muted">Reading · Passage 2 · Câu 18/40</p>
+    <div class="pbar" aria-hidden="true"><i style="width:45%"></i></div>
+    <div class="continue-foot t-footnote muted"><span class="ms sm">timer</span>Còn 34 phút · 17 câu đã làm</div>
+    <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}" data-action="continue"><span class="ms">play_arrow</span>Làm tiếp</button></article>`;
+  const plan = `<div class="section-h" data-stagger><h2 class="t-title3">Kế hoạch hôm nay</h2><span class="t-footnote muted tnum">1/3 · 20 phút</span></div>
+    <div class="list" data-stagger>
+      <button class="row" data-action="review"><span class="tile primary"><span class="ms">style</span></span><div class="grow"><div class="t-headline">Ôn ${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Từ vựng · khoảng 5 phút</div></div><span class="ms chev">chevron_right</span></button>
+      <button class="row" data-action="push" data-detail="type"><span class="tile tertiary"><span class="ms">target</span></span><div class="grow"><div class="t-headline">Luyện Matching Headings</div><div class="t-subheadline muted">Dạng bạn hay sai nhất · 12 phút</div></div><span class="ms chev">chevron_right</span></button>
+      <div class="row done"><span class="tile correct"><span class="ms">headphones</span></span><div class="grow"><div class="t-headline">Nghe chép nhanh</div><div class="t-subheadline muted">3 câu · 3 phút</div></div><span class="ms fill done-mark" aria-label="Đã xong">check_circle</span></div>
+    </div>`;
+  const goal = `<article class="card goal" data-stagger aria-label="Mục tiêu tuần: 3 trên 5 buổi"><div class="goal-ring">${ring(84, 10, 3 / 5, 'tertiary')}<div class="center"><div><div class="t-title3">${roller('3/5')}</div><div class="t-caption2 muted">buổi</div></div></div></div>
+    <div class="grow"><h2 class="t-headline">Mục tiêu tuần</h2><p class="t-subheadline muted">Còn 2 buổi nữa là đạt mục tiêu tuần</p></div></article>`;
+  const fillers = `<div class="section-h" data-stagger><h2 class="t-title3">Cần luyện thêm</h2></div>
+    <article class="card" data-stagger style="padding:16px 20px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span class="t-headline">Matching Headings</span><span class="t-subheadline tnum">58% đúng</span></div><div class="pbar"><i style="width:58%"></i></div><span class="t-footnote muted">+6% so với tuần trước</span></article>`;
+  if (frame === 'phone') return `${hero}${plan}<div style="height:16px"></div>${goal}${fillers}`;
+  return `<div class="two"><div>${hero}${plan}</div><div class="stack">${goal}${fillers}</div></div>`;
+}
+
+function practiceView() {
+  const books = [['18', 'Cambridge 18', '4 bài · 1 đang làm'], ['17', 'Cambridge 17', '4 bài · Band cao nhất 7.0'], ['16', 'Cambridge 16', '4 bài · Chưa làm'], ['15', 'Cambridge 15', '4 bài · Chưa làm'], ['14', 'Cambridge 14', '4 bài · Chưa làm']];
+  return `<div class="seg" role="radiogroup" aria-label="Kỹ năng" data-stagger><span class="seg-ind"></span>${['Reading', 'Listening', 'Writing'].map((s, i) => `<button role="radio" aria-checked="${i === 0}" data-seg="${i}">${s}</button>`).join('')}</div>
+    <div class="section-h" data-stagger><h2 class="t-title3">Luyện theo dạng</h2><button class="btn btn-text" style="height:32px;padding:0">Xem tất cả</button></div>
+    <div class="chip-row" data-stagger>${['Matching Headings', 'TRUE / FALSE / NOT GIVEN', 'Sentence Completion', 'Multiple Choice', 'Summary Completion'].map((t) => `<button class="chip" data-action="push" data-detail="type">${t}</button>`).join('')}</div>
+    <div class="section-h" data-stagger><h2 class="t-title3">Bộ đề Cambridge</h2></div>
+    <div class="list" data-stagger>${books.map(([n, t, s]) => `<button class="row" data-action="push" data-detail="book"><div class="cover">${n}</div><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="ms chev">chevron_right</span></button>`).join('')}</div>
+    <div class="section-h" data-stagger><h2 class="t-title3">Công cụ</h2></div>
+    <div class="list" data-stagger>
+      <button class="row slim"><span class="tile info"><span class="ms">hearing</span></span><div class="grow t-headline">Nghe kỹ</div><span class="ms chev">chevron_right</span></button>
+      <button class="row slim"><span class="tile info"><span class="ms">keyboard</span></span><div class="grow t-headline">Nghe chép chính tả</div><span class="ms chev">chevron_right</span></button></div>`;
+}
+
+function vocabView(frame) {
+  const decks = [['Cambridge 18 · Reading', '86 từ · 14 đến hạn'], ['Chủ đề Môi trường', '42 từ · 6 đến hạn'], ['Từ hay sai chính tả', '19 từ · 4 đến hạn'], ['Collocations Writing', '57 từ'], ['Linking words', '33 từ']];
+  return `<article class="card" data-stagger data-source="review" style="padding:20px;display:flex;align-items:center;gap:16px"><span class="tile primary" style="width:48px;height:48px;border-radius:14px"><span class="ms">style</span></span><div class="grow"><div class="t-headline">${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Khoảng 5 phút</div></div><button class="btn btn-primary" style="height:44px" data-action="review">Ôn ngay</button></article>
+    <div class="section-h" data-stagger><h2 class="t-title3">Bộ thẻ</h2></div>
+    <div class="list" data-stagger>${decks.map(([t, s]) => `<button class="row" data-action="push" data-detail="deck"><span class="tile info"><span class="ms">folder</span></span><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="ms chev">chevron_right</span></button>`).join('')}</div>
+    <div class="section-h" data-stagger><h2 class="t-title3">Từ mới lưu gần đây</h2></div>
+    <div class="list" data-stagger>${[['deteriorate', 'xấu đi, suy giảm'], ['meticulous', 'tỉ mỉ, kỹ lưỡng'], ['plausible', 'hợp lý, có vẻ đúng']].map(([w, m]) => `<div class="row slim"><div class="grow"><div class="t-headline">${w}</div><div class="t-subheadline muted">${m}</div></div><span class="tag">Mới</span></div>`).join('')}</div>`;
+}
+
+function progressView() {
+  const tile = (skill, band, delta) => `<div class="band-tile"><span class="t-footnote muted">${skill}</span><span class="t-title1 tnum" style="color:var(--primary)">${roller(band)}</span><span class="t-caption muted">${delta}</span></div>`;
+  return `<article class="card" data-stagger style="padding:20px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h2 class="t-headline">Band ước tính</h2><span class="t-footnote muted">Mục tiêu 7.0</span></div>
+      <div class="band-tiles">${tile('Reading', '6.5', '↑ 0.5')}${tile('Listening', '6.0', 'Giữ nguyên')}${tile('Writing', '5.5', '↑ 0.5')}</div></article>
+    <div class="section-h" data-stagger><h2 class="t-title3">Thời gian học</h2><span class="t-footnote muted">2 giờ 20 phút</span></div>
+    <article class="card" data-stagger style="padding:20px"><div style="display:flex;align-items:flex-end;gap:10px;height:120px" aria-label="Thời gian học 7 ngày, trung bình 20 phút mỗi ngày">${[24, 31, 0, 22, 18, 0, 0].map((m, i) => `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><div style="width:100%;height:${Math.max(4, m * 3)}px;border-radius:6px 6px 2px 2px;background:${m ? 'var(--primary)' : 'var(--surface-high)'}"></div><span class="t-caption2 muted">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'][i]}</span></div>`).join('')}</div></article>
+    <div class="section-h" data-stagger><h2 class="t-title3">Độ chính xác theo dạng</h2></div>
+    <div class="list" data-stagger>${[['Matching Headings', 58], ['Sentence Completion', 71], ['TRUE / FALSE / NOT GIVEN', 74], ['Multiple Choice', 80]].map(([t, p]) => `<button class="row" data-action="push" data-detail="type"><div class="grow"><div style="display:flex;justify-content:space-between"><span class="t-headline">${t}</span><span class="t-subheadline tnum">${p}%</span></div><div class="pbar" style="margin-top:8px"><i style="width:${p}%"></i></div></div><span class="ms chev">chevron_right</span></button>`).join('')}</div>`;
+}
+
+function meView() {
+  const rows = (items) => `<div class="list" data-stagger>${items.map(([i, t, v]) => `<button class="row slim"><span class="tile primary"><span class="ms">${i}</span></span><div class="grow t-headline">${t}</div><span class="t-subheadline muted">${v}</span><span class="ms chev">chevron_right</span></button>`).join('')}</div>`;
+  return `<article class="card" data-stagger style="padding:20px;display:flex;flex-direction:column;gap:14px"><div style="display:flex;gap:14px;align-items:center"><span class="avatar"><span class="ms lg">person</span></span><div><div class="t-headline">Bạn đang học trên máy này</div><div class="t-subheadline muted">Đăng nhập để đồng bộ giữa các thiết bị.</div></div></div><a class="btn btn-secondary" href="profile.html">Đăng nhập</a></article>
+    <div class="section-h" data-stagger><h2 class="t-title3">Mục tiêu</h2></div>${rows([['flag', 'Band mục tiêu', '7.0'], ['event', 'Ngày thi', '12/12'], ['schedule', 'Mỗi ngày', '20 phút'], ['notifications', 'Nhắc học', '20:00']])}
+    <div class="section-h" data-stagger><h2 class="t-title3">Giao diện</h2></div>${rows([['contrast', 'Giao diện', 'Theo hệ thống'], ['text_fields', 'Cỡ chữ bài đọc', 'Vừa'], ['animation', 'Giảm chuyển động', 'Tắt']])}`;
+}
+
+function tabView(key, frame, state) {
+  const bodies = { home: homeView, practice: practiceView, vocab: vocabView, progress: progressView, me: meView };
+  return `${largeTitle(key, frame)}<div class="pad">${bannerHTML(state)}${bodies[key](frame)}</div>`;
+}
+
+const DETAILS = {
+  type: { title: 'Matching Headings', lead: '58% đúng · 31 câu trong 30 ngày', action: 'Bắt đầu luyện 12 phút', section: 'Bộ câu gợi ý',
+    rows: [['Cambridge 17 · Test 1 · Passage 3', '6 câu · đã làm 4/6', 'Đang làm'], ['Cambridge 16 · Test 3 · Passage 1', '7 câu', 'Chưa làm'], ['Cambridge 15 · Test 2 · Passage 2', '6 câu', 'Chưa làm']] },
+  book: { title: 'Cambridge 18', lead: '4 bài · 1 đang làm', action: 'Làm tiếp Test 2', section: 'Các bài',
+    rows: [['Test 1 · Reading', 'Hôm qua · 30/40 câu', 'Band 7.0'], ['Test 2 · Reading', 'Câu 18/40', 'Đang làm'], ['Test 3 · Reading', '60 phút', 'Chưa làm'], ['Test 4 · Reading', '60 phút', 'Chưa làm']] },
+  deck: { title: 'Cambridge 18 · Reading', lead: '86 từ · 14 thẻ đến hạn', action: 'Ôn 14 thẻ', section: 'Từ trong bộ',
+    rows: [['meticulous', 'tỉ mỉ, kỹ lưỡng', 'Ôn lại'], ['deteriorate', 'xấu đi, suy giảm', 'Ôn lại'], ['plausible', 'hợp lý, có vẻ đúng', 'Mới']] },
+};
+
+function detailPage(frame, kind, backLabel) {
+  const d = DETAILS[kind];
+  const top = frame === 'phone' ? 104 : frame === 'tablet' ? 88 : 72;
+  return `<div class="topbar solid"><button class="back" data-action="back" aria-label="Quay lại ${backLabel}"><span class="ms">chevron_left</span>${backLabel}</button><span class="t-headline bar-title">${d.title}</span></div>
+  <div class="screen" style="padding-top:${top}px"><div class="${frame === 'desktop' ? 'content' : ''}" style="padding:0 ${frame === 'phone' ? 20 : 0}px">
+    <article class="card" style="padding:20px;display:flex;flex-direction:column;gap:6px"><h1 class="t-title1">${d.title}</h1><p class="t-subheadline muted">${d.lead}</p>
+      <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}" style="margin-top:12px;align-self:flex-start"><span class="ms">play_arrow</span>${d.action}</button></article>
+    <div class="section-h"><h2 class="t-title3">${d.section}</h2></div>
+    <div class="list">${d.rows.map(([t, s, tag]) => `<div class="row"><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="tag ${tag === 'Đang làm' ? 'primary' : ''}">${tag}</span></div>`).join('')}</div>
+  </div></div>`;
+}
+
+function pane(key, frame, state) {
+  const inner = `<div class="view">${tabView(key, frame, state)}</div>`;
+  return `<div class="pane" data-pane="${key}" ${key === 'home' ? '' : 'style="display:none"'}><div class="nav-host"><div class="layer base">
+    <div class="topbar"><span class="t-headline bar-title">${titleOf(key)}</span></div>
+    <div class="screen">${frame === 'desktop' ? `<div class="content">${inner}</div>` : inner}</div></div></div></div>`;
+}
+
+function syncLine(state) {
+  if (state === 'offline') return '<span class="ms">cloud_off</span>Ngoại tuyến';
+  if (state === 'syncing') return '<span class="spinner" aria-hidden="true"></span>Đang đồng bộ…';
+  return '<span class="ms">cloud_done</span>Đã đồng bộ · 2 phút trước';
+}
+
+function screen(frame, state) {
+  const panes = DESTINATIONS.map(([key]) => pane(key, frame, state)).join('');
+  const badge = (key) => (key === 'vocab' ? `<span class="badge" aria-hidden="true">${DUE}</span>` : '');
+  const label = (key, name) => (key === 'vocab' ? `${name}, ${DUE} thẻ đến hạn` : name);
+  if (frame === 'phone') {
+    const tabs = DESTINATIONS.map(([key, name, icon]) => `<button class="tab" role="tab" data-tab="${key}" aria-selected="${key === 'home'}" aria-label="${label(key, name)}"><span class="ms">${icon}</span>${name}${badge(key)}</button>`).join('');
+    return `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${state === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>
+      <div class="panes">${panes}</div><nav class="tabbar" role="tablist" aria-label="Điều hướng chính">${tabs}</nav><div class="home-ind"></div>`;
+  }
+  if (frame === 'tablet') {
+    const items = DESTINATIONS.map(([key, name, icon]) => `<button class="rail-item" role="tab" data-tab="${key}" aria-selected="${key === 'home'}" aria-label="${label(key, name)}"><span class="pill"><span class="ms">${icon}</span></span>${name}${badge(key)}</button>`).join('');
+    return `<div class="status"><span>9:41</span><span class="icons"><span class="ms">${state === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>
+      <div class="win-body"><nav class="rail" aria-label="Điều hướng chính"><button class="icon-btn" data-action="search" aria-label="Tìm kiếm"><span class="ms">search</span></button>
+        <div class="rail-items" role="tablist"><span class="rail-ind"></span>${items}</div>
+        <button class="rail-streak" data-action="streak" aria-label="Chuỗi 12 ngày, mở chi tiết"><span class="ms fill">local_fire_department</span><span class="tnum">12</span></button></nav>
+      <div class="main">${panes}</div></div><div class="home-ind"></div>`;
+  }
+  const items = DESTINATIONS.map(([key, name, icon], i) => `<button class="side-item" role="tab" data-tab="${key}" aria-selected="${key === 'home'}" aria-label="${label(key, name)}" aria-keyshortcuts="Meta+${i + 1}"><span class="ms">${icon}</span>${name}${badge(key)}<kbd>⌘${i + 1}</kbd></button>`).join('');
+  return `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS</span></div>
+    <div class="win-body"><nav class="sidebar" aria-label="Điều hướng chính">
+      <div class="brand"><span class="brand-mark">L</span><span class="t-headline">Luyện IELTS</span></div>
+      <button class="side-search" data-action="search" aria-keyshortcuts="Meta+K"><span class="ms sm">search</span>Tìm kiếm<kbd>⌘K</kbd></button>
+      <div class="side-items" role="tablist"><span class="side-ind"></span>${items}</div>
+      <div class="side-foot"><div class="card"><button class="row" data-action="streak" aria-label="Chuỗi 12 ngày, mở chi tiết" style="min-height:56px">
+        <span class="tile tertiary"><span class="ms fill">local_fire_department</span></span><div class="grow"><div class="t-headline tnum">12 ngày</div><div class="t-footnote muted">Chuỗi hiện tại</div></div></button></div>
+        <div class="sync" role="status">${syncLine(state)}</div></div>
+    </nav><div class="main">${panes}</div></div>`;
+}
+
+function currentTab(device) {
+  return device.querySelector('[data-tab][aria-selected="true"]').dataset.tab;
+}
+
+function moveIndicator(device, animate) {
+  const selected = device.querySelector('[data-tab][aria-selected="true"]');
+  const indicator = device.querySelector('.rail-ind, .side-ind');
+  if (!indicator || !selected) return;
+  const y = device.classList.contains('tablet') ? selected.offsetTop : selected.offsetTop;
+  const from = indicator.style.transform || 'translateY(0px)';
+  const to = `translateY(${y}px)`;
+  indicator.style.transform = to;
+  if (animate) play(indicator, [{ transform: from }, { transform: to }], 'snappy');
+}
+
+function seg(root, device) {
+  root.querySelectorAll('.seg').forEach((group) => {
+    const place = (animate) => {
+      const on = group.querySelector('[aria-checked="true"]');
+      const ind = group.querySelector('.seg-ind');
+      const from = ind.style.transform || 'translateX(0px)';
+      const to = `translateX(${on.offsetLeft - 4}px)`;
+      ind.style.width = `${on.offsetWidth}px`;
+      ind.style.transform = to;
+      if (animate) play(ind, [{ transform: from }, { transform: to }], 'snappy');
+    };
+    place(false);
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-checked', String(b === button)));
+      place(true);
+      haptic(device, 'selection · CLOCK_TICK');
+    });
+  });
+}
+
+function mount(device, frame) {
+  device.querySelectorAll('.layer.base').forEach((layer) => {
+    const scroller = layer.querySelector('.screen');
+    scroller.addEventListener('scroll', () => layer.classList.toggle('scrolled', scroller.scrollTop > 44));
+  });
+  device.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-action], [data-tab]');
+    if (!target || !device.contains(target) || target.closest('.layer.page [data-action="back"]')) return;
+    if (target.dataset.tab) return selectTab(device, frame, target.dataset.tab);
+    const action = target.dataset.action;
+    if (action === 'push') push(device, frame, target.dataset.detail);
+    if (action === 'continue' || action === 'review') openFlow(device, frame, action, target.closest('[data-source]') || target);
+    if (action === 'search') openSearch(device, frame, target);
+    if (action === 'streak') log('<span class="ms sm">local_fire_department</span> Sheet chuỗi ngày — xem home.html');
+  });
+  moveIndicator(device, false);
+  enter(device.querySelector('.pane[data-pane="home"]'));
+  if (ui.state === 'reconnected') reconnect(device);
+}
+
+function flowTarget(frame) {
+  if (frame === 'phone') return { x: 0, y: 0, w: 390, h: 844, r: 54 };
+  if (frame === 'tablet') return { x: 0, y: 0, w: 834, h: 1112, r: 36 };
+  return { x: 0, y: 38, w: 1280, h: 762, r: 0 };
+}
+
+function clipFor(from, to, radius) {
+  return `inset(${from.y - to.y}px ${to.x + to.w - from.x - from.w}px ${to.y + to.h - from.y - from.h}px ${from.x - to.x}px round ${radius}px)`;
+}
+
+function openFlow(device, frame, kind, source) {
+  const from = localRect(device, source);
+  const to = flowTarget(frame);
+  const radius = Number.parseFloat(getComputedStyle(source).borderTopLeftRadius) || 14;
+  const title = kind === 'continue' ? 'Cambridge 18 · Test 2 · Reading' : 'Ôn 24 thẻ đến hạn';
+  const note = kind === 'continue' ? 'Phòng thi (DS-03) mở bằng container transform từ thẻ "Làm tiếp".' : 'Phiên ôn flashcard (DS-05) mở bằng container transform từ hàng thẻ đến hạn.';
+  const morph = document.createElement('div');
+  morph.className = 'morph';
+  Object.assign(morph.style, { left: `${to.x}px`, top: `${to.y}px`, width: `${to.w}px`, height: `${to.h}px` });
+  morph.innerHTML = `<div class="stub"><div class="stub-bar"><button class="icon-btn" data-close-flow aria-label="Đóng"><span class="ms">close</span></button><span class="t-headline grow">${title}</span></div>
+    <div class="stub-body"><div><p class="t-title2">${kind === 'continue' ? 'Passage 2 · Câu 18' : 'meticulous'}</p><p class="t-subheadline muted" style="margin-top:8px;max-width:320px">${note} Xem đầy đủ trong <a href="home.html" style="color:var(--primary)">home.html</a>.</p></div></div></div>`;
+  const content = morph.firstElementChild;
+  const ghost = source.cloneNode(true);
+  ghost.classList.add('ghost');
+  Object.assign(ghost.style, { left: `${from.x - to.x}px`, top: `${from.y - to.y}px`, width: `${from.w}px`, height: `${from.h}px`, background: 'var(--card)', borderRadius: `${radius}px` });
+  morph.append(ghost);
+  device.append(morph);
+  haptic(device, 'impact light · CONTEXT_CLICK');
+  play(morph, [{ clipPath: clipFor(from, to, radius) }, { clipPath: `inset(0px 0px 0px 0px round ${to.r}px)` }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(ghost, [{ opacity: 1 }, { opacity: 0, offset: 0.35 }, { opacity: 0 }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 0 }] });
+  play(content, [{ opacity: 0 }, { opacity: 0, offset: 0.25 }, { opacity: 1, offset: 0.7 }, { opacity: 1 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] });
+  const closeButton = morph.querySelector('[data-close-flow]');
+  closeButton.focus({ preventScroll: true });
+  closeButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const back = source.isConnected ? localRect(device, source) : from;
+    play(morph, [{ clipPath: `inset(0px 0px 0px 0px round ${to.r}px)` }, { clipPath: clipFor(back, to, radius) }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      morph.remove();
+      if (source.isConnected) (source.querySelector('[data-action]') || source).focus({ preventScroll: true });
+    });
+    play(ghost, [{ opacity: 0 }, { opacity: 0, offset: 0.5 }, { opacity: 1 }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 0 }] });
+    play(content, [{ opacity: 1 }, { opacity: 0, offset: 0.5 }, { opacity: 0 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] });
+  });
+}
+
+function reconnect(device) {
+  setTimeout(() => {
+    device.querySelectorAll('[data-reconnect]').forEach((wrap) => {
+      const banner = wrap.querySelector('.banner');
+      banner.classList.add('ok');
+      banner.querySelector('.ms').textContent = 'cloud_done';
+      banner.querySelector('.t-subheadline').innerHTML = '<strong>Đã kết nối lại</strong> · đã đồng bộ 3 bài làm';
+      const sync = device.querySelector('.sync');
+      if (sync) sync.innerHTML = syncLine('online');
+      setTimeout(() => {
+        const height = wrap.offsetHeight;
+        play(wrap, [{ height: `${height}px`, opacity: 1 }, { height: '0px', opacity: 0 }], 'smooth', { fallback: [{ height: `${height}px`, opacity: 1 }, { height: `${height}px`, opacity: 0 }] }).then(() => wrap.remove());
+      }, 3000);
+    });
+  }, 1200);
+}
+
+async function selectTab(device, frame, key) {
+  const current = currentTab(device);
+  const host = device.querySelector(`.pane[data-pane="${current}"] .nav-host`);
+  if (current === key) return reselect(device, host);
+  device.querySelectorAll('[data-tab]').forEach((tab) => tab.setAttribute('aria-selected', String(tab.dataset.tab === key)));
+  moveIndicator(device, true);
+  haptic(device, 'selection · CLOCK_TICK');
+  const out = device.querySelector(`.pane[data-pane="${current}"]`);
+  const next = device.querySelector(`.pane[data-pane="${key}"]`);
+  const first = !next.dataset.seen && key !== 'home';
+  next.dataset.seen = '1';
+  const hideOut = () => { out.style.display = 'none'; out.style.opacity = ''; };
+  if (reduceMotion) {
+    next.style.display = '';
+    play(out, [{ opacity: 1 }, { opacity: 0 }]).then(hideOut);
+    play(next, [{ opacity: 0 }, { opacity: 1 }]);
+  } else {
+    await play(out, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
+    hideOut();
+    next.style.display = '';
+    play(next, [{ opacity: 0, transform: 'scale(0.98)' }, { opacity: 1, transform: 'none' }], { duration: 160, easing: EASING.decelerate });
+  }
+  if (first) { seg(next, device); enter(next); }
+}
+
+function reselect(device, host) {
+  const pages = host.querySelectorAll('.layer.page');
+  if (pages.length) return pages[pages.length - 1].popPage();
+  const scroller = host.querySelector('.layer.base .screen');
+  if (scroller.scrollTop > 0) return scrollTop(scroller);
+  const tab = currentTab(device);
+  if (tab !== 'practice' && tab !== 'vocab') return log('Đã ở đầu trang · bấm lại tab không làm gì thêm');
+  const frame = FRAMES.find((f) => device.classList.contains(f));
+  openSearch(device, frame, device.querySelector(`.pane[data-pane="${tab}"] [data-action="search"]`) || device.querySelector('[data-action="search"]'));
+}
+
+function scrollTop(scroller) {
+  if (reduceMotion) { scroller.scrollTop = 0; return; }
+  const start = scroller.scrollTop;
+  const timing = springTiming('smooth');
+  const begin = performance.now();
+  const probe = document.createElement('div');
+  const anim = probe.animate([{ opacity: 0 }, { opacity: 1 }], { duration: timing.duration, easing: timing.easing, fill: 'forwards' });
+  const step = () => {
+    const progress = Number(getComputedStyle(probe).opacity);
+    const done = performance.now() - begin >= timing.duration;
+    scroller.scrollTop = start * (1 - (done ? 1 : progress));
+    if (!done) requestAnimationFrame(step); else anim.cancel();
+  };
+  document.body.append(probe);
+  probe.style.position = 'fixed';
+  probe.style.pointerEvents = 'none';
+  requestAnimationFrame(step);
+  setTimeout(() => probe.remove(), timing.duration + 50);
+}
+
+function push(device, frame, kind) {
+  const tab = currentTab(device);
+  const host = device.querySelector(`.pane[data-pane="${tab}"] .nav-host`);
+  const below = [...host.querySelectorAll('.layer')].pop();
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10 + host.querySelectorAll('.layer').length;
+  page.innerHTML = detailPage(frame, kind, titleOf(tab));
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  below.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(below, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  page.popPage = () => {
+    play(page, [{ transform: 'translateX(0)' }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+    play(below, [{ transform: 'translateX(-30%)' }, { transform: 'translateX(0)' }], 'smooth');
+    play(dim, [{ opacity: 0.08 }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+  };
+  page.querySelector('[data-action="back"]').addEventListener('click', (event) => { event.stopPropagation(); page.popPage(); });
+}
+
+function androidBack() {
+  document.querySelectorAll('.device').forEach((device) => {
+    const frame = FRAMES.find((f) => device.classList.contains(f));
+    const tab = currentTab(device);
+    const pages = device.querySelectorAll(`.pane[data-pane="${tab}"] .layer.page`);
+    if (pages.length) return pages[pages.length - 1].popPage();
+    if (tab !== 'home') return selectTab(device, frame, 'home');
+    if (frame === 'desktop') return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = 'Back ở Hôm nay: rời app (xem trước về màn hình chính)';
+    device.append(toast);
+    play(toast, [{ opacity: 0, transform: 'translate(-50%, 16px)' }, { opacity: 1, transform: 'translate(-50%, 0)' }], 'smooth');
+    setTimeout(() => play(toast, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => toast.remove()), 1800);
+  });
+}
+
+const INDEX = [
+  ['action', 'Ôn 24 thẻ đến hạn', 'Từ vựng · khoảng 5 phút', 'style', 'flow:review'],
+  ['action', 'Làm tiếp Cambridge 18 · Test 2', 'Reading · Câu 18/40', 'play_arrow', 'flow:continue'],
+  ['action', 'Chuyển giao diện tối', 'Giao diện', 'dark_mode', 'theme'],
+  ['test', 'Cambridge 18 · Test 2 · Reading', 'Đang làm · Câu 18/40', 'menu_book', 'practice:book'],
+  ['test', 'Ageing without decline', 'Cambridge 18 · Test 2 · Passage 2', 'article', 'practice:book'],
+  ['test', 'Cambridge 17 · Test 3 · Listening', 'Section 2 · 40 câu', 'headphones', 'practice:book'],
+  ['test', 'Cambridge 16 · Test 1 · Writing Task 2', 'Chưa làm', 'edit_note', 'practice:book'],
+  ['word', 'deteriorate', 'xấu đi, suy giảm · Cambridge 18 · Reading', 'style', 'vocab:deck'],
+  ['word', 'meticulous', 'tỉ mỉ, kỹ lưỡng · Cambridge 18 · Reading', 'style', 'vocab:deck'],
+  ['word', 'decline', 'sự suy giảm · trong bài “Ageing without decline” · chưa lưu', 'bookmark_add', 'vocab'],
+  ['type', 'Matching Headings', '58% đúng · dạng bạn hay sai nhất', 'target', 'progress:type'],
+  ['type', 'TRUE / FALSE / NOT GIVEN', '74% đúng', 'target', 'progress:type'],
+  ['type', 'Sentence Completion', '71% đúng', 'target', 'progress:type'],
+  ['setting', 'Nhắc học', '20:00 mỗi ngày', 'notifications', 'me'],
+  ['setting', 'Giảm chuyển động', 'Tắt', 'animation', 'me'],
+  ['setting', 'Giao diện', 'Theo hệ thống', 'contrast', 'me'],
+  ['setting', 'Mục tiêu', 'Band 7.0 · 5 buổi mỗi tuần', 'flag', 'me'],
+];
+const GROUPS = [['action', 'Hành động'], ['test', 'Bài thi'], ['word', 'Từ vựng'], ['type', 'Dạng câu hỏi'], ['setting', 'Cài đặt']];
+const SCOPES = [['all', 'Tất cả'], ['test', 'Đề'], ['word', 'Từ vựng'], ['type', 'Dạng bài'], ['setting', 'Cài đặt']];
+const fold = (text) => [...text].map((ch) => ch.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')[0] || ch).join('').toLowerCase();
+
+function highlight(text, query) {
+  const at = fold(text).indexOf(fold(query));
+  if (!query || at < 0) return text;
+  return `${text.slice(0, at)}<b>${text.slice(at, at + query.length)}</b>${text.slice(at + query.length)}`;
+}
+
+function searchResults(query, scope, palette) {
+  const q = query.trim();
+  if (!q) {
+    const actions = INDEX.filter(([g]) => g === 'action');
+    return `<div class="r-group"><h3 class="t-footnote muted" style="font-weight:600">Tìm gần đây</h3><div class="recent" style="padding:0 4px">${['matching headings', 'deteriorate', 'cambridge 17'].map((r) => `<button class="chip" data-recent="${r}" style="height:34px;font-size:13px">${r}</button>`).join('')}</div></div>
+      <div class="r-group"><h3 class="t-footnote muted" style="font-weight:600">Hành động</h3><div class="res-wrap">${actions.map(resultRow).join('')}</div></div>`;
+  }
+  const hits = INDEX.filter(([g, t, s]) => (scope === 'all' || g === scope) && (palette || g !== 'action') && (fold(t).includes(fold(q)) || fold(s).includes(fold(q))));
+  if (!hits.length) return `<div class="r-empty"><span class="ms lg muted">search_off</span><p class="t-headline">Không tìm thấy “${q}”</p><p class="t-subheadline muted">Thử từ khác, hoặc kiểm tra chính tả nhé.</p></div>`;
+  const limit = palette ? 8 : 3;
+  let shown = 0;
+  return `<p class="sr" role="status">${hits.length} kết quả</p>${GROUPS.map(([g, name]) => {
+    const rows = hits.filter(([group]) => group === g).slice(0, palette ? Math.max(0, limit - shown) : limit);
+    shown += rows.length;
+    if (!rows.length) return '';
+    return `<div class="r-group"><h3 class="t-footnote muted" style="font-weight:600">${name}</h3><div class="res-wrap">${rows.map((r) => resultRow(r, q)).join('')}</div></div>`;
+  }).join('')}`;
+}
+
+function resultRow([group, title, sub, icon, target], q = '') {
+  const tone = { action: 'primary', test: 'info', word: 'primary', type: 'tertiary', setting: 'neutral' }[group];
+  return `<button class="r-row" role="option" data-target="${target}"><span class="tile ${tone}"><span class="ms">${icon}</span></span><div class="grow"><div class="t-headline">${highlight(title, q)}</div><div class="t-footnote muted">${highlight(sub, q)}</div></div></button>`;
+}
+
+function openSearch(device, frame, opener) {
+  if (device.querySelector('.search-layer, .palette-layer')) return;
+  const palette = frame !== 'phone';
+  const offline = ui.state === 'offline';
+  const layer = document.createElement('div');
+  layer.className = palette ? 'palette-layer' : 'search-layer';
+  const note = offline ? '<p class="t-footnote muted search-note">Đang ngoại tuyến · chỉ tìm trong dữ liệu trên máy</p>' : '';
+  const field = `<label class="field"><span class="ms sm">search</span><input type="search" role="combobox" aria-expanded="true" aria-controls="results" aria-label="Tìm kiếm" placeholder="Tìm đề, từ vựng, cài đặt…"><button class="clear" aria-label="Xoá" hidden><span class="ms sm">cancel</span></button></label>`;
+  layer.innerHTML = palette
+    ? `<div class="scrim"></div><div class="palette" role="dialog" aria-modal="true" aria-label="Tìm kiếm">${field}${offline ? note.replace('search-note', 'search-note" style="padding:8px 20px 0') : ''}<div class="results" id="results" role="listbox"></div><div class="palette-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> chọn</span><span><kbd>↩</kbd> mở</span><span><kbd>esc</kbd> đóng</span></div></div>`
+    : `<div class="bg"></div><div class="search-head">${field}<button class="btn btn-text" data-close>Huỷ</button></div>
+      <div class="search-scopes chip-row" role="radiogroup" aria-label="Phạm vi">${SCOPES.map(([v, n], i) => `<button class="chip ${i === 0 ? 'on' : ''}" role="radio" aria-checked="${i === 0}" data-scope="${v}">${n}</button>`).join('')}</div>${note}
+      <div class="results" id="results" role="listbox"></div>`;
+  device.append(layer);
+  const input = layer.querySelector('input');
+  const results = layer.querySelector('.results');
+  const clear = layer.querySelector('.clear');
+  let scope = 'all', active = 0;
+  const rows = () => [...results.querySelectorAll('.r-row')];
+  const markActive = (animate) => {
+    if (!palette) return;
+    results.querySelectorAll('.r-ind').forEach((el) => el.remove());
+    const list = rows();
+    if (!list.length) return;
+    active = Math.max(0, Math.min(active, list.length - 1));
+    const row = list[active];
+    const ind = document.createElement('span');
+    ind.className = 'r-ind';
+    ind.style.height = `${row.offsetHeight}px`;
+    row.parentElement.append(ind);
+    const to = `translateY(${row.offsetTop}px)`;
+    const from = markActive.last && markActive.lastParent === row.parentElement ? markActive.last : to;
+    ind.style.transform = to;
+    if (animate) play(ind, [{ transform: from }, { transform: to }], 'snappy');
+    markActive.last = to;
+    markActive.lastParent = row.parentElement;
+    list.forEach((r, i) => r.setAttribute('aria-selected', String(i === active)));
+    row.scrollIntoView({ block: 'nearest' });
+  };
+  const update = () => {
+    results.innerHTML = searchResults(input.value, scope, palette);
+    clear.hidden = !input.value;
+    active = 0;
+    markActive.last = null;
+    markActive(false);
+  };
+  update();
+  let close;
+  if (palette) {
+    const box = layer.querySelector('.palette'), scrim = layer.querySelector('.scrim');
+    play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+    play(box, [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+    close = () => {
+      play(scrim, [{ opacity: 1 }, { opacity: 0 }], 'smooth');
+      return play(box, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], { duration: 90, easing: EASING.accelerate }).then(() => { layer.remove(); if (opener.isConnected) opener.focus({ preventScroll: true }); });
+    };
+    scrim.addEventListener('click', () => close());
+  } else {
+    const head = layer.querySelector('.search-head .field');
+    const from = localRect(device, opener), to = localRect(device, head);
+    const bg = layer.querySelector('.bg');
+    const others = layer.querySelectorAll('.search-scopes, .results, .search-note, [data-close]');
+    const clipFrom = `inset(0px 0px 0px ${Math.max(0, to.w - from.w)}px round 24px)`;
+    play(bg, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+    play(head, [{ transform: `translate(${from.x + from.w - to.x - to.w}px, ${from.y - to.y}px)`, clipPath: clipFrom }, { transform: 'none', clipPath: 'inset(0px 0px 0px 0px round 12px)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+    others.forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 80 + i * STAGGER }));
+    close = () => {
+      const back = localRect(device, opener);
+      others.forEach((el) => play(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate }));
+      play(bg, [{ opacity: 1 }, { opacity: 0 }], 'smooth');
+      return play(head, [{ transform: 'none', clipPath: 'inset(0px 0px 0px 0px round 12px)' }, { transform: `translate(${back.x + back.w - to.x - to.w}px, ${back.y - to.y}px)`, clipPath: clipFrom, opacity: 0 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => { layer.remove(); if (opener.isConnected) opener.focus({ preventScroll: true }); });
+    };
+    layer.querySelector('[data-close]').addEventListener('click', () => close());
+    layer.querySelector('.search-scopes').addEventListener('click', (event) => {
+      const chip = event.target.closest('[data-scope]');
+      if (!chip) return;
+      scope = chip.dataset.scope;
+      layer.querySelectorAll('[data-scope]').forEach((c) => { c.classList.toggle('on', c === chip); c.setAttribute('aria-checked', String(c === chip)); });
+      haptic(device, 'selection · CLOCK_TICK');
+      update();
+    });
+  }
+  input.focus({ preventScroll: true });
+  input.addEventListener('input', update);
+  clear.addEventListener('click', (event) => { event.preventDefault(); input.value = ''; update(); input.focus(); });
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape') { if (input.value) { input.value = ''; update(); } else close(); }
+    if (event.key === 'ArrowDown') { event.preventDefault(); active += 1; markActive(true); }
+    if (event.key === 'ArrowUp') { event.preventDefault(); active -= 1; markActive(true); }
+    if (event.key === 'Enter') { const row = rows()[active]; if (row) row.click(); }
+  });
+  results.addEventListener('click', (event) => {
+    const recent = event.target.closest('[data-recent]');
+    if (recent) { input.value = recent.dataset.recent; update(); return; }
+    const row = event.target.closest('.r-row');
+    if (!row) return;
+    const [tab, detail] = row.dataset.target.split(':');
+    close().then(async () => {
+      if (tab === 'theme') return toggleTheme(device);
+      if (tab === 'flow') {
+        const home = detail === 'continue' ? 'home' : 'vocab';
+        if (currentTab(device) !== home) await selectTab(device, frame, home);
+        const source = device.querySelector(`.pane[data-pane="${home}"] [data-source="${detail}"]`);
+        return setTimeout(() => openFlow(device, frame, detail, source), 180);
+      }
+      if (currentTab(device) !== tab) await selectTab(device, frame, tab);
+      if (detail) setTimeout(() => push(device, frame, detail), 120);
+    });
+  });
+}
+
+function toggleTheme(device) {
+  const dark = device.classList.contains('dark');
+  device.classList.toggle('dark', !dark);
+  device.classList.toggle('light', dark);
+  log(`Đã chuyển giao diện ${dark ? 'sáng' : 'tối'} (cross-fade ${DURATION.medium} ms)`);
+}
+
+const MAP = [
+  ['Hôm nay', 'Luyện đề', 'Fade-through, giữ vị trí cuộn', '<code>duration.medium</code>', () => all((d, f) => selectTab(d, f, 'practice'))],
+  ['Luyện đề', 'Từ vựng', 'Fade-through', '<code>duration.medium</code>', () => all((d, f) => selectTab(d, f, 'vocab'))],
+  ['Từ vựng', 'Tiến độ', 'Fade-through', '<code>duration.medium</code>', () => all((d, f) => selectTab(d, f, 'progress'))],
+  ['Tiến độ', 'Tôi', 'Fade-through', '<code>duration.medium</code>', () => all((d, f) => selectTab(d, f, 'me'))],
+  ['Tôi', 'Hôm nay', 'Fade-through', '<code>duration.medium</code>', () => all((d, f) => selectTab(d, f, 'home'))],
+  ['Tab hiện tại', 'Chi tiết dạng bài', 'Push với parallax', '<code>spring.smooth</code>', () => all((d, f) => push(d, f, 'type'))],
+  ['Tab hiện tại', 'Chính nó (bấm lại)', 'Pop về gốc, nếu đã ở gốc thì cuộn lên đầu', '<code>spring.smooth</code>', () => all((d, f) => selectTab(d, f, currentTab(d)))],
+  ['Gốc tab khác', 'Hôm nay (Back Android)', 'Fade-through; ở Hôm nay thì rời app', '<code>duration.medium</code>', androidBack],
+  ['Mọi gốc tab', 'Tìm kiếm', 'Điện thoại: biểu tượng → ô tìm kiếm; máy tính: bảng lệnh ⌘K', '<code>spring.smooth</code>', () => all((d, f) => { const o = d.querySelector(`.pane[data-pane="${currentTab(d)}"] [data-action="search"]`) || d.querySelector('[data-action="search"]'); openSearch(d, f, o); })],
+  ['Ngoại tuyến', 'Đã kết nối lại', 'Banner đổi màu rồi thu gọn sau 3 giây', '<code>spring.smooth</code>', () => { ui.state = 'reconnected'; syncControls(); render(); }],
+  ['Hôm nay', 'Phòng thi / Ôn thẻ', 'Container transform', '<code>spring.smooth</code>', 'home.html'],
+  ['Hôm nay', 'Nghe chép nhanh, Chuỗi ngày', 'Sheet', '<code>spring.smooth</code>', 'home.html'],
+  ['Onboarding', 'Hôm nay', 'Trượt giữa các bước; fade-through vào Hôm nay', '<code>spring.smooth</code>', 'onboarding.html'],
+  ['Tôi', 'Đăng nhập, Cài đặt chi tiết', 'Sheet; push (điện thoại) / đổi pane (máy tính)', '<code>spring.smooth</code>', 'profile.html'],
+  ['Tiến độ', 'Đổi khoảng thời gian', 'Cột và điểm biến hình sang giá trị mới', '<code>spring.smooth</code>', 'progress.html'],
+];
+
+function all(fn) {
+  document.querySelectorAll('.device').forEach((device) => fn(device, FRAMES.find((f) => device.classList.contains(f))));
+}
+
+function setupMap() {
+  const body = document.getElementById('map-rows');
+  body.innerHTML = MAP.map(([from, to, pattern, token, run], i) => `<tr><td>${from}</td><td>${to}</td><td>${pattern}</td><td>${token}</td><td>${typeof run === 'string' ? `<a href="${run}">Mở ${run}</a>` : `<button data-map="${i}">Phát</button>`}</td></tr>`).join('');
+  body.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-map]');
+    if (button) MAP[Number(button.dataset.map)][4]();
+  });
+}
+
+function handleKey(event) {
+  if (event.key === 'Escape') return;
+  if (!(event.metaKey || event.ctrlKey)) return;
+  const desktops = [...document.querySelectorAll('.device.desktop, .device.tablet')];
+  if (event.key.toLowerCase() === 'k') {
+    event.preventDefault();
+    desktops.forEach((d) => openSearch(d, d.classList.contains('tablet') ? 'tablet' : 'desktop', d.querySelector('[data-action="search"]')));
+    return;
+  }
+  const index = Number(event.key) - 1;
+  if (!(index >= 0 && index < DESTINATIONS.length)) return;
+  event.preventDefault();
+  desktops.forEach((d) => selectTab(d, d.classList.contains('tablet') ? 'tablet' : 'desktop', DESTINATIONS[index][0]));
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844 · thanh tab', tablet: 'Máy tính bảng 834 × 1112 · rail', desktop: 'Máy tính 1280 × 800 · sidebar' };
+const SIZES = { phone: [390, 844], tablet: [834, 1112], desktop: [1280, 800] };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const [width, height] = SIZES[frame];
+  const limit = frame === 'tablet' ? 0.62 : 1;
+  const scale = Math.min(limit, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'all' ? FRAMES : [ui.frame];
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, ui.state)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  document.querySelector('[data-control="state"]').insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  document.getElementById('back').addEventListener('click', androidBack);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  window.addEventListener('keydown', handleKey);
+  syncControls();
+  setupMap();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>
