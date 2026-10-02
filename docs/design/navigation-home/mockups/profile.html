@@ -366,7 +366,7 @@ function rootList(device, account) {
   return `${account === 'offline' ? '<div class="banner" data-stagger role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>' : ''}
     <div data-stagger>${accountCard(account)}</div>
     <h2 class="t-title3 section-h" style="margin-top:28px" data-stagger>Mục tiêu</h2>
-    <div class="list" data-stagger>${valueRow('goal', 'flag', 'primary', 'Band mục tiêu', s.band)}${valueRow('goal', 'event', 'primary', 'Ngày thi', '12/12 · còn 71 ngày')}${valueRow('goal', 'schedule', 'primary', 'Mỗi ngày', `${s.minutes} phút`)}${valueRow('goal', 'date_range', 'primary', 'Số buổi mỗi tuần', s.sessions)}${valueRow('reminder', 'notifications', 'tertiary', 'Nhắc học', s.reminder ? (s.time === 'custom' ? 'Giờ khác' : s.time) : 'Tắt')}</div>
+    <div class="list" data-stagger>${valueRow('goal', 'flag', 'primary', 'Band mục tiêu', s.band)}${valueRow('goal', 'event', 'primary', 'Ngày thi', '12/12 · còn 71 ngày')}${valueRow('goal', 'schedule', 'primary', 'Mỗi ngày', `${s.minutes} phút`)}${valueRow('goal', 'date_range', 'primary', 'Số buổi mỗi tuần', s.sessions)}${valueRow('reminder', 'notifications', 'tertiary', 'Nhắc học', s.reminder ? (s.time === 'custom' ? s.customTime : s.time) : 'Tắt')}</div>
     <h2 class="t-title3 section-h" data-stagger>Giao diện</h2>
     <div class="list" data-stagger>${valueRow('appearance', 'contrast', 'info', 'Giao diện', theme)}${valueRow('appearance', 'text_fields', 'info', 'Cỡ chữ bài đọc', FONT_SIZES.find(([k]) => k === s.font)[1])}${switchRow('reduce', 'animation', 'info', 'Giảm chuyển động', s.reduce)}${switchRow('haptics', 'vibration', 'info', 'Rung phản hồi', s.haptics)}</div>
     <h2 class="t-title3 section-h" data-stagger>Học tập</h2>
@@ -393,7 +393,8 @@ function detail(device, section) {
   if (section === 'reminder') {
     return `<div class="list plain">${sw('reminder', 'Nhắc học mỗi ngày', s.reminder)}</div>
       <p class="t-footnote muted" style="padding:8px 4px 0">Chỉ nhắc khi hôm nay bạn chưa học. Không có thông báo nào khác.</p>
-      <h2 class="t-title3 section-h">Giờ nhắc</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Giờ nhắc" data-chips="time">${TIMES.map(([v, t]) => `<button class="choice" role="radio" aria-checked="${v === s.time}" data-value="${v}" ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${t}</button>`).join('')}</div></div>`;
+      <h2 class="t-title3 section-h">Giờ nhắc</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Giờ nhắc" data-chips="time">${TIMES.map(([v, t]) => `<button class="choice" role="radio" aria-checked="${v === s.time}" data-value="${v}" ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${t}</button>`).join('')}</div>
+        <div data-custom-time style="overflow:hidden;${s.time === 'custom' ? '' : 'display:none'}"><label class="t-footnote muted" for="custom-time" style="display:block;margin:14px 0 6px">Giờ nhắc</label><input class="field" type="time" id="custom-time" data-time value="${s.customTime}"></div></div>`;
   }
   if (section === 'appearance') {
     const size = FONT_SIZES.find(([k]) => k === s.font);
@@ -697,7 +698,7 @@ function mount(device, frame, theme) {
   device.account = ui.state;
   device.baseTheme = theme;
   device.section = 'goal';
-  device.settings = { band: '7.0', minutes: '20', sessions: 5, reminder: true, time: '20:00', theme: 'system', font: 'medium', reduce: false, haptics: true, accent: 'Anh–Anh', answers: true };
+  device.settings = { band: '7.0', minutes: '20', sessions: 5, reminder: true, time: '20:00', customTime: '21:15', theme: 'system', font: 'medium', reduce: false, haptics: true, accent: 'Anh–Anh', answers: true };
   device.innerHTML = screen(frame, device);
   const baseLayer = device.querySelector('.layer.base');
   if (baseLayer) {
@@ -741,6 +742,17 @@ function mount(device, frame, theme) {
       group.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', String(b === chip)));
       s[group.dataset.chips] = chip.dataset.value;
       play(chip, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+      const custom = group.parentElement.querySelector('[data-custom-time]');
+      if (custom) {
+        const show = chip.dataset.value === 'custom';
+        const visible = custom.style.display !== 'none';
+        if (show && !visible) {
+          custom.style.display = '';
+          play(custom, [{ height: '0px', opacity: 0 }, { height: `${custom.scrollHeight}px`, opacity: 1 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] }).then(() => { custom.style.height = ''; });
+          custom.querySelector('input').focus();
+        }
+        if (!show && visible) custom.style.display = 'none';
+      }
       haptic(device, 'selection · CLOCK_TICK');
       return;
     }
@@ -749,6 +761,9 @@ function mount(device, frame, theme) {
       s.sessions = Math.max(1, Math.min(7, s.sessions + Number(step.dataset.step)));
       device.querySelector('[data-sessions]').textContent = s.sessions;
     }
+  });
+  device.addEventListener('input', (event) => {
+    if (event.target.matches('[data-time]') && event.target.value) device.settings.customTime = event.target.value;
   });
   device.addEventListener('change', (event) => {
     const input = event.target.closest('[data-switch]');
