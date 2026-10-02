@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --warning: #844F00; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-high: #E7E7EC; --surface-highest: #E1E1E7;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --alert: rgba(242, 242, 247, 0.92);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --warning: #FFB960; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-high: #25252B; --surface-highest: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --alert: rgba(44, 44, 51, 0.94);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; flex-wrap: wrap; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms; }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.desktop .btn-text { height: 40px; }
+.btn-block { width: 100%; }
+.btn[aria-disabled="true"] { opacity: 0.38; cursor: default; }
+.btn[aria-disabled="true"]:active { transform: none; }
+.btn[aria-disabled="true"]::after { display: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--primary-container); color: var(--on-primary-container); }
+.tile .ms { font-size: 20px; }
+.grow { flex: 1; min-width: 0; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.ob { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.phone .ob { padding: 50px 0 34px; }
+.desktop .ob { top: 38px; align-items: center; overflow-y: auto; }
+.ob-col { display: flex; flex-direction: column; flex: 1; width: 100%; min-height: 0; }
+.desktop .ob-col { width: 560px; flex: none; padding: 40px 0 48px; }
+.ob-top { height: 56px; display: flex; align-items: center; gap: 8px; padding: 0 4px; flex: none; }
+.desktop .ob-top { padding: 0; }
+.ob-top .spacer { width: 48px; flex: none; }
+.segments { flex: 1; display: flex; gap: 6px; }
+.segments i { flex: 1; height: 4px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.segments i b { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; transform: scaleX(0); }
+.segments i.on b { transform: none; }
+.ob-body { flex: 1; overflow-y: auto; padding: 16px 20px 0; position: relative; scrollbar-width: none; }
+.ob-body::-webkit-scrollbar { display: none; }
+.desktop .ob-body { flex: none; overflow: visible; padding: 24px 0 0; }
+.ob-foot { padding: 12px 20px 8px; display: flex; flex-direction: column; gap: 4px; flex: none; }
+.desktop .ob-foot { flex-direction: row-reverse; justify-content: flex-start; gap: 12px; padding: 32px 0 0; }
+.ob-title { margin-bottom: 8px; outline: none; }
+.helper { margin-bottom: 24px; }
+.bands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.choice { height: 56px; border-radius: 14px; background: var(--card); border: 1px solid var(--outline); font-size: 19px; font-weight: 600;
+  font-variant-numeric: tabular-nums; position: relative; transition: background-color 150ms, border-color 150ms, color 150ms; }
+.choice:hover { background: color-mix(in srgb, var(--on-surface) 6%, var(--card)); }
+.choice[aria-checked="true"] { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option { display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 16px; border-radius: 14px; background: var(--card);
+  border: 1px solid var(--outline); text-align: left; width: 100%; transition: background-color 150ms, border-color 150ms; }
+.option:hover { background: color-mix(in srgb, var(--on-surface) 6%, var(--card)); }
+.option .radio { width: 22px; height: 22px; border-radius: 999px; border: 2px solid var(--outline); display: grid; place-items: center; flex: none; }
+.option .radio i { width: 10px; height: 10px; border-radius: 999px; background: var(--primary); transform: scale(0); }
+.option[aria-checked="true"] { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.option[aria-checked="true"] .radio { border-color: var(--primary); }
+.option[aria-checked="true"] .radio i { transform: none; }
+.option .grow .muted { color: inherit; opacity: 0.8; }
+.option .check { width: 24px; height: 24px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; opacity: 0; transform: scale(0.6); }
+.option .check .ms { font-size: 18px; }
+.option[aria-checked="true"] .check { opacity: 1; transform: none; }
+.option .mins { width: 64px; flex: none; font-size: 22px; line-height: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.option .mins small { display: block; font-size: 12px; line-height: 16px; font-weight: 500; }
+.reveal { overflow: hidden; }
+.date-box { margin-top: 10px; padding: 14px 16px; border-radius: 14px; background: var(--card); box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 10px; }
+.field { height: 48px; padding: 0 12px; border-radius: 10px; background: var(--surface-high); border: 1px solid var(--outline); font-size: 17px; width: 100%; outline: none; }
+.field:focus { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; font-size: 15px; line-height: 22px; }
+.note.info { background: var(--info-container); color: var(--on-info-container); }
+.note.info .ms { color: var(--info); }
+.note.warn { background: var(--warning-container); color: var(--on-warning-container); }
+.note.warn .ms { color: var(--warning); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chips .choice { height: 48px; padding: 0 16px; font-size: 16px; }
+.notif { margin-top: 24px; padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: var(--shadow-raised); display: flex; gap: 12px; align-items: flex-start; }
+.app-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 700; flex: none; }
+.welcome { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 60px; }
+.desktop .welcome { padding-top: 24px; }
+.welcome .t-large-title { max-width: 320px; }
+.desktop .welcome .t-large-title { max-width: 440px; }
+.ob-foot .signin { text-align: center; padding-top: 4px; }
+.desktop .ob-foot .signin { display: none; }
+.alert-layer { position: absolute; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(0, 0, 0, 0.3); }
+.alert { width: 270px; border-radius: 14px; background: var(--alert); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); text-align: center; overflow: hidden; }
+.alert .body { padding: 18px 16px 14px; display: flex; flex-direction: column; gap: 4px; }
+.alert .acts { display: flex; border-top: 1px solid var(--outline-variant); }
+.alert .acts button { flex: 1; height: 46px; color: #0A84FF; font-size: 17px; }
+.alert .acts button + button { border-left: 1px solid var(--outline-variant); font-weight: 600; }
+.desktop .alert { width: 320px; }
+.ready-mark { width: 96px; height: 96px; margin: 24px auto 16px; }
+.ready-mark circle { fill: var(--correct-container); }
+.ready-mark path { fill: none; stroke: var(--correct); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); }
+.desktop .sheet { width: 440px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+.provider { width: 100%; justify-content: flex-start; background: var(--card); border: 1px solid var(--outline); }
+.provider .ms { width: 24px; }
+
+.shell { position: absolute; inset: 0; background: var(--surface); }
+.phone .shell .screen { position: absolute; inset: 0; padding: 50px 20px 100px; overflow: auto; }
+.desktop .shell { top: 38px; display: flex; }
+.desktop .shell .screen { flex: 1; padding: 24px 32px; overflow: auto; }
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 4px 0; display: flex;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--outline-variant); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 50px; justify-content: center; color: var(--on-surface-variant); font-size: 12px; font-weight: 500; }
+.tab .ms { font-size: 28px; }
+.tab.on { color: var(--primary); }
+.tab.on .ms, .side-item.on .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.sidebar { width: 248px; flex: none; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-low); border-right: 1px solid var(--outline-variant); }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 12px 16px; }
+.side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--on-surface-variant); }
+.side-item.on { background: var(--primary-container); color: var(--on-primary-container); font-weight: 600; }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 40px 24px; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Onboarding</strong><span>Mockup · <a href="../README.md">spec §5.5</a> · chọn, "Tiếp tục", "Bỏ qua", quay lại (Esc), Enter để tiếp tục · <a href="navigation.html">Điều hướng</a></span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Bắt đầu từ</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Làm lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const STEPS = ['welcome', 'band', 'exam', 'minutes', 'reminder', 'ready'];
+const STATES = [['welcome', 'Chào mừng'], ['band', '1 · Band'], ['exam', '2 · Ngày thi'], ['minutes', '3 · Thời gian'], ['reminder', '4 · Nhắc học'], ['denied', 'Quyền bị từ chối'], ['ready', 'Sẵn sàng']];
+const ui = { theme: 'light', frame: 'both', state: 'welcome' };
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TODAY = new Date(2026, 9, 2);
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (!device.classList.contains('phone')) return;
+  log(`<span class="ms sm">vibration</span> Rung: ${kind}`);
+}
+
+function log(html) {
+  const el = document.querySelector('.haptic-log');
+  el.innerHTML = html;
+  el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(log.timer);
+  log.timer = setTimeout(() => { el.textContent = ''; }, 2400);
+}
+
+const ILLO_SUNRISE = `<svg width="160" height="160" viewBox="0 0 120 120" aria-hidden="true">
+  <circle class="i3" cx="60" cy="66" r="30"/>
+  <path class="is" d="M60 22 V30 M30 34 L35 40 M90 34 L85 40 M18 60 H26 M94 60 H102"/>
+  <rect class="i1" x="18" y="66" width="84" height="38" rx="8"/>
+  <rect class="i2" x="18" y="66" width="84" height="8" rx="4"/>
+  <path class="is" d="M30 84 H74 M30 94 H62"/>
+</svg>`;
+const ILLO_BOOK = `<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+  <circle class="i3" cx="60" cy="50" r="32"/>
+  <path class="i1" d="M12 68 Q36 58 60 70 Q84 58 108 68 V98 Q84 88 60 100 Q36 88 12 98 Z"/>
+  <path class="i2" d="M12 98 Q36 88 60 100 Q84 88 108 98 V104 Q84 94 60 106 Q36 94 12 104 Z"/>
+  <path class="is" d="M60 70 V100 M22 76 Q36 71 50 77 M22 84 Q36 79 50 85 M70 77 Q84 71 98 76 M70 85 Q84 79 98 84"/>
+</svg>`;
+
+const BANDS = ['5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5'];
+const EXAMS = [['date', 'Đã có ngày thi', 'Chọn ngày trên lịch'], ['1-3', 'Khoảng 1–3 tháng nữa', 'Kế hoạch tập trung vào dạng hay sai'], ['3-6', 'Khoảng 3–6 tháng nữa', 'Xây nền từ vựng và kỹ năng'], ['none', 'Chưa có kế hoạch', 'Học đều, đổi được sau']];
+const MINUTES = [['10', 'Nhẹ nhàng', 'Ôn thẻ và nghe chép'], ['20', 'Đều đặn', 'Thêm một dạng bài'], ['30', 'Nghiêm túc', 'Thêm một passage'], ['60', 'Tăng tốc', 'Gần một bài thi']];
+const TIMES = [['07:00', '7:00 sáng'], ['12:30', '12:30 trưa'], ['20:00', '20:00 tối'], ['custom', 'Giờ khác…']];
+const DEFAULTS = { band: '6.5', exam: 'none', date: '', minutes: '20', reminder: null };
+
+function daysUntil(value) {
+  if (!value) return null;
+  const [y, m, d] = value.split('-').map(Number);
+  return Math.round((new Date(y, m - 1, d) - TODAY) / 86400000);
+}
+
+function formatDate(value) {
+  const [y, m, d] = value.split('-');
+  return `${Number(d)}/${Number(m)}/${y}`;
+}
+
+function stepIndex(step) {
+  return ['band', 'exam', 'minutes', 'reminder'].indexOf(step);
+}
+
+function canContinue(data, step) {
+  if (step === 'band') return !!data.band;
+  if (step === 'exam') return data.exam === 'date' ? daysUntil(data.date) > 0 : !!data.exam;
+  if (step === 'minutes') return !!data.minutes;
+  return true;
+}
+
+function radio(group, value, attrs, inner) {
+  return `<button class="${group}" role="radio" aria-checked="${attrs.on}" tabindex="${attrs.tab}" data-value="${value}">${inner}</button>`;
+}
+
+function body(step, data, frame) {
+  if (step === 'welcome') {
+    return `<div class="welcome" data-stagger-root>${ILLO_SUNRISE.replace('width="160" height="160"', frame === 'phone' ? 'width="140" height="140"' : 'width="160" height="160"')}
+      <h1 class="t-large-title ob-title" tabindex="-1" data-stagger>Luyện IELTS mỗi ngày, nhẹ mà chắc</h1>
+      <p class="t-callout muted" style="max-width:320px" data-stagger>Trả lời 4 câu ngắn để có kế hoạch hợp với bạn. Chưa tới 1 phút.</p></div>`;
+  }
+  if (step === 'band') {
+    const tab = (b) => (data.band ? (b === data.band ? 0 : -1) : (b === BANDS[0] ? 0 : -1));
+    return `<h1 class="t-title1 ob-title" tabindex="-1">Bạn muốn đạt band bao nhiêu?</h1>
+      <p class="t-callout muted helper">Nhiều chương trình du học yêu cầu 6.5–7.0. Bạn đổi được bất cứ lúc nào.</p>
+      <div class="bands" role="radiogroup" aria-label="Band mục tiêu" data-group="band">${BANDS.map((b) => radio('choice', b, { on: b === data.band, tab: tab(b) }, b)).join('')}</div>`;
+  }
+  if (step === 'exam') {
+    const days = daysUntil(data.date);
+    let extra = '';
+    if (data.exam === 'date') {
+      const status = !data.date ? '<p class="t-footnote muted">Chọn ngày thi để xem còn bao lâu.</p>'
+        : days <= 0 ? '<div class="note warn" role="alert"><span class="ms sm">warning</span>Ngày này đã qua. Chọn một ngày sắp tới nhé.</div>'
+          : `<p class="t-headline tnum" aria-live="polite">Còn ${days} ngày · khoảng ${Math.round(days * 5 / 7)} buổi học</p>`;
+      extra = `<div class="reveal" data-reveal><div class="date-box"><label class="t-footnote muted" for="exam-date">Ngày thi</label><input class="field" type="date" id="exam-date" data-date value="${data.date}" min="2026-10-03">${status}</div></div>`;
+    }
+    return `<h1 class="t-title1 ob-title" tabindex="-1">Khi nào bạn thi?</h1>
+      <p class="t-callout muted helper">Kế hoạch sẽ dày hơn khi gần ngày thi.</p>
+      <div class="options" role="radiogroup" aria-label="Thời điểm thi" data-group="exam">${EXAMS.map(([v, t, s], i) => radio('option', v, { on: v === data.exam, tab: (data.exam ? v === data.exam : i === 0) ? 0 : -1 },
+    `<span class="radio"><i></i></span><span class="grow"><span class="t-headline" style="display:block">${t}</span><span class="t-footnote muted">${s}</span></span>`)).join('')}</div>${extra}`;
+  }
+  if (step === 'minutes') {
+    return `<h1 class="t-title1 ob-title" tabindex="-1">Mỗi ngày bạn học được bao lâu?</h1>
+      <p class="t-callout muted helper">Ít mà đều quan trọng hơn nhiều mà ngắt quãng.</p>
+      <div class="options" role="radiogroup" aria-label="Thời gian mỗi ngày" data-group="minutes">${MINUTES.map(([v, t, s], i) => radio('option', v, { on: v === data.minutes, tab: (data.minutes ? v === data.minutes : i === 0) ? 0 : -1 },
+    `<span class="mins">${v}<small>phút</small></span><span class="grow"><span class="t-headline" style="display:flex;gap:8px;align-items:center">${t}${v === '20' ? '<span class="tag tertiary">Gợi ý</span>' : ''}</span><span class="t-footnote muted">${s}</span></span><span class="check"><span class="ms">check</span></span>`)).join('')}</div>`;
+  }
+  if (step === 'reminder') {
+    const time = data.reminderTime || '20:00';
+    const label = TIMES.find(([v]) => v === data.reminderChoice);
+    const denied = data.permission === 'denied'
+      ? '<div class="note info" role="status" style="margin-top:16px"><span class="ms sm">notifications_off</span><div>Thông báo đang tắt. Bạn bật lại trong Cài đặt hệ thống bất cứ lúc nào.<br><button class="btn btn-text" style="height:36px;padding:0" data-open-settings>Mở Cài đặt</button></div></div>'
+      : '';
+    return `<h1 class="t-title1 ob-title" tabindex="-1">Nhắc bạn học lúc mấy giờ?</h1>
+      <p class="t-callout muted helper">Một lời nhắc mỗi ngày, chỉ khi bạn chưa học.</p>
+      <div class="chips" role="radiogroup" aria-label="Giờ nhắc học" data-group="reminderChoice">${TIMES.map(([v, t], i) => radio('choice', v, { on: v === data.reminderChoice, tab: (data.reminderChoice ? v === data.reminderChoice : i === 2) ? 0 : -1 }, t)).join('')}</div>
+      ${data.reminderChoice === 'custom' ? `<div class="reveal" data-reveal><div class="date-box"><label class="t-footnote muted" for="remind-time">Giờ nhắc</label><input class="field" type="time" id="remind-time" data-time value="${time}"></div></div>` : ''}
+      ${denied}
+      <div class="notif" aria-label="Xem trước thông báo"><span class="app-icon">L</span><div class="grow"><div style="display:flex;justify-content:space-between"><span class="t-label">Đến giờ học rồi</span><span class="t-caption muted">${label && label[0] !== 'custom' ? label[1].split(' ')[0] : time}</span></div><p class="t-subheadline muted">Kế hoạch hôm nay: ${data.minutes || 20} phút · 24 thẻ đang chờ ôn.</p></div></div>`;
+  }
+  const exam = data.exam === 'date' && data.date ? `${formatDate(data.date)} · còn ${daysUntil(data.date)} ngày` : (EXAMS.find(([v]) => v === data.exam) || EXAMS[3])[1];
+  const reminder = data.permission === 'denied' ? 'Đang tắt' : data.reminder || 'Không nhắc';
+  return `<svg class="ready-mark" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48"/><path d="M30 49 L43 62 L67 36" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:0" data-draw/></svg>
+    <h1 class="t-title1 ob-title" tabindex="-1" style="text-align:center" data-stagger>Kế hoạch của bạn đã sẵn sàng</h1>
+    <div class="list" style="margin-top:16px">${[['flag', 'Mục tiêu', `Band ${data.band || DEFAULTS.band}`], ['event', 'Ngày thi', exam], ['schedule', 'Mỗi ngày', `${data.minutes || DEFAULTS.minutes} phút`], ['notifications', 'Nhắc học', reminder]].map(([i, t, v]) => `<div class="row" data-stagger><span class="tile"><span class="ms">${i}</span></span><span class="grow t-headline">${t}</span><span class="t-subheadline muted tnum">${v}</span></div>`).join('')}</div>
+    <p class="t-callout muted" style="margin-top:20px;text-align:center" data-stagger>Bắt đầu bằng một bài Reading 20 phút để biết bạn đang ở đâu.</p>`;
+}
+
+function foot(step, data, frame) {
+  const block = frame === 'phone' ? 'btn-block' : '';
+  if (step === 'welcome') {
+    return `<button class="btn btn-primary ${block}" data-go="next">Bắt đầu</button><button class="btn btn-text ${block}" data-go="home">Bỏ qua, vào học luôn</button>
+      <p class="t-subheadline muted signin">Đã có tài khoản? <button class="btn btn-text" style="height:40px;padding:0 4px" data-go="signin">Đăng nhập</button></p>`;
+  }
+  if (step === 'reminder') {
+    if (data.permission === 'denied') return `<button class="btn btn-primary ${block}" data-go="next">Tiếp tục</button>`;
+    return `<button class="btn btn-primary ${block}" data-go="permission" ${data.reminderChoice ? '' : 'aria-disabled="true"'}>Bật nhắc học</button><button class="btn btn-text ${block}" data-go="no-reminder">Không cần nhắc</button>`;
+  }
+  if (step === 'ready') return `<button class="btn btn-primary ${block}" data-go="home">Vào Hôm nay</button>`;
+  const enabled = canContinue(data, step);
+  return `<button class="btn btn-primary ${block}" data-go="next" ${enabled ? '' : 'aria-disabled="true" aria-label="Tiếp tục, chọn một mục trước"'}>Tiếp tục</button>`;
+}
+
+function top(step) {
+  if (step === 'welcome' || step === 'ready') return '<div class="ob-top"></div>';
+  const index = stepIndex(step);
+  return `<div class="ob-top">${index > 0 ? '<button class="icon-btn" data-go="back" aria-label="Quay lại"><span class="ms">arrow_back_ios_new</span></button>' : '<span class="spacer"></span>'}
+    <div class="segments" role="progressbar" aria-label="Bước ${index + 1} trên 4" aria-valuemin="1" aria-valuemax="4" aria-valuenow="${index + 1}">${[0, 1, 2, 3].map((i) => `<i class="${i < index ? 'on' : ''}"><b></b></i>`).join('')}</div>
+    <button class="btn btn-text" data-go="skip" aria-label="Bỏ qua bước này">Bỏ qua</button></div>`;
+}
+
+function chrome(frame) {
+  const head = frame === 'phone'
+    ? '<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">wifi</span><span class="ms">battery_full</span></span></div>'
+    : '<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS</span></div>';
+  return `${head}<div class="ob"><div class="ob-col"><div data-top></div><div class="ob-body" data-body></div><div class="ob-foot" data-foot></div></div></div>${frame === 'phone' ? '<div class="home-ind"></div>' : ''}`;
+}
+
+function initialData(state) {
+  const filled = { band: '7.0', exam: 'date', date: '2026-12-12', minutes: '20', reminderChoice: '20:00', reminderTime: '20:00', reminder: '20:00', permission: 'granted' };
+  const order = ['welcome', 'band', 'exam', 'minutes', 'reminder', 'ready'];
+  const at = state === 'denied' ? 4 : order.indexOf(state);
+  const data = { band: null, exam: null, date: '', minutes: null, reminderChoice: null, reminderTime: '20:00', reminder: null, permission: 'unknown' };
+  if (at > 1) data.band = filled.band;
+  if (at > 2) { data.exam = filled.exam; data.date = filled.date; }
+  if (at > 3) data.minutes = filled.minutes;
+  if (state === 'ready') Object.assign(data, filled);
+  if (state === 'denied') Object.assign(data, { reminderChoice: '20:00', permission: 'denied' });
+  return data;
+}
+
+function mount(device, frame) {
+  const startStep = ui.state === 'denied' ? 'reminder' : ui.state;
+  const model = { step: startStep, data: initialData(ui.state) };
+  device.model = model;
+  const paint = (direction = 0) => {
+    const topEl = device.querySelector('[data-top]'), bodyEl = device.querySelector('[data-body]'), footEl = device.querySelector('[data-foot]');
+    const swap = () => {
+      topEl.innerHTML = top(model.step);
+      bodyEl.innerHTML = body(model.step, model.data, frame);
+      footEl.innerHTML = foot(model.step, model.data, frame);
+      bodyEl.scrollTop = 0;
+    };
+    if (!direction) { swap(); afterPaint(device, model, 0); return; }
+    const before = stepIndex(model.prev);
+    play(bodyEl, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-24 * direction}px)` }], { duration: 90, easing: EASING.accelerate }, { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      swap();
+      play(bodyEl, [{ opacity: 0, transform: `translateX(${24 * direction}px)` }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+      afterPaint(device, model, direction, before);
+    });
+  };
+  device.paint = paint;
+  paint(0);
+  device.addEventListener('click', (event) => {
+    const option = event.target.closest('[role="radio"]');
+    if (option && device.contains(option) && option.closest('[data-group]')) return choose(device, frame, option);
+    const go = event.target.closest('[data-go]');
+    if (go) return navigate(device, frame, go.dataset.go, go);
+    if (event.target.closest('[data-open-settings]')) log('Mở Cài đặt hệ thống → Thông báo');
+  });
+  device.addEventListener('input', (event) => {
+    if (event.target.matches('[data-date]')) { model.data.date = event.target.value; refresh(device, frame, '[data-date]'); }
+    if (event.target.matches('[data-time]')) { model.data.reminderTime = event.target.value; model.data.reminder = event.target.value; }
+  });
+  device.addEventListener('keydown', (event) => {
+    const option = event.target.closest('[role="radio"]');
+    if (option && ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) {
+      event.preventDefault();
+      const all = [...option.parentElement.querySelectorAll('[role="radio"]')];
+      const next = all[(all.indexOf(option) + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : all.length - 1)) % all.length];
+      next.focus();
+      choose(device, frame, next);
+      return;
+    }
+    if (event.key === 'Enter' && !event.target.closest('button:not([role="radio"]), input')) {
+      event.preventDefault();
+      const primary = device.querySelector('[data-foot] .btn-primary');
+      if (primary) navigate(device, frame, primary.dataset.go, primary);
+    }
+    if (event.key === 'Escape') navigate(device, frame, 'back');
+  });
+}
+
+function afterPaint(device, model, direction, before) {
+  const index = stepIndex(model.step);
+  if (direction > 0 && index > 0 && before >= 0) {
+    const segment = device.querySelectorAll('.segments i')[index - 1];
+    if (segment) {
+      segment.classList.add('on');
+      play(segment.querySelector('b'), [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle');
+    }
+  }
+  if (model.step === 'ready') {
+    device.querySelectorAll('[data-stagger]').forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 120 + Math.min(i, 8) * STAGGER }));
+    const path = device.querySelector('[data-draw]');
+    play(path, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], 'gentle', { delay: 100, fallback: [{ strokeDashoffset: 0 }, { strokeDashoffset: 0 }] });
+    haptic(device, 'success · CONFIRM');
+  }
+  if (model.step === 'welcome') device.querySelectorAll('[data-stagger]').forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER }));
+  const title = device.querySelector('.ob-title');
+  if (direction && title) title.focus({ preventScroll: true });
+}
+
+function refresh(device, frame, focusSelector) {
+  const model = device.model;
+  const bodyEl = device.querySelector('[data-body]');
+  const hadReveal = !!bodyEl.querySelector('[data-reveal]');
+  const selection = focusSelector ? null : document.activeElement && document.activeElement.dataset.value;
+  bodyEl.innerHTML = body(model.step, model.data, frame);
+  device.querySelector('[data-foot]').innerHTML = foot(model.step, model.data, frame);
+  const reveal = bodyEl.querySelector('[data-reveal]');
+  if (reveal && !hadReveal) {
+    const height = reveal.offsetHeight;
+    play(reveal, [{ height: '0px', opacity: 0 }, { height: `${height}px`, opacity: 1 }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] }).then(() => { reveal.style.height = ''; });
+  }
+  const focus = focusSelector ? bodyEl.querySelector(focusSelector) : bodyEl.querySelector(`[role="radio"][data-value="${selection}"]`);
+  if (focus) focus.focus({ preventScroll: true });
+}
+
+function choose(device, frame, option) {
+  const model = device.model;
+  const group = option.closest('[data-group]').dataset.group;
+  const value = option.dataset.value;
+  model.data[group] = value;
+  if (group === 'reminderChoice') model.data.reminder = value === 'custom' ? model.data.reminderTime : value;
+  if (group === 'reminderChoice' && model.data.permission === 'denied') model.data.reminder = null;
+  haptic(device, 'selection · CLOCK_TICK');
+  refresh(device, frame);
+  const fresh = device.querySelector(`[data-group="${group}"] [data-value="${value}"]`);
+  play(fresh, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+  const check = fresh && fresh.querySelector('.check');
+  if (check) play(check, [{ opacity: 0, transform: 'scale(0.6)' }, { opacity: 1, transform: 'none' }], 'snappy');
+  const dot = fresh && fresh.querySelector('.radio i');
+  if (dot) play(dot, [{ transform: 'scale(0)' }, { transform: 'none' }], 'snappy');
+}
+
+function navigate(device, frame, go, button) {
+  const model = device.model;
+  if (button && button.getAttribute('aria-disabled') === 'true') return;
+  const order = STEPS;
+  const move = (step, direction) => { model.prev = model.step; model.step = step; device.paint(direction); };
+  if (go === 'next') {
+    if (!canContinue(model.data, model.step)) return;
+    return move(order[order.indexOf(model.step) + 1], 1);
+  }
+  if (go === 'back') {
+    const at = order.indexOf(model.step);
+    if (at <= 1 || model.step === 'ready') return;
+    return move(order[at - 1], -1);
+  }
+  if (go === 'skip') {
+    const key = { band: 'band', exam: 'exam', minutes: 'minutes' }[model.step];
+    if (key && !model.data[key]) model.data[key] = DEFAULTS[key];
+    if (model.step === 'reminder') { model.data.reminder = null; model.data.reminderChoice = null; }
+    return move(order[order.indexOf(model.step) + 1], 1);
+  }
+  if (go === 'no-reminder') { model.data.reminder = null; model.data.reminderChoice = null; return move('ready', 1); }
+  if (go === 'permission') {
+    if (!model.data.reminderChoice) return;
+    return askPermission(device, frame, (granted) => {
+      model.data.permission = granted ? 'granted' : 'denied';
+      if (granted) return move('ready', 1);
+      model.data.reminder = null;
+      refresh(device, frame);
+      device.querySelector('[data-foot] .btn-primary').focus();
+    });
+  }
+  if (go === 'signin') return signIn(device, frame);
+  if (go === 'home') return toHome(device, frame);
+}
+
+function askPermission(device, frame, done) {
+  const layer = document.createElement('div');
+  layer.className = 'alert-layer';
+  layer.innerHTML = `<div class="alert" role="alertdialog" aria-modal="true" aria-label="Quyền thông báo"><div class="body"><p class="t-headline">“Luyện IELTS” muốn gửi thông báo cho bạn</p><p class="t-footnote">Hộp thoại của hệ điều hành (mô phỏng).</p></div>
+    <div class="acts"><button data-deny>Không cho phép</button><button data-allow>Cho phép</button></div></div>`;
+  device.append(layer);
+  play(layer, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short, easing: EASING.standard });
+  play(layer.querySelector('.alert'), [{ transform: 'scale(1.1)', opacity: 0 }, { transform: 'none', opacity: 1 }], 'smooth');
+  layer.querySelector('[data-allow]').focus();
+  layer.addEventListener('click', (event) => {
+    const allow = event.target.closest('[data-allow]'), deny = event.target.closest('[data-deny]');
+    if (!allow && !deny) return;
+    event.stopPropagation();
+    play(layer, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => layer.remove());
+    done(!!allow);
+  });
+}
+
+function signIn(device, frame) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Đăng nhập"><div class="handle"></div>
+    <h2 class="t-title2" tabindex="-1">Đăng nhập</h2><p class="t-callout muted" style="margin:6px 0 20px">Đồng bộ bài làm, thẻ và tiến độ giữa điện thoại và máy tính. Không đăng nhập vẫn học được bình thường.</p>
+    <div style="display:flex;flex-direction:column;gap:8px">${[['account_circle', 'Tiếp tục với Google'], ['phone_iphone', 'Tiếp tục với Apple'], ['mail', 'Tiếp tục với email']].map(([i, t]) => `<button class="btn provider"><span class="ms">${i}</span>${t}</button>`).join('')}</div>
+    <p class="t-footnote muted" style="margin-top:16px">Dữ liệu đang có trên máy này sẽ được gộp vào tài khoản. Các trạng thái đầy đủ: <a href="profile.html" style="color:var(--primary)">profile.html</a></p></div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, frame === 'phone' ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  sheet.querySelector('h2').focus({ preventScroll: true });
+  const close = () => {
+    play(scrim, [{ opacity: 1 }, { opacity: 0 }], 'smooth');
+    play(sheet, frame === 'phone' ? [{ transform: 'none' }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => { layer.remove(); if (opener && opener.isConnected) opener.focus(); });
+  };
+  scrim.addEventListener('click', close);
+  layer.addEventListener('keydown', (event) => { event.stopPropagation(); if (event.key === 'Escape') close(); });
+  layer.addEventListener('click', (event) => event.stopPropagation());
+}
+
+function shellHome(frame, data) {
+  const tabs = [['Hôm nay', 'wb_sunny'], ['Luyện đề', 'menu_book'], ['Từ vựng', 'style'], ['Tiến độ', 'monitoring'], ['Tôi', 'person']];
+  const body = `<div style="padding:8px 0 4px"><div class="t-footnote muted" style="font-weight:600">Thứ Sáu, 2 tháng 10${data.exam === 'date' && data.date ? ` · còn ${daysUntil(data.date)} ngày đến kỳ thi` : ''}</div><h1 class="t-large-title">Hôm nay</h1></div>
+    <div class="card empty" data-stagger style="margin-top:8px">${ILLO_BOOK}<h2 class="t-title1" style="margin-top:8px">Chào bạn!</h2>
+      <p class="t-callout muted" style="max-width:340px">Làm một bài Reading 20 phút để biết bạn đang ở đâu. Kế hoạch hằng ngày sẽ dựa trên kết quả này.</p>
+      <button class="btn btn-primary" style="margin-top:16px"><span class="ms">play_arrow</span>Làm bài đầu tiên</button><button class="btn btn-text">Xem các bộ đề</button></div>
+    <div class="card" data-stagger style="padding:18px 20px;margin-top:16px;display:flex;justify-content:space-between;align-items:center"><div><div class="t-headline">Mục tiêu tuần</div><div class="t-subheadline muted">5 buổi, mỗi buổi ${data.minutes || 20} phút · Band ${data.band || '6.5'}</div></div><span class="t-title3 tnum">0/5</span></div>`;
+  if (frame === 'phone') {
+    return `<div class="shell"><div class="screen">${body}</div><nav class="tabbar">${tabs.map(([t, i], n) => `<span class="tab ${n === 0 ? 'on' : ''}"><span class="ms">${i}</span>${t}</span>`).join('')}</nav></div>`;
+  }
+  return `<div class="shell"><nav class="sidebar"><div class="brand"><span class="app-icon" style="width:32px;height:32px;border-radius:10px">L</span><span class="t-headline">Luyện IELTS</span></div>${tabs.map(([t, i], n) => `<span class="side-item ${n === 0 ? 'on' : ''}"><span class="ms">${i}</span>${t}</span>`).join('')}</nav><div class="screen"><div style="max-width:720px">${body}</div></div></div>`;
+}
+
+async function toHome(device, frame) {
+  const ob = device.querySelector('.ob');
+  await play(ob, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
+  ob.remove();
+  const holder = document.createElement('div');
+  holder.innerHTML = shellHome(frame, device.model.data);
+  const shell = holder.firstElementChild;
+  device.insertBefore(shell, device.querySelector('.home-ind'));
+  play(shell, [{ opacity: 0, transform: 'scale(0.98)' }, { opacity: 1, transform: 'none' }], { duration: 160, easing: EASING.decelerate }, { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  shell.querySelectorAll('[data-stagger]').forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 160 + i * STAGGER }));
+  log('Onboarding xong · Hôm nay ở trạng thái người mới');
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const SIZES = { phone: [390, 844], desktop: [1280, 800] };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const [width, height] = SIZES[frame];
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${chrome(frame)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  document.querySelector('[data-control="state"]').insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>

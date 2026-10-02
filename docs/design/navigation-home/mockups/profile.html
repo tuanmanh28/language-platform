@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tôi và cài đặt — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; flex-wrap: wrap; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; transition: background-color 250ms, color 250ms; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms; }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.btn-danger { color: var(--wrong); }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.section-h { padding: 0 4px; margin: 28px 0 8px; }
+.section-h:first-child { margin-top: 0; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+.row.plain + .row.plain::before, .list.plain .row + .row::before { left: 16px; }
+button.row:hover, label.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+label.row { cursor: pointer; }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.tile.neutral { background: var(--surface-high); color: var(--on-surface-variant); }
+.tile.correct { background: var(--correct-container); color: var(--on-correct-container); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.value { color: var(--on-surface-variant); font-size: 15px; line-height: 22px; text-align: right; }
+.banner { display: flex; gap: 12px; align-items: center; min-height: 56px; padding: 10px 14px; border-radius: 14px; background: var(--info-container); color: var(--on-info-container); margin-bottom: 16px; }
+.banner .ms { color: var(--info); }
+.banner.error { background: var(--wrong-container); color: var(--on-wrong-container); }
+.banner.error .ms { color: var(--wrong); }
+
+.switch { position: relative; width: 52px; height: 32px; flex: none; }
+.switch input { position: absolute; inset: -8px; opacity: 0; cursor: pointer; margin: 0; width: 68px; height: 48px; z-index: 1; }
+.switch .track { position: absolute; inset: 0; border-radius: 999px; background: var(--surface-highest); box-shadow: inset 0 0 0 2px var(--outline); transition: background-color 150ms, box-shadow 150ms; }
+.switch .thumb { position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 999px; background: var(--outline); transition: background-color 150ms; }
+.switch input:checked ~ .track { background: var(--primary); box-shadow: none; }
+.switch input:checked ~ .thumb { background: var(--on-primary); transform: translateX(20px); }
+.switch input:focus-visible ~ .track { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.main { flex: 1; position: relative; }
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; transition: background-color 250ms; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 48px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 4px 0; display: flex; z-index: 40;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--outline-variant); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 50px; justify-content: center; color: var(--on-surface-variant); font-size: 12px; line-height: 16px; font-weight: 500; }
+.tab .ms { font-size: 28px; }
+.tab[aria-selected="true"] { color: var(--primary); }
+.tab[aria-selected="true"] .ms, .side-item[aria-selected="true"] .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.sidebar { width: 248px; flex: none; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-low); border-right: 1px solid var(--outline-variant); }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 12px 16px; }
+.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.side-search { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px; margin: 0 0 12px; border-radius: 10px; background: var(--surface-high); color: var(--on-surface-variant); font-size: 15px; width: 100%; text-align: left; }
+.side-search kbd { margin-left: auto; font: inherit; font-size: 12px; padding: 1px 6px; border-radius: 6px; background: var(--card); }
+.side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--on-surface-variant); width: 100%; text-align: left; }
+.side-item[aria-selected="true"] { background: var(--primary-container); color: var(--on-primary-container); font-weight: 600; }
+.side-foot { margin-top: auto; }
+.sync-line { display: flex; align-items: center; gap: 8px; padding: 0 12px; color: var(--on-surface-variant); font-size: 13px; line-height: 18px; }
+.sync-line .ms { font-size: 18px; }
+.lt { padding: 8px 20px 4px; display: flex; align-items: flex-end; justify-content: space-between; }
+.pad { padding: 8px 20px 0; display: flex; flex-direction: column; }
+
+.account { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.account-top { display: flex; gap: 14px; align-items: center; }
+.avatar { width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; flex: none; background: var(--surface-high); color: var(--on-surface-variant); font-size: 22px; font-weight: 700; }
+.avatar.initial { background: var(--primary); color: var(--on-primary); }
+.sync { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 18px; color: var(--on-surface-variant); }
+.sync .ms { font-size: 18px; }
+.sync.ok .ms { color: var(--correct); }
+.sync.warn .ms { color: var(--warning); }
+.spinner { width: 16px; height: 16px; border-radius: 999px; border: 2px solid var(--outline-variant); border-top-color: currentColor; animation: spin 0.8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.settings { display: flex; height: 100%; }
+.set-list { width: 320px; flex: none; border-right: 1px solid var(--outline-variant); overflow-y: auto; padding: 24px 16px 24px 24px; scrollbar-width: none; }
+.set-list::-webkit-scrollbar { display: none; }
+.set-nav { position: relative; display: flex; flex-direction: column; gap: 2px; margin-top: 20px; }
+.set-nav .row { min-height: 48px; border-radius: 10px; position: relative; z-index: 1; }
+.set-nav .row + .row::before { display: none; }
+.set-nav .row[aria-selected="true"] { color: var(--on-primary-container); }
+.set-nav .row[aria-selected="true"]:hover { background: none; }
+.set-ind { position: absolute; left: 0; right: 0; top: 0; height: 48px; border-radius: 10px; background: var(--primary-container); z-index: 0; }
+.set-detail { flex: 1; overflow-y: auto; padding: 32px 40px 40px; scrollbar-width: none; }
+.set-detail::-webkit-scrollbar { display: none; }
+.set-detail-inner { max-width: 600px; }
+
+.seg { display: flex; padding: 4px; border-radius: 14px; background: var(--surface-high); position: relative; }
+.seg button { flex: 1; height: 36px; border-radius: 10px; font-size: 15px; font-weight: 600; position: relative; z-index: 1; color: var(--on-surface-variant); }
+.seg button[aria-checked="true"] { color: var(--on-surface); }
+.seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 10px; background: var(--surface-bright); box-shadow: 0 1px 2px #0000000A, 0 4px 16px #0000000F; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { height: 40px; padding: 0 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; position: relative; }
+.choice::before { content: ''; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; }
+.choice[aria-checked="true"] { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.box { padding: 16px; }
+.reading-preview { font-size: 18px; line-height: 30px; margin-top: 12px; transition: font-size 250ms, line-height 250ms; }
+.stepper { display: flex; align-items: center; gap: 4px; }
+.stepper .icon-btn { width: 40px; height: 40px; background: var(--surface-high); }
+.stepper .icon-btn::before { content: ''; position: absolute; inset: -4px; }
+.stepper span { width: 32px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); touch-action: none; }
+.desktop .sheet { width: 440px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+.providers { display: flex; flex-direction: column; gap: 8px; }
+.provider { width: 100%; justify-content: flex-start; background: var(--card); border: 1px solid var(--outline); }
+.provider .lead { width: 24px; display: grid; place-items: center; }
+.provider .spinner { width: 20px; height: 20px; }
+.field { height: 52px; padding: 0 14px; border-radius: 10px; background: var(--surface-high); border: 1px solid var(--outline); font-size: 17px; width: 100%; outline: none; }
+.desktop .field { height: 44px; }
+.field:focus { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.code { letter-spacing: 8px; font-variant-numeric: tabular-nums; text-align: center; font-weight: 600; }
+.snackbar { position: absolute; left: 16px; right: 16px; bottom: 100px; z-index: 75; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 15px; box-shadow: var(--shadow-raised); }
+.desktop .snackbar { left: auto; right: 32px; bottom: 32px; width: 380px; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Tôi và cài đặt</strong><span>Mockup · <a href="../README.md">spec §5.8–5.10</a> · bấm "Đăng nhập", các hàng, công tắc, Giao diện (đổi thật), Đăng xuất · <a href="navigation.html">Điều hướng</a></span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Tài khoản</span></div>
+  <div class="tb-group" data-control="outcome"><span>Khi đăng nhập</span><button data-value="success">Thành công</button><button data-value="error">Lỗi</button></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const STATES = [['signedOut', 'Chưa đăng nhập'], ['synced', 'Đã đồng bộ'], ['syncing', 'Đang đồng bộ'], ['syncError', 'Lỗi đồng bộ'], ['offline', 'Ngoại tuyến']];
+const ui = { theme: 'light', frame: 'both', state: 'signedOut', outcome: 'success' };
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (!device.classList.contains('phone')) return;
+  log(`<span class="ms sm">vibration</span> Rung: ${kind}`);
+}
+
+function log(html) {
+  const el = document.querySelector('.haptic-log');
+  el.innerHTML = html;
+  el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(log.timer);
+  log.timer = setTimeout(() => { el.textContent = ''; }, 2400);
+}
+
+const DESTINATIONS = [['home', 'Hôm nay', 'wb_sunny'], ['practice', 'Luyện đề', 'menu_book'], ['vocab', 'Từ vựng', 'style'], ['progress', 'Tiến độ', 'monitoring'], ['me', 'Tôi', 'person']];
+const SECTIONS = [['goal', 'Mục tiêu', 'flag', 'primary'], ['reminder', 'Nhắc học', 'notifications', 'tertiary'], ['appearance', 'Giao diện', 'contrast', 'info'], ['study', 'Học tập', 'school', 'correct'], ['data', 'Dữ liệu', 'cloud_download', 'neutral'], ['about', 'Thông tin', 'info', 'neutral']];
+const FONT_SIZES = [['small', 'Nhỏ', 16, 26], ['medium', 'Vừa', 18, 30], ['large', 'Lớn', 21, 34], ['xlarge', 'Rất lớn', 24, 38]];
+
+function syncLine(account) {
+  if (account === 'syncing') return '<span class="sync" role="status"><span class="spinner" aria-hidden="true"></span>Đang đồng bộ…</span>';
+  if (account === 'syncError') return '<span class="sync warn" role="status"><span class="ms fill">warning</span>Chưa đồng bộ được ·<button class="btn btn-text" style="height:28px;padding:0 4px;font-size:13px" data-action="retry-sync">Thử lại</button></span>';
+  if (account === 'offline') return '<span class="sync" role="status"><span class="ms">cloud_off</span>Ngoại tuyến · sẽ đồng bộ khi có mạng</span>';
+  return '<span class="sync ok" role="status"><span class="ms">cloud_done</span>Đã đồng bộ · 2 phút trước</span>';
+}
+
+function accountCard(account) {
+  if (account === 'signedOut') {
+    return `<article class="card account" data-account><div class="account-top"><span class="avatar" aria-hidden="true"><span class="ms lg">person</span></span>
+      <div class="grow"><div class="t-headline">Bạn đang học trên máy này</div><div class="t-subheadline muted">Đăng nhập để đồng bộ bài làm, thẻ và tiến độ giữa các thiết bị.</div></div></div>
+      <button class="btn btn-secondary" data-action="sign-in">Đăng nhập</button></article>`;
+  }
+  return `<article class="card account" data-account><div class="account-top"><span class="avatar initial" aria-hidden="true">T</span>
+    <div class="grow"><div class="t-headline">Tuấn</div><div class="t-subheadline muted">tuan@example.com</div></div></div>${syncLine(account)}</article>`;
+}
+
+function sw(id, label, on) {
+  return `<label class="row plain"><span class="grow t-headline">${label}</span><span class="switch"><input type="checkbox" role="switch" data-switch="${id}" ${on ? 'checked' : ''} aria-label="${label}"><span class="track"></span><span class="thumb"></span></span></label>`;
+}
+
+function valueRow(section, icon, tone, title, value) {
+  return `<button class="row" data-open="${section}"><span class="tile ${tone}"><span class="ms">${icon}</span></span><span class="grow t-headline">${title}</span><span class="value tnum">${value}</span><span class="ms chev">chevron_right</span></button>`;
+}
+
+function switchRow(id, icon, tone, label, on) {
+  return `<label class="row"><span class="tile ${tone}"><span class="ms">${icon}</span></span><span class="grow t-headline">${label}</span><span class="switch"><input type="checkbox" role="switch" data-switch="${id}" ${on ? 'checked' : ''} aria-label="${label}"><span class="track"></span><span class="thumb"></span></span></label>`;
+}
+
+function rootList(device, account) {
+  const s = device.settings;
+  const theme = { light: 'Sáng', dark: 'Tối', system: 'Theo hệ thống' }[s.theme];
+  return `${account === 'offline' ? '<div class="banner" data-stagger role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>' : ''}
+    <div data-stagger>${accountCard(account)}</div>
+    <h2 class="t-title3 section-h" style="margin-top:28px" data-stagger>Mục tiêu</h2>
+    <div class="list" data-stagger>${valueRow('goal', 'flag', 'primary', 'Band mục tiêu', s.band)}${valueRow('goal', 'event', 'primary', 'Ngày thi', '12/12 · còn 71 ngày')}${valueRow('goal', 'schedule', 'primary', 'Mỗi ngày', `${s.minutes} phút`)}${valueRow('goal', 'date_range', 'primary', 'Số buổi mỗi tuần', s.sessions)}${valueRow('reminder', 'notifications', 'tertiary', 'Nhắc học', s.reminder ? s.time : 'Tắt')}</div>
+    <h2 class="t-title3 section-h" data-stagger>Giao diện</h2>
+    <div class="list" data-stagger>${valueRow('appearance', 'contrast', 'info', 'Giao diện', theme)}${valueRow('appearance', 'text_fields', 'info', 'Cỡ chữ bài đọc', FONT_SIZES.find(([k]) => k === s.font)[1])}${switchRow('reduce', 'animation', 'info', 'Giảm chuyển động', s.reduce)}${switchRow('haptics', 'vibration', 'info', 'Rung phản hồi', s.haptics)}</div>
+    <h2 class="t-title3 section-h" data-stagger>Học tập</h2>
+    <div class="list" data-stagger>${valueRow('study', 'style', 'correct', 'Flashcard', '20 thẻ mới/ngày')}${valueRow('study', 'record_voice_over', 'correct', 'Giọng đọc Listening', s.accent)}${switchRow('answers', 'visibility', 'correct', 'Hiện đáp án khi luyện tập', s.answers)}</div>
+    <h2 class="t-title3 section-h" data-stagger>Dữ liệu</h2>
+    <div class="list" data-stagger>${valueRow('data', 'cloud_download', 'neutral', 'Tải đề để học ngoại tuyến', '3 bộ · 410 MB')}${valueRow('data', 'ios_share', 'neutral', 'Xuất dữ liệu', '')}${account === 'signedOut' ? '' : '<button class="row" data-action="sign-out"><span class="tile neutral"><span class="ms">logout</span></span><span class="grow t-headline" style="color:var(--wrong)">Đăng xuất</span></button>'}</div>
+    <h2 class="t-title3 section-h" data-stagger>Thông tin</h2>
+    <div class="list" data-stagger>${valueRow('about', 'info', 'neutral', 'Phiên bản', '1.0.0')}${valueRow('about', 'description', 'neutral', 'Giấy phép mã nguồn mở', '')}${valueRow('about', 'chat', 'neutral', 'Góp ý', '')}</div>`;
+}
+
+function seg(name, options, current) {
+  return `<div class="seg" role="radiogroup" aria-label="${name}" data-seg="${name}"><span class="seg-ind"></span>${options.map(([v, label]) => `<button role="radio" aria-checked="${v === current}" data-value="${v}">${label}</button>`).join('')}</div>`;
+}
+
+function detail(device, section) {
+  const s = device.settings;
+  if (section === 'goal') {
+    return `<h2 class="t-title3 section-h">Band mục tiêu</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Band mục tiêu" data-chips="band">${['5.5', '6.0', '6.5', '7.0', '7.5', '8.0'].map((b) => `<button class="choice" role="radio" aria-checked="${b === s.band}" data-value="${b}">${b}</button>`).join('')}</div></div>
+      <h2 class="t-title3 section-h">Lịch học</h2><div class="list plain">
+        <button class="row plain"><span class="grow t-headline">Ngày thi</span><span class="value">12/12/2026 · còn 71 ngày</span><span class="ms chev">chevron_right</span></button>
+        <div class="row plain"><span class="grow t-headline">Mỗi ngày</span><div class="chips" role="radiogroup" aria-label="Mỗi ngày" data-chips="minutes">${['10', '20', '30', '60'].map((m) => `<button class="choice" role="radio" aria-checked="${m === s.minutes}" data-value="${m}">${m} phút</button>`).join('')}</div></div>
+        <div class="row plain"><span class="grow"><span class="t-headline" style="display:block">Số buổi mỗi tuần</span><span class="t-footnote muted">Một buổi là một ngày học đủ ${s.minutes} phút</span></span><div class="stepper"><button class="icon-btn" data-step="-1" aria-label="Bớt một buổi"><span class="ms">remove</span></button><span aria-live="polite" data-sessions>${s.sessions}</span><button class="icon-btn" data-step="1" aria-label="Thêm một buổi"><span class="ms">add</span></button></div></div></div>`;
+  }
+  if (section === 'reminder') {
+    return `<div class="list plain">${sw('reminder', 'Nhắc học mỗi ngày', s.reminder)}</div>
+      <p class="t-footnote muted" style="padding:8px 4px 0">Chỉ nhắc khi hôm nay bạn chưa học. Không có thông báo nào khác.</p>
+      <h2 class="t-title3 section-h">Giờ nhắc</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Giờ nhắc" data-chips="time">${['7:00', '12:30', '20:00', '21:30'].map((t) => `<button class="choice" role="radio" aria-checked="${t === s.time}" data-value="${t}" ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${t}</button>`).join('')}</div></div>
+      <h2 class="t-title3 section-h">Ngày nhắc</h2><div class="card box"><div class="chips">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d, i) => `<button class="choice" role="checkbox" aria-checked="${i < 6}" data-toggle ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${d}</button>`).join('')}</div></div>`;
+  }
+  if (section === 'appearance') {
+    const size = FONT_SIZES.find(([k]) => k === s.font);
+    return `<h2 class="t-title3 section-h">Giao diện</h2>${seg('Giao diện', [['light', 'Sáng'], ['dark', 'Tối'], ['system', 'Theo hệ thống']], s.theme)}
+      <h2 class="t-title3 section-h">Cỡ chữ bài đọc</h2>${seg('Cỡ chữ bài đọc', FONT_SIZES.map(([k, n]) => [k, n]), s.font)}
+      <article class="card box" style="margin-top:12px"><p class="t-footnote muted">Xem trước</p><p class="reading-preview" data-preview style="font-size:${size[2]}px;line-height:${size[3]}px">Most animals slow down as they age. Yet a small number of species appear to escape this pattern for most of their lives.</p></article>
+      <h2 class="t-title3 section-h">Chuyển động</h2><div class="list plain">${sw('reduce', 'Giảm chuyển động', s.reduce)}${sw('haptics', 'Rung phản hồi', s.haptics)}</div>
+      <p class="t-footnote muted" style="padding:8px 4px 0">Khi bật Giảm chuyển động, mọi hiệu ứng trượt và phóng to được thay bằng mờ dần.</p>`;
+  }
+  if (section === 'study') {
+    return `<h2 class="t-title3 section-h">Flashcard</h2><div class="list plain"><button class="row plain"><span class="grow t-headline">Thẻ mới mỗi ngày</span><span class="value">20</span><span class="ms chev">chevron_right</span></button><button class="row plain"><span class="grow t-headline">Độ nhớ mục tiêu</span><span class="value">90%</span><span class="ms chev">chevron_right</span></button></div>
+      <p class="t-footnote muted" style="padding:8px 4px 0">Chi tiết giới hạn và độ nhớ được thiết kế cùng phần Từ vựng.</p>
+      <h2 class="t-title3 section-h">Giọng đọc Listening</h2>${seg('Giọng đọc', [['Anh–Anh', 'Anh–Anh'], ['Anh–Mỹ', 'Anh–Mỹ'], ['Anh–Úc', 'Anh–Úc']], s.accent)}
+      <h2 class="t-title3 section-h">Luyện tập</h2><div class="list plain">${sw('answers', 'Hiện đáp án khi luyện tập', s.answers)}</div>`;
+  }
+  if (section === 'data') {
+    return `<h2 class="t-title3 section-h">Đề đã tải</h2><div class="list plain">${[['Cambridge 18', '142 MB', true], ['Cambridge 17', '138 MB', true], ['Cambridge 16', '130 MB', true], ['Cambridge 15', '126 MB', false]].map(([n, size, done]) => `<div class="row plain"><span class="grow"><span class="t-headline" style="display:block">${n}</span><span class="t-footnote muted">${done ? `Đã tải · ${size}` : `Chưa tải · ${size}`}</span></span>${done ? '<button class="btn btn-text" style="height:36px">Xoá</button>' : '<button class="btn btn-text" style="height:36px">Tải về</button>'}</div>`).join('')}</div>
+      <p class="t-footnote muted" style="padding:8px 4px 0">Còn trống 1,2 GB trên máy.</p>
+      <h2 class="t-title3 section-h">Xuất dữ liệu</h2><article class="card box"><p class="t-subheadline muted">Tải về một tệp JSON gồm bài làm, thẻ và tiến độ của bạn.</p><button class="btn btn-secondary" style="margin-top:12px">Xuất dữ liệu</button></article>`;
+  }
+  return `<div class="list plain"><div class="row plain"><span class="grow t-headline">Phiên bản</span><span class="value">1.0.0 (42)</span></div><button class="row plain"><span class="grow t-headline">Giấy phép mã nguồn mở</span><span class="ms chev">chevron_right</span></button><button class="row plain"><span class="grow t-headline">Góp ý</span><span class="ms chev">chevron_right</span></button></div>
+    <p class="t-footnote muted" style="padding:12px 4px 0">Nội dung đề luyện chỉ dùng cho học tập cá nhân.</p>`;
+}
+
+const titleOf = (section) => SECTIONS.find(([k]) => k === section)[1];
+
+function screen(frame, device) {
+  if (frame === 'phone') {
+    return `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${device.account === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>
+      <div class="nav-host"><div class="layer base"><div class="topbar"><span class="t-headline bar-title">Tôi</span></div>
+        <div class="screen"><div class="lt" data-stagger><h1 class="t-large-title">Tôi</h1><button class="icon-btn" aria-label="Tìm kiếm"><span class="ms">search</span></button></div><div class="pad" data-root>${rootList(device, device.account)}</div></div></div></div>
+      <nav class="tabbar" role="tablist" aria-label="Điều hướng chính">${DESTINATIONS.map(([k, n, i]) => `<button class="tab" role="tab" aria-selected="${k === 'me'}"><span class="ms">${i}</span>${n}</button>`).join('')}</nav><div class="home-ind"></div>`;
+  }
+  return `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS</span></div><div class="win-body"><nav class="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">L</span><span class="t-headline">Luyện IELTS</span></div><button class="side-search"><span class="ms sm">search</span>Tìm kiếm<kbd>⌘K</kbd></button>
+    <div role="tablist">${DESTINATIONS.map(([k, n, i]) => `<button class="side-item" role="tab" aria-selected="${k === 'me'}"><span class="ms">${i}</span>${n}</button>`).join('')}</div>
+    <div class="side-foot"><div class="sync-line" data-side-sync>${sideSync(device.account)}</div></div></nav>
+    <div class="main"><div class="settings"><div class="set-list"><h1 class="t-large-title" style="margin-bottom:16px">Tôi</h1><div data-account-host>${accountCard(device.account)}</div>
+      <div class="set-nav" role="listbox" aria-label="Cài đặt"><span class="set-ind"></span>${SECTIONS.map(([k, n, i, tone]) => `<button class="row" role="option" aria-selected="${k === device.section}" data-section="${k}"><span class="tile ${tone}"><span class="ms">${i}</span></span><span class="grow t-headline">${n}</span></button>`).join('')}
+        ${device.account === 'signedOut' ? '' : '<button class="row" data-action="sign-out" style="margin-top:12px"><span class="tile neutral"><span class="ms">logout</span></span><span class="grow t-headline" style="color:var(--wrong)">Đăng xuất</span></button>'}</div></div>
+      <div class="set-detail"><div class="set-detail-inner" data-detail>${detailPane(device)}</div></div></div></div></div>`;
+}
+
+function sideSync(account) {
+  if (account === 'signedOut') return '<span class="ms">smartphone</span>Chỉ lưu trên máy này';
+  if (account === 'syncing') return '<span class="spinner" aria-hidden="true"></span>Đang đồng bộ…';
+  if (account === 'syncError') return '<span class="ms" style="color:var(--warning)">warning</span>Chưa đồng bộ được';
+  if (account === 'offline') return '<span class="ms">cloud_off</span>Ngoại tuyến';
+  return '<span class="ms">cloud_done</span>Đã đồng bộ · 2 phút trước';
+}
+
+function detailPane(device) {
+  const banner = device.account === 'offline' ? '<div class="banner" role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>' : '';
+  return `${banner}<h1 class="t-title1" style="margin-bottom:20px" tabindex="-1" data-detail-title>${titleOf(device.section)}</h1>${detail(device, device.section)}`;
+}
+
+function placeSegs(root, animate) {
+  root.querySelectorAll('.seg').forEach((group) => {
+    const on = group.querySelector('[aria-checked="true"]');
+    const ind = group.querySelector('.seg-ind');
+    if (!on || !on.offsetWidth) return;
+    const from = ind.style.transform || `translateX(${on.offsetLeft}px)`;
+    const to = `translateX(${on.offsetLeft}px)`;
+    ind.style.width = `${on.offsetWidth}px`;
+    ind.style.transform = to;
+    if (animate) play(ind, [{ transform: from }, { transform: to }], 'snappy');
+  });
+}
+
+function placeSetInd(device, animate) {
+  const on = device.querySelector('.set-nav [aria-selected="true"]');
+  const ind = device.querySelector('.set-ind');
+  if (!on || !ind) return;
+  const from = ind.style.transform || `translateY(${on.offsetTop}px)`;
+  const to = `translateY(${on.offsetTop}px)`;
+  ind.style.transform = to;
+  if (animate) play(ind, [{ transform: from }, { transform: to }], 'snappy');
+}
+
+function applyTheme(device, value) {
+  const dark = value === 'dark' || (value === 'system' && device.baseTheme === 'dark');
+  device.classList.toggle('dark', dark);
+  device.classList.toggle('light', !dark);
+}
+
+function refreshRoot(device) {
+  const root = device.querySelector('[data-root]');
+  if (root) root.innerHTML = rootList(device, device.account);
+  const host = device.querySelector('[data-account-host]');
+  if (host) host.innerHTML = accountCard(device.account);
+  const side = device.querySelector('[data-side-sync]');
+  if (side) side.innerHTML = sideSync(device.account);
+}
+
+function setAccount(device, frame, account) {
+  const old = device.querySelector('[data-account]');
+  const before = old ? old.offsetHeight : 0;
+  const scroller = device.querySelector('.layer.base .screen');
+  const keep = scroller ? scroller.scrollTop : 0;
+  device.account = account;
+  refreshRoot(device);
+  if (scroller) scroller.scrollTop = keep;
+  const nav = device.querySelector('.set-nav');
+  if (nav) {
+    const out = nav.querySelector('[data-action="sign-out"]');
+    if (account === 'signedOut' && out) out.remove();
+    if (account !== 'signedOut' && !out) nav.insertAdjacentHTML('beforeend', '<button class="row" data-action="sign-out" style="margin-top:12px"><span class="tile neutral"><span class="ms">logout</span></span><span class="grow t-headline" style="color:var(--wrong)">Đăng xuất</span></button>');
+  }
+  const card = device.querySelector('[data-account]');
+  const after = card.offsetHeight;
+  if (before === after) return play(card, [{ opacity: 0.4 }, { opacity: 1 }], { duration: DURATION.short, easing: EASING.standard });
+  card.style.overflow = 'hidden';
+  play(card, [{ opacity: 0, height: `${before}px` }, { opacity: 1, height: `${after}px` }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] }).then(() => { card.style.height = ''; card.style.overflow = ''; });
+}
+
+function snackbar(device, text) {
+  device.querySelectorAll('.snackbar').forEach((s) => s.remove());
+  const bar = document.createElement('div');
+  bar.className = 'snackbar';
+  bar.setAttribute('role', 'status');
+  bar.innerHTML = `<span class="ms">cloud_sync</span><span class="grow">${text}</span>`;
+  device.append(bar);
+  play(bar, [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], 'smooth');
+  setTimeout(() => play(bar, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => bar.remove()), 4000);
+}
+
+function openSheet(device, frame, html, label, { onClose = () => { }, locked = () => false } = {}) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const initial = sheet.querySelector('[data-autofocus]') || sheet.querySelector('h2');
+  if (!initial.matches('button')) initial.setAttribute('tabindex', '-1');
+  initial.focus({ preventScroll: true });
+  let closed = false;
+  const close = () => {
+    if (closed) return;
+    closed = true;
+    onClose();
+    play(scrim, [{ opacity: 1 }, { opacity: 0 }], 'smooth');
+    return play(sheet, phone ? [{ transform: 'none' }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && !locked()) return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button:not([disabled]), input:not([disabled])')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  scrim.addEventListener('click', () => { if (!locked()) close(); });
+  layer.addEventListener('click', (event) => event.stopPropagation());
+  return { sheet, close };
+}
+
+function signInBody(offline) {
+  return `<div class="handle"></div><h2 class="t-title2">Đăng nhập</h2>
+    <p class="t-callout muted" style="margin:6px 0 20px">Đồng bộ bài làm, thẻ và tiến độ giữa điện thoại và máy tính. Không đăng nhập vẫn học được bình thường.</p>
+    <div data-alert>${offline ? '<div class="banner" role="status"><span class="ms">cloud_off</span><span class="t-subheadline">Cần có mạng để đăng nhập.</span></div>' : ''}</div>
+    <div class="providers" data-providers>${[['google', 'account_circle', 'Tiếp tục với Google'], ['apple', 'phone_iphone', 'Tiếp tục với Apple'], ['email', 'mail', 'Tiếp tục với email']].map(([k, i, t]) => `<button class="btn provider" data-provider="${k}" ${offline ? 'disabled' : ''}><span class="lead"><span class="ms">${i}</span></span>${t}</button>`).join('')}</div>
+    <div data-email></div>
+    <p class="t-footnote muted" style="margin-top:16px">Dữ liệu đang có trên máy này sẽ được gộp vào tài khoản. Nút của từng nhà cung cấp theo hướng dẫn thương hiệu của họ; mockup chỉ dùng biểu tượng trung tính.</p>
+    <button class="btn btn-text btn-block" data-cancel style="margin-top:4px">Huỷ</button>`;
+}
+
+function signIn(device, frame) {
+  let busy = false;
+  const { sheet, close } = openSheet(device, frame, signInBody(device.account === 'offline'), 'Đăng nhập', { locked: () => busy });
+  const finish = (ok) => {
+    busy = false;
+    if (!ok) {
+      sheet.querySelectorAll('[data-provider]').forEach((b) => { b.disabled = false; b.querySelector('.lead').innerHTML = b.dataset.icon || b.querySelector('.lead').innerHTML; });
+      sheet.querySelector('[data-alert]').innerHTML = '<div class="banner error" role="alert"><span class="ms">error</span><span class="t-subheadline">Chưa đăng nhập được. Kiểm tra kết nối rồi thử lại nhé.</span></div>';
+      play(sheet.querySelector('[data-alert] .banner'), [{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'none' }], 'smooth');
+      return;
+    }
+    close().then(() => {
+      setAccount(device, frame, 'syncing');
+      snackbar(device, 'Đã đăng nhập · đang đồng bộ');
+      setTimeout(() => setAccount(device, frame, 'synced'), 2200);
+    });
+  };
+  const start = (button) => {
+    busy = true;
+    sheet.querySelector('[data-alert]').innerHTML = '';
+    sheet.querySelectorAll('[data-provider]').forEach((b) => { b.dataset.icon = b.querySelector('.lead').innerHTML; b.disabled = b !== button; });
+    button.querySelector('.lead').innerHTML = '<span class="spinner" aria-hidden="true"></span>';
+    button.setAttribute('aria-label', 'Đang đăng nhập');
+    button.style.pointerEvents = 'none';
+    setTimeout(() => { button.style.pointerEvents = ''; button.removeAttribute('aria-label'); finish(ui.outcome === 'success'); }, 1500);
+  };
+  sheet.addEventListener('click', (event) => {
+    if (event.target.closest('[data-cancel]')) { busy = false; return close(); }
+    const provider = event.target.closest('[data-provider]');
+    if (provider && provider.dataset.provider !== 'email') return start(provider);
+    if (provider) {
+      const host = sheet.querySelector('[data-email]');
+      if (host.innerHTML) return;
+      host.innerHTML = `<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px"><label class="t-footnote muted" for="email">Nhập email của bạn</label><input class="field" id="email" type="email" placeholder="ban@example.com" value="tuan@example.com"><button class="btn btn-primary" data-send>Gửi mã</button></div>`;
+      play(host, [{ opacity: 0, height: '0px' }, { opacity: 1, height: `${host.scrollHeight}px` }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] }).then(() => { host.style.height = ''; });
+      host.querySelector('input').focus();
+      return;
+    }
+    if (event.target.closest('[data-send]')) {
+      const host = sheet.querySelector('[data-email]');
+      host.innerHTML = `<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px"><label class="t-footnote muted" for="code">Mã gồm 6 số đã được gửi tới tuan@example.com</label><input class="field code" id="code" inputmode="numeric" maxlength="6" placeholder="••••••"><button class="btn btn-primary" data-verify disabled>Xác nhận</button><p class="t-footnote muted tnum" data-resend>Gửi lại mã sau 0:45</p></div>`;
+      const code = host.querySelector('#code');
+      code.focus();
+      code.addEventListener('input', () => { host.querySelector('[data-verify]').disabled = code.value.replace(/\D/g, '').length !== 6; });
+      return;
+    }
+    const verify = event.target.closest('[data-verify]');
+    if (verify) {
+      busy = true;
+      verify.innerHTML = '<span class="spinner" aria-hidden="true"></span>Đang đăng nhập…';
+      setTimeout(() => { verify.textContent = 'Xác nhận'; finish(ui.outcome === 'success'); }, 1200);
+    }
+  });
+}
+
+function signOut(device, frame) {
+  const { sheet, close } = openSheet(device, frame, `<div class="handle"></div><h2 class="t-title2">Đăng xuất?</h2>
+    <p class="t-callout muted" style="margin-top:6px">Dữ liệu đã đồng bộ vẫn an toàn trong tài khoản. Dữ liệu trên máy này sẽ được xoá.</p>
+    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-text btn-danger" data-confirm style="flex:1">Đăng xuất</button><button class="btn btn-primary" data-cancel data-autofocus style="flex:1">Huỷ</button></div>`, 'Đăng xuất');
+  sheet.addEventListener('click', (event) => {
+    if (event.target.closest('[data-cancel]')) return close();
+    if (event.target.closest('[data-confirm]')) close().then(() => setAccount(device, frame, 'signedOut'));
+  });
+}
+
+function push(device, frame, section) {
+  const host = device.querySelector('.nav-host');
+  const base = host.querySelector('.layer.base');
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10;
+  page.innerHTML = `<div class="topbar solid"><button class="back" data-back aria-label="Quay lại Tôi"><span class="ms">chevron_left</span>Tôi</button><span class="t-headline bar-title">${titleOf(section)}</span></div>
+    <div class="screen" style="padding-top:104px"><div class="pad" data-detail>${detail(device, section)}</div></div>`;
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  base.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] }).then(() => placeSegs(page, false));
+  play(base, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  placeSegs(page, false);
+  page.querySelector('[data-back]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    refreshRoot(device);
+    play(page, [{ transform: 'translateX(0)' }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+    play(base, [{ transform: 'translateX(-30%)' }, { transform: 'translateX(0)' }], 'smooth');
+    play(dim, [{ opacity: 0.08 }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+  });
+}
+
+async function selectSection(device, section) {
+  if (section === device.section) return;
+  device.section = section;
+  device.querySelectorAll('[data-section]').forEach((r) => r.setAttribute('aria-selected', String(r.dataset.section === section)));
+  placeSetInd(device, true);
+  const pane = device.querySelector('[data-detail]');
+  await play(pane, [{ opacity: 1 }, { opacity: 0 }], { duration: 75, easing: EASING.accelerate });
+  pane.innerHTML = detailPane(device);
+  placeSegs(pane, false);
+  play(pane, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short, easing: EASING.decelerate });
+}
+
+function mount(device, frame, theme) {
+  device.account = ui.state;
+  device.baseTheme = theme;
+  device.section = 'goal';
+  device.settings = { band: '7.0', minutes: '20', sessions: 5, reminder: true, time: '20:00', theme: 'system', font: 'medium', reduce: false, haptics: true, accent: 'Anh–Anh', answers: true };
+  device.innerHTML = screen(frame, device);
+  const baseLayer = device.querySelector('.layer.base');
+  if (baseLayer) {
+    const scroller = baseLayer.querySelector('.screen');
+    scroller.addEventListener('scroll', () => baseLayer.classList.toggle('scrolled', scroller.scrollTop > 44));
+  }
+  device.querySelectorAll('[data-stagger]').forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER }));
+  placeSegs(device, false);
+  placeSetInd(device, false);
+  device.addEventListener('click', (event) => {
+    const s = device.settings;
+    const target = event.target;
+    if (target.closest('[data-action="sign-in"]')) return signIn(device, frame);
+    if (target.closest('[data-action="sign-out"]')) return signOut(device, frame);
+    if (target.closest('[data-action="retry-sync"]')) { setAccount(device, frame, 'syncing'); setTimeout(() => setAccount(device, frame, 'synced'), 1800); return; }
+    const open = target.closest('[data-open]');
+    if (open) return frame === 'phone' ? push(device, frame, open.dataset.open) : selectSection(device, open.dataset.open);
+    const section = target.closest('[data-section]');
+    if (section) return selectSection(device, section.dataset.section);
+    const segButton = target.closest('.seg [role="radio"]');
+    if (segButton) {
+      const group = segButton.closest('.seg');
+      group.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', String(b === segButton)));
+      placeSegs(group.parentElement, true);
+      haptic(device, 'selection · CLOCK_TICK');
+      const name = group.dataset.seg, value = segButton.dataset.value;
+      if (name === 'Giao diện') { s.theme = value; applyTheme(device, value); log(`Giao diện: ${segButton.textContent} · cả cửa sổ chuyển màu ${DURATION.medium} ms`); }
+      if (name === 'Cỡ chữ bài đọc') {
+        s.font = value;
+        const [, , size, line] = FONT_SIZES.find(([k]) => k === value);
+        const preview = device.querySelector('[data-preview]');
+        preview.style.fontSize = `${size}px`;
+        preview.style.lineHeight = `${line}px`;
+      }
+      if (name === 'Giọng đọc') s.accent = value;
+      return;
+    }
+    const chip = target.closest('[data-chips] [role="radio"]');
+    if (chip) {
+      const group = chip.closest('[data-chips]');
+      group.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', String(b === chip)));
+      s[group.dataset.chips] = chip.dataset.value;
+      play(chip, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+      haptic(device, 'selection · CLOCK_TICK');
+      return;
+    }
+    const toggle = target.closest('[data-toggle]');
+    if (toggle) { toggle.setAttribute('aria-checked', String(toggle.getAttribute('aria-checked') !== 'true')); return; }
+    const step = target.closest('[data-step]');
+    if (step) {
+      s.sessions = Math.max(1, Math.min(7, s.sessions + Number(step.dataset.step)));
+      device.querySelector('[data-sessions]').textContent = s.sessions;
+    }
+  });
+  device.addEventListener('change', (event) => {
+    const input = event.target.closest('[data-switch]');
+    if (!input) return;
+    const key = input.dataset.switch;
+    device.settings[key] = input.checked;
+    device.querySelectorAll(`[data-switch="${key}"]`).forEach((other) => { other.checked = input.checked; });
+    const thumb = input.parentElement.querySelector('.thumb');
+    play(thumb, [{ transform: input.checked ? 'translateX(0)' : 'translateX(20px)' }, { transform: input.checked ? 'translateX(20px)' : 'translateX(0)' }], 'snappy');
+    haptic(device, 'selection · CLOCK_TICK');
+    if (key === 'reminder') {
+      const pane = input.closest('[data-detail]');
+      if (pane) pane.querySelectorAll('[data-chips="time"] button, [data-toggle]').forEach((b) => { b.disabled = !input.checked; b.style.opacity = input.checked ? '' : '0.38'; });
+    }
+  });
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800 · hai cột' };
+const SIZES = { phone: [390, 844], desktop: [1280, 800] };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const [width, height] = SIZES[frame];
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}"></div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame, theme);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  document.querySelector('[data-control="state"]').insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      if (group.dataset.control !== 'outcome') render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>
