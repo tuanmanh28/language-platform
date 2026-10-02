@@ -686,7 +686,7 @@ components:
           $ref: "#/components/schemas/Explanation"
     Explanation:
       type: object
-      required: [text, paraphrases]
+      required: [text]
       properties:
         text:
           type: string

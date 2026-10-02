@@ -52,6 +52,19 @@ class ReadingRoutesTest {
     }
 
   @Test
+  fun testPayloadKeepsAnswerKeyAndExplanations() =
+    testApplication {
+      application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }
+
+      val test = jsonClient().get("/api/v1/reading/tests/${sample.id}").body<ReadingTest>()
+
+      assertEquals(
+        sample.allQuestions().map { it.acceptedAnswers to it.explanation },
+        test.allQuestions().map { it.acceptedAnswers to it.explanation },
+      )
+    }
+
+  @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
       application { module(FakeDatabaseHealth(), FakeUserStore(), FakeAttemptStore(), FakeWritingSubmissionStore()) }

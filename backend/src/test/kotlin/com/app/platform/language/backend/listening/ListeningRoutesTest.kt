@@ -81,6 +81,27 @@ class ListeningRoutesTest {
     }
 
   @Test
+  fun testPayloadKeepsAnswerKeyAndExplanations() =
+    testApplication {
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
+
+      val test = jsonClient().get("/api/v1/listening/tests/${sample.id}").body<ListeningTest>()
+
+      assertEquals(
+        sample.allQuestions().map { it.acceptedAnswers to it.explanation },
+        test.allQuestions().map { it.acceptedAnswers to it.explanation },
+      )
+    }
+
+  @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
       application {
