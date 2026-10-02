@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trình phát — mockup thành phần</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.xs { font-size: 16px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; max-width: 520px; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; flex-wrap: wrap; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 80; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-reading { font-size: 18px; line-height: 30px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.grow { flex: 1; min-width: 0; }
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none; white-space: nowrap;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.desktop .btn-text { height: 36px; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn.selected { color: var(--on-primary-container); background: var(--primary-container); }
+.icon-btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn .t-label { font-variant-numeric: tabular-nums; }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px; line-height: 16px; font-weight: 500; background: var(--surface-high); color: var(--on-surface-variant); white-space: nowrap; }
+.tag.info { background: var(--info-container); color: var(--on-info-container); }
+.chip { height: 36px; padding: 0 14px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; position: relative;
+  background: var(--card); box-shadow: inset 0 0 0 1px var(--outline); font-size: 15px; font-weight: 600; white-space: nowrap; flex: none; font-variant-numeric: tabular-nums; }
+.chip::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
+.chip.on, .chip[aria-pressed="true"] { background: var(--primary-container); color: var(--on-primary-container); box-shadow: inset 0 0 0 2px var(--primary); }
+.chip .ms { font-size: 18px; margin-left: -4px; }
+.banner { display: flex; gap: 12px; align-items: center; padding: 10px 8px 10px 14px; border-radius: 14px; background: var(--info-container); color: var(--on-info-container); }
+.banner .ms { color: var(--info); }
+.banner .btn-text { color: var(--on-info-container); text-decoration: underline; text-underline-offset: 3px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.play { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; background: var(--primary); color: var(--on-primary); transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.play:active { transform: scale(0.97); }
+.reduce .play:active { transform: none; }
+.play .ms { font-size: 34px; }
+.play.large { width: 72px; height: 72px; } .play.large .ms { font-size: 38px; }
+.play.medium { width: 56px; height: 56px; } .play.medium .ms { font-size: 30px; }
+.play.small { width: 48px; height: 48px; background: var(--primary-container); color: var(--on-primary-container); } .play.small .ms { font-size: 26px; }
+.play .spinner { position: absolute; inset: -4px; border-radius: 999px; border: 3px solid transparent; border-top-color: var(--primary); animation: spin 0.9s linear infinite; }
+.play[disabled] { opacity: 0.38; pointer-events: none; }
+.play svg { position: absolute; inset: -5px; transform: rotate(-90deg); pointer-events: none; }
+.play svg circle { fill: none; stroke-width: 3; }
+.play svg .track { stroke: var(--surface-high); }
+.play svg .prog { stroke: var(--primary); stroke-linecap: round; }
+
+.wave { position: relative; height: 48px; flex: 1; touch-action: none; cursor: pointer; }
+.wave.compact { height: 32px; } .wave.expanded { height: 72px; }
+.wave .bars { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.wave .bars i { width: 2px; border-radius: 2px; background: var(--outline-variant); flex: none; }
+.wave .bars.played { clip-path: inset(0 100% 0 0); }
+.wave .bars.played i { background: var(--primary); }
+.wave.buffer .bars:not(.played) i:nth-child(n+70) { background: none; border-left: 2px dotted var(--outline-variant); width: 0; height: 30% !important; }
+.wave .range { position: absolute; top: -4px; bottom: -4px; border-radius: 6px; background: color-mix(in srgb, var(--primary-container) 70%, transparent); pointer-events: none; }
+.wave .range.evidence { background: color-mix(in srgb, var(--info-container) 80%, transparent); }
+.wave .head { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; border-radius: 2px; background: var(--on-surface); pointer-events: none; }
+.wave .head::after { content: ''; position: absolute; left: 50%; top: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 999px; background: var(--on-surface); transform: scale(0); }
+.wave.scrubbing .head::after { transform: scale(1); }
+.wave .bubble { position: absolute; bottom: calc(100% + 10px); transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.wave .ab { position: absolute; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: 11px; font-weight: 700; box-shadow: 0 0 0 3px var(--card); z-index: 2; }
+.track-only { position: relative; height: 4px; border-radius: 999px; background: var(--surface-high); margin: 22px 0; }
+.track-only i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--primary); }
+
+.pb { background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-radius: 28px 28px 0 0; box-shadow: var(--shadow-sheet), inset 0 1px 0 var(--outline-variant); padding: 0 16px 16px; }
+.pb .handle-btn { display: block; width: 100%; height: 22px; position: relative; }
+.pb .handle-btn::after { content: ''; position: absolute; left: 50%; top: 8px; width: 36px; height: 5px; margin-left: -18px; border-radius: 3px; background: var(--outline-variant); }
+.pb-row1 { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 4px; }
+.pb-controls { display: flex; align-items: center; justify-content: space-between; padding-top: 4px; }
+.pb.wide { border-radius: 0; padding: 10px 24px 8px; box-shadow: inset 0 1px 0 var(--outline-variant); }
+.pb.wide .pb-controls { position: relative; justify-content: flex-start; gap: 4px; }
+.pb.wide .center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; }
+.pb.wide .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.wave-row { display: flex; align-items: center; gap: 12px; }
+.wave-time { font-size: 12px; color: var(--on-surface-variant); font-variant-numeric: tabular-nums; width: 34px; }
+
+.mini { position: absolute; left: 8px; right: 8px; bottom: 42px; z-index: 30; height: 64px; display: flex; align-items: center; gap: 8px; padding: 0 4px 0 8px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow-raised); overflow: hidden; }
+.dark .mini { background: var(--surface-high); }
+.desktop .mini { left: calc(248px + 50% - 124px - 320px); right: auto; width: 640px; bottom: 24px; }
+.mini.static { position: relative; left: auto; right: auto; bottom: auto; width: 100%; }
+.mini .play { width: 48px; height: 48px; }
+.mini .play .ms { font-size: 26px; }
+.mini .text { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: left; border-radius: 10px; }
+.mini .hair { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--primary); width: 0; }
+.mini .icon-btn .ms { font-size: 22px; }
+
+.evp { background: var(--surface-high); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.dark .evp { background: var(--surface-highest); }
+.evp-top { display: flex; align-items: center; gap: 12px; }
+.evp .txt { font-size: 18px; line-height: 30px; }
+.evp .w { transition: color 150ms; color: var(--on-surface-variant); border-radius: 4px; }
+.evp .w.spoken { color: var(--on-surface); }
+.evp .w.now { color: var(--on-primary-container); background: var(--primary-container); box-shadow: 0 0 0 3px var(--primary-container); }
+.evp .w.answer { box-shadow: 0 2px 0 var(--info); }
+.evp .w.answer.now { box-shadow: 0 0 0 3px var(--primary-container), 0 5px 0 var(--info); }
+.evp-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.toggle { height: 36px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; background: var(--card); box-shadow: inset 0 0 0 1px var(--outline); position: relative; }
+.toggle::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
+.toggle[aria-pressed="true"] { background: var(--primary-container); color: var(--on-primary-container); box-shadow: inset 0 0 0 2px var(--primary); }
+
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
+.phone .screen { padding-top: 50px; }
+.desktop .screen { flex-direction: row; }
+.content { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 0 20px 140px; }
+.content::-webkit-scrollbar { display: none; }
+.desktop .content { padding: 40px 40px 120px; }
+.desktop .content > .inner { max-width: 760px; margin: 0 auto; }
+.top { height: 56px; display: flex; align-items: center; margin: 0 -16px; }
+.sidebar { width: 248px; flex: none; background: var(--surface-low); border-right: 1px solid var(--outline-variant); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+.side-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; }
+.side-item.on { background: var(--primary-container); color: var(--on-primary-container); font-weight: 600; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.dark .list { background: var(--surface-container); }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 6%, transparent); }
+.qnum { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-weight: 600; flex: none; font-variant-numeric: tabular-nums; }
+.qnum.ok { background: var(--correct-container); color: var(--on-correct-container); }
+.qnum.bad { background: var(--wrong-container); color: var(--on-wrong-container); }
+.ok-t { color: var(--correct); } .bad-t { color: var(--wrong); }
+
+.il { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); z-index: 40; }
+.phone .il { padding-top: 50px; }
+.phone .il .pb { padding-bottom: 34px; }
+.il-top { height: 56px; display: flex; align-items: center; padding: 0 4px; flex: none; }
+.desktop .il-top { height: 60px; padding: 0 16px; border-bottom: 1px solid var(--outline-variant); }
+.il-body { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 8px 20px 24px; position: relative; }
+.desktop .il-body > div { max-width: 680px; margin: 0 auto; position: relative; }
+.sent { padding: 12px 16px 12px 20px; margin: 0 -12px 2px; border-radius: 20px; color: var(--on-surface-variant); position: relative; }
+.sent .txt { font-size: 18px; line-height: 30px; }
+.sent.current { background: var(--card); box-shadow: var(--shadow-card); color: var(--on-surface); }
+.dark .sent.current { background: var(--surface-container); box-shadow: inset 0 0 0 1px var(--outline-variant); }
+.dark .sent.evidence { background: var(--info-container); box-shadow: none; }
+.sent.evidence { background: var(--info-container); color: var(--on-info-container); box-shadow: none; }
+.sent .w.answer { box-shadow: 0 2px 0 var(--info); }
+.sent.hidden .w { color: transparent; background: var(--surface-highest); box-shadow: inset 0 0 0 1px var(--outline-variant); border-radius: 6px; }
+.dark .sent.hidden .w { background: var(--outline-variant); box-shadow: none; }
+.sent.hidden .w.spoken { background: var(--primary-container); box-shadow: none; }
+.sent.hidden .w.now { background: var(--primary); box-shadow: none; }
+.sent.disabled { opacity: 0.6; cursor: not-allowed; }
+.sent .now { background: var(--primary-container); color: var(--on-primary-container); border-radius: 6px; box-shadow: 0 0 0 3px var(--primary-container); }
+.sent .spoken { color: var(--on-surface); }
+.sent-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+.bracket { position: absolute; left: 6px; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; background: var(--primary); transform-origin: 50% 0; }
+.bracket::before, .bracket::after { content: ''; position: absolute; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 999px; background: var(--primary); box-shadow: 0 0 0 3px var(--surface); }
+.bracket::before { top: -7px; } .bracket::after { bottom: -7px; }
+
+.gallery { position: absolute; inset: 0; overflow-y: auto; scrollbar-width: none; padding: 16px 20px 40px; }
+.phone .gallery { padding-top: 62px; }
+.gallery::-webkit-scrollbar { display: none; }
+.desktop .gallery { padding: 32px 40px 48px; }
+.g-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.desktop .g-grid { grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.g-card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.dark .g-card { background: var(--surface-container); }
+.g-card.span { grid-column: 1 / -1; }
+.g-card h2 { display: flex; align-items: baseline; gap: 8px; }
+.g-card h2 code { font: inherit; }
+.g-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+.g-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.g-item.full { align-items: stretch; width: 100%; }
+.g-item > .t-caption { color: var(--on-surface-variant); text-align: center; }
+.g-item.full > .t-caption { text-align: left; }
+.surface-box { background: var(--surface); border-radius: 14px; padding: 12px; }
+.slider { position: relative; height: 48px; width: 100%; }
+.slider .track { position: absolute; left: 12px; right: 12px; top: 22px; height: 4px; border-radius: 999px; background: var(--surface-high); }
+.slider .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--primary); }
+.slider .stop { position: absolute; top: 0; width: 4px; height: 4px; margin-left: -2px; border-radius: 999px; background: var(--on-surface-variant); }
+.slider .thumb { position: absolute; top: 12px; width: 24px; height: 24px; margin-left: -12px; border-radius: 999px; background: var(--surface-bright); box-shadow: var(--shadow-raised); border: 1px solid var(--outline-variant); }
+.dark .slider .thumb { background: var(--on-surface); border-color: transparent; }
+.slider.focus .thumb { outline: 2px solid var(--primary); outline-offset: 2px; }
+.slider .val { position: absolute; bottom: 42px; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; font-weight: 600; }
+.slider.disabled { opacity: 0.38; }
+.switch { width: 52px; height: 32px; border-radius: 999px; position: relative; flex: none; background: var(--surface-highest); box-shadow: inset 0 0 0 2px var(--outline); }
+.switch::after { content: ''; position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-radius: 999px; background: var(--outline); }
+.switch[aria-checked="true"] { background: var(--primary); box-shadow: none; }
+.switch[aria-checked="true"]::after { transform: translateX(16px); background: var(--on-primary); width: 24px; height: 24px; top: 4px; left: 4px; }
+.switch.focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+.switch[disabled] { opacity: 0.38; }
+.diff { font-size: 18px; line-height: 40px; }
+.tok { display: inline-block; line-height: 30px; margin-right: 6px; }
+.tok.ok { color: var(--on-surface); }
+.tok.bad s { color: var(--wrong); text-decoration-thickness: 2px; }
+.tok .fix, .tok.miss { display: inline-flex; align-items: center; height: 30px; padding: 0 8px; border-radius: 6px; font-weight: 600; }
+.tok .fix { background: var(--correct-container); color: var(--on-correct-container); margin-left: 4px; }
+.tok.miss { color: var(--correct); outline: 1.5px dashed var(--correct); outline-offset: -1.5px; }
+.tok.extra s { color: var(--on-surface-variant); text-decoration-style: dotted; text-decoration-thickness: 2px; }
+.tok.hinted { color: var(--correct); text-decoration: underline dotted 2px var(--info); text-underline-offset: 6px; }
+.tok.hinted .ms { font-size: 16px; color: var(--info); vertical-align: -2px; }
+.tok small { font-size: 12px; color: var(--on-surface-variant); margin-left: 4px; }
+.field { width: 100%; min-height: 72px; padding: 12px 14px; border-radius: 14px; background: var(--surface-high); box-shadow: inset 0 0 0 1px var(--outline); font-size: 18px; line-height: 30px; color: var(--on-surface-variant); }
+.field.focus { box-shadow: inset 0 0 0 2px var(--primary); color: var(--on-surface); }
+.field.focus::after { content: ''; display: inline-block; width: 2px; height: 22px; background: var(--primary); vertical-align: -4px; margin-left: 1px; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); touch-action: none; max-height: 790px; overflow-y: auto; scrollbar-width: none; }
+.dark .sheet { background: var(--surface-container); }
+.desktop .sheet { width: 560px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+.status-line { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: var(--wrong-container); color: var(--on-wrong-container); margin-top: 12px; }
+.status-line .ms { color: var(--wrong); }
+.morph { position: absolute; z-index: 45; overflow: hidden; pointer-events: none; inset: 0; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Trình phát (player components)</strong><span>Mockup · <a href="../README.md">spec</a> · “Thành phần”: mọi trạng thái của LpPlayButton, LpWaveform, LpPlayerBar, LpMiniPlayer, LpEvidencePlayer… “Mini player”: chạm để mở Nghe kỹ, ‹ để thu lại. “Nghe lại đoạn đáp án”: sheet giải thích → Nghe cả đoạn.</span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Màn</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STATES = [['gallery', 'Thành phần'], ['mini', 'Mini player → Nghe kỹ'], ['explain', 'Nghe lại đoạn đáp án']];
+const ui = { theme: 'light', frame: 'both', state: 'gallery' };
+const TEST_NAME = 'Listening Test 1 (mẫu)';
+
+const EVIDENCE = { q: 14, start: 31.2, end: 36.4, text: 'If you’d like a plot of your own, the waiting list is currently around eight months.', answer: ['eight', 'months.'] };
+const SNIPPET = [
+  ['Helen', 'Most of them are rented by local families, although a few are kept for the primary school.'],
+  ['Helen', EVIDENCE.text],
+  ['Helen', 'Plots cost forty pounds a year, and that includes water and the use of all our tools.'],
+];
+const QUESTIONS = [[11, 'Năm thành lập', '2009', true], [12, 'Trước đây là', 'car park', true], [13, 'Số ô đất hiện nay', 'more than eighty', true], [14, 'Thời gian chờ', 'eight months', false, 'eight weeks'], [15, 'Giá mỗi năm', 'forty pounds', true]];
+
+const deviceState = new WeakMap();
+const live = new Set();
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+
+function bars(count, seed = 1) {
+  return Array.from({ length: count }, (_, i) => {
+    const n = Math.abs(Math.sin((i + seed * 17) * 12.9898) * 43758.5453) % 1;
+    const gap = (i % 23) > 20;
+    return `<i style="height:${gap ? 10 : Math.round((0.22 + 0.7 * n) * 100)}%"></i>`;
+  }).join('');
+}
+
+function wave({ kind = '', fraction = 0.4, range, evidence, scrubbing, ab, buffer, count = 80, seed = 1 } = {}) {
+  const b = bars(count, seed);
+  return `<div class="wave ${kind} ${scrubbing ? 'scrubbing' : ''} ${buffer ? 'buffer' : ''}" role="slider" aria-label="Vị trí" tabindex="0">
+    ${range ? `<div class="range ${evidence ? 'evidence' : ''}" style="left:${range[0] * 100}%;width:${(range[1] - range[0]) * 100}%"></div>` : ''}
+    <div class="bars">${b}</div><div class="bars played" style="clip-path:inset(0 ${(1 - fraction) * 100}% 0 0)">${b}</div>
+    <div class="head" style="left:${fraction * 100}%">${scrubbing ? '<span class="bubble">0:24,6</span>' : ''}</div>
+    ${ab ? `<span class="ab" style="left:${range[0] * 100}%">A</span><span class="ab" style="left:${range[1] * 100}%">B</span>` : ''}</div>`;
+}
+
+function playBtn({ size = '', playing = false, buffering = false, disabled = false, finished = false, ring = null, label } = {}) {
+  const icon = finished ? 'replay' : playing ? 'pause' : 'play_arrow';
+  const c = 2 * Math.PI * 40;
+  return `<button class="play ${size}" data-action="toggle" aria-label="${label || (playing ? 'Tạm dừng' : finished ? 'Nghe lại từ đầu' : 'Phát')}" ${disabled ? 'disabled' : ''}>
+    ${ring !== null ? `<svg viewBox="0 0 84 84" aria-hidden="true"><circle class="track" cx="42" cy="42" r="40"/><circle class="prog" cx="42" cy="42" r="40" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - ring)}"/></svg>` : ''}
+    <span class="ms fill">${icon}</span>${buffering ? '<span class="spinner" aria-hidden="true"></span>' : ''}</button>`;
+}
+
+function slider(value, { focus, dragging, disabled } = {}) {
+  const f = value - 0.5;
+  return `<div class="slider ${focus ? 'focus' : ''} ${disabled ? 'disabled' : ''}" role="slider" aria-label="Tốc độ" aria-valuetext="${String(value).replace('.', ',')}×">
+    <div class="track"><span class="fill" style="width:${f * 100}%"></span>${[0.75, 1, 1.25].map((v) => `<span class="stop" style="left:${(v - 0.5) * 100}%"></span>`).join('')}</div>
+    <span class="thumb" style="left:calc(12px + (100% - 24px) * ${f})"></span>${dragging ? `<span class="val tnum" style="left:calc(12px + (100% - 24px) * ${f})">${String(value).replace('.', ',')}×</span>` : ''}</div>`;
+}
+
+function fullPlayer() {
+  const seg = (options, on) => `<div style="display:grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:4px;border-radius:14px;background:var(--surface-highest)">${options.map((o) => `<span style="height:32px;display:grid;place-items:center;border-radius:10px;font-size:13px;font-weight:600;${o === on ? 'background:var(--card);color:var(--on-surface)' : 'color:var(--on-surface-variant)'}">${o}</span>`).join('')}</div>`;
+  return `<div class="g-card" style="padding:8px 16px 16px;box-shadow:var(--shadow-raised)"><div class="handle" style="margin-bottom:8px"></div>
+    <div class="t-headline" style="text-align:center">Section 2 · Riverside Community Garden</div>
+    <div><span class="t-caption muted">Câu 7 · Helen</span><p class="t-title2" lang="en" style="font-size:22px;line-height:32px">${EVIDENCE.text.split(' ').map((w, i) => `<span style="${i < 9 ? '' : 'color:var(--on-surface-variant)'}${i === 9 ? ';background:var(--primary-container);color:var(--on-primary-container);border-radius:6px;box-shadow:0 0 0 3px var(--primary-container)' : ''}">${w}</span>`).join(' ')}</p></div>
+    ${wave({ kind: 'expanded', fraction: 0.55, range: [0.42, 0.66], ab: true, count: 80, seed: 3 })}
+    <div style="display:flex;justify-content:space-between" class="t-caption muted tnum"><span>0:33</span><span>0:56</span></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:12px"><button class="icon-btn" aria-label="Lùi 2 giây"><span class="t-label">−2s</span></button><button class="icon-btn" aria-label="Câu trước"><span class="ms lg">skip_previous</span></button>${playBtn({ size: 'large', playing: true })}<button class="icon-btn" aria-label="Câu sau"><span class="ms lg">skip_next</span></button><button class="icon-btn" aria-label="Tới 2 giây"><span class="t-label">+2s</span></button></div>
+    <div style="background:var(--surface-high);border-radius:14px;padding:4px 12px">
+      <div style="padding:8px 0"><div style="display:flex;justify-content:space-between"><span class="t-label">Tốc độ</span><span class="t-label tnum" style="color:var(--primary)">0,85×</span></div>${slider(0.85)}</div>
+      <div style="padding:8px 0;border-top:1px solid var(--outline-variant);display:flex;flex-direction:column;gap:8px"><span class="t-label">Lặp mỗi câu</span>${seg(['Tắt', '2', '3', '5', '∞'], '3')}</div>
+      <div style="padding:8px 0;border-top:1px solid var(--outline-variant);display:flex;flex-direction:column;gap:8px"><span class="t-label">Nghỉ giữa câu</span>${seg(['Tắt', '1 giây', '2 giây', '3 giây', 'Bằng câu'], '1 giây')}</div>
+      <div style="min-height:56px;border-top:1px solid var(--outline-variant);display:flex;align-items:center;justify-content:space-between"><span class="t-label">Dừng sau mỗi câu</span><button class="switch" role="switch" aria-checked="false" aria-label="Dừng sau mỗi câu"></button></div>
+      <div style="min-height:56px;border-top:1px solid var(--outline-variant);display:flex;align-items:center;justify-content:space-between"><span><span class="t-label" style="display:block">Lặp đoạn A–B</span><span class="t-footnote muted tnum">0:23,6 – 0:37,0</span></span><button class="btn btn-text">Xoá</button></div></div></div>`;
+}
+
+function playerBar({ playing = true, loop = null, disabled = false, speed = '1×', large = false } = {}) {
+  const d = disabled ? 'disabled' : '';
+  if (large) {
+    return `<div class="pb" role="region" aria-label="Trình phát"><button class="handle-btn" aria-label="Mở trình phát đầy đủ"></button>
+      <div class="pb-row1" style="height:auto;padding:4px 4px 8px"><span class="tnum" style="font-size:26px;line-height:34px;font-weight:600">Câu 7/11</span><span class="grow"></span><button class="chip" style="height:48px;font-size:22px">1×</button></div>
+      <div class="pb-controls"><button class="icon-btn" aria-label="Câu trước"><span class="ms lg">skip_previous</span></button>${playBtn({ playing })}<button class="icon-btn" aria-label="Câu sau"><span class="ms lg">skip_next</span></button><button class="icon-btn" aria-label="Lặp câu này"><span class="ms lg">repeat</span></button></div></div>`;
+  }
+  return `<div class="pb" role="region" aria-label="Trình phát"><button class="handle-btn" aria-label="Mở trình phát đầy đủ"></button>
+    <div class="pb-row1">${loop ? '' : '<span class="t-label tnum">Câu 7/11</span>'}${loop ? `<button class="chip on"><span class="ms">repeat</span>${loop}<span class="ms sm" style="margin-right:-8px">close</span></button>` : '<span class="t-footnote muted tnum">0:33 / 0:56</span>'}<span class="grow"></span><button class="chip ${speed !== '1×' ? 'on' : ''}" ${d} style="min-width:64px;justify-content:center">${speed}</button></div>
+    ${wave({ kind: 'compact', fraction: 0.58, range: loop ? [0.5, 0.62] : null, count: 87 })}
+    <div class="pb-controls"><button class="icon-btn" aria-label="Nghe lại câu" ${d}><span class="ms">replay</span></button><button class="icon-btn" aria-label="Câu trước" ${d}><span class="ms">skip_previous</span></button>
+      ${playBtn({ playing, disabled })}<button class="icon-btn" aria-label="Câu sau" ${d}><span class="ms">skip_next</span></button><button class="icon-btn ${loop ? 'selected' : ''}" aria-label="Lặp câu này" ${d}><span class="ms">${loop ? 'repeat_on' : 'repeat'}</span></button></div></div>`;
+}
+
+function playerBarWide() {
+  return `<div class="pb wide" role="region" aria-label="Trình phát"><div class="wave-row"><span class="wave-time">0:33</span>${wave({ kind: 'compact', fraction: 0.58, range: [0.5, 0.62], count: 140 })}<span class="wave-time" style="text-align:right">0:56</span></div>
+    <div class="pb-controls"><span class="t-label tnum">Câu 7/11</span><button class="chip on" style="margin-left:8px"><span class="ms">repeat</span>Lặp câu 7 · lần 2</button>
+      <div class="center"><button class="icon-btn" aria-label="Lùi 2 giây"><span class="t-label">−2s</span></button><button class="icon-btn" aria-label="Câu trước"><span class="ms">skip_previous</span></button>${playBtn({ size: 'medium', playing: true })}<button class="icon-btn" aria-label="Câu sau"><span class="ms">skip_next</span></button><button class="icon-btn" aria-label="Tới 2 giây"><span class="t-label">+2s</span></button></div>
+      <div class="right"><button class="icon-btn" aria-label="Nghe lại câu"><span class="ms">replay</span></button><button class="icon-btn selected" aria-label="Lặp"><span class="ms">repeat_on</span></button><button class="chip on" style="min-width:64px;justify-content:center">0,85×</button><button class="icon-btn" aria-label="Tuỳ chỉnh phát"><span class="ms">tune</span></button></div></div></div>`;
+}
+
+function miniPlayer({ playing = true, buffering = false, loop = false, progress = 0.58, cls = '' } = {}) {
+  return `<div class="mini ${cls}" role="group" aria-label="Trình phát thu nhỏ">
+    ${playBtn({ playing, buffering, label: playing ? 'Tạm dừng' : 'Phát' })}
+    <button class="text open" data-action="expand" aria-label="Section 2, câu 7${loop ? ', đang lặp' : ''}. Mở Nghe kỹ"><span class="t-label ellipsis">${loop ? '<span class="ms xs" style="vertical-align:-3px;color:var(--primary)">repeat</span> ' : ''}Section 2 · Câu 7</span><span class="t-footnote muted ellipsis" lang="en">If you’d like a plot of your own, the waiting list…</span></button>
+    <button class="icon-btn" data-action="stop" aria-label="Dừng phát"><span class="ms">close</span></button><span class="hair" style="width:${progress * 100}%"></span></div>`;
+}
+
+function evidencePlayer({ playing = false, slow = true, loop = false, error = false, word = -1 } = {}) {
+  if (error) {
+    return `<div class="evp" role="alert"><div class="evp-top"><span class="play small" style="background:var(--wrong-container);color:var(--on-wrong-container)"><span class="ms">volume_off</span></span><div class="grow"><div class="t-label">Chưa phát được đoạn này</div><div class="t-footnote muted">Kiểm tra kết nối rồi thử lại nhé.</div></div><button class="btn btn-text">Thử lại</button></div></div>`;
+  }
+  const words = EVIDENCE.text.split(' ').map((w, i) => `<span class="w${EVIDENCE.answer.includes(w) ? ' answer' : ''}${i < word ? ' spoken' : ''}${i === word ? ' now' : ''}" data-w="${i}">${w}</span>`).join(' ');
+  return `<div class="evp"><div class="evp-top">${playBtn({ size: 'small', playing, label: playing ? 'Tạm dừng' : 'Nghe đoạn chứa đáp án' })}
+      <div class="grow" style="display:flex;flex-direction:column;gap:2px"><span class="t-label">Đoạn chứa đáp án</span><span class="t-footnote muted tnum">Section 2 · 0:31 – 0:36</span></div></div>
+    ${wave({ fraction: playing ? 0.45 : 0, range: [0, 1], evidence: true, count: 60, seed: 4 })}
+    <p class="txt" lang="en">${words}</p>
+    <div class="evp-actions"><button class="toggle" data-action="slow" aria-pressed="${slow}"><span class="ms sm">slow_motion_video</span>Chậm 0,75×</button><button class="toggle" data-action="loop-ev" aria-pressed="${loop}"><span class="ms sm">repeat</span>Lặp</button><span class="grow"></span><button class="btn btn-text" data-action="full">Nghe cả đoạn<span class="ms sm">arrow_forward</span></button></div></div>`;
+}
+
+function sentence(text, cls = '', { speaker, tags = '', word = -1, answer = [] } = {}) {
+  const words = text.split(' ').map((w, i) => `<span class="w${i < word ? ' spoken' : ''}${i === word ? ' now' : ''}${answer.includes(w) ? ' answer' : ''}">${w}</span>`).join(' ');
+  return `<div class="sent ${cls}">${speaker || tags ? `<div class="sent-head">${speaker ? `<span class="t-caption muted" style="font-weight:600">${speaker}</span>` : ''}<span class="grow"></span>${tags}</div>` : ''}<div class="txt" lang="en">${words}</div>${cls.includes('looped') ? '<span class="bracket" aria-hidden="true"></span>' : ''}</div>`;
+}
+
+function galleryHTML(frame) {
+  const item = (label, html, full) => `<div class="g-item ${full ? 'full' : ''}">${html}<span class="t-caption">${label}</span></div>`;
+  return `<div class="gallery"><p class="t-caption muted">THÀNH PHẦN · NGHE KỸ VÀ CHÉP CHÍNH TẢ</p><h1 class="t-large-title" style="margin-bottom:20px">Trình phát</h1><div class="g-grid">
+    <section class="g-card"><h2 class="t-headline">LpPlayButton</h2>
+      <div class="g-row">${item('Large · đang phát', playBtn({ size: 'large', playing: true }))}${item('Medium · tạm dừng', playBtn({ size: 'medium' }))}${item('Small', playBtn({ size: 'small' }))}${item('Vòng tiến độ', playBtn({ size: 'large', ring: 0.62 }))}</div>
+      <div class="g-row">${item('Đang tải', playBtn({ buffering: true }))}${item('Hết bài', playBtn({ finished: true }))}${item('Không dùng được', playBtn({ disabled: true }))}</div>
+      <p class="t-footnote muted">Chạm thử: biểu tượng play ↔ pause đổi bằng spring.snappy (scale 0.6 → 1).</p></section>
+    <section class="g-card"><h2 class="t-headline">LpWaveform</h2>
+      ${item('Đang phát · regular 48', wave({ fraction: 0.4 }), true)}
+      ${item('Kéo để tua · bong bóng thời gian, nút 20', wave({ fraction: 0.44, scrubbing: true, seed: 2 }), true)}
+      ${item('Lặp A–B · expanded 72, kéo A/B', wave({ kind: 'expanded', fraction: 0.55, range: [0.42, 0.66], ab: true, seed: 3 }), true)}
+      ${item('Đoạn chứa đáp án', wave({ fraction: 0.52, range: [0.48, 0.6], evidence: true, seed: 5 }), true)}
+      ${item('Đang tải phần sau (chấm)', wave({ kind: 'compact', fraction: 0.3, buffer: true, seed: 6 }), true)}
+      ${item('Chưa có dữ liệu sóng âm → thanh thường', '<div class="track-only"><i style="width:40%"></i></div>', true)}</section>
+    <section class="g-card span"><h2 class="t-headline">LpPlayerBar</h2>
+      <div class="g-grid" style="grid-template-columns:${frame === 'desktop' ? 'repeat(3, 1fr)' : '1fr'}">${item('Điện thoại · đang phát', `<div class="surface-box" style="padding:0;overflow:hidden">${playerBar()}</div>`, true)}
+        ${item('Đang lặp · tốc độ 0,75×', `<div class="surface-box" style="padding:0;overflow:hidden">${playerBar({ loop: 'Lặp câu 7 · 2/3', speed: '0,75×' })}</div>`, true)}
+        ${item('Ngoại tuyến · chưa tải âm thanh', `<div class="surface-box" style="padding:0;overflow:hidden">${playerBar({ playing: false, disabled: true })}</div>`, true)}</div>
+      ${item('Chữ 200 % · sóng âm chuyển vào trình phát đầy đủ, “Câu trước” thay cho “Nghe lại câu”', `<div class="surface-box" style="padding:0;overflow:hidden;max-width:390px">${playerBar({ large: true })}</div>`, true)}
+      ${frame === 'desktop' ? item('Máy tính · 112 cao, mọi điều khiển hiện sẵn', `<div class="surface-box" style="padding:0;overflow:hidden">${playerBarWide()}</div>`, true) : ''}</section>
+    <section class="g-card"><h2 class="t-headline">LpFullPlayer <span class="t-footnote muted">điện thoại · kéo thanh phát lên</span></h2>${fullPlayer()}</section>
+    <section class="g-card"><h2 class="t-headline">LpMiniPlayer</h2>
+      ${item('Đang phát', miniPlayer({ cls: 'static' }), true)}${item('Tạm dừng', miniPlayer({ cls: 'static', playing: false, progress: 0.3 }), true)}
+      ${item('Đang tải', miniPlayer({ cls: 'static', buffering: true, progress: 0.1 }), true)}${item('Đang lặp', miniPlayer({ cls: 'static', loop: true }), true)}</section>
+    <section class="g-card"><h2 class="t-headline">LpEvidencePlayer</h2>
+      ${item('Đang phát chậm · karaoke, từ đáp án gạch chân', evidencePlayer({ playing: true, word: 13 }), true)}${item('Lỗi', evidencePlayer({ error: true }), true)}</section>
+    <section class="g-card"><h2 class="t-headline">LpSpeedControl · LpLoopChip</h2>
+      <div class="g-row">${item('Bình thường', '<button class="chip" style="min-width:64px;justify-content:center">1×</button>')}${item('Chậm', '<button class="chip on" style="min-width:64px;justify-content:center">0,75×</button>')}${item('Nhanh', '<button class="chip on" style="min-width:64px;justify-content:center">1,25×</button>')}</div>
+      <div class="g-row">${item('Một câu', '<button class="chip on"><span class="ms">repeat</span>Lặp câu 7<span class="ms sm" style="margin-right:-8px">close</span></button>')}${item('Nhiều câu + đếm', '<button class="chip on"><span class="ms">repeat</span>Lặp câu 4–5 · 2/3<span class="ms sm" style="margin-right:-8px">close</span></button>')}${item('A–B tự do', '<button class="chip on"><span class="ms">repeat</span>Lặp 0:21,4 – 0:27,9<span class="ms sm" style="margin-right:-8px">close</span></button>')}</div></section>
+    <section class="g-card"><h2 class="t-headline">LpSlider · LpSwitch</h2>
+      ${item('Tốc độ 1× · điểm dừng 0,75 / 1 / 1,25', slider(1), true)}${item('Đang kéo · bong bóng giá trị', slider(0.85, { dragging: true }), true)}${item('Focus bàn phím (← → ±0,05)', slider(0.75, { focus: true }), true)}${item('Không dùng được', slider(1, { disabled: true }), true)}
+      <div class="g-row">${item('Bật', '<button class="switch" role="switch" aria-checked="true" aria-label="Bật"></button>')}${item('Tắt', '<button class="switch" role="switch" aria-checked="false" aria-label="Tắt"></button>')}${item('Focus', '<button class="switch focus" role="switch" aria-checked="true" aria-label="Focus"></button>')}${item('Không dùng được', '<button class="switch" role="switch" aria-checked="false" disabled aria-label="Không dùng được"></button>')}</div></section>
+    <section class="g-card span"><h2 class="t-headline">LpTranscriptSentence</h2><div class="g-grid" style="grid-template-columns:${frame === 'desktop' ? '1fr 1fr' : '1fr'}">
+      ${item('Đã qua', `<div class="surface-box">${sentence('Most of them are rented by local families.', '')}</div>`, true)}
+      ${item('Đang phát · từ hiện tại nổi bật', `<div class="surface-box">${sentence('If you’d like a plot of your own, the waiting list is currently around eight months.', 'current', { speaker: 'Helen', word: 9 })}</div>`, true)}
+      ${item('Đang lặp · ngoặc có tay kéo', `<div class="surface-box" style="padding-left:16px">${sentence('Plots cost forty pounds a year.', 'current looped', { word: 2 })}</div>`, true)}
+      ${item('Đoạn chứa đáp án', `<div class="surface-box">${sentence('…the waiting list is currently around eight months.', 'evidence', { tags: '<span class="tag info">Câu 14</span>', answer: ['eight', 'months.'] })}</div>`, true)}
+      ${item('Ẩn lời thoại · nhịp vẫn hiện', `<div class="surface-box">${sentence('The tool shed is just to your left.', 'hidden', { word: 4, tags: '<button class="btn btn-text" style="height:28px;padding:0 4px;font-size:13px"><span class="ms sm">visibility</span>Hiện câu này</button>' })}</div>`, true)}
+      ${item('Chưa chia câu (không chạm để nghe)', `<div class="surface-box">${sentence('Please remember to sign the book.', 'disabled')}</div>`, true)}</div></section>
+    <section class="g-card"><h2 class="t-headline">LpDiffText</h2>
+      <p class="diff" lang="en"><span class="tok ok">cost<span class="sr">, đúng</span></span><span class="tok bad"><s>fourteen</s><span class="fix">forty</span></span><span class="tok miss"><span class="sr">thiếu: </span>the</span><span class="tok extra"><s>and</s></span><span class="tok hinted">includes<span class="ms">lightbulb</span></span><span class="tok ok">forty<small>(40)</small></span></p>
+      <p class="t-footnote muted">Đúng (chữ thường, không trang trí) · Sai (gạch ngang + từ đúng) · Thiếu (viền đứt) · Thừa (gạch chấm) · Dùng gợi ý (gạch chấm xanh + bóng đèn) · Chấp nhận biến thể.</p></section>
+    <section class="g-card"><h2 class="t-headline">LpDictationField</h2>
+      ${item('Trống', '<div class="field">Gõ những gì bạn nghe được…</div>', true)}${item('Đang gõ', '<div class="field focus" lang="en">Plots cost forty pounds a year, and that</div>', true)}
+      ${item('Bộ gõ tiếng Việt đang bật', '<div class="banner" style="background:var(--warning-container);color:var(--on-warning-container)"><span class="ms" style="color:var(--warning)">keyboard</span><span class="t-footnote">Hình như bộ gõ tiếng Việt đang bật. Chuyển sang bàn phím tiếng Anh để gõ chính xác hơn.</span></div>', true)}</section>
+  </div></div>`;
+}
+
+function reviewHTML(frame) {
+  const rows = QUESTIONS.map(([n, label, answer, ok, mine]) => `<button class="row" data-action="${n === 14 ? 'explain' : ''}" aria-label="Câu ${n}, ${ok ? 'đúng' : 'sai'}. Mở giải thích">
+    <span class="qnum ${ok ? 'ok' : 'bad'}">${n}</span><span class="grow"><span class="t-headline" style="display:block">${label}</span><span class="t-footnote ${ok ? 'muted' : 'bad-t'}">${ok ? `<span class="ms xs ok-t" style="vertical-align:-3px">check_circle</span> ${answer}` : `<span class="ms xs" style="vertical-align:-3px">cancel</span> Sai — đáp án: ${answer} · bạn điền: ${mine}`}</span></span>
+    <span class="t-label" style="color:var(--primary)">Giải thích</span><span class="ms muted">chevron_right</span></button>`).join('');
+  const body = `<div class="inner">${frame === 'phone' ? '<div class="top"><button class="icon-btn" aria-label="Quay lại"><span class="ms">arrow_back_ios_new</span></button></div>' : ''}
+    <p class="t-caption muted">${TEST_NAME.toUpperCase()} · LISTENING</p><h1 class="t-large-title">Xem lại bài</h1>
+    <p class="t-subheadline muted" style="margin-top:4px">Section 2 · 4/5 câu đúng ở phần này</p>
+    <div class="list" style="margin-top:20px">${rows}</div>
+    <div class="list" style="margin-top:16px"><button class="row" data-action="expand"><span class="qnum" style="background:var(--primary-container);color:var(--on-primary-container)"><span class="ms sm">hearing</span></span><span class="grow"><span class="t-headline" style="display:block">Nghe kỹ Section 2</span><span class="t-footnote muted">Từng câu, lặp đoạn, đổi tốc độ</span></span><span class="ms muted">chevron_right</span></button></div></div>`;
+  const sidebar = frame === 'desktop' ? `<nav class="sidebar" aria-label="Điều hướng"><span class="t-headline" style="padding:0 12px 16px">Luyện IELTS</span>${[['wb_sunny', 'Hôm nay'], ['menu_book', 'Luyện đề', true], ['style', 'Từ vựng'], ['monitoring', 'Tiến độ'], ['person', 'Tôi']].map(([icon, label, on]) => `<span class="side-item ${on ? 'on' : ''}"><span class="ms ${on ? 'fill' : ''}">${icon}</span>${label}</span>`).join('')}</nav>` : '';
+  return `<div class="screen base">${sidebar}<div class="content">${body}</div></div>`;
+}
+
+function intensiveHTML(frame, { evidence = false } = {}) {
+  const sents = SNIPPET.map(([speaker, text], i) => sentence(text, i === 1 ? `current${evidence ? ' evidence looped' : ''}` : i === 0 ? '' : '', { speaker: i === 0 ? speaker : '', tags: i === 1 ? '<span class="tag info">Câu 14</span>' : i === 2 ? '<span class="tag">Câu 15</span>' : '', word: i === 1 ? 9 : -1, answer: evidence && i === 1 ? EVIDENCE.answer : [] })).join('');
+  const banner = evidence ? '<div class="banner ev-banner" style="margin-bottom:12px"><span class="ms">hearing</span><div class="grow"><div class="t-label">Đoạn chứa đáp án câu 14</div><div class="t-footnote">Bạn điền “eight weeks” · đang phát 0,75×</div></div><button class="btn btn-text" data-action="exit-evidence">Thoát đoạn này</button></div>' : '';
+  const bar = frame === 'phone' ? `<div style="position:relative;z-index:2">${playerBar({ loop: evidence ? 'Lặp câu 7' : null, speed: evidence ? '0,75×' : '1×' })}</div>` : playerBarWide();
+  const title = frame === 'phone' ? `<div class="t-headline">Nghe kỹ</div><div class="t-caption muted">${TEST_NAME}</div>` : '<div class="t-headline">Section 2 · Riverside Community Garden</div><div class="t-caption muted">Câu 11–20 · 11 câu</div>';
+  return `<div class="il" role="region" aria-label="Nghe kỹ">
+    <div class="il-top"><button class="icon-btn" data-action="back" aria-label="Quay lại"><span class="ms">${frame === 'phone' ? 'arrow_back_ios_new' : 'arrow_back'}</span></button>
+      <div class="grow" style="text-align:${frame === 'phone' ? 'center' : 'left'}">${title}</div>
+      <button class="icon-btn" aria-label="Ẩn lời thoại"><span class="ms">visibility</span></button><button class="icon-btn" aria-label="Bản dịch"><span class="ms">translate</span></button></div>
+    <div class="il-body"><div>${banner}${sents}</div></div>${bar}</div>`;
+}
+
+function screen(frame, st) {
+  let inner = '';
+  if (st.state === 'gallery') inner = `<div class="screen" style="display:block">${galleryHTML(frame)}</div>`;
+  else inner = `${reviewHTML(frame)}${st.state === 'mini' ? miniPlayer() : ''}`;
+  return frame === 'phone'
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">wifi</span><span class="ms">battery_full</span></span></div>${inner}<div class="home-ind"></div>`
+    : `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS — ${st.state === 'gallery' ? 'Thành phần trình phát' : 'Xem lại bài'}</span></div><div class="win-body" style="display:block">${inner}</div>`;
+}
+
+const hostOf = (device, frame) => (frame === 'phone' ? device : device.querySelector('.win-body'));
+
+function ensureMini(device, frame) {
+  let mini = device.querySelector('.mini:not(.static)');
+  if (!mini) {
+    hostOf(device, frame).insertAdjacentHTML('beforeend', miniPlayer());
+    mini = device.querySelector('.mini:not(.static)');
+  }
+  return mini;
+}
+
+function barMorph(device, frame, il, mini) {
+  const host = hostOf(device, frame);
+  const bar = il.querySelector('.pb');
+  const offset = frame === 'phone' ? 0 : 38;
+  const m = localRect(device, mini);
+  const width = host.offsetWidth, height = host.offsetHeight, barHeight = bar.offsetHeight;
+  const dy = m.y - offset - (height - barHeight);
+  return {
+    bar,
+    collapsed: { transform: `translate(${-width}px, ${dy}px)`, clipPath: `inset(0px ${width - m.x - m.w}px ${barHeight - m.h}px ${m.x}px round 20px)` },
+    expanded: { transform: `translate(${-width}px, 0px)`, clipPath: `inset(0px 0px 0px 0px round ${frame === 'phone' ? 28 : 0}px ${frame === 'phone' ? 28 : 0}px 0px 0px)` },
+  };
+}
+
+function openIntensive(device, frame, st, { evidence = false } = {}) {
+  if (st.busy || device.querySelector('.il')) return;
+  st.busy = true;
+  const host = hostOf(device, frame);
+  const base = device.querySelector('.screen.base');
+  const mini = device.querySelector('.mini:not(.static)');
+  host.insertAdjacentHTML('beforeend', intensiveHTML(frame, { evidence }));
+  const il = host.querySelector('.il');
+  wireIntensive(device, frame, st, il);
+  haptic(device, 'impact light · CONTEXT_CLICK');
+  const done = () => { if (mini) mini.style.visibility = 'hidden'; st.busy = false; il.querySelector('[data-action="back"]').focus({ preventScroll: true }); };
+  if (reduceMotion) { play(il, [{ opacity: 0 }, { opacity: 1 }]).then(done); return; }
+  play(il, [{ transform: 'translateX(100%)' }, { transform: 'none' }], 'smooth');
+  play(base, [{ transform: 'none' }, { transform: 'translateX(-30%)' }], 'smooth').then(() => { base.style.transform = 'translateX(-30%)'; });
+  if (mini) {
+    const { bar, collapsed, expanded } = barMorph(device, frame, il, mini);
+    mini.style.visibility = 'hidden';
+    play(bar, [collapsed, { ...expanded, transform: 'none' }], 'smooth').then(() => { bar.style.clipPath = ''; bar.style.transform = ''; });
+  }
+  const bracket = il.querySelector('.bracket');
+  if (bracket) play(bracket, [{ transform: 'scaleY(0)' }, { transform: 'none' }], 'snappy', { delay: 300, fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(il, [{ opacity: 1 }, { opacity: 1 }], 'smooth').then(done);
+}
+
+function closeIntensive(device, frame, st) {
+  const il = device.querySelector('.il');
+  if (!il || st.busy) return;
+  st.busy = true;
+  const base = device.querySelector('.screen.base');
+  const icon = il.querySelector('.pb .play .ms');
+  if (!icon || icon.textContent !== 'pause') {
+    const existing = device.querySelector('.mini:not(.static)');
+    if (existing) existing.remove();
+    play(base, [{ transform: 'translateX(-30%)' }, { transform: 'none' }], 'smooth').then(() => { base.style.transform = ''; });
+    play(il, [{ transform: 'none' }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => { il.remove(); st.busy = false; });
+    return;
+  }
+  const mini = ensureMini(device, frame);
+  mini.style.visibility = 'hidden';
+  const done = () => {
+    il.remove();
+    base.style.transform = '';
+    mini.style.visibility = '';
+    st.busy = false;
+    st.playing = true;
+    mini.querySelector('.open').focus({ preventScroll: true });
+  };
+  if (reduceMotion) { play(il, [{ opacity: 1 }, { opacity: 0 }]).then(done); return; }
+  const { bar, collapsed, expanded } = barMorph(device, frame, il, mini);
+  play(il, [{ transform: 'none' }, { transform: 'translateX(100%)' }], 'smooth');
+  play(base, [{ transform: 'translateX(-30%)' }, { transform: 'none' }], 'smooth');
+  play(bar, [{ ...expanded, transform: 'none' }, collapsed], 'smooth').then(done);
+}
+
+function wireIntensive(device, frame, st, il) {
+  il.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action], .play');
+    if (!button) return;
+    event.stopPropagation();
+    const action = button.dataset.action;
+    if (action === 'back') return closeIntensive(device, frame, st);
+    if (action === 'exit-evidence') {
+      const banner = il.querySelector('.ev-banner');
+      play(banner, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => banner.remove());
+      il.querySelectorAll('.sent.evidence').forEach((s) => s.classList.remove('evidence', 'looped'));
+      il.querySelectorAll('.bracket').forEach((b) => b.remove());
+      il.querySelectorAll('.pb .chip.on').forEach((chip) => {
+        if (chip.textContent.includes('Lặp')) chip.remove();
+        else { chip.classList.remove('on'); chip.textContent = '1×'; }
+      });
+      il.querySelectorAll('.pb .icon-btn.selected').forEach((b) => { b.classList.remove('selected'); b.querySelector('.ms').textContent = 'repeat'; });
+      return;
+    }
+    if (action === 'toggle' || button.classList.contains('play')) return togglePlay(device, st, button);
+  });
+}
+
+function togglePlay(device, st, button) {
+  const icon = button.querySelector('.ms');
+  if (!icon || button.disabled) return;
+  const playing = icon.textContent !== 'pause';
+  icon.textContent = playing ? 'pause' : 'play_arrow';
+  if (button.closest('.mini:not(.static), .il')) st.playing = playing;
+  play(icon, [{ transform: 'scale(0.6)', opacity: 0.4 }, { transform: 'none', opacity: 1 }], 'snappy');
+  haptic(device, 'selection · CLOCK_TICK');
+}
+
+function openExplain(device, frame, st) {
+  const html = `<div class="handle"></div><span class="t-caption muted">Câu 14 · Section 2</span><h2 class="t-title2" style="margin-top:2px">Thời gian chờ</h2>
+    <div class="status-line"><span class="ms fill">cancel</span><span class="t-label">Sai — đáp án: eight months</span><span class="grow"></span><span class="t-footnote">bạn điền: eight weeks</span></div>
+    <p class="t-body" style="margin-top:12px">Helen nói danh sách chờ hiện khoảng tám <b>tháng</b>. Câu này hay bẫy ở chữ <i>eight</i>: nghe được con số rồi đoán đơn vị, trong khi <i>months</i> đến ngay sau và được nói lướt.</p>
+    <div style="margin-top:16px" class="evp-slot">${evidencePlayer({ playing: false })}</div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="chip"><span class="ms">bookmark_add</span>waiting list</button><button class="chip"><span class="ms">bookmark_add</span>currently</button></div>
+    <button class="btn btn-primary" data-action="close-sheet" style="width:100%;margin-top:20px">Đã hiểu</button>`;
+  const ctrl = openSheet(device, frame, html, 'Giải thích câu 14');
+  const sheet = ctrl.sheet;
+  st.ev = { playing: false, slow: true, loop: false, t: 0 };
+  sheet.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+    event.stopPropagation();
+    const action = button.dataset.action;
+    if (action === 'close-sheet') { st.ev.playing = false; return ctrl.close(); }
+    if (action === 'toggle') { st.ev.playing = !st.ev.playing; if (st.ev.playing && st.ev.t >= 1) st.ev.t = 0; syncEvidence(sheet, st); return haptic(device, 'selection · CLOCK_TICK'); }
+    if (action === 'slow' || action === 'loop-ev') {
+      const key = action === 'slow' ? 'slow' : 'loop';
+      st.ev[key] = !st.ev[key];
+      button.setAttribute('aria-pressed', String(st.ev[key]));
+      return haptic(device, 'selection · CLOCK_TICK');
+    }
+    if (action === 'full') {
+      st.ev.playing = false;
+      ctrl.close({ restoreFocus: false });
+      openIntensive(device, frame, st, { evidence: true });
+      play(device.querySelector('.il .sent.evidence'), [{ opacity: 0.4, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 120 });
+    }
+  });
+}
+
+function syncEvidence(sheet, st) {
+  const words = [...sheet.querySelectorAll('.evp .w')];
+  const wi = st.ev.t >= 1 ? words.length : Math.floor(st.ev.t * words.length);
+  words.forEach((w, i) => { w.classList.toggle('spoken', i < wi); w.classList.toggle('now', i === wi && st.ev.playing); });
+  const wv = sheet.querySelector('.evp .wave');
+  if (wv) { wv.querySelector('.bars.played').style.clipPath = `inset(0 ${(1 - st.ev.t) * 100}% 0 0)`; wv.querySelector('.head').style.left = `${st.ev.t * 100}%`; }
+  const icon = sheet.querySelector('.evp .play .ms');
+  if (icon && icon.textContent !== (st.ev.playing ? 'pause' : 'play_arrow')) {
+    icon.textContent = st.ev.playing ? 'pause' : 'play_arrow';
+    play(icon, [{ transform: 'scale(0.6)' }, { transform: 'none' }], 'snappy');
+  }
+}
+
+let last = performance.now();
+function onFrame(now) {
+  const dt = Math.min(0.1, (now - last) / 1000);
+  last = now;
+  live.forEach((device) => {
+    if (!device.isConnected) return live.delete(device);
+    const st = deviceState.get(device);
+    if (st.playing) {
+      st.t = (st.t + dt / 30) % 1;
+      device.querySelectorAll('.mini:not(.static) .hair').forEach((h) => { h.style.width = `${(0.58 + st.t * 0.42) * 100}%`; });
+    }
+    if (st.ev && st.ev.playing) {
+      st.ev.t += dt / ((EVIDENCE.end - EVIDENCE.start) / (st.ev.slow ? 0.75 : 1));
+      if (st.ev.t >= 1) { if (st.ev.loop) st.ev.t = 0; else { st.ev.t = 1; st.ev.playing = false; } }
+      const sheet = device.querySelector('.sheet');
+      if (sheet) syncEvidence(sheet, st);
+    }
+  });
+  requestAnimationFrame(onFrame);
+}
+
+function mount(device, frame) {
+  const st = { state: ui.state, playing: true, t: 0, busy: false, ev: null };
+  deviceState.set(device, st);
+  live.add(device);
+  device.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-action], .play');
+    if (!target || !device.contains(target) || target.closest('.sheet, .il')) return;
+    const action = target.dataset.action;
+    if (action === 'stop') {
+      event.stopPropagation();
+      const mini = target.closest('.mini');
+      if (mini && !mini.classList.contains('static')) { st.playing = false; play(mini, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(24px)' }], 'smooth').then(() => mini.remove()); }
+      return;
+    }
+    if (action === 'toggle' || target.classList.contains('play')) { event.stopPropagation(); return togglePlay(device, st, target); }
+    if (action === 'expand') return openIntensive(device, frame, st);
+    if (action === 'explain') return openExplain(device, frame, st);
+  });
+  device.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && device.querySelector('.il') && !device.querySelector('.sheet-layer')) closeIntensive(device, frame, st);
+  });
+  if (st.state === 'mini') {
+    const mini = device.querySelector('.mini:not(.static)');
+    play(mini, [{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 200 });
+  }
+  if (st.state === 'explain') setTimeout(() => openExplain(device, frame, st), 250);
+}
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, clipPath, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (device.classList.contains('desktop')) return;
+  const log = document.querySelector('.haptic-log');
+  log.innerHTML = `<span class="ms sm">vibration</span> Rung: ${kind}`;
+  log.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(haptic.timer);
+  haptic.timer = setTimeout(() => { log.textContent = ''; }, 2000);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function openSheet(device, frame, html, label) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const title = sheet.querySelector('h2');
+  title.setAttribute('tabindex', '-1');
+  title.focus({ preventScroll: true });
+  const close = (fromY = 0, { restoreFocus = true } = {}) => {
+    if (typeof fromY === 'object') { restoreFocus = fromY.restoreFocus; fromY = 0; }
+    play(scrim, [{ opacity: Math.max(0, 1 - fromY / sheet.offsetHeight) }, { opacity: 0 }], 'smooth');
+    play(sheet, phone ? [{ transform: `translateY(${fromY}px)` }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (restoreFocus && opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape') return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button:not([disabled]), [tabindex="0"]')];
+    const first = focusable[0], lastEl = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); lastEl.focus(); }
+    else if (!event.shiftKey && document.activeElement === lastEl) { event.preventDefault(); first.focus(); }
+  });
+  scrim.addEventListener('click', () => close());
+  if (phone) {
+    let startY = null, lastY = 0, lastT = 0, velocity = 0;
+    const scale = Number(device.dataset.scale);
+    sheet.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('button, .wave')) return;
+      startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
+      sheet.setPointerCapture(event.pointerId);
+      sheet.getAnimations().forEach((a) => a.cancel());
+    });
+    sheet.addEventListener('pointermove', (event) => {
+      if (startY === null) return;
+      const dy = Math.max(0, (event.clientY - startY) / scale);
+      velocity = (event.clientY - lastY) / scale / Math.max(1, event.timeStamp - lastT);
+      lastY = event.clientY; lastT = event.timeStamp;
+      sheet.style.transform = `translateY(${dy}px)`;
+      scrim.style.opacity = 1 - dy / sheet.offsetHeight;
+    });
+    sheet.addEventListener('pointerup', (event) => {
+      if (startY === null) return;
+      const dy = Math.max(0, (event.clientY - startY) / scale);
+      startY = null;
+      if (dy > sheet.offsetHeight * 0.3 || velocity > 0.6) return close(dy);
+      play(sheet, [{ transform: `translateY(${dy}px)` }, { transform: 'none' }], 'smooth');
+      play(scrim, [{ opacity: 1 - dy / sheet.offsetHeight }, { opacity: 1 }], 'smooth');
+    });
+  }
+  return { sheet, close };
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const width = frame === 'phone' ? 390 : 1280, height = frame === 'phone' ? 844 : 800;
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  live.clear();
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, { state: ui.state })}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  const stateGroup = document.querySelector('[data-control="state"]');
+  stateGroup.insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(() => { render(); requestAnimationFrame(onFrame); });
+</script>
+</body>
+</html>
