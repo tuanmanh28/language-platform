@@ -2,6 +2,7 @@ package com.app.platform.language.core.model
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class BundledListeningContentTest {
@@ -67,6 +68,27 @@ class BundledListeningContentTest {
           val keys = q.options.map { it.key }
           assertTrue(q.acceptedAnswers.all { it in keys }, "${test.id}/${q.id}: answer is not one of the option keys")
         }
+    }
+  }
+
+  @Test
+  fun everyQuestionIsExplainedWithAQuoteFromItsSectionTranscript() {
+    tests.forEach { test ->
+      test.sections.forEach { section ->
+        section.questionGroups.flatMap { it.questions }.forEach { question ->
+          val name = "${test.id}/${question.id}"
+          val explanation = assertExplained(name, question)
+          val evidence = assertIs<TranscriptEvidence>(explanation.evidence, "$name: needs transcript evidence")
+          assertEquals(section.number, evidence.sectionNumber, "$name: evidence points to another section")
+          assertTrue(evidence.startSeconds < evidence.endSeconds, "$name: evidence ends before it starts")
+          val heard =
+            section.transcript
+              .filter { it.startSeconds >= evidence.startSeconds && it.endSeconds <= evidence.endSeconds }
+              .joinToString(" ") { it.text }
+          assertTrue(evidence.quote in heard, "$name: quote is not verbatim in the transcript at that time")
+          assertParaphrasesMatch(name, question, explanation, source = heard)
+        }
+      }
     }
   }
 

@@ -162,7 +162,9 @@ Running on a real device requires setting your Team under *Signing & Capabilitie
 ## Adding a test
 
 1. Add a JSON file to `content/reading/` following `content/schema/reading-test.schema.json`
-   (question numbers run consecutively from 1; MCQ answers must be option `key`s).
+   (question numbers run consecutively from 1; MCQ answers must be option `key`s). Every question has an
+   `explanation`: Vietnamese `text` and `trap`, an `evidence` quote copied verbatim from its paragraph (Reading) or
+   transcript time range (Listening), and English `paraphrases` pairs found verbatim in the question and the source.
 2. Rebuild: the test is embedded into the apps and the backend; `BundledContentTest` validates it.
 
 Listening tests go to `content/listening/` following `content/schema/listening-test.schema.json` (four sections;
@@ -174,7 +176,8 @@ Test content must be **original or properly licensed** — never use material fr
 ## Technical notes
 
 - The conversion tables in `BandScale` are reference tables; the UI always says "estimated band".
-- Phase 1 ships answer keys to the client for offline scoring. Scoring moves to the server once Premium exists.
+- Test payloads (bundled and API) carry answer keys and explanations so the apps score and explain offline; the apps
+  show them only after submitting. The submit result returns them too.
 - Only `macosArm64` (Apple Silicon) is built. Add a `macosX64` target if Intel Macs are needed.
 - Windows uses Compose Desktop (JVM). PeopleInSpace also has a fully native WinUI 3 client that calls
   Kotlin/Native through NuGet (see `_reference/PeopleInSpace/windows/`) — still experimental, to revisit later.

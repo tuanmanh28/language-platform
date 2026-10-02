@@ -8,7 +8,7 @@ internal object ComponentPreviewData {
 
   val testSummary = test.toSummary()
   val choiceQuestion = test.allQuestions().first { it.options.isNotEmpty() }
-  val explanation = test.allQuestions().firstNotNullOf { it.explanation }
+  val explanation = test.allQuestions().firstNotNullOf { it.explanation?.text }
   val fixedChoice = QuestionType.TRUE_FALSE_NOT_GIVEN.fixedChoices.first()
   const val BAND = 6.5
   const val TEST_DETAILS = "Test details"

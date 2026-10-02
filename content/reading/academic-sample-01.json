@@ -41,35 +41,89 @@
               "number": 1,
               "prompt": "Rooftop vegetable growing declined partly because of improvements in transporting food.",
               "acceptedAnswers": ["TRUE"],
-              "explanation": "Paragraph A: the practice faded after cheap refrigerated transport made it easier to bring produce from distant farms."
+              "explanation": {
+                "text": "Đoạn A nói việc trồng rau trên mái nhà mai một sau khi vận chuyển đông lạnh giá rẻ giúp đưa nông sản từ các trang trại xa về dễ hơn, nên cải tiến trong vận chuyển thực phẩm đúng là một nguyên nhân.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "A",
+                  "quote": "the practice faded after cheap refrigerated transport made it easier to bring produce from distant farms"
+                },
+                "paraphrases": [
+                  { "inQuestion": "declined", "inSource": "faded" },
+                  { "inQuestion": "improvements in transporting food", "inSource": "cheap refrigerated transport" }
+                ],
+                "trap": "Chữ 'partly' khiến nhiều bạn chọn NOT GIVEN, nhưng bài chỉ cần nêu đây là một nguyên nhân là đủ để câu đúng."
+              }
             },
             {
               "id": "q2",
               "number": 2,
               "prompt": "The revival of rooftop farming in the 2000s was mainly motivated by food shortages.",
               "acceptedAnswers": ["FALSE"],
-              "explanation": "Paragraph B: interest returned 'less by food security than by concerns about heat'."
+              "explanation": {
+                "text": "Đoạn B cho biết sự quan tâm quay lại chủ yếu vì lo ngại nhiệt độ chứ không phải vì an ninh lương thực, nên câu 'chủ yếu do thiếu lương thực' mâu thuẫn với bài.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "B",
+                  "quote": "Interest returned in the 2000s, driven less by food security than by concerns about heat."
+                },
+                "paraphrases": [
+                  { "inQuestion": "revival", "inSource": "Interest returned" },
+                  { "inQuestion": "food shortages", "inSource": "food security" }
+                ],
+                "trap": "Cụm 'food security' đứng ngay cạnh 'the 2000s' nên dễ chọn TRUE; cấu trúc 'less by ... than by ...' cho biết đó chỉ là lý do phụ."
+              }
             },
             {
               "id": "q3",
               "number": 3,
               "prompt": "The Montreal study was carried out over several years.",
               "acceptedAnswers": ["NOT GIVEN"],
-              "explanation": "Paragraph B mentions the Montreal measurements but not how long the study lasted."
+              "explanation": {
+                "text": "Đoạn B chỉ nói các nhà nghiên cứu ở Montreal đo nhiệt độ bề mặt vào một buổi chiều mùa hè; bài không cho biết nghiên cứu kéo dài bao lâu.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "B",
+                  "quote": "Researchers in Montreal recorded surface temperatures on a planted roof"
+                },
+                "paraphrases": [
+                  { "inQuestion": "The Montreal study", "inSource": "Researchers in Montreal recorded" }
+                ],
+                "trap": "'a summer afternoon' dễ khiến bạn chọn FALSE, nhưng đó là thời điểm đo, không phải thời gian của cả nghiên cứu."
+              }
             },
             {
               "id": "q4",
               "number": 4,
               "prompt": "Most commercial rooftop farms today grow plants in ordinary garden soil.",
               "acceptedAnswers": ["FALSE"],
-              "explanation": "Paragraph C: most commercial rooftop farms now use lightweight growing media."
+              "explanation": {
+                "text": "Đoạn C nói phần lớn trang trại thương mại hiện dùng giá thể nhẹ thay cho đất vì đất ngấm nước rất nặng, trái ngược với câu hỏi.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "C",
+                  "quote": "most commercial rooftop farms now use lightweight growing media made from expanded clay or recycled materials"
+                },
+                "paraphrases": [
+                  { "inQuestion": "today", "inSource": "now" }
+                ],
+                "trap": "Đoạn C mở đầu bằng 'The weight of soil', nên đọc lướt dễ tưởng các trang trại vẫn trồng bằng đất."
+              }
             },
             {
               "id": "q5",
               "number": 5,
               "prompt": "Hydroponic systems are more expensive to run than soil-based systems.",
               "acceptedAnswers": ["NOT GIVEN"],
-              "explanation": "Paragraph C describes hydroponic systems but does not compare their running costs."
+              "explanation": {
+                "text": "Đoạn C mô tả hệ thống thuỷ canh nhưng không so sánh chi phí vận hành của nó với trồng bằng đất.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "C",
+                  "quote": "Some operators avoid soil entirely and rely on hydroponic systems, in which plant roots sit in nutrient-rich water."
+                },
+                "trap": "Đoạn D có nhắc 'operating costs', nhưng đó là chi phí của các dự án nói chung, không phải so sánh thuỷ canh với đất."
+              }
             }
           ]
         },
@@ -89,7 +143,19 @@
                 { "key": "D", "text": "corporate events." }
               ],
               "acceptedAnswers": ["B"],
-              "explanation": "Paragraph D: restaurant contracts, rather than sales at local markets, provided most of its income."
+              "explanation": {
+                "text": "Đoạn D: hợp đồng với nhà hàng, chứ không phải bán hàng ở chợ, mang lại phần lớn thu nhập trong năm năm đầu.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "D",
+                  "quote": "restaurant contracts, rather than sales at local markets, provided most of its income in its first five years"
+                },
+                "paraphrases": [
+                  { "inQuestion": "agreements with restaurants", "inSource": "restaurant contracts" },
+                  { "inQuestion": "early income", "inSource": "income in its first five years" }
+                ],
+                "trap": "Phương án A dùng đúng cụm 'sales at local markets' của bài, nhưng bài đã loại nó bằng 'rather than'."
+              }
             },
             {
               "id": "q7",
@@ -102,7 +168,18 @@
                 { "key": "D", "text": "projects in Canada performed better than those in the United States." }
               ],
               "acceptedAnswers": ["B"],
-              "explanation": "Paragraph D: fewer than a third covered their operating costs from food sales alone."
+              "explanation": {
+                "text": "Đoạn D: chưa đến một phần ba số dự án trang trải được chi phí vận hành chỉ bằng việc bán thực phẩm.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "D",
+                  "quote": "fewer than a third covered their operating costs from food sales alone"
+                },
+                "paraphrases": [
+                  { "inQuestion": "paid their running costs", "inSource": "covered their operating costs" }
+                ],
+                "trap": "Phương án C nhắc 'educational programmes', nhưng bài chỉ nói nhiều dự án dựa vào chúng để có thêm thu nhập, không nói chúng thua lỗ."
+              }
             },
             {
               "id": "q8",
@@ -115,7 +192,20 @@
                 { "key": "D", "text": "Elderly residents should be given roof gardens." }
               ],
               "acceptedAnswers": ["C"],
-              "explanation": "Paragraph E: supporters point out that cooler streets help all residents."
+              "explanation": {
+                "text": "Đoạn E: những người ủng hộ cho rằng đường phố mát hơn giúp ích cho mọi cư dân.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "E",
+                  "quote": "supporters point out that cooler streets help all residents, especially elderly people during heatwaves"
+                },
+                "paraphrases": [
+                  { "inQuestion": "argue", "inSource": "point out" },
+                  { "inQuestion": "Lower street temperatures", "inSource": "cooler streets" },
+                  { "inQuestion": "benefit everyone", "inSource": "help all residents" }
+                ],
+                "trap": "Phương án D lấy chữ 'elderly' trong bài, nhưng người cao tuổi chỉ là ví dụ về người hưởng lợi, không ai đề xuất tặng họ vườn trên mái."
+              }
             }
           ]
         },
@@ -129,31 +219,82 @@
               "id": "q9",
               "number": 9,
               "prompt": "By the 1970s, rooftops were used mainly for ventilation equipment and ______.",
-              "acceptedAnswers": ["water tanks"]
+              "acceptedAnswers": ["water tanks"],
+              "explanation": {
+                "text": "Đoạn A: đến những năm 1970, mái nhà chủ yếu là nơi đặt bồn nước và thiết bị thông gió.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "A",
+                  "quote": "rooftops were seen mainly as places for water tanks and ventilation equipment"
+                },
+                "paraphrases": [
+                  { "inQuestion": "were used mainly for", "inSource": "were seen mainly as places for" }
+                ],
+                "trap": "Câu hỏi đảo thứ tự so với bài ('ventilation equipment' đứng trước), nên dễ chép nhầm 'ventilation equipment'."
+              }
             },
             {
               "id": "q10",
               "number": 10,
               "prompt": "Dark roofs absorb ______ during the day and release it at night.",
-              "acceptedAnswers": ["sunlight"]
+              "acceptedAnswers": ["sunlight"],
+              "explanation": {
+                "text": "Đoạn B: mái tối màu hấp thụ ánh nắng vào ban ngày và toả nhiệt ra vào ban đêm.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "B",
+                  "quote": "Dark roofs absorb sunlight during the day and release it at night"
+                },
+                "trap": "Nhiều bạn điền 'heat' vì cả đoạn nói về nhiệt độ, nhưng từ trong bài là 'sunlight'."
+              }
             },
             {
               "id": "q11",
               "number": 11,
               "prompt": "Lightweight growing media may be made from expanded clay or ______.",
-              "acceptedAnswers": ["recycled materials"]
+              "acceptedAnswers": ["recycled materials"],
+              "explanation": {
+                "text": "Đoạn C: giá thể nhẹ được làm từ đất sét nung nở hoặc vật liệu tái chế.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "C",
+                  "quote": "lightweight growing media made from expanded clay or recycled materials"
+                },
+                "trap": "Chỉ ghi 'recycled' là thiếu nghĩa; 'recycled materials' vẫn nằm trong giới hạn hai từ."
+              }
             },
             {
               "id": "q12",
               "number": 12,
               "prompt": "In hydroponic systems, plant roots sit in nutrient-rich ______.",
-              "acceptedAnswers": ["water"]
+              "acceptedAnswers": ["water"],
+              "explanation": {
+                "text": "Đoạn C: trong hệ thống thuỷ canh, rễ cây nằm trong nước giàu dinh dưỡng.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "C",
+                  "quote": "in which plant roots sit in nutrient-rich water"
+                },
+                "trap": "Đừng điền 'soil': ngay trước đó bài nói những nơi này bỏ hẳn đất."
+              }
             },
             {
               "id": "q13",
               "number": 13,
               "prompt": "A few cities offer ______ to owners who install vegetation on their roofs.",
-              "acceptedAnswers": ["tax reductions", "tax reduction"]
+              "acceptedAnswers": ["tax reductions", "tax reduction"],
+              "explanation": {
+                "text": "Đoạn E: một số thành phố giảm thuế cho chủ nhà trồng cây xanh trên mái.",
+                "evidence": {
+                  "type": "passage",
+                  "paragraphId": "E",
+                  "quote": "a few offer tax reductions to owners who install vegetation"
+                },
+                "paraphrases": [
+                  { "inQuestion": "A few cities offer", "inSource": "a few offer" }
+                ],
+                "trap": "Câu trước nói về việc nới quy định chiều cao toà nhà; đó là một ưu đãi khác, không phải đáp án."
+              }
             }
           ]
         }

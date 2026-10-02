@@ -1,6 +1,8 @@
 package com.app.platform.language.core.model
 
 import kotlin.test.Test
+import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class BundledContentTest {
@@ -34,6 +36,26 @@ class BundledContentTest {
             "${test.id}/${q.id}: answer is not one of the option keys",
           )
         }
+    }
+  }
+
+  @Test
+  fun everyQuestionIsExplainedWithAQuoteFromItsPassage() {
+    BundledReadingTests.all.forEach { test ->
+      test.passages.forEach { passage ->
+        passage.questionGroups.flatMap { it.questions }.forEach { question ->
+          val name = "${test.id}/${question.id}"
+          val explanation = assertExplained(name, question)
+          val evidence = assertIs<PassageEvidence>(explanation.evidence, "$name: needs passage evidence")
+          val paragraph =
+            assertNotNull(
+              passage.paragraphs.firstOrNull { it.label == evidence.paragraphId },
+              "$name: paragraph ${evidence.paragraphId} is not in passage ${passage.id}",
+            )
+          assertTrue(evidence.quote in paragraph.text, "$name: quote is not verbatim in paragraph ${paragraph.label}")
+          assertParaphrasesMatch(name, question, explanation, source = paragraph.text)
+        }
+      }
     }
   }
 }

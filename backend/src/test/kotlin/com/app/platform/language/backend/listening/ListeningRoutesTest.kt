@@ -81,6 +81,27 @@ class ListeningRoutesTest {
     }
 
   @Test
+  fun testPayloadKeepsAnswerKeyAndExplanations() =
+    testApplication {
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
+
+      val test = jsonClient().get("/api/v1/listening/tests/${sample.id}").body<ListeningTest>()
+
+      assertEquals(
+        sample.allQuestions().map { it.acceptedAnswers to it.explanation },
+        test.allQuestions().map { it.acceptedAnswers to it.explanation },
+      )
+    }
+
+  @Test
   fun testResponseCarriesVersionEtagAndCacheControl() =
     testApplication {
       application {
@@ -182,6 +203,30 @@ class ListeningRoutesTest {
 
       assertEquals(sample.questionCount, result.correctCount)
       assertEquals(9.0, result.band)
+    }
+
+  @Test
+  fun submitResultRevealsAnswerKeyAndExplanations() =
+    testApplication {
+      application {
+        module(
+          FakeDatabaseHealth(),
+          FakeUserStore(),
+          FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
+          config,
+        )
+      }
+
+      val result =
+        jsonClient()
+          .post("/api/v1/listening/tests/${sample.id}/submit") {
+            contentType(ContentType.Application.Json)
+            setBody(SubmitAnswersRequest(emptyMap()))
+          }.body<ListeningResult>()
+
+      assertEquals(sample.allQuestions().map { it.acceptedAnswers }, result.questionResults.map { it.acceptedAnswers })
+      assertEquals(sample.allQuestions().map { it.explanation }, result.questionResults.map { it.explanation })
     }
 
   @Test

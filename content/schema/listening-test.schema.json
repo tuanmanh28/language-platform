@@ -37,6 +37,7 @@
           "items": { "$ref": "#/$defs/transcriptSegment" }
         },
         "questionGroups": {
+          "description": "Question explanations use transcript evidence.",
           "type": "array",
           "minItems": 1,
           "items": { "$ref": "reading-test.schema.json#/$defs/questionGroup" }

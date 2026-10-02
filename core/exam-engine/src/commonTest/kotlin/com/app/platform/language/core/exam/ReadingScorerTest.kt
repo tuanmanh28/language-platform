@@ -88,6 +88,16 @@ class ReadingScorerTest {
   }
 
   @Test
+  fun resultCarriesTheQuestionExplanation() {
+    val sample = BundledReadingTests.all.first()
+
+    val result = ReadingScorer.score(sample, emptyMap())
+
+    assertEquals(sample.allQuestions().map { it.explanation }, result.questionResults.map { it.explanation })
+    assertTrue(result.questionResults.all { it.explanation != null })
+  }
+
+  @Test
   fun bundledSampleCanBeFullyAnsweredFromItsKey() {
     val sample = BundledReadingTests.all.first()
     val perfect = sample.allQuestions().associate { it.id to it.acceptedAnswers.first() }

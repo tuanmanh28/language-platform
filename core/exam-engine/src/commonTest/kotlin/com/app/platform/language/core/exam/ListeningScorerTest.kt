@@ -10,6 +10,7 @@ import com.app.platform.language.core.model.QuestionType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ListeningScorerTest {
   private val test =
@@ -77,6 +78,14 @@ class ListeningScorerTest {
 
     assertEquals(sample.questionCount, result.correctCount)
     assertEquals(9.0, result.band)
+  }
+
+  @Test
+  fun resultCarriesTheQuestionExplanation() {
+    val result = ListeningScorer.score(sample, emptyMap())
+
+    assertEquals(sample.allQuestions().map { it.explanation }, result.questionResults.map { it.explanation })
+    assertTrue(result.questionResults.all { it.explanation != null })
   }
 
   @Test

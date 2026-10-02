@@ -32,7 +32,7 @@ class AppDatabaseTest {
   @BeforeTest
   fun cleanTables() =
     runTest {
-      database.tx { exec("TRUNCATE reading_attempts, users, reading_tests") }
+      database.tx { exec("TRUNCATE writing_submissions, reading_attempts, users, reading_tests") }
     }
 
   @Test
@@ -47,8 +47,8 @@ class AppDatabaseTest {
         )
         exec("INSERT INTO users (id, firebase_uid, email) VALUES ('$userId', 'firebase-1', 'learner@example.com')")
         exec(
-          "INSERT INTO reading_attempts (user_id, test_id, correct_count, total_questions, band, answers) " +
-            "VALUES ('$userId', 'cambridge-18-test-1', 30, 40, 7.0, '{\"q1\": \"TRUE\"}')",
+          "INSERT INTO reading_attempts (user_id, client_id, test_id, correct_count, total_questions, band, answers) " +
+            "VALUES ('$userId', 'client-1', 'cambridge-18-test-1', 30, 40, 7.0, '{\"q1\": \"TRUE\"}')",
         )
       }
       val stored =

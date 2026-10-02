@@ -683,6 +683,66 @@ components:
           items:
             type: string
         explanation:
+          $ref: "#/components/schemas/Explanation"
+    Explanation:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          description: Why the answer is correct, in Vietnamese
+        evidence:
+          oneOf:
+            - $ref: "#/components/schemas/PassageEvidence"
+            - $ref: "#/components/schemas/TranscriptEvidence"
+          discriminator:
+            propertyName: type
+            mapping:
+              passage: "#/components/schemas/PassageEvidence"
+              transcript: "#/components/schemas/TranscriptEvidence"
+        paraphrases:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paraphrase"
+        trap:
+          type: string
+          description: The distractor learners usually pick, in Vietnamese
+    PassageEvidence:
+      type: object
+      required: [type, paragraphId, quote]
+      properties:
+        type:
+          type: string
+          enum: [passage]
+        paragraphId:
+          type: string
+          description: Label of the paragraph in the question's passage
+        quote:
+          type: string
+          description: Verbatim English quote from the paragraph
+    TranscriptEvidence:
+      type: object
+      required: [type, sectionNumber, startSeconds, endSeconds, quote]
+      properties:
+        type:
+          type: string
+          enum: [transcript]
+        sectionNumber:
+          type: integer
+        startSeconds:
+          type: integer
+        endSeconds:
+          type: integer
+        quote:
+          type: string
+          description: Verbatim English quote from the transcript in this time range
+    Paraphrase:
+      type: object
+      required: [inQuestion, inSource]
+      properties:
+        inQuestion:
+          type: string
+        inSource:
           type: string
     ChoiceOption:
       type: object
@@ -816,6 +876,8 @@ components:
           type: array
           items:
             type: string
+        explanation:
+          $ref: "#/components/schemas/Explanation"
     SubmitAttemptRequest:
       type: object
       required: [clientId, testId, answers, createdAt]
