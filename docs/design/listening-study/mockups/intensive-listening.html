@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nghe kỹ — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button, [role="button"] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; } .ms.xl { font-size: 36px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; max-width: 520px; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; flex-wrap: wrap; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 80; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-reading { font-size: 18px; line-height: 30px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.grow { flex: 1; min-width: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); white-space: nowrap; }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before, .hit::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.desktop .btn-text { height: 36px; }
+.btn-small { height: 36px !important; padding: 0 14px !important; font-size: 15px !important; border-radius: 10px; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none; color: var(--on-surface); }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.icon-btn.selected { color: var(--on-primary-container); background: var(--primary-container); }
+.icon-btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn .t-label { font-variant-numeric: tabular-nums; }
+kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border-radius: 6px; background: var(--surface-container);
+  border: 1px solid var(--outline-variant); color: var(--on-surface); }
+
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); white-space: nowrap; }
+.tag.info { background: var(--info-container); color: var(--on-info-container); }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tag .ms { font-size: 16px; margin-left: -2px; }
+.chip { height: 36px; padding: 0 14px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; position: relative;
+  background: var(--card); box-shadow: inset 0 0 0 1px var(--outline); font-size: 15px; font-weight: 600; white-space: nowrap; flex: none;
+  transition: background-color 150ms, box-shadow 150ms, color 150ms; }
+.chip::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
+.chip:hover { background: color-mix(in srgb, var(--on-surface) 6%, var(--card)); }
+.chip[aria-pressed="true"], .chip.on { background: var(--primary-container); color: var(--on-primary-container); box-shadow: inset 0 0 0 2px var(--primary); }
+.chip .ms { font-size: 18px; margin-left: -4px; }
+.chip .x { margin: 0 -8px 0 2px; }
+.banner { display: flex; gap: 12px; align-items: center; padding: 10px 8px 10px 14px; border-radius: 14px;
+  background: var(--info-container); color: var(--on-info-container); }
+.banner .ms { color: var(--info); }
+.banner.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.banner.warning .ms { color: var(--warning); }
+.banner .btn-text { color: var(--on-info-container); text-decoration: underline; text-underline-offset: 3px; }
+.skel { background: var(--surface-high); border-radius: 8px; position: relative; overflow: hidden; }
+.skel::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent); animation: shimmer 1.2s cubic-bezier(0.2, 0, 0, 1) infinite; }
+.reduce .skel::after { animation: none; display: none; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 32px 24px; }
+.empty .btn { margin-top: 12px; }
+.error-icon { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; margin-bottom: 8px;
+  background: var(--wrong-container); color: var(--on-wrong-container); }
+.i0 { fill: var(--card); stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linejoin: round; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.seg { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border-radius: 14px; background: var(--surface-high); }
+.seg button { position: relative; z-index: 1; height: 36px; border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--on-surface-variant); transition: color 150ms; }
+.seg button[aria-checked="true"] { color: var(--on-surface); }
+.seg .ind { position: absolute; top: 4px; left: 4px; height: 36px; border-radius: 10px; background: var(--surface-bright); box-shadow: var(--shadow-card); transition: transform var(--snappy); }
+.dark .seg .ind { box-shadow: none; }
+.reduce .seg .ind { transition: none; }
+.switch { width: 52px; height: 32px; border-radius: 999px; position: relative; flex: none; background: var(--surface-highest); box-shadow: inset 0 0 0 2px var(--outline); transition: background-color 150ms, box-shadow 150ms; }
+.switch::after { content: ''; position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-radius: 999px; background: var(--outline); transition: transform var(--snappy), background-color 150ms, width var(--snappy), height var(--snappy), top var(--snappy); }
+.switch[aria-checked="true"] { background: var(--primary); box-shadow: none; }
+.switch[aria-checked="true"]::after { transform: translateX(16px); background: var(--on-primary); width: 24px; height: 24px; top: 4px; left: 4px; }
+.slider { position: relative; height: 48px; touch-action: none; }
+.slider .track { position: absolute; left: 12px; right: 12px; top: 22px; height: 4px; border-radius: 999px; background: var(--surface-high); }
+.slider .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--primary); }
+.slider .stop { position: absolute; top: 0; width: 4px; height: 4px; margin-left: -2px; border-radius: 999px; background: var(--on-surface-variant); }
+.slider .thumb { position: absolute; top: 12px; width: 24px; height: 24px; margin-left: -12px; border-radius: 999px; background: var(--surface-bright); box-shadow: var(--shadow-raised); border: 1px solid var(--outline-variant); }
+.slider-labels { display: flex; justify-content: space-between; padding: 0 4px; }
+
+.ls-shell { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
+.phone .ls-shell { padding-top: 50px; }
+.ls-top { flex: none; height: 56px; display: flex; align-items: center; gap: 0; padding: 0 4px; }
+.ls-title { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ls-sub { flex: none; padding: 4px 20px 8px; display: flex; flex-direction: column; gap: 12px; }
+.chip-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 6px 20px; }
+.chip-row::-webkit-scrollbar { display: none; }
+.ls-main { flex: 1; min-height: 0; position: relative; }
+.transcript { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.transcript::-webkit-scrollbar { display: none; }
+.t-inner { position: relative; padding: 8px 20px 260px; }
+.desktop .t-inner { max-width: 728px; margin: 0 auto; padding: 24px 24px 64px; }
+.sent { position: relative; display: block; padding: 12px 16px 12px 20px; margin: 0 -12px; border-radius: 20px; color: var(--on-surface-variant);
+  transition: background-color 250ms, box-shadow 250ms, color 250ms; outline-offset: -2px; }
+.sent + .sent { margin-top: 2px; }
+.sent:hover { background: color-mix(in srgb, var(--on-surface) 4%, transparent); }
+.sent.current { background: var(--card); box-shadow: var(--shadow-card); color: var(--on-surface); }
+.dark .sent.current { background: var(--surface-container); box-shadow: inset 0 0 0 1px var(--outline-variant); }
+.dark .sent.evidence { background: var(--info-container); box-shadow: none; }
+.sent-head { display: flex; align-items: center; gap: 8px; min-height: 0; }
+.sent-head:not(:empty) { margin-bottom: 4px; }
+.sent-head .spk { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.2px; color: var(--on-surface-variant); }
+.sent-head .time { margin-left: auto; font-size: 12px; color: var(--on-surface-variant); opacity: 0; transition: opacity 150ms; }
+.desktop .sent:hover .time, .desktop .sent.current .time { opacity: 1; }
+.sent-head .tags { display: flex; gap: 6px; margin-left: auto; }
+.sent-head .time + .tags { margin-left: 8px; }
+.txt { position: relative; font-size: 18px; line-height: 30px; }
+.txt .w { position: relative; z-index: 1; transition: color 150ms; border-radius: 6px; }
+.sent.current .w { color: var(--on-surface-variant); }
+.sent.current .w.spoken { color: var(--on-surface); }
+.sent.current .w.now { color: var(--on-primary-container); }
+.pill { position: absolute; left: 0; top: 0; height: 28px; border-radius: 7px; background: var(--primary-container); z-index: 0; opacity: 0;
+  transition: transform var(--snappy), width var(--snappy), opacity 150ms; pointer-events: none; }
+.reduce .pill { transition: opacity 150ms; }
+.vi { margin-top: 4px; font-size: 16px; line-height: 24px; color: var(--on-surface-variant); }
+.sent.evidence { background: var(--info-container); color: var(--on-info-container); box-shadow: none; }
+.sent.evidence.current .w, .sent.evidence.current .w.spoken { color: var(--on-info-container); }
+.sent.evidence .vi { color: var(--on-info-container); opacity: 0.85; }
+.w.answer { box-shadow: 0 2px 0 var(--info); border-radius: 0; }
+.hidden-mode .sent:not(.revealed) .w { color: transparent !important; background: var(--surface-high); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hidden-mode .sent.current:not(.revealed) .w.spoken, .hidden-mode .sent.current:not(.revealed) .w.now { background: var(--primary-container); }
+.hidden-mode .sent:not(.revealed) .pill { display: none; }
+.hidden-mode .sent:not(.revealed) .vi { display: none; }
+.reveal-btn { display: none; }
+.hidden-mode .sent:not(.revealed) .reveal-btn { display: inline-flex; }
+.bracket { position: absolute; left: 10px; width: 3px; border-radius: 3px; background: var(--primary); z-index: 3; pointer-events: none; transform-origin: 50% 50%; }
+.bracket .h { position: absolute; left: 50%; width: 48px; height: 48px; margin-left: -24px; display: grid; place-items: center; pointer-events: auto; cursor: ns-resize; touch-action: none; }
+.bracket .h::after { content: ''; width: 14px; height: 14px; border-radius: 999px; background: var(--primary); box-shadow: 0 0 0 3px var(--surface); }
+.bracket .h.top { top: -24px; } .bracket .h.bottom { bottom: -24px; }
+.coach { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 24px 0 0; color: var(--on-surface-variant); }
+.end-card { margin-top: 24px; padding: 20px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow-card); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.dark .end-card { background: var(--surface-container); }
+.end-card .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+.follow-pill { position: absolute; left: 50%; z-index: 25; transform: translateX(-50%); height: 40px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
+  background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 15px; font-weight: 600; box-shadow: var(--shadow-raised); }
+.phone .follow-pill { bottom: 206px; }
+.desktop .follow-pill { bottom: 16px; }
+
+.pb { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); }
+.phone .pb { border-radius: 28px 28px 0 0; box-shadow: var(--shadow-sheet), inset 0 1px 0 var(--outline-variant); padding: 0 16px 34px; touch-action: none; }
+.desktop .pb { position: relative; flex: none; border-top: 1px solid var(--outline-variant); padding: 10px 24px 8px; height: 112px; }
+.pb .handle-btn { display: block; width: 100%; height: 22px; position: relative; }
+.pb .handle-btn::after { content: ''; position: absolute; left: 50%; top: 8px; width: 36px; height: 5px; margin-left: -18px; border-radius: 3px; background: var(--outline-variant); }
+.pb-row1 { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 4px; }
+.pb-controls { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 0; }
+.desktop .pb-controls { padding: 6px 0 0; justify-content: flex-start; gap: 4px; }
+.pb-controls .center { display: flex; align-items: center; gap: 8px; }
+.desktop .pb-controls .center { position: absolute; left: 50%; transform: translateX(-50%); }
+.pb-controls .side { display: flex; align-items: center; gap: 8px; }
+.desktop .pb-controls .side.right { margin-left: auto; }
+.play { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none;
+  background: var(--primary); color: var(--on-primary); transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.play:active { transform: scale(0.95); }
+.reduce .play:active { transform: none; }
+.desktop .play { width: 56px; height: 56px; }
+.play.large { width: 72px; height: 72px; }
+.play .ms { font-size: 36px; }
+.play .spinner { position: absolute; inset: -4px; border-radius: 999px; border: 3px solid transparent; border-top-color: var(--primary); animation: spin 0.9s linear infinite; }
+.play[disabled] { opacity: 0.38; pointer-events: none; }
+.wave-row { display: flex; align-items: center; gap: 12px; }
+.wave { position: relative; height: 32px; flex: 1; cursor: pointer; touch-action: none; }
+.wave::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 48px; margin-top: -24px; }
+.wave.expanded { height: 72px; }
+.wave .bars { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.wave .bars i { width: 2px; border-radius: 2px; background: var(--outline-variant); flex: none; }
+.wave .bars.played { clip-path: inset(0 100% 0 0); }
+.wave .bars.played i { background: var(--primary); }
+.wave .range { position: absolute; top: -4px; bottom: -4px; border-radius: 6px; background: color-mix(in srgb, var(--primary-container) 70%, transparent); pointer-events: none; }
+.wave .range.evidence { background: color-mix(in srgb, var(--info-container) 80%, transparent); }
+.wave .head { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; border-radius: 2px; background: var(--on-surface); pointer-events: none; }
+.wave .head::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 999px; background: var(--on-surface); transform: scale(0); transition: transform var(--snappy); }
+.wave.scrubbing .head::after { transform: scale(1.66); }
+.wave .bubble { position: absolute; bottom: calc(100% + 10px); transform: translateX(-50%); padding: 4px 8px; border-radius: 8px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 150ms; pointer-events: none; white-space: nowrap; }
+.wave.scrubbing .bubble { opacity: 1; }
+.wave .ab { position: absolute; top: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; z-index: 2; }
+.wave .ab span { width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: 11px; font-weight: 700; box-shadow: 0 0 0 3px var(--card); }
+.wave-time { font-size: 12px; color: var(--on-surface-variant); font-variant-numeric: tabular-nums; width: 34px; }
+.wave-time.end { text-align: right; }
+.speed-chip { min-width: 64px; justify-content: center; font-variant-numeric: tabular-nums; }
+
+.side-panel { width: 280px; flex: none; border-right: 1px solid var(--outline-variant); background: var(--surface-low); display: flex; flex-direction: column; overflow-y: auto; padding: 20px 12px; gap: 4px; }
+.side-panel h2 { padding: 0 8px; }
+.nav-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 10px 12px; border-radius: 12px; min-height: 56px; position: relative; }
+.nav-row:hover { background: color-mix(in srgb, var(--on-surface) 6%, transparent); }
+.nav-row.on { background: var(--primary-container); color: var(--on-primary-container); }
+.nav-row.on .muted { color: var(--on-primary-container); opacity: 0.8; }
+.num { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-high); font-weight: 600; font-size: 15px; flex: none; }
+.nav-row.on .num { background: var(--primary); color: var(--on-primary); }
+.q-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 8px 12px 8px 24px; border-radius: 10px; min-height: 44px; }
+.q-row:hover { background: color-mix(in srgb, var(--on-surface) 6%, transparent); }
+.q-row.on { background: var(--info-container); color: var(--on-info-container); }
+.q-row .ok { color: var(--correct); } .q-row .bad { color: var(--wrong); }
+.side-label { padding: 16px 12px 6px; }
+.main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+.desktop .ls-top { height: 60px; padding: 0 16px 0 28px; border-bottom: 1px solid var(--outline-variant); gap: 8px; }
+.desktop .ls-title { align-items: flex-start; text-align: left; }
+.tool-btn { height: 36px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--on-surface); position: relative; }
+.tool-btn::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
+.tool-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.tool-btn.on { background: var(--primary-container); color: var(--on-primary-container); }
+.tool-btn kbd { font-size: 11px; padding: 0 5px; }
+
+.pop-layer { position: absolute; inset: 0; z-index: 75; }
+.popover { position: absolute; width: 300px; padding: 8px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow-raised); transform-origin: 50% 100%; }
+.dark .popover { background: var(--surface-high); }
+.popover h3 { padding: 8px 12px 4px; }
+.menu-item { display: flex; align-items: center; gap: 12px; width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; text-align: left; font-size: 16px; font-variant-numeric: tabular-nums; }
+.menu-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.menu-item .ms { visibility: hidden; color: var(--primary); }
+.menu-item[aria-checked="true"] .ms { visibility: visible; }
+.menu-sep { height: 1px; background: var(--outline-variant); margin: 6px 12px; }
+.setting { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.setting.row { flex-direction: row; align-items: center; justify-content: space-between; min-height: 56px; }
+.shortcut-list { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; padding: 8px 12px 12px; align-items: center; font-size: 14px; }
+.shortcut-list span:nth-child(odd) { text-align: right; white-space: nowrap; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); touch-action: none; max-height: 800px; overflow-y: auto; scrollbar-width: none; }
+.dark .sheet { background: var(--surface-container); }
+.desktop .sheet { width: 480px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+.group { background: var(--surface-high); border-radius: 14px; margin-top: 16px; }
+.group .setting + .setting { border-top: 1px solid var(--outline-variant); }
+.group .seg button { font-size: 13px; padding: 0 2px; }
+.dark .group { background: var(--surface-highest); }
+.fp-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
+.word-quote { margin-top: 12px; padding: 12px 16px; border-radius: 14px; background: var(--surface-high); }
+.word-quote mark { background: var(--primary-container); color: var(--on-primary-container); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+.snackbar { position: absolute; left: 16px; right: 16px; bottom: 228px; z-index: 40; display: flex; align-items: center; gap: 8px;
+  padding: 6px 6px 6px 16px; border-radius: 14px; background: var(--inverse-surface); color: var(--inverse-on-surface); box-shadow: var(--shadow-raised); }
+.desktop .snackbar { left: 50%; right: auto; width: 420px; margin-left: -210px; bottom: 24px; }
+.snackbar .btn-text { color: var(--inverse-primary); }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Nghe kỹ (intensive listening)</strong><span>Mockup · <a href="../README.md">spec</a> · âm thanh mô phỏng bằng đồng hồ. Chạm câu để nghe, giữ một từ để lưu (máy tính: nhấn đúp), kéo thanh phát lên để mở trình phát đầy đủ. Máy tính: Space, ←/→, R, L, [ ], −/=, T, V, 1–4, ?</span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Trạng thái</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const STATES = [['play', 'Đang phát'], ['pause', 'Tạm dừng'], ['loop', 'Lặp A–B'], ['hidden', 'Ẩn lời thoại'], ['evidence', 'Đoạn đáp án'],
+  ['full', 'Trình phát đầy đủ'], ['end', 'Hết section'], ['none', 'Chưa có lời thoại'], ['loading', 'Đang tải'], ['error', 'Lỗi âm thanh'], ['offline', 'Ngoại tuyến']];
+const ui = { theme: 'light', frame: 'both', state: 'play' };
+
+const TEST_NAME = 'Listening Test 1 (mẫu)';
+const SECTIONS = {
+  1: { title: 'Đặt chỗ lớp học nấu ăn', range: 'Câu 1–10', sentences: [
+    ['Receptionist', 'Good afternoon, Hillside Cookery School, how can I help?', 'Chào buổi chiều, Trường dạy nấu ăn Hillside xin nghe, tôi giúp gì được ạ?'],
+    ['Daniel', 'Hi, I saw your leaflet about the weekend bread course.', 'Chào chị, tôi thấy tờ rơi về khoá làm bánh mì cuối tuần.'],
+    ['Receptionist', 'Of course. It runs on Saturday mornings from nine until twelve.', 'Vâng. Khoá học diễn ra sáng thứ Bảy từ chín giờ đến mười hai giờ.'],
+    ['Daniel', 'Great, and could you tell me how much it costs?', 'Tuyệt, chị cho tôi biết học phí bao nhiêu được không?'],
+  ] },
+  2: { title: 'Riverside Community Garden', range: 'Câu 11–20', sentences: [
+    ['Helen', 'Good morning, everyone, and welcome to the Riverside Community Garden.', 'Chào buổi sáng mọi người, chào mừng đến với Vườn cộng đồng Riverside.'],
+    ['Helen', 'My name’s Helen, and I’ve been volunteering here for about six years.', 'Tôi là Helen, tôi làm tình nguyện viên ở đây khoảng sáu năm rồi.'],
+    ['Helen', 'Before we start the tour, let me tell you a little about how the garden began.', 'Trước khi đi tham quan, để tôi kể một chút về việc khu vườn ra đời thế nào.'],
+    ['Helen', 'It was set up in 2009 on land that used to be a car park behind the old library.', 'Khu vườn được lập năm 2009 trên mảnh đất từng là bãi đỗ xe phía sau thư viện cũ.', [11, 12]],
+    ['Helen', 'At first, there were only twelve plots, but today we have more than eighty.', 'Lúc đầu chỉ có mười hai ô đất, nhưng giờ chúng tôi có hơn tám mươi ô.', [13]],
+    ['Helen', 'Most of them are rented by local families, although a few are kept for the primary school.', 'Phần lớn do các gia đình quanh đây thuê, dù vài ô được giữ cho trường tiểu học.'],
+    ['Helen', 'If you’d like a plot of your own, the waiting list is currently around eight months.', 'Nếu bạn muốn có một ô riêng, danh sách chờ hiện khoảng tám tháng.', [14]],
+    ['Helen', 'Plots cost forty pounds a year, and that includes water and the use of all our tools.', 'Mỗi ô giá bốn mươi bảng một năm, đã gồm tiền nước và được dùng mọi dụng cụ.', [15]],
+    ['Helen', 'The tool shed is just to your left, next to the compost bins.', 'Kho dụng cụ ở ngay bên trái bạn, cạnh các thùng ủ phân.', [16]],
+    ['Helen', 'Please remember to sign the book whenever you borrow anything.', 'Nhớ ký vào sổ mỗi khi bạn mượn bất cứ thứ gì nhé.'],
+    ['Helen', 'Now, if you follow me past the greenhouse, we’ll visit the herb garden first.', 'Giờ mời mọi người theo tôi đi qua nhà kính, ta sẽ ghé vườn thảo mộc trước.', [17]],
+  ] },
+  3: { title: 'Dự án nghiên cứu của hai sinh viên', range: 'Câu 21–30', sentences: [
+    ['Maya', 'So, Tom, have you decided which survey method we should use?', 'Vậy Tom, bạn đã chọn được cách khảo sát nào chưa?'],
+    ['Tom', 'I think online questionnaires would reach more people, to be honest.', 'Thật lòng mình nghĩ bảng hỏi trực tuyến sẽ tiếp cận được nhiều người hơn.'],
+    ['Maya', 'True, but face-to-face interviews usually give us richer answers.', 'Đúng, nhưng phỏng vấn trực tiếp thường cho câu trả lời sâu hơn.'],
+  ] },
+  4: { title: 'Bài giảng: ong và nông nghiệp', range: 'Câu 31–40', sentences: [
+    ['Lecturer', 'Today I want to look at the role that wild bees play in farming.', 'Hôm nay tôi muốn bàn về vai trò của ong hoang dã trong nông nghiệp.'],
+    ['Lecturer', 'Many people assume honeybees do most of the work, but that is rarely the case.', 'Nhiều người nghĩ ong mật làm phần lớn việc thụ phấn, nhưng hiếm khi như vậy.'],
+    ['Lecturer', 'In fact, several studies show that wild species are often more efficient.', 'Thực tế, nhiều nghiên cứu cho thấy các loài hoang dã thường hiệu quả hơn.'],
+  ] },
+};
+const QUESTIONS = [
+  [11, 'Năm thành lập', '2009', true], [12, 'Trước đây là', 'car park', true], [13, 'Số ô đất hiện nay', 'more than eighty', true],
+  [14, 'Thời gian chờ', 'eight months', false, 'eight weeks'], [15, 'Giá mỗi năm', 'forty pounds', true],
+];
+const ANSWER_WORDS = { 11: ['2009'], 12: ['car', 'park'], 13: ['eighty.'], 14: ['eight', 'months.'], 15: ['forty', 'pounds'] };
+
+function timeline(list) {
+  let t = 0;
+  return list.map(([speaker, text, vi, q = []], index) => {
+    const tokens = text.split(' ');
+    const duration = 1.2 + text.length * 0.052;
+    const start = t, end = t + duration;
+    const weights = tokens.map((w) => w.length + 2);
+    const total = weights.reduce((a, b) => a + b, 0);
+    let cursor = start;
+    const words = tokens.map((w, i) => { const s = cursor; cursor += (weights[i] / total) * duration; return { text: w, start: s, end: cursor }; });
+    t = end + 0.45;
+    return { index, speaker, text, vi, q, start, end, words };
+  });
+}
+const TIMELINES = Object.fromEntries(Object.entries(SECTIONS).map(([key, s]) => [key, timeline(s.sentences)]));
+const durationOf = (section) => { const list = TIMELINES[section]; return list[list.length - 1].end + 1.2; };
+
+const ILLO_HEADPHONES = `<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+  <path class="is" d="M30 70 V58 a30 30 0 0 1 60 0 V70"/>
+  <rect class="i1" x="22" y="64" width="20" height="32" rx="9"/><rect class="i1" x="78" y="64" width="20" height="32" rx="9"/>
+  <rect class="i0" x="22" y="64" width="20" height="32" rx="9" fill="none"/><rect class="i0" x="78" y="64" width="20" height="32" rx="9" fill="none"/>
+  <rect class="i3" x="48" y="72" width="24" height="6" rx="3"/><rect class="i3" x="52" y="84" width="16" height="6" rx="3"/>
+  <circle class="i2" cx="60" cy="34" r="5"/>
+</svg>`;
+
+const deviceState = new WeakMap();
+const devices = new Set();
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+const fmtFine = (t) => `${Math.floor(t / 60)}:${(t % 60).toFixed(1).padStart(4, '0').replace('.', ',')}`;
+const fmtSpeed = (v) => `${Number(v.toFixed(2)).toString().replace('.', ',')}×`;
+const REPEATS = [[1, 'Tắt'], [2, '2'], [3, '3'], [5, '5'], [Infinity, '∞']];
+const GAPS = [[0, 'Tắt'], [1, '1 giây'], [2, '2 giây'], [3, '3 giây'], ['sentence', 'Bằng câu']];
+
+function createState(state) {
+  const st = { section: 2, t: 0, playing: false, speed: 1, loop: null, passes: 0, repeatN: 1, repeatDone: 0, gap: 0, pauseAfter: false, hold: 0,
+    hidden: false, translate: false, follow: true, revealed: new Set(), evidence: null, range: 'all', buffering: false, mode: state, cur: -1, word: -1 };
+  const s = TIMELINES[2];
+  if (state === 'play') { st.t = s[5].end - 0.6; st.playing = true; }
+  if (state === 'pause') { st.t = s[6].words[7].start + 0.05; }
+  if (state === 'loop') { setLoop(st, 3, 4); st.repeatN = 3; st.passes = 1; st.t = s[3].start + 1.8; st.playing = true; }
+  if (state === 'hidden') { st.hidden = true; st.revealed = new Set([0, 1, 2]); st.t = s[3].start + 0.2; st.playing = true; }
+  if (state === 'evidence') { st.evidence = 14; st.speed = 0.75; setLoop(st, 6, 6); st.t = s[6].start; st.playing = true; }
+  if (state === 'full') { st.t = s[7].start + 1.5; st.playing = true; st.loop = { a: s[7].start + 0.8, b: s[7].start + 3.4, from: 7, to: 7, free: true }; st.speed = 0.85; }
+  if (state === 'end') { st.t = durationOf(2); }
+  if (state === 'loading') st.buffering = true;
+  return st;
+}
+
+function setLoop(st, from, to) {
+  const s = TIMELINES[st.section];
+  st.loop = { a: s[from].start, b: s[to].end, from, to, free: false };
+  st.passes = 0;
+}
+
+function loopLabel(st) {
+  const { loop } = st;
+  if (!loop) return '';
+  const base = loop.free ? `Lặp ${fmtFine(loop.a)} – ${fmtFine(loop.b)}` : loop.from === loop.to ? `Lặp câu ${loop.from + 1}` : `Lặp câu ${loop.from + 1}–${loop.to + 1}`;
+  const count = st.repeatN > 1 && st.repeatN !== Infinity ? ` · Lần ${Math.min(st.passes + 1, st.repeatN)}/${st.repeatN}` : st.passes > 0 ? ` · Lần ${st.passes + 1}` : '';
+  return base + count;
+}
+
+function currentIndex(st) {
+  const s = TIMELINES[st.section];
+  let index = 0;
+  for (let i = 0; i < s.length; i++) if (st.t >= s[i].start - 0.001) index = i;
+  return index;
+}
+
+function wordIndex(sentence, t) {
+  if (t < sentence.start || t >= sentence.end) return t >= sentence.end ? sentence.words.length : -1;
+  return sentence.words.findIndex((w) => t < w.end);
+}
+
+function peaks(section, count) {
+  const s = TIMELINES[section], total = durationOf(section);
+  return Array.from({ length: count }, (_, i) => {
+    const t = ((i + 0.5) / count) * total;
+    const inside = s.find((x) => t >= x.start && t <= x.end);
+    if (!inside) return 0.1;
+    const n = Math.abs(Math.sin(i * 12.9898 + section * 7.1) * 43758.5453) % 1;
+    const edge = Math.min(1, (t - inside.start) * 3, (inside.end - t) * 3);
+    return 0.18 + (0.35 + 0.47 * n) * edge;
+  });
+}
+
+function waveHTML(st, frame, kind = 'compact') {
+  const width = kind === 'expanded' ? 350 : frame === 'phone' ? 350 : 880;
+  const count = Math.floor(width / 4);
+  const values = peaks(st.section, count);
+  const bars = values.map((v) => `<i style="height:${Math.round(v * 100)}%"></i>`).join('');
+  const ab = kind === 'expanded' ? '<div class="ab" data-ab="a" role="slider" tabindex="0" aria-label="Điểm A"><span>A</span></div><div class="ab" data-ab="b" role="slider" tabindex="0" aria-label="Điểm B"><span>B</span></div>' : '';
+  return `<div class="wave ${kind}" role="slider" tabindex="0" aria-label="Vị trí" aria-valuemin="0" aria-valuemax="${Math.round(durationOf(st.section))}">
+    <div class="range" hidden></div><div class="bars">${bars}</div><div class="bars played">${bars}</div><div class="head"><span class="bubble"></span></div>${ab}</div>`;
+}
+
+function sentenceHTML(s, st, frame, prevSpeaker) {
+  const showSpeaker = s.speaker !== prevSpeaker;
+  const evidence = st.evidence && s.q.includes(st.evidence);
+  const answerWords = evidence ? ANSWER_WORDS[st.evidence] : [];
+  const words = s.words.map((w, i) => `<span class="w${answerWords.includes(w.text) ? ' answer' : ''}" data-w="${i}">${w.text}</span>`).join(' ');
+  const tags = s.q.map((n) => `<span class="tag ${evidence && n === st.evidence ? 'info' : ''}">Câu ${n}</span>`).join('');
+  const reveal = `<button class="reveal-btn btn-text btn" data-action="reveal" data-index="${s.index}" style="height:28px;padding:0 4px;font-size:13px"><span class="ms sm">visibility</span>Hiện câu này</button>`;
+  return `<div class="sent${evidence ? ' evidence' : ''}${st.revealed.has(s.index) ? ' revealed' : ''}" role="button" tabindex="0" data-index="${s.index}"
+      aria-label="Câu ${s.index + 1}, ${s.speaker}: ${s.text}. ${frame === 'desktop' ? 'Nhấn Enter để nghe' : 'Chạm hai lần để nghe'}">
+    <div class="sent-head">${showSpeaker ? `<span class="spk">${s.speaker}</span>` : ''}${frame === 'desktop' ? `<span class="time tnum">${fmt(s.start)}</span>` : ''}${tags || st.hidden ? `<span class="tags">${reveal}${tags}</span>` : ''}</div>
+    <div class="txt" lang="en"><i class="pill" aria-hidden="true"></i>${words}</div>
+    ${st.translate && s.vi ? `<p class="vi" lang="vi">${s.vi}</p>` : ''}</div>`;
+}
+
+function transcriptHTML(st, frame) {
+  if (st.mode === 'loading') {
+    return `<span class="sr" role="status">Đang tải bài nghe</span>${Array.from({ length: 6 }, (_, i) => `<div style="padding:12px 8px"><div class="skel" style="height:14px;width:70px;margin-bottom:12px"></div><div class="skel" style="height:18px;margin-bottom:10px"></div><div class="skel" style="height:18px;width:${60 + (i * 13) % 30}%"></div></div>`).join('')}`;
+  }
+  if (st.mode === 'none') {
+    return `<div class="empty">${ILLO_HEADPHONES.replace('width="120" height="120"', frame === 'desktop' ? 'width="160" height="160"' : 'width="120" height="120"')}
+      <h2 class="t-title2" style="margin-top:8px">Bài này chưa có lời thoại</h2><p class="t-callout muted" style="max-width:340px">Bạn vẫn nghe lại và lặp đoạn được bằng thanh thời gian.</p></div>`;
+  }
+  const list = TIMELINES[st.section];
+  let prev = null;
+  const sentences = list.map((s) => { const html = sentenceHTML(s, st, frame, prev); prev = s.speaker; return html; }).join('');
+  const errorBlock = st.mode === 'error' ? `<div class="banner warning" role="alert" style="margin-bottom:12px"><span class="ms">error</span><div class="grow"><div class="t-label">Chưa phát được âm thanh</div><div class="t-footnote">Kiểm tra kết nối rồi thử lại nhé.</div></div><button class="btn btn-text" data-action="retry">Thử lại</button></div>` : '';
+  const offline = st.mode === 'offline' ? `<div class="banner" role="status" style="margin-bottom:12px"><span class="ms">cloud_off</span><div class="grow"><div class="t-label">Chưa tải âm thanh của section này</div><div class="t-footnote">Kết nối mạng để nghe, hoặc tải về khi có mạng.</div></div></div>` : '';
+  const evidence = st.evidence ? `<div class="banner" role="status" style="margin-bottom:12px"><span class="ms">hearing</span><div class="grow"><div class="t-label">Đoạn chứa đáp án câu ${st.evidence}</div><div class="t-footnote tnum">Bạn chọn “eight weeks” · đang phát ${fmtSpeed(st.speed)}</div></div><button class="btn btn-text" data-action="exit-evidence">Thoát đoạn này</button></div>` : '';
+  const hidden = st.hidden ? `<div class="banner" role="status" style="margin-bottom:12px;background:var(--surface-high);color:var(--on-surface)"><span class="ms" style="color:var(--on-surface-variant)">visibility_off</span><div class="grow t-footnote">Lời thoại đang ẩn · Nghe trước, rồi hiện từng câu để kiểm tra</div><button class="btn btn-text" data-action="toggle-hidden" style="color:var(--primary);text-decoration:none">Hiện lời thoại</button></div>` : '';
+  const coach = `<p class="coach t-footnote"><span class="ms sm">${frame === 'desktop' ? 'mouse' : 'touch_app'}</span>${frame === 'desktop' ? 'Nhấn đúp vào một từ để lưu vào thẻ' : 'Giữ một từ để lưu vào thẻ'}</p>`;
+  const next = st.section < 4 ? `<button class="btn btn-primary btn-small" data-action="next-section">Sang Section ${st.section + 1}</button>` : '';
+  const end = `<div class="end-card" data-end><span class="ms lg" style="color:var(--correct)">check_circle</span><h3 class="t-headline">Hết Section ${st.section}</h3><p class="t-footnote muted">Nghe lại chỗ còn chưa rõ, hoặc sang phần tiếp theo.</p>
+    <div class="actions"><button class="btn btn-secondary btn-small" data-action="restart"><span class="ms sm">replay</span>Nghe lại từ đầu</button>${next}</div></div>`;
+  return `${evidence}${errorBlock}${offline}${hidden}<div class="sent-list">${sentences}</div>${coach}${end}`;
+}
+
+function controlsDisabled(st) {
+  return ['offline', 'loading'].includes(st.mode);
+}
+
+function playButtonHTML(st, size = '') {
+  const disabled = controlsDisabled(st) && st.mode !== 'loading';
+  return `<button class="play ${size}" data-action="toggle" aria-label="${st.playing ? 'Tạm dừng (Space)' : 'Phát (Space)'}" ${disabled ? 'disabled' : ''}>
+    <span class="ms fill">${st.playing ? 'pause' : 'play_arrow'}</span>${st.buffering ? '<span class="spinner" aria-hidden="true"></span>' : ''}</button>`;
+}
+
+function barHTML(st, frame) {
+  const total = durationOf(st.section);
+  const count = TIMELINES[st.section].length;
+  const disabled = controlsDisabled(st) ? 'disabled' : '';
+  const loopOn = Boolean(st.loop);
+  const loopChip = `<button class="chip on loop-chip" data-action="clear-loop" ${loopOn ? '' : 'hidden'} aria-label="Tắt lặp"><span class="ms">repeat</span><span class="loop-label tnum">${loopLabel(st)}</span><span class="ms x sm">close</span></button>`;
+  const speedChip = `<button class="chip speed-chip ${st.speed !== 1 ? 'on' : ''}" data-action="speed" aria-label="Tốc độ ${fmtSpeed(st.speed)}" ${disabled}>${fmtSpeed(st.speed)}</button>`;
+  const loopBtn = `<button class="icon-btn loop-btn ${loopOn ? 'selected' : ''}" data-action="loop" aria-label="Lặp câu này (L)" aria-pressed="${loopOn}" title="Lặp câu này (L)" ${disabled}><span class="ms">${loopOn ? 'repeat_on' : 'repeat'}</span></button>`;
+  const replay = `<button class="icon-btn" data-action="replay" aria-label="Nghe lại câu (R)" title="Nghe lại câu (R)" ${disabled}><span class="ms">replay</span></button>`;
+  const prev = `<button class="icon-btn" data-action="prev" aria-label="Câu trước (←)" title="Câu trước (←)" ${disabled}><span class="ms">skip_previous</span></button>`;
+  const next = `<button class="icon-btn" data-action="next" aria-label="Câu sau (→)" title="Câu sau (→)" ${disabled}><span class="ms">skip_next</span></button>`;
+  const pos = st.mode === 'none' ? '' : `<span class="t-label tnum pos">Câu ${Math.max(1, st.cur + 1)}/${count}</span>`;
+  const time = `<span class="t-footnote muted tnum time-label" ${loopOn ? 'hidden' : ''}>${fmt(st.t)} / ${fmt(total)}</span>`;
+  if (frame === 'phone') {
+    return `<div class="pb" role="region" aria-label="Trình phát">
+      <button class="handle-btn" data-action="open-full" aria-label="Mở trình phát đầy đủ"></button>
+      <div class="pb-row1">${pos}${time}${loopChip}<span class="grow"></span>${speedChip}</div>
+      ${waveHTML(st, frame)}
+      <div class="pb-controls">${replay}${prev}${playButtonHTML(st)}${next}${loopBtn}</div></div>`;
+  }
+  return `<div class="pb" role="region" aria-label="Trình phát">
+    <div class="wave-row"><span class="wave-time tnum cur-time">${fmt(st.t)}</span>${waveHTML(st, frame)}<span class="wave-time end tnum">${fmt(total)}</span></div>
+    <div class="pb-controls"><div class="side">${pos}${loopChip}</div>
+      <div class="center"><button class="icon-btn" data-action="back2" aria-label="Lùi 2 giây (Shift ←)" title="Lùi 2 giây (⇧←)" ${disabled}><span class="t-label">−2s</span></button>${prev}${playButtonHTML(st)}${next}<button class="icon-btn" data-action="fwd2" aria-label="Tới 2 giây (Shift →)" title="Tới 2 giây (⇧→)" ${disabled}><span class="t-label">+2s</span></button></div>
+      <div class="side right">${replay}${loopBtn}${speedChip}<button class="icon-btn" data-action="tune" aria-label="Tuỳ chỉnh phát" title="Tuỳ chỉnh phát" ${disabled}><span class="ms">tune</span></button></div></div></div>`;
+}
+
+function phoneScreen(st) {
+  const seg = `<div class="seg" role="radiogroup" aria-label="Section">${[1, 2, 3, 4].map((n) => `<button role="radio" aria-checked="${n === st.section}" data-section="${n}">Section ${n}</button>`).join('')}<span class="ind"></span></div>`;
+  return `<div class="ls-shell">
+    <div class="ls-top"><button class="icon-btn" data-action="back" aria-label="Quay lại"><span class="ms">arrow_back_ios_new</span></button>
+      <div class="ls-title"><span class="t-headline">Nghe kỹ</span><span class="t-caption muted">${TEST_NAME}</span></div>
+      <button class="icon-btn hide-btn ${st.hidden ? 'selected' : ''}" data-action="toggle-hidden" aria-pressed="${st.hidden}" aria-label="Ẩn lời thoại"><span class="ms">${st.hidden ? 'visibility_off' : 'visibility'}</span></button>
+      <button class="icon-btn tr-btn ${st.translate ? 'selected' : ''}" data-action="toggle-translate" aria-pressed="${st.translate}" aria-label="Bản dịch tiếng Việt"><span class="ms">translate</span></button></div>
+    <div class="ls-sub">${seg}${rangeChips(st)}</div>
+    <div class="ls-main"><div class="transcript"><div class="t-inner ${st.hidden ? 'hidden-mode' : ''}">${transcriptHTML(st, 'phone')}</div></div>${barHTML(st, 'phone')}</div></div>`;
+}
+
+function rangeChips(st) {
+  const ranges = st.section === 2 ? [['all', 'Cả section'], ['11', 'Câu 11–15'], ['16', 'Câu 16–20']] : [['all', 'Cả section'], ['a', SECTIONS[st.section].range]];
+  return `<div class="chip-row" role="group" aria-label="Khoảng câu hỏi">${ranges.map(([key, label]) => `<button class="chip" data-range="${key}" aria-pressed="${st.range === key}">${label}</button>`).join('')}</div>`;
+}
+
+function sidePanel(st) {
+  const sections = [1, 2, 3, 4].map((n) => `<button class="nav-row ${n === st.section ? 'on' : ''}" data-section="${n}" aria-current="${n === st.section}">
+    <span class="num">${n}</span><span class="grow"><span class="t-label" style="display:block">Section ${n}</span><span class="t-footnote muted">${SECTIONS[n].range} · ${SECTIONS[n].title}</span></span></button>
+    ${n === st.section && n === 2 ? QUESTIONS.map(([q, label, answer, ok, mine]) => `<button class="q-row ${st.evidence === q ? 'on' : ''}" data-question="${q}" aria-label="Câu ${q}, ${ok ? 'đúng' : 'sai'}. Nghe đoạn chứa đáp án">
+      <span class="ms sm ${ok ? 'ok' : 'bad'}">${ok ? 'check_circle' : 'cancel'}</span><span class="grow"><span class="t-subheadline" style="display:block">Câu ${q} · ${label}</span><span class="t-footnote muted">${ok ? answer : `Bạn chọn: ${mine} · Đáp án: ${answer}`}</span></span><span class="ms sm muted">hearing</span></button>`).join('') : ''}`).join('');
+  return `<aside class="side-panel" aria-label="Mục lục"><span class="t-caption muted" style="padding:0 12px">${TEST_NAME}</span><h2 class="t-title3" style="padding:2px 12px 12px">Mục lục</h2>${sections}</aside>`;
+}
+
+function desktopScreen(st) {
+  return `<div class="ls-shell" style="flex-direction:row">${sidePanel(st)}
+    <div class="main-col"><div class="ls-top"><div class="ls-title"><span class="t-headline">Section ${st.section} · ${SECTIONS[st.section].title}</span><span class="t-caption muted">${SECTIONS[st.section].range} · ${TIMELINES[st.section].length} câu</span></div>
+      <button class="tool-btn hide-btn ${st.hidden ? 'on' : ''}" data-action="toggle-hidden" aria-pressed="${st.hidden}"><span class="ms sm">${st.hidden ? 'visibility_off' : 'visibility'}</span>Ẩn lời thoại <kbd>T</kbd></button>
+      <button class="tool-btn tr-btn ${st.translate ? 'on' : ''}" data-action="toggle-translate" aria-pressed="${st.translate}"><span class="ms sm">translate</span>Bản dịch <kbd>V</kbd></button>
+      <button class="icon-btn" data-action="shortcuts" aria-label="Phím tắt (?)" title="Phím tắt (?)"><span class="ms">keyboard</span></button></div>
+      <div class="ls-main"><div class="transcript"><div class="t-inner ${st.hidden ? 'hidden-mode' : ''}">${transcriptHTML(st, 'desktop')}</div></div></div>${barHTML(st, 'desktop')}</div></div>`;
+}
+
+function screen(frame, st) {
+  return frame === 'phone'
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${st.mode === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>${phoneScreen(st)}<div class="home-ind"></div>`
+    : `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS — Nghe kỹ</span></div><div class="win-body">${desktopScreen(st)}</div>`;
+}
+
+function sync(device, force = false) {
+  const st = deviceState.get(device);
+  if (!st) return;
+  if (st.mode === 'loading') return updateWaves(device, st);
+  const list = TIMELINES[st.section];
+  const cur = currentIndex(st);
+  const sentence = list[cur];
+  const wi = wordIndex(sentence, st.t);
+  if (cur !== st.cur || force) {
+    device.querySelectorAll('.sent').forEach((el) => {
+      const i = Number(el.dataset.index);
+      el.classList.toggle('current', i === cur);
+      el.classList.toggle('past', i < cur);
+      if (i !== cur) { el.querySelectorAll('.w').forEach((w) => w.classList.remove('spoken', 'now')); const pill = el.querySelector('.pill'); if (pill) pill.style.opacity = 0; }
+    });
+    const prev = st.cur;
+    st.cur = cur;
+    st.word = -2;
+    if (prev !== -1 || force) autoScroll(device, st, prev === -1);
+    const pos = device.querySelector('.pos');
+    if (pos) pos.textContent = `Câu ${cur + 1}/${list.length}`;
+    const full = device.querySelector('.fp-sentence');
+    if (full) full.outerHTML = fullSentenceHTML(st);
+    if (st.loop && !st.loop.free) drawBracket(device, st);
+  }
+  if (wi !== st.word) {
+    st.word = wi;
+    device.querySelectorAll(`.sent[data-index="${cur}"] .txt, .fp-sentence .txt`).forEach((txt) => karaoke(txt, wi, sentence));
+  }
+  updateWaves(device, st);
+  const time = device.querySelector('.time-label');
+  if (time) time.textContent = `${fmt(st.t)} / ${fmt(durationOf(st.section))}`;
+  const curTime = device.querySelector('.cur-time');
+  if (curTime) curTime.textContent = fmt(st.t);
+  const label = device.querySelector('.loop-label');
+  if (label && st.loop) label.textContent = loopLabel(st);
+}
+
+function karaoke(txt, wi, sentence) {
+  const words = txt.querySelectorAll('.w');
+  words.forEach((w, i) => { w.classList.toggle('spoken', i < wi); w.classList.toggle('now', i === wi); });
+  const pill = txt.querySelector('.pill');
+  if (!pill) return;
+  const target = words[wi];
+  if (!target) { pill.style.opacity = 0; return; }
+  const first = pill.style.opacity !== '1';
+  if (first) pill.style.transition = 'none';
+  pill.style.width = `${target.offsetWidth + 8}px`;
+  pill.style.height = `${target.offsetHeight + 4}px`;
+  pill.style.transform = `translate(${target.offsetLeft - 4}px, ${target.offsetTop - 2}px)`;
+  pill.style.opacity = 1;
+  if (first) { pill.offsetWidth; pill.style.transition = ''; }
+}
+
+function updateWaves(device, st) {
+  const total = durationOf(st.section);
+  device.querySelectorAll('.wave').forEach((wave) => {
+    const fraction = Math.min(1, st.t / total);
+    wave.querySelector('.bars.played').style.clipPath = `inset(0 ${(1 - fraction) * 100}% 0 0)`;
+    if (!wave.classList.contains('glide')) wave.querySelector('.head').style.left = `${fraction * 100}%`;
+    wave.querySelector('.bubble').textContent = fmtFine(st.t);
+    wave.setAttribute('aria-valuenow', Math.round(st.t));
+    wave.setAttribute('aria-valuetext', `${fmt(st.t)} trên ${fmt(total)}`);
+    const range = wave.querySelector('.range');
+    if (st.loop) {
+      range.hidden = false;
+      range.classList.toggle('evidence', Boolean(st.evidence));
+      range.style.left = `${(st.loop.a / total) * 100}%`;
+      range.style.width = `${((st.loop.b - st.loop.a) / total) * 100}%`;
+    } else range.hidden = true;
+    wave.querySelectorAll('.ab').forEach((handle) => {
+      handle.hidden = !st.loop;
+      if (st.loop) handle.style.left = `${((handle.dataset.ab === 'a' ? st.loop.a : st.loop.b) / total) * 100}%`;
+    });
+  });
+}
+
+function glideHead(device, st, from) {
+  const total = durationOf(st.section);
+  device.querySelectorAll('.wave').forEach((wave) => {
+    const head = wave.querySelector('.head');
+    wave.classList.add('glide');
+    const width = wave.offsetWidth;
+    head.style.left = `${(st.t / total) * 100}%`;
+    play(head, [{ transform: `translateX(${((from - st.t) / total) * width}px)` }, { transform: 'none' }], 'snappy').then(() => wave.classList.remove('glide'));
+  });
+}
+
+const scrollAnimations = new WeakMap();
+function autoScroll(device, st, instant) {
+  if (!st.follow) return;
+  const scroller = device.querySelector('.transcript');
+  const el = device.querySelector(`.sent[data-index="${st.cur}"]`);
+  if (!scroller || !el) return;
+  const target = Math.max(0, el.offsetTop - scroller.clientHeight * 0.3);
+  animateScroll(scroller, target, instant || reduceMotion);
+}
+
+function animateScroll(scroller, target, instant) {
+  const start = scroller.scrollTop, delta = target - start;
+  scroller.dataset.auto = '1';
+  if (instant || Math.abs(delta) < 1) { scroller.scrollTop = target; requestAnimationFrame(() => { scroller.dataset.auto = ''; }); return; }
+  const { values, count } = springSamples('smooth');
+  const begin = performance.now();
+  const id = {};
+  scrollAnimations.set(scroller, id);
+  const step = (now) => {
+    if (scrollAnimations.get(scroller) !== id) return;
+    const i = Math.min(count - 1, Math.floor(now - begin));
+    scroller.scrollTop = start + delta * values[i];
+    if (i < count - 1) requestAnimationFrame(step);
+    else requestAnimationFrame(() => { scroller.dataset.auto = ''; });
+  };
+  requestAnimationFrame(step);
+}
+
+function drawBracket(device, st, animate = false) {
+  const inner = device.querySelector('.t-inner');
+  if (!inner) return;
+  let bracket = inner.querySelector('.bracket');
+  if (!st.loop || st.loop.free || st.mode === 'none') { if (bracket) bracket.remove(); return; }
+  const first = inner.querySelector(`.sent[data-index="${st.loop.from}"]`), last = inner.querySelector(`.sent[data-index="${st.loop.to}"]`);
+  if (!first || !last) return;
+  if (!bracket) {
+    bracket = document.createElement('div');
+    bracket.className = 'bracket';
+    bracket.setAttribute('aria-hidden', 'true');
+    bracket.innerHTML = '<span class="h top" data-handle="from"></span><span class="h bottom" data-handle="to"></span>';
+    inner.append(bracket);
+    enableBracketDrag(device, bracket);
+  }
+  bracket.style.top = `${first.offsetTop + 10}px`;
+  bracket.style.height = `${last.offsetTop + last.offsetHeight - first.offsetTop - 20}px`;
+  bracket.style.left = `${first.offsetLeft + 6}px`;
+  if (animate) {
+    play(bracket, [{ transform: 'scaleY(0)' }, { transform: 'none' }], 'snappy', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+    bracket.querySelectorAll('.h').forEach((h) => play(h, [{ transform: 'scale(0.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], 'bouncy', { delay: 80 }));
+  }
+}
+
+function enableBracketDrag(device, bracket) {
+  bracket.querySelectorAll('.h').forEach((handle) => {
+    handle.addEventListener('pointerdown', (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      handle.setPointerCapture(event.pointerId);
+      const st = deviceState.get(device);
+      const move = (e) => {
+        const sentences = [...device.querySelectorAll('.sent')];
+        const over = sentences.find((el) => { const r = el.getBoundingClientRect(); return e.clientY >= r.top && e.clientY <= r.bottom; });
+        if (!over) return;
+        const i = Number(over.dataset.index);
+        const { from, to } = st.loop;
+        const next = handle.dataset.handle === 'from' ? [Math.min(i, to), to] : [from, Math.max(i, from)];
+        if (next[0] === from && next[1] === to) return;
+        setLoop(st, next[0], next[1]);
+        haptic(device, 'selection · SEGMENT_TICK');
+        drawBracket(device, st);
+        refreshLoopUI(device, st);
+      };
+      const up = () => { handle.removeEventListener('pointermove', move); handle.removeEventListener('pointerup', up); };
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', up);
+    });
+  });
+}
+
+function refreshLoopUI(device, st) {
+  const chip = device.querySelector('.loop-chip');
+  const btn = device.querySelector('.loop-btn');
+  const time = device.querySelector('.time-label');
+  const on = Boolean(st.loop);
+  if (chip) {
+    const wasHidden = chip.hidden;
+    chip.hidden = !on;
+    chip.querySelector('.loop-label').textContent = loopLabel(st);
+    if (on && wasHidden) play(chip, [{ opacity: 0, transform: 'translateY(6px) scale(0.96)' }, { opacity: 1, transform: 'none' }], 'snappy');
+  }
+  if (time) time.hidden = on;
+  if (btn) { btn.classList.toggle('selected', on); btn.setAttribute('aria-pressed', String(on)); btn.querySelector('.ms').textContent = on ? 'repeat_on' : 'repeat'; }
+  updateWaves(device, st);
+}
+
+function toggleLoop(device, st, frame) {
+  if (st.loop) { st.loop = null; st.evidence = null; drawBracket(device, st); haptic(device, 'impact light · CONTEXT_CLICK'); refreshLoopUI(device, st); return; }
+  setLoop(st, st.cur, st.cur);
+  haptic(device, 'impact light · CONTEXT_CLICK');
+  drawBracket(device, st, true);
+  refreshLoopUI(device, st);
+}
+
+function setPlaying(device, st, playing, silent = false) {
+  if (st.mode === 'offline') return;
+  st.playing = playing;
+  if (st.t >= durationOf(st.section) - 0.01 && playing) st.t = 0;
+  device.querySelectorAll('.play').forEach((button) => {
+    const icon = button.querySelector('.ms');
+    icon.textContent = playing ? 'pause' : 'play_arrow';
+    button.setAttribute('aria-label', playing ? 'Tạm dừng (Space)' : 'Phát (Space)');
+    play(icon, [{ transform: 'scale(0.6)', opacity: 0.4 }, { transform: 'none', opacity: 1 }], 'snappy');
+  });
+  if (!silent) haptic(device, 'selection · CLOCK_TICK');
+}
+
+function seek(device, st, t, { glide = true, follow = true } = {}) {
+  const from = st.t;
+  st.t = Math.max(0, Math.min(durationOf(st.section), t));
+  st.hold = 0;
+  st.repeatDone = 0;
+  if (follow) setFollow(device, st, true);
+  if (glide) glideHead(device, st, from);
+  sync(device);
+}
+
+function jumpSentence(device, st, delta) {
+  const list = TIMELINES[st.section];
+  const s = list[st.cur];
+  let target = st.cur + delta;
+  if (delta < 0 && st.t - s.start > 1.5) target = st.cur;
+  target = Math.max(0, Math.min(list.length - 1, target));
+  if (st.loop && !st.loop.free && (target < st.loop.from || target > st.loop.to)) { st.loop = null; drawBracket(device, st); refreshLoopUI(device, st); }
+  seek(device, st, list[target].start);
+  haptic(device, 'selection · CLOCK_TICK');
+}
+
+function setFollow(device, st, follow) {
+  if (st.follow === follow) return;
+  st.follow = follow;
+  const host = device.querySelector('.ls-main');
+  const existing = device.querySelector('.follow-pill');
+  if (follow) {
+    if (existing) play(existing, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => existing.remove());
+    autoScroll(device, st, false);
+    return;
+  }
+  if (existing || !host) return;
+  const pill = document.createElement('button');
+  pill.className = 'follow-pill';
+  pill.dataset.action = 'follow';
+  pill.innerHTML = '<span class="ms sm">arrow_downward</span>Về câu đang phát';
+  host.append(pill);
+  play(pill, [{ opacity: 0, transform: 'translate(-50%, 16px)' }, { opacity: 1, transform: 'translate(-50%, 0)' }], 'smooth');
+}
+
+function tick(st, device, dt) {
+  if (!st.playing || ['loading', 'offline', 'error'].includes(st.mode)) return;
+  if (st.hold > 0) { st.hold -= dt; return; }
+  const list = TIMELINES[st.section];
+  const before = st.t;
+  st.t += dt * st.speed;
+  if (st.loop && st.t >= st.loop.b) {
+    st.passes += 1;
+    if (st.repeatN > 1 && st.repeatN !== Infinity && st.passes >= st.repeatN) { st.t = st.loop.b; st.passes = 0; setPlaying(device, st, false, true); return; }
+    st.t = st.loop.a;
+    st.hold = gapSeconds(st, list[st.cur]);
+    device.querySelectorAll('.wave .head').forEach((head) => play(head, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short, easing: EASING.standard }));
+    const label = device.querySelector('.loop-label');
+    if (label) { label.textContent = loopLabel(st); play(label, [{ transform: 'translateY(40%)', opacity: 0 }, { transform: 'none', opacity: 1 }], 'gentle'); }
+    return;
+  }
+  if (!st.loop) {
+    const s = list[currentIndex({ ...st, t: before })];
+    if (before < s.end && st.t >= s.end) {
+      if (st.repeatN > 1 && st.repeatDone < st.repeatN - 1) { st.repeatDone += 1; st.t = s.start; st.hold = gapSeconds(st, s); return; }
+      st.repeatDone = 0;
+      if (st.pauseAfter) { st.t = s.end; setPlaying(device, st, false, true); return; }
+      st.hold = gapSeconds(st, s);
+    }
+  }
+  const total = durationOf(st.section);
+  if (st.t >= total) {
+    st.t = total;
+    setPlaying(device, st, false, true);
+    const end = device.querySelector('[data-end]');
+    if (end && st.follow) { animateScroll(device.querySelector('.transcript'), end.offsetTop - 120, reduceMotion); play(end, [{ transform: 'scale(0.96)', opacity: 0.6 }, { transform: 'none', opacity: 1 }], 'bouncy'); }
+  }
+}
+
+const gapSeconds = (st, s) => (st.gap === 'sentence' ? s.end - s.start : st.gap);
+
+let last = performance.now();
+function onFrame(now) {
+  const dt = Math.min(0.1, (now - last) / 1000);
+  last = now;
+  devices.forEach((device) => {
+    if (!device.isConnected) { devices.delete(device); return; }
+    const st = deviceState.get(device);
+    tick(st, device, dt);
+    sync(device);
+  });
+  requestAnimationFrame(onFrame);
+}
+
+function fullSentenceHTML(st) {
+  const s = TIMELINES[st.section][Math.max(0, st.cur)];
+  return `<div class="fp-sentence" style="margin-top:12px;min-height:92px"><span class="t-caption muted">Câu ${s.index + 1} · ${s.speaker}</span>
+    <div class="txt t-title2" lang="en" style="font-size:22px;line-height:32px;font-weight:600;color:var(--on-surface)">${s.words.map((w, i) => `<span class="w" data-w="${i}">${w.text}</span>`).join(' ')}</div></div>`;
+}
+
+function segmentedHTML(name, options, value) {
+  return `<div class="seg" role="radiogroup" aria-label="${name}" data-setting="${name}">${options.map(([v, label]) => `<button role="radio" aria-checked="${v === value}" data-value="${v}">${label}</button>`).join('')}<span class="ind"></span></div>`;
+}
+
+function sliderHTML(st) {
+  const fraction = (st.speed - 0.5) / 1;
+  const stops = [0.75, 1, 1.25].map((v) => `<span class="stop" style="left:${(v - 0.5) * 100}%"></span>`).join('');
+  return `<div class="slider" role="slider" tabindex="0" aria-label="Tốc độ" aria-valuemin="0.5" aria-valuemax="1.5" aria-valuenow="${st.speed}" aria-valuetext="${fmtSpeed(st.speed)}">
+    <div class="track"><span class="fill" style="width:${fraction * 100}%"></span>${stops}</div><span class="thumb" style="left:calc(12px + (100% - 24px) * ${fraction})"></span></div>
+    <div class="slider-labels t-caption muted tnum"><span>0,5×</span><span>1×</span><span>1,5×</span></div>`;
+}
+
+function settingsHTML(st, { speed = true } = {}) {
+  return `<div class="group">
+    ${speed ? `<div class="setting"><div style="display:flex;justify-content:space-between"><span class="t-label">Tốc độ</span><span class="t-label tnum speed-value" style="color:var(--primary)">${fmtSpeed(st.speed)}</span></div>${sliderHTML(st)}</div>` : ''}
+    <div class="setting"><span class="t-label">Lặp mỗi câu</span>${segmentedHTML('repeat', REPEATS, st.repeatN)}</div>
+    <div class="setting"><span class="t-label">Nghỉ giữa câu</span>${segmentedHTML('gap', GAPS, st.gap)}</div>
+    <div class="setting row"><span class="t-label">Dừng sau mỗi câu</span><button class="switch" role="switch" aria-checked="${st.pauseAfter}" aria-label="Dừng sau mỗi câu" data-action="pause-after"></button></div>
+    <div class="setting row"><span><span class="t-label" style="display:block">Lặp đoạn A–B</span><span class="t-footnote muted tnum ab-text">${st.loop ? `${fmtFine(st.loop.a)} – ${fmtFine(st.loop.b)}` : 'Kéo điểm A, B trên thanh sóng âm'}</span></span>
+      <button class="btn btn-text" data-action="clear-loop" ${st.loop ? '' : 'disabled'}>Xoá</button></div></div>`;
+}
+
+function fullPlayerHTML(st) {
+  const total = durationOf(st.section);
+  return `<div class="handle"></div><h2 class="t-headline" style="text-align:center">Section ${st.section} · ${SECTIONS[st.section].title}</h2>
+    ${fullSentenceHTML(st)}
+    <div style="margin-top:20px">${waveHTML(st, 'phone', 'expanded')}</div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px" class="t-caption muted tnum"><span class="cur-time">${fmt(st.t)}</span><span>${fmt(total)}</span></div>
+    <div class="fp-controls"><button class="icon-btn" data-action="back2" aria-label="Lùi 2 giây"><span class="t-label">−2s</span></button>
+      <button class="icon-btn" data-action="prev" aria-label="Câu trước"><span class="ms lg">skip_previous</span></button>${playButtonHTML(st, 'large')}
+      <button class="icon-btn" data-action="next" aria-label="Câu sau"><span class="ms lg">skip_next</span></button><button class="icon-btn" data-action="fwd2" aria-label="Tới 2 giây"><span class="t-label">+2s</span></button></div>
+    ${settingsHTML(st)}`;
+}
+
+function positionIndicators(root) {
+  root.querySelectorAll('.seg').forEach((seg) => {
+    const buttons = [...seg.querySelectorAll('button')];
+    const index = Math.max(0, buttons.findIndex((b) => b.getAttribute('aria-checked') === 'true'));
+    const ind = seg.querySelector('.ind');
+    const b = buttons[index];
+    ind.style.width = `${b.offsetWidth}px`;
+    ind.style.transform = `translateX(${b.offsetLeft - 4}px)`;
+  });
+}
+
+function wireSettings(device, root) {
+  const st = deviceState.get(device);
+  root.querySelectorAll('.seg[data-setting]').forEach((seg) => seg.addEventListener('click', (event) => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    event.stopPropagation();
+    seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-checked', String(b === button)));
+    positionIndicators(seg.parentElement);
+    const raw = button.dataset.value;
+    const value = raw === 'Infinity' ? Infinity : raw === 'sentence' ? 'sentence' : Number(raw);
+    if (seg.dataset.setting === 'repeat') { st.repeatN = value; st.repeatDone = 0; st.passes = 0; }
+    else st.gap = value;
+    haptic(device, 'selection · CLOCK_TICK');
+    const label = device.querySelector('.loop-label');
+    if (label) label.textContent = loopLabel(st);
+  }));
+  root.querySelectorAll('.slider').forEach((slider) => {
+    const set = (clientX) => {
+      const r = slider.getBoundingClientRect();
+      const fraction = Math.max(0, Math.min(1, (clientX - r.left - 12 * (r.width / slider.offsetWidth)) / (r.width - 24 * (r.width / slider.offsetWidth))));
+      let value = Math.round((0.5 + fraction) / 0.05) * 0.05;
+      for (const stop of [0.75, 1, 1.25]) if (Math.abs(value - stop) < 0.026) value = stop;
+      setSpeed(device, st, value);
+    };
+    slider.addEventListener('pointerdown', (event) => { event.stopPropagation(); slider.setPointerCapture(event.pointerId); set(event.clientX); slider.onpointermove = (e) => set(e.clientX); });
+    slider.addEventListener('pointerup', () => { slider.onpointermove = null; });
+    slider.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowUp') { event.preventDefault(); event.stopPropagation(); setSpeed(device, st, st.speed + 0.05); }
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') { event.preventDefault(); event.stopPropagation(); setSpeed(device, st, st.speed - 0.05); }
+    });
+  });
+  positionIndicators(root);
+}
+
+function setSpeed(device, st, value) {
+  const next = Math.round(Math.max(0.5, Math.min(1.5, value)) * 100) / 100;
+  if (next === st.speed) return;
+  const crossed = [0.75, 1, 1.25].some((stop) => (st.speed - stop) * (next - stop) <= 0 && next !== st.speed);
+  st.speed = next;
+  if (crossed) haptic(device, 'selection · SEGMENT_TICK');
+  device.querySelectorAll('.speed-chip').forEach((chip) => {
+    chip.textContent = fmtSpeed(next);
+    chip.classList.toggle('on', next !== 1);
+    chip.setAttribute('aria-label', `Tốc độ ${fmtSpeed(next)}`);
+    play(chip, [{ transform: 'translateY(3px)', opacity: 0.5 }, { transform: 'none', opacity: 1 }], 'gentle');
+  });
+  device.querySelectorAll('.speed-value').forEach((el) => { el.textContent = fmtSpeed(next); });
+  device.querySelectorAll('.slider').forEach((slider) => {
+    const fraction = next - 0.5;
+    slider.querySelector('.fill').style.width = `${fraction * 100}%`;
+    slider.querySelector('.thumb').style.left = `calc(12px + (100% - 24px) * ${fraction})`;
+    slider.setAttribute('aria-valuenow', next);
+    slider.setAttribute('aria-valuetext', fmtSpeed(next));
+  });
+  device.querySelectorAll('.menu-item[data-speed]').forEach((item) => item.setAttribute('aria-checked', String(Number(item.dataset.speed) === next)));
+}
+
+function openPopover(device, anchor, html, label, width = 300) {
+  closePopover(device);
+  const opener = anchor;
+  const layer = document.createElement('div');
+  layer.className = 'pop-layer';
+  layer.innerHTML = `<div class="popover" role="dialog" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const pop = layer.querySelector('.popover');
+  pop.style.width = `${width}px`;
+  const a = localRect(device, anchor);
+  const height = pop.offsetHeight;
+  const left = Math.max(12, Math.min(device.offsetWidth - width - 12, a.x + a.w / 2 - width / 2));
+  pop.style.left = `${left}px`;
+  pop.style.top = `${Math.max(12, a.y - height - 10)}px`;
+  pop.style.transformOrigin = `${a.x + a.w / 2 - left}px 100%`;
+  play(pop, [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'snappy', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  layer.addEventListener('pointerdown', (event) => { if (!event.target.closest('.popover')) closePopover(device); });
+  layer.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.stopPropagation(); closePopover(device); } });
+  layer.opener = opener;
+  wireSettings(device, pop);
+  const focusable = pop.querySelector('[aria-checked="true"], button, [tabindex="0"]');
+  if (focusable) focusable.focus({ preventScroll: true });
+  return pop;
+}
+
+function closePopover(device) {
+  device.querySelectorAll('.pop-layer').forEach((layer) => {
+    const pop = layer.querySelector('.popover');
+    layer.style.pointerEvents = 'none';
+    play(pop, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], { duration: DURATION.short, easing: EASING.accelerate }).then(() => {
+      layer.remove();
+      if (layer.opener && layer.opener.isConnected) layer.opener.focus({ preventScroll: true });
+    });
+  });
+}
+
+function speedMenu(device, st, anchor) {
+  const presets = [0.5, 0.75, 0.85, 1, 1.25, 1.5];
+  const pop = openPopover(device, anchor, `<h3 class="t-label muted">Tốc độ</h3>${presets.map((v) => `<button class="menu-item" role="menuitemradio" data-speed="${v}" aria-checked="${v === st.speed}"><span class="ms sm">check</span>${fmtSpeed(v)}${v === 1 ? ' <span class="muted t-footnote">bình thường</span>' : ''}</button>`).join('')}
+    <div class="menu-sep"></div><div class="setting" style="padding-top:4px"><div style="display:flex;justify-content:space-between"><span class="t-footnote muted">Tinh chỉnh${device.classList.contains('desktop') ? ' · phím − / =' : ''}</span><span class="t-label tnum speed-value" style="color:var(--primary)">${fmtSpeed(st.speed)}</span></div>${sliderHTML(st)}</div>`, 'Tốc độ');
+  pop.querySelectorAll('[data-speed]').forEach((item) => item.addEventListener('click', () => { setSpeed(device, st, Number(item.dataset.speed)); setTimeout(() => closePopover(device), 120); }));
+}
+
+function tuneMenu(device, st, anchor) {
+  const pop = openPopover(device, anchor, `<h3 class="t-label muted">Tuỳ chỉnh phát</h3>${settingsHTML(st, { speed: false }).replace('class="group"', 'class="group" style="margin-top:4px"')}`, 'Tuỳ chỉnh phát', 360);
+  wirePopoverActions(device, st, pop);
+}
+
+function shortcutsMenu(device, anchor) {
+  const rows = [['Space', 'Phát / tạm dừng'], ['← →', 'Câu trước / sau'], ['R', 'Nghe lại câu'], ['⇧← ⇧→', 'Lùi / tới 2 giây'], ['↑ ↓ Enter', 'Chọn câu, nghe câu'], ['L', 'Lặp câu này'], ['⇧↑ ⇧↓', 'Mở rộng đoạn lặp'], ['[ ]', 'Đặt điểm A / B'], ['\\', 'Xoá đoạn lặp'], ['− = 0', 'Chậm / nhanh / 1×'], ['T', 'Ẩn / hiện lời thoại'], ['V', 'Bản dịch'], ['1–4', 'Chọn section'], ['Esc', 'Đóng, thoát đoạn, quay lại']];
+  const pop = openPopover(device, anchor, `<h3 class="t-label muted">Phím tắt</h3><div class="shortcut-list">${rows.map(([k, v]) => `<span>${k.split(' ').map((x) => `<kbd>${x}</kbd>`).join(' ')}</span><span>${v}</span>`).join('')}</div>`, 'Phím tắt', 340);
+  pop.style.top = `${localRect(device, anchor).y + 52}px`;
+  pop.style.transformOrigin = '90% 0';
+}
+
+function wirePopoverActions(device, st, pop) {
+  pop.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+    event.stopPropagation();
+    handleAction(device, st, button.dataset.action, button);
+  });
+}
+
+function openFull(device, st, initialOffset) {
+  const ctrl = openSheet(device, 'phone', fullPlayerHTML(st), 'Trình phát đầy đủ', { initialOffset });
+  const sheet = ctrl.sheet;
+  sheet.style.paddingBottom = '40px';
+  wireSettings(device, sheet);
+  enableWave(device, sheet.querySelector('.wave'));
+  sheet.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+    event.stopPropagation();
+    handleAction(device, st, button.dataset.action, button);
+  });
+  st.word = -2;
+  sync(device, true);
+  return ctrl;
+}
+
+function wordSheet(device, st, frame, sentenceIndex, wordIndexValue) {
+  const s = TIMELINES[st.section][sentenceIndex];
+  const word = s.words[wordIndexValue].text.replace(/[.,!?’']+$|^[’']+/g, '').replace(/’s$/, '');
+  const resume = st.playing;
+  if (resume) setPlaying(device, st, false);
+  const quote = s.words.map((w, i) => (i === wordIndexValue ? `<mark>${w.text}</mark>` : w.text)).join(' ');
+  const close = openSheet(device, frame, `<div class="handle"></div><span class="t-caption muted">Lưu từ</span><h2 class="t-title1" style="margin-top:4px" lang="en">${word}</h2>
+    <div class="word-quote t-reading" lang="en">${quote}</div><p class="t-footnote muted" style="margin-top:8px">Câu ${sentenceIndex + 1} · Section ${st.section} · ${fmt(s.start)}–${fmt(s.end)}. Thẻ sẽ kèm câu này và đoạn âm thanh của nó.</p>
+    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-secondary" data-action="hear" style="flex:1"><span class="ms">volume_up</span>Nghe câu này</button><button class="btn btn-primary" data-action="save-word" data-autofocus style="flex:1"><span class="ms">bookmark_add</span>Lưu vào thẻ</button></div>`,
+  'Lưu từ', { onClose: () => { if (resume) setPlaying(device, st, true); } });
+  close.sheet.querySelector('[data-action="hear"]').addEventListener('click', (event) => { event.stopPropagation(); close.close(); seek(device, st, s.start); setPlaying(device, st, true); });
+  close.sheet.querySelector('[data-action="save-word"]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    haptic(device, 'impact light · SEGMENT_TICK');
+    close.close();
+    device.querySelectorAll('.coach').forEach((c) => c.remove());
+    showSnackbar(device, `Đã lưu “${word}” vào thẻ`);
+  });
+}
+
+function showSnackbar(device, text) {
+  device.querySelectorAll('.snackbar').forEach((s) => s.remove());
+  const bar = document.createElement('div');
+  bar.className = 'snackbar';
+  bar.setAttribute('role', 'status');
+  bar.innerHTML = `<span class="t-subheadline grow">${text}</span><button class="btn btn-text">Xem thẻ</button>`;
+  (device.querySelector('.ls-main') || device).append(bar);
+  play(bar, [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], 'smooth');
+  setTimeout(() => { if (bar.isConnected) play(bar, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => bar.remove()); }, 4000);
+}
+
+function changeSection(device, frame, st, section) {
+  if (section === st.section || !SECTIONS[section]) return;
+  const dir = section > st.section ? 1 : -1;
+  st.section = section;
+  st.t = 0;
+  st.loop = null;
+  st.evidence = null;
+  st.cur = -1;
+  st.range = 'all';
+  st.revealed = new Set();
+  haptic(device, 'selection · CLOCK_TICK');
+  const inner = device.querySelector('.t-inner');
+  const swap = () => {
+    if (frame === 'phone') {
+      device.querySelectorAll('.ls-sub .seg button').forEach((b) => b.setAttribute('aria-checked', String(Number(b.dataset.section) === section)));
+      positionIndicators(device.querySelector('.ls-sub'));
+      device.querySelector('.chip-row').outerHTML = rangeChips(st);
+    } else {
+      device.querySelector('.side-panel').outerHTML = sidePanel(st);
+      device.querySelector('.main-col .ls-title').innerHTML = `<span class="t-headline">Section ${st.section} · ${SECTIONS[st.section].title}</span><span class="t-caption muted">${SECTIONS[st.section].range} · ${TIMELINES[st.section].length} câu</span>`;
+    }
+    inner.innerHTML = transcriptHTML(st, frame);
+    const pb = device.querySelector('.pb');
+    pb.outerHTML = barHTML(st, frame);
+    wireBar(device, frame);
+    device.querySelector('.transcript').scrollTop = 0;
+    sync(device, true);
+  };
+  if (reduceMotion) { swap(); play(inner, [{ opacity: 0 }, { opacity: 1 }]); return; }
+  play(inner, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-24 * dir}px)` }], { duration: 90, easing: EASING.accelerate }).then(() => {
+    swap();
+    play(inner, [{ opacity: 0, transform: `translateX(${24 * dir}px)` }, { opacity: 1, transform: 'none' }], 'snappy');
+  });
+}
+
+function toggleHidden(device, frame, st) {
+  st.hidden = !st.hidden;
+  if (!st.hidden) st.revealed = new Set();
+  const inner = device.querySelector('.t-inner');
+  const scroll = device.querySelector('.transcript').scrollTop;
+  inner.classList.toggle('hidden-mode', st.hidden);
+  inner.innerHTML = transcriptHTML(st, frame);
+  device.querySelector('.transcript').scrollTop = scroll;
+  device.querySelectorAll('.hide-btn').forEach((b) => {
+    b.classList.toggle('selected', st.hidden && b.classList.contains('icon-btn'));
+    b.classList.toggle('on', st.hidden && b.classList.contains('tool-btn'));
+    b.setAttribute('aria-pressed', String(st.hidden));
+    b.querySelector('.ms').textContent = st.hidden ? 'visibility_off' : 'visibility';
+  });
+  st.cur = -1;
+  sync(device, true);
+  const sentences = [...inner.querySelectorAll('.sent')];
+  sentences.forEach((el, i) => play(el.querySelector('.txt'), [{ opacity: 0.2 }, { opacity: 1 }], { duration: DURATION.medium, easing: EASING.standard, delay: reduceMotion ? 0 : Math.min(i, 8) * STAGGER }));
+}
+
+function toggleTranslate(device, frame, st) {
+  st.translate = !st.translate;
+  const scroll = device.querySelector('.transcript').scrollTop;
+  device.querySelector('.t-inner').innerHTML = transcriptHTML(st, frame);
+  device.querySelector('.transcript').scrollTop = scroll;
+  device.querySelectorAll('.tr-btn').forEach((b) => {
+    b.classList.toggle(b.classList.contains('icon-btn') ? 'selected' : 'on', st.translate);
+    b.setAttribute('aria-pressed', String(st.translate));
+  });
+  st.cur = -1;
+  sync(device, true);
+  device.querySelectorAll('.vi').forEach((vi) => play(vi, [{ opacity: 0, transform: 'translateY(-4px)' }, { opacity: 1, transform: 'none' }], 'smooth'));
+}
+
+function goToQuestion(device, frame, st, q) {
+  const list = TIMELINES[st.section];
+  const s = list.find((x) => x.q.includes(q));
+  if (!s) return;
+  st.evidence = q;
+  device.querySelector('.t-inner').innerHTML = transcriptHTML(st, frame);
+  if (frame === 'desktop') device.querySelector('.side-panel').outerHTML = sidePanel(st);
+  setLoop(st, s.index, s.index);
+  st.cur = -1;
+  seek(device, st, s.start, { glide: true });
+  if (st.speed === 1) setSpeed(device, st, 0.75);
+  sync(device, true);
+  drawBracket(device, st, true);
+  refreshLoopUI(device, st);
+  setPlaying(device, st, true);
+}
+
+function handleAction(device, st, action, target) {
+  const frame = device.classList.contains('desktop') ? 'desktop' : 'phone';
+  if (action === 'toggle') return setPlaying(device, st, !st.playing);
+  if (action === 'prev') return jumpSentence(device, st, -1);
+  if (action === 'next') return jumpSentence(device, st, 1);
+  if (action === 'replay') { seek(device, st, TIMELINES[st.section][st.cur].start); if (!st.playing) setPlaying(device, st, true); return; }
+  if (action === 'back2') return seek(device, st, st.t - 2);
+  if (action === 'fwd2') return seek(device, st, st.t + 2);
+  if (action === 'loop') return toggleLoop(device, st, frame);
+  if (action === 'clear-loop') {
+    st.loop = null; st.evidence = null; drawBracket(device, st); refreshLoopUI(device, st);
+    device.querySelectorAll('.ab-text').forEach((el) => { el.textContent = 'Kéo điểm A, B trên thanh sóng âm'; });
+    return;
+  }
+  if (action === 'speed') return speedMenu(device, st, target);
+  if (action === 'tune') return tuneMenu(device, st, target);
+  if (action === 'shortcuts') return shortcutsMenu(device, target);
+  if (action === 'open-full') return openFull(device, st);
+  if (action === 'toggle-hidden') return toggleHidden(device, frame, st);
+  if (action === 'toggle-translate') return toggleTranslate(device, frame, st);
+  if (action === 'follow') return setFollow(device, st, true);
+  if (action === 'pause-after') {
+    st.pauseAfter = !st.pauseAfter;
+    device.querySelectorAll('[data-action="pause-after"]').forEach((s) => s.setAttribute('aria-checked', String(st.pauseAfter)));
+    return haptic(device, 'selection · CLOCK_TICK');
+  }
+  if (action === 'reveal') {
+    st.revealed.add(Number(target.dataset.index));
+    const el = target.closest('.sent');
+    el.classList.add('revealed');
+    play(el.querySelector('.txt'), [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.medium, easing: EASING.standard });
+    return;
+  }
+  if (action === 'exit-evidence') {
+    st.evidence = null; st.loop = null; setSpeed(device, st, 1);
+    device.querySelector('.t-inner').innerHTML = transcriptHTML(st, frame);
+    if (frame === 'desktop') device.querySelector('.side-panel').outerHTML = sidePanel(st);
+    st.cur = -1; sync(device, true); refreshLoopUI(device, st);
+    return;
+  }
+  if (action === 'restart') { seek(device, st, 0); setPlaying(device, st, true); return; }
+  if (action === 'next-section') return changeSection(device, frame, st, st.section + 1);
+  if (action === 'retry') { ui.state = 'loading'; syncControls(); render(); setTimeout(() => { ui.state = 'pause'; syncControls(); render(); }, 1400); return; }
+  if (action === 'back') return;
+}
+
+function enableWave(device, wave) {
+  if (!wave) return;
+  const st = deviceState.get(device);
+  let dragging = null, lastBoundary = -1, wasPlaying = false;
+  const timeAt = (clientX) => {
+    const r = wave.getBoundingClientRect();
+    return Math.max(0, Math.min(1, (clientX - r.left) / r.width)) * durationOf(st.section);
+  };
+  wave.addEventListener('pointerdown', (event) => {
+    if (controlsDisabled(st)) return;
+    event.stopPropagation();
+    wave.setPointerCapture(event.pointerId);
+    const handle = event.target.closest('.ab');
+    dragging = handle ? handle.dataset.ab : 'head';
+    wasPlaying = st.playing;
+    if (dragging === 'head') { wave.classList.add('scrubbing'); st.playing = false; seek(device, st, timeAt(event.clientX), { glide: false }); }
+  });
+  wave.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    const t = timeAt(event.clientX);
+    if (dragging === 'head') {
+      seek(device, st, t, { glide: false });
+      const boundary = currentIndex(st);
+      if (boundary !== lastBoundary) { if (lastBoundary !== -1) haptic(device, 'selection · SEGMENT_TICK'); lastBoundary = boundary; }
+      return;
+    }
+    const value = Math.round(t * 10) / 10;
+    if (dragging === 'a') st.loop.a = Math.min(value, st.loop.b - 0.5);
+    else st.loop.b = Math.max(value, st.loop.a + 0.5);
+    st.loop.free = true;
+    drawBracket(device, st);
+    refreshLoopUI(device, st);
+    device.querySelectorAll('.ab-text').forEach((el) => { el.textContent = `${fmtFine(st.loop.a)} – ${fmtFine(st.loop.b)}`; });
+  });
+  const end = () => {
+    if (!dragging) return;
+    if (dragging === 'head') { wave.classList.remove('scrubbing'); st.playing = wasPlaying; }
+    dragging = null;
+  };
+  wave.addEventListener('pointerup', end);
+  wave.addEventListener('pointercancel', end);
+  wave.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') { event.preventDefault(); event.stopPropagation(); seek(device, st, st.t + 2); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); event.stopPropagation(); seek(device, st, st.t - 2); }
+  });
+}
+
+function wireBar(device, frame) {
+  const st = deviceState.get(device);
+  const pb = device.querySelector('.pb');
+  enableWave(device, pb.querySelector('.wave'));
+  if (frame !== 'phone') return;
+  let startY = null, ctrl = null, lastY = 0, lastT = 0, velocity = 0;
+  const scale = () => Number(device.dataset.scale);
+  pb.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button:not(.handle-btn), .wave') || controlsDisabled(st)) return;
+    startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp; ctrl = null;
+    pb.setPointerCapture(event.pointerId);
+  });
+  pb.addEventListener('pointermove', (event) => {
+    if (startY === null) return;
+    const dy = (event.clientY - startY) / scale();
+    velocity = (event.clientY - lastY) / scale() / Math.max(1, event.timeStamp - lastT);
+    lastY = event.clientY; lastT = event.timeStamp;
+    if (!ctrl && dy < -8) ctrl = openFull(device, st, 1);
+    if (ctrl) ctrl.follow(dy);
+  });
+  pb.addEventListener('pointerup', () => {
+    if (startY === null) return;
+    startY = null;
+    if (!ctrl) return;
+    ctrl.release(velocity);
+    pb.dataset.dragged = '1';
+    setTimeout(() => { pb.dataset.dragged = ''; }, 0);
+  });
+  pb.addEventListener('click', (event) => { if (pb.dataset.dragged) event.stopPropagation(); }, true);
+}
+
+function mount(device, frame) {
+  const st = createState(ui.state);
+  deviceState.set(device, st);
+  devices.add(device);
+  positionIndicators(device);
+  wireBar(device, frame);
+  const scroller = device.querySelector('.transcript');
+  scroller.addEventListener('scroll', () => { if (!scroller.dataset.auto && st.playing) setFollow(device, st, false); }, { passive: true });
+  let press = null;
+  scroller.addEventListener('pointerdown', (event) => {
+    const word = event.target.closest('.w');
+    const sentence = event.target.closest('.sent');
+    if (!sentence || event.target.closest('button')) return;
+    press = { x: event.clientX, y: event.clientY, sentence, timer: null, long: false };
+    if (word && frame === 'phone' && !(st.hidden && !sentence.classList.contains('revealed'))) {
+      press.timer = setTimeout(() => {
+        press.long = true;
+        haptic(device, 'impact soft · GESTURE_THRESHOLD_ACTIVATE');
+        play(word, [{ transform: 'scale(1)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], 'snappy');
+        wordSheet(device, st, frame, Number(sentence.dataset.index), Number(word.dataset.w));
+      }, 500);
+    }
+  });
+  scroller.addEventListener('pointermove', (event) => { if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 8) { clearTimeout(press.timer); press.moved = true; } });
+  scroller.addEventListener('pointerup', (event) => {
+    if (!press) return;
+    clearTimeout(press.timer);
+    const { sentence, long, moved } = press;
+    press = null;
+    if (long || moved || event.detail > 1) return;
+    playSentence(device, st, Number(sentence.dataset.index), event.shiftKey);
+  });
+  scroller.addEventListener('dblclick', (event) => {
+    const word = event.target.closest('.w');
+    const sentence = event.target.closest('.sent');
+    if (!word || !sentence || frame !== 'desktop') return;
+    window.getSelection().removeAllRanges();
+    wordSheet(device, st, frame, Number(sentence.dataset.index), Number(word.dataset.w));
+  });
+  scroller.addEventListener('contextmenu', (event) => {
+    const word = event.target.closest('.w');
+    const sentence = event.target.closest('.sent');
+    if (!word || !sentence || frame !== 'desktop') return;
+    event.preventDefault();
+    wordSheet(device, st, frame, Number(sentence.dataset.index), Number(word.dataset.w));
+  });
+  scroller.addEventListener('keydown', (event) => {
+    const sentence = event.target.closest('.sent');
+    if (sentence && event.key === 'Enter') { event.preventDefault(); playSentence(device, st, Number(sentence.dataset.index), event.shiftKey); }
+  });
+  device.addEventListener('click', (event) => {
+    const target = event.target.closest('button');
+    if (!target || !device.contains(target) || target.closest('.sheet, .popover')) return;
+    if (target.dataset.section) return changeSection(device, frame, st, Number(target.dataset.section));
+    if (target.dataset.question) return goToQuestion(device, frame, st, Number(target.dataset.question));
+    if (target.dataset.range) {
+      st.range = target.dataset.range;
+      device.querySelectorAll('[data-range]').forEach((chip) => chip.setAttribute('aria-pressed', String(chip === target)));
+      haptic(device, 'selection · CLOCK_TICK');
+      const first = TIMELINES[st.section].find((s) => s.q.some((q) => (st.range === '11' ? q <= 15 : st.range === '16' ? q >= 16 : true)));
+      if (st.range !== 'all' && first) seek(device, st, first.start);
+      return;
+    }
+    if (target.dataset.action) handleAction(device, st, target.dataset.action, target);
+  });
+  st.cur = -1;
+  sync(device, true);
+  if (st.loop && !st.loop.free) drawBracket(device, st);
+  if (ui.state === 'full') {
+    if (frame === 'phone') openFull(device, st);
+    else tuneMenu(device, st, device.querySelector('[data-action="tune"]'));
+  }
+  if (ui.state === 'end') {
+    const end = device.querySelector('[data-end]');
+    requestAnimationFrame(() => animateScroll(scroller, end.offsetTop - 160, true));
+  }
+  if (ui.state === 'loading') setTimeout(() => { if (device.isConnected) { st.mode = 'pause'; st.buffering = false; st.t = 0; const inner = device.querySelector('.t-inner'); inner.innerHTML = transcriptHTML(st, frame); device.querySelector('.pb').outerHTML = barHTML(st, frame); wireBar(device, frame); st.cur = -1; sync(device, true); play(inner, [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short, easing: EASING.standard }); } }, 1800);
+  entry(device, frame);
+}
+
+function playSentence(device, st, index, extend) {
+  if (controlsDisabled(st) || st.mode === 'none') return;
+  if (extend && st.loop && !st.loop.free) {
+    setLoop(st, Math.min(st.loop.from, index), Math.max(st.loop.to, index));
+    drawBracket(device, st);
+    refreshLoopUI(device, st);
+    return;
+  }
+  if (st.loop && !st.loop.free && (index < st.loop.from || index > st.loop.to)) { st.loop = null; st.evidence = st.evidence && TIMELINES[st.section][index].q.includes(st.evidence) ? st.evidence : null; drawBracket(device, st); refreshLoopUI(device, st); }
+  seek(device, st, TIMELINES[st.section][index].start);
+  if (!st.playing) setPlaying(device, st, true);
+  else haptic(device, 'selection · CLOCK_TICK');
+}
+
+function entry(device, frame) {
+  const items = [...device.querySelectorAll('.sent, .t-inner > .banner')].slice(0, 9);
+  items.forEach((el, i) => play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER }));
+  if (frame === 'phone') play(device.querySelector('.pb'), [{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: 120 });
+}
+
+function handleKey(event) {
+  const target = event.target;
+  if (target.closest && target.closest('input, textarea')) return;
+  document.querySelectorAll('.device.desktop').forEach((device) => {
+    const st = deviceState.get(device);
+    if (!st) return;
+    if (device.querySelector('.sheet-layer')) return;
+    const key = event.key;
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    if (key === 'Escape') {
+      if (device.querySelector('.pop-layer')) return closePopover(device);
+      if (st.evidence || st.loop) return handleAction(device, st, st.evidence ? 'exit-evidence' : 'clear-loop');
+      return;
+    }
+    if (device.querySelector('.pop-layer') && key !== '?') return;
+    if (key === ' ' && target.closest && target.closest('button, [role="button"], [role="slider"]') && !target.closest('.sent')) return;
+    const map = {
+      ' ': () => handleAction(device, st, 'toggle'),
+      ArrowLeft: () => (event.shiftKey ? handleAction(device, st, 'back2') : handleAction(device, st, 'prev')),
+      ArrowRight: () => (event.shiftKey ? handleAction(device, st, 'fwd2') : handleAction(device, st, 'next')),
+      r: () => handleAction(device, st, 'replay'), l: () => handleAction(device, st, 'loop'),
+      '[': () => { if (!st.loop) setLoop(st, st.cur, st.cur); st.loop.a = Math.min(st.t, st.loop.b - 0.5); st.loop.free = true; drawBracket(device, st); refreshLoopUI(device, st); },
+      ']': () => { if (!st.loop) setLoop(st, st.cur, st.cur); st.loop.b = Math.max(st.t, st.loop.a + 0.5); st.loop.free = true; drawBracket(device, st); refreshLoopUI(device, st); },
+      '\\': () => handleAction(device, st, 'clear-loop'),
+      '-': () => setSpeed(device, st, st.speed - 0.05), '=': () => setSpeed(device, st, st.speed + 0.05), '0': () => setSpeed(device, st, 1),
+      t: () => handleAction(device, st, 'toggle-hidden'), v: () => handleAction(device, st, 'toggle-translate'),
+      '?': () => handleAction(device, st, 'shortcuts', device.querySelector('[data-action="shortcuts"]')),
+      ArrowUp: () => (event.shiftKey ? extendLoop(device, st, -1) : focusSentence(device, st, -1)),
+      ArrowDown: () => (event.shiftKey ? extendLoop(device, st, 1) : focusSentence(device, st, 1)),
+    };
+    const fn = map[key.length === 1 ? key.toLowerCase() : key];
+    if (['1', '2', '3', '4'].includes(key)) { event.preventDefault(); return changeSection(device, 'desktop', st, Number(key)); }
+    if (fn) { event.preventDefault(); fn(); }
+  });
+}
+
+function focusSentence(device, st, delta) {
+  const focused = document.activeElement && document.activeElement.closest && document.activeElement.closest('.sent');
+  const from = focused && device.contains(focused) ? Number(focused.dataset.index) : st.cur;
+  const el = device.querySelector(`.sent[data-index="${Math.max(0, Math.min(TIMELINES[st.section].length - 1, from + delta))}"]`);
+  if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' }); }
+}
+
+function extendLoop(device, st, delta) {
+  const max = TIMELINES[st.section].length - 1;
+  if (!st.loop || st.loop.free) setLoop(st, st.cur, st.cur);
+  if (delta < 0) setLoop(st, Math.max(0, st.loop.from - 1), st.loop.to);
+  else setLoop(st, st.loop.from, Math.min(max, st.loop.to + 1));
+  drawBracket(device, st);
+  refreshLoopUI(device, st);
+}
+
+const springCache = new Map();
+function springSamples(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  values.length = count;
+  values[count - 1] = 1;
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const result = { values, count, timing: { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` } };
+  springCache.set(name, result);
+  return result;
+}
+const springTiming = (name) => springSamples(name).timing;
+document.documentElement.style.setProperty('--snappy', `${springTiming('snappy').duration}ms ${springTiming('snappy').easing}`);
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (device.classList.contains('desktop')) return;
+  const log = document.querySelector('.haptic-log');
+  log.innerHTML = `<span class="ms sm">vibration</span> Rung: ${kind}`;
+  log.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(haptic.timer);
+  haptic.timer = setTimeout(() => { log.textContent = ''; }, 2000);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function openSheet(device, frame, html, label, { dismissible = true, onClose = () => { }, initialOffset } = {}) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  const height = () => sheet.offsetHeight;
+  if (initialOffset === undefined) {
+    play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+    play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  } else {
+    sheet.style.transform = `translateY(${height()}px)`;
+    scrim.style.opacity = 0;
+  }
+  const initial = sheet.querySelector('[data-autofocus]') || sheet.querySelector('h2');
+  if (initial && !initial.matches('button')) initial.setAttribute('tabindex', '-1');
+  if (initial) initial.focus({ preventScroll: true });
+  let closed = false;
+  const close = (fromY = 0) => {
+    if (closed) return;
+    closed = true;
+    onClose();
+    play(scrim, [{ opacity: Math.max(0, 1 - fromY / height()) }, { opacity: 0 }], 'smooth');
+    play(sheet, phone ? [{ transform: `translateY(${fromY}px)` }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && dismissible) return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button:not([disabled]), [tabindex="0"]')];
+    const first = focusable[0], lastEl = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); lastEl.focus(); }
+    else if (!event.shiftKey && document.activeElement === lastEl) { event.preventDefault(); first.focus(); }
+  });
+  if (dismissible) scrim.addEventListener('click', () => close());
+  const api = {
+    sheet, close,
+    follow(dy) { const y = Math.max(0, height() + dy); sheet.style.transform = `translateY(${y}px)`; scrim.style.opacity = 1 - y / height(); },
+    release(velocity) {
+      const y = new DOMMatrix(getComputedStyle(sheet).transform).m42;
+      if (y < height() * 0.7 || velocity < -0.4) {
+        play(sheet, [{ transform: `translateY(${y}px)` }, { transform: 'none' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] }).then(() => { sheet.style.transform = ''; });
+        play(scrim, [{ opacity: 1 - y / height() }, { opacity: 1 }], 'smooth').then(() => { scrim.style.opacity = ''; });
+      } else close(y);
+    },
+  };
+  if (!phone || !dismissible) return api;
+  let startY = null, lastY = 0, lastT = 0, velocity = 0;
+  const scale = Number(device.dataset.scale);
+  sheet.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button, .wave, .slider, .seg')) return;
+    startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
+    sheet.setPointerCapture(event.pointerId);
+    sheet.getAnimations().forEach((a) => a.cancel());
+  });
+  sheet.addEventListener('pointermove', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    velocity = (event.clientY - lastY) / scale / Math.max(1, event.timeStamp - lastT);
+    lastY = event.clientY; lastT = event.timeStamp;
+    sheet.style.transform = `translateY(${dy}px)`;
+    scrim.style.opacity = 1 - dy / height();
+  });
+  sheet.addEventListener('pointerup', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    startY = null;
+    if (dy > height() * 0.3 || velocity > 0.6) return close(dy);
+    play(sheet, [{ transform: `translateY(${dy}px)` }, { transform: 'none' }], 'smooth');
+    play(scrim, [{ opacity: 1 - dy / height() }, { opacity: 1 }], 'smooth');
+  });
+  return api;
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const width = frame === 'phone' ? 390 : 1280, height = frame === 'phone' ? 844 : 800;
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  devices.clear();
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      const st = createState(ui.state);
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, st)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  const stateGroup = document.querySelector('[data-control="state"]');
+  stateGroup.insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  window.addEventListener('keydown', handleKey);
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(() => { render(); requestAnimationFrame(onFrame); });
+</script>
+</body>
+</html>
