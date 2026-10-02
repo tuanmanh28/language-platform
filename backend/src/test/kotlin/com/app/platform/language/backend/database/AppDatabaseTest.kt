@@ -32,7 +32,7 @@ class AppDatabaseTest {
   @BeforeTest
   fun cleanTables() =
     runTest {
-      database.tx { exec("TRUNCATE reading_attempts, users, reading_tests") }
+      database.tx { exec("TRUNCATE writing_submissions, reading_attempts, users, reading_tests") }
     }
 
   @Test
