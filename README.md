@@ -171,8 +171,8 @@ Test content must be **original or properly licensed** — never use material fr
 ## Technical notes
 
 - The conversion tables in `BandScale` are reference tables; the UI always says "estimated band".
-- Bundled content ships answer keys for offline scoring. API test payloads carry no answer keys or explanations;
-  both are returned only in the submit result.
+- Test payloads (bundled and API) carry answer keys and explanations so the apps score and explain offline; the apps
+  show them only after submitting. The submit result returns them too.
 - Only `macosArm64` (Apple Silicon) is built. Add a `macosX64` target if Intel Macs are needed.
 - Windows uses Compose Desktop (JVM). PeopleInSpace also has a fully native WinUI 3 client that calls
   Kotlin/Native through NuGet (see `_reference/PeopleInSpace/windows/`) — still experimental, to revisit later.

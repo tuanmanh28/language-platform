@@ -4,7 +4,6 @@ import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.common.Versioned
 import com.app.platform.language.backend.common.catalogVersion
 import com.app.platform.language.backend.content.ContentAccessPolicy
-import com.app.platform.language.backend.content.withoutAnswerKey
 import com.app.platform.language.core.exam.ReadingScorer
 import com.app.platform.language.core.model.ReadingError
 import com.app.platform.language.core.model.ReadingResult
@@ -34,7 +33,7 @@ class ReadingService(
     id: String,
     viewer: AuthIdentity?,
   ): Result<Versioned<ReadingTest>, ReadingError> =
-    findTest(id, viewer).map { stored -> Versioned(stored.test.withoutAnswerKey(), stored.version.toString()) }
+    findTest(id, viewer).map { stored -> Versioned(stored.test, stored.version.toString()) }
 
   suspend fun submit(
     id: String,

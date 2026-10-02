@@ -539,9 +539,10 @@ components:
             $ref: "#/components/schemas/ChoiceOption"
         acceptedAnswers:
           type: array
-          description: Always empty in test payloads; the answer key is only returned in the submit result
           items:
             type: string
+        explanation:
+          $ref: "#/components/schemas/Explanation"
     Explanation:
       type: object
       required: [text, paraphrases]
