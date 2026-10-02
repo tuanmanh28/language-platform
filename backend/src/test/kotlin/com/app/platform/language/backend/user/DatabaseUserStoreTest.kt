@@ -6,6 +6,7 @@ import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeTokenVerifier
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.UserProfile
@@ -39,6 +40,7 @@ class DatabaseUserStoreTest {
           FakeDatabaseHealth(),
           store,
           FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
           tokenVerifier = FakeTokenVerifier(mapOf("valid-token" to identity)),
         )
       }

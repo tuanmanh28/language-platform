@@ -11,6 +11,7 @@ tags:
   - name: listening
   - name: users
   - name: attempts
+  - name: writing
 paths:
   /health:
     get:
@@ -347,6 +348,146 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/writing/prompts:
+    get:
+      tags: [writing]
+      operationId: listWritingPrompts
+      summary: List published writing prompts, including private ones for owners
+      security:
+        - firebase: []
+      responses:
+        "200":
+          description: Published writing prompts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WritingPrompt"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/writing/submissions:
+    post:
+      tags: [writing]
+      operationId: submitWriting
+      summary: >-
+        Store an essay for grading with its IELTS word count; private prompts are 404 except for owners
+      security:
+        - firebase: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitWritingRequest"
+      responses:
+        "201":
+          description: The essay was stored as pending
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WritingSubmission"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Writing prompt not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    get:
+      tags: [writing]
+      operationId: listWritingSubmissions
+      summary: List the signed-in user's essays, newest first
+      security:
+        - firebase: []
+      responses:
+        "200":
+          description: The user's essays
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WritingSubmission"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/writing/submissions/{id}:
+    get:
+      tags: [writing]
+      operationId: getWritingSubmission
+      summary: Get one of the signed-in user's essays
+      security:
+        - firebase: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The essay
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WritingSubmission"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No such essay, or it belongs to another user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/writing/images/{promptId}/{fileName}:
+    get:
+      tags: [writing]
+      operationId: getPrivateWritingImage
+      summary: >-
+        Serve a private prompt image from CONTENT_DIR/images to the owner; only mounted with AUDIO_STORAGE=local
+      security:
+        - firebase: []
+      parameters:
+        - name: promptId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fileName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The image file
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No such file, or the signed-in user is not an owner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
         "500":
           $ref: "#/components/responses/InternalError"
 components:
@@ -796,3 +937,63 @@ components:
         nextCursor:
           type: string
           description: Present when older attempts remain; pass it as cursor to read them
+    WritingTask:
+      type: string
+      enum: [task_1_academic, task_1_general, task_2]
+    WritingPrompt:
+      type: object
+      required: [id, schemaVersion, module, task, instructions, minWords, timeLimitMinutes]
+      properties:
+        id:
+          type: string
+        schemaVersion:
+          type: integer
+        module:
+          $ref: "#/components/schemas/IeltsModule"
+        task:
+          $ref: "#/components/schemas/WritingTask"
+        instructions:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+          description: >-
+            Absolute URL of the chart or diagram, when the task has one: resolved against AUDIO_BASE_URL for public
+            prompts; for private prompts a short-lived presigned R2 URL or the authenticated local image endpoint
+        minWords:
+          type: integer
+        timeLimitMinutes:
+          type: integer
+    SubmitWritingRequest:
+      type: object
+      required: [promptId, text]
+      properties:
+        promptId:
+          type: string
+        text:
+          type: string
+          minLength: 1
+          maxLength: 20000
+    WritingSubmissionStatus:
+      type: string
+      enum: [pending, grading, graded, failed]
+    WritingSubmission:
+      type: object
+      required: [id, promptId, text, wordCount, submittedAt, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        promptId:
+          type: string
+        text:
+          type: string
+        wordCount:
+          type: integer
+          description: >-
+            Counted on the server the IELTS way: numbers and hyphenated words are one word, punctuation alone is none
+        submittedAt:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/WritingSubmissionStatus"

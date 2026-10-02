@@ -1,7 +1,7 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
-class PublicAudioStorage(
+class PublicMediaStorage(
   private val baseUrl: String,
-) : AudioStorage {
+) : MediaStorage {
   override fun urlFor(path: String): String = "$baseUrl/${path.trimStart('/')}"
 }

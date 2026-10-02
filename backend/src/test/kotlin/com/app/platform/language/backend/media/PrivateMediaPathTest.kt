@@ -1,14 +1,14 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class PrivateAudioPathTest {
+class PrivateMediaPathTest {
   @Test
-  fun testIdAndFileNameIsValid() {
-    assertTrue(isPrivateAudioPath("practice-01/section-1.mp3"))
-    assertTrue(isPrivateAudioPath("Cam18_Test2/Part_3.m4a"))
+  fun contentIdAndFileNameIsValid() {
+    assertTrue(isPrivateMediaPath("practice-01/section-1.mp3"))
+    assertTrue(isPrivateMediaPath("Cam18_Test2/Part_3.m4a"))
   }
 
   @Test
@@ -22,6 +22,6 @@ class PrivateAudioPathTest {
       "../section-1.mp3",
       "practice-01/",
       "",
-    ).forEach { assertFalse(isPrivateAudioPath(it), it) }
+    ).forEach { assertFalse(isPrivateMediaPath(it), it) }
   }
 }

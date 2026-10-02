@@ -1,12 +1,12 @@
 package com.app.platform.language.backend.listening
 
-import com.app.platform.language.backend.audio.AudioStorage
 import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.common.Versioned
 import com.app.platform.language.backend.common.catalogVersion
 import com.app.platform.language.backend.common.fingerprintVersion
 import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.content.Visibility
+import com.app.platform.language.backend.media.MediaStorage
 import com.app.platform.language.core.exam.ListeningScorer
 import com.app.platform.language.core.model.ListeningError
 import com.app.platform.language.core.model.ListeningResult
@@ -22,8 +22,8 @@ import com.github.michaelbull.result.toResultOr
 
 class ListeningService(
   private val store: ListeningContentStore,
-  private val publicAudio: AudioStorage,
-  private val privateAudio: AudioStorage,
+  private val publicAudio: MediaStorage,
+  private val privateAudio: MediaStorage,
   private val access: ContentAccessPolicy,
 ) {
   suspend fun listTests(viewer: AuthIdentity?): Result<Versioned<List<ListeningTestSummary>>, ListeningError> =

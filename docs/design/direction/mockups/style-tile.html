@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style tile — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32); --highlight: rgba(255, 221, 181, 0.7);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48); --highlight: rgba(103, 61, 0, 0.7);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-reading { font-size: 18px; line-height: 30px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before, .hit::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.icon-btn.selected { color: var(--primary); background: var(--primary-container); }
+
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag .ms { font-size: 20px; margin-left: -4px; }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tag.success { background: var(--correct-container); color: var(--on-correct-container); }
+.tag.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.pbar { height: 6px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.pbar > i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.tile.correct { background: var(--correct-container); color: var(--on-correct-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.row.done .t-headline { color: var(--on-surface-variant); }
+.done-mark { color: var(--correct); }
+.banner { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px;
+  background: var(--info-container); color: var(--on-info-container); }
+.banner .ms { color: var(--info); }
+.skel { background: var(--surface-high); border-radius: 10px; position: relative; overflow: hidden; }
+.skel::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent); animation: shimmer 1.2s cubic-bezier(0.2, 0, 0, 1) infinite; }
+.reduce .skel::after { animation: none; display: none; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 24px; }
+.empty .btn { margin-top: 16px; }
+.error-icon { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; margin-bottom: 8px;
+  background: var(--wrong-container); color: var(--on-wrong-container); }
+.ring { display: block; transform: rotate(-90deg); }
+.ring .track { fill: none; stroke: var(--surface-high); }
+.ring .fill { fill: none; stroke: var(--primary); stroke-linecap: round; }
+.ring .fill.tertiary { stroke: var(--tertiary); }
+.roller { display: inline-flex; overflow: hidden; line-height: 1.2; height: 1.2em; vertical-align: bottom; }
+.roller .digit { display: inline-block; height: 1.2em; overflow: hidden; }
+.roller .digits { display: flex; flex-direction: column; }
+.roller .digits span { height: 1.2em; }
+.i0 { fill: var(--card); stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linejoin: round; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px;
+  box-shadow: var(--shadow-sheet); touch-action: none; }
+.desktop .sheet { width: 480px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.desktop .topbar { height: 52px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 44px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.desktop .topbar .back { bottom: 4px; }
+
+.board { position: absolute; inset: 0; overflow-y: auto; padding: 66px 20px 48px; }
+.desktop .board { top: 38px; padding: 40px 56px 72px; }
+.board-inner { max-width: 1120px; margin: 0 auto; }
+.hero { border-radius: 28px; padding: 28px; background: var(--primary); color: var(--on-primary); position: relative; overflow: hidden; }
+.desktop .hero { padding: 48px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+.hero .words { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.hero .words span { height: 32px; padding: 0 12px; border-radius: 999px; display: inline-flex; align-items: center; background: color-mix(in srgb, var(--on-primary) 16%, transparent); font-size: 15px; font-weight: 600; }
+.hero-card { background: var(--card); color: var(--on-surface); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-raised); margin-top: 24px; }
+.desktop .hero-card { margin-top: 0; }
+.section { margin-top: 48px; }
+.eyebrow { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--primary); }
+.section > .t-title1 { margin: 4px 0 6px; }
+.section > .lead { max-width: 720px; margin-bottom: 20px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.grid.wide { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.swatch { border-radius: 14px; overflow: hidden; background: var(--card); box-shadow: var(--shadow-card); outline: 1px solid var(--outline-variant); outline-offset: -1px; }
+.swatch .chipc { height: 84px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+.swatch .chipc + .chipc { height: 52px; }
+.swatch .meta { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+.ratio { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ratio.pass::before { content: '✓ '; } .ratio.fail::before { content: '✗ '; }
+.ladder { display: flex; border-radius: 14px; overflow: hidden; outline: 1px solid var(--outline-variant); }
+.ladder div { flex: 1; min-height: 96px; padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 11px; line-height: 14px; font-weight: 500; }
+.phone .ladder { flex-wrap: wrap; } .phone .ladder div { flex: 1 0 33%; min-height: 72px; }
+.type-row { display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--outline-variant); }
+.phone .type-row { grid-template-columns: 1fr; gap: 4px; }
+.type-row .spec { display: flex; flex-direction: column; }
+.diacritics { font-size: 56px; line-height: 72px; font-weight: 700; letter-spacing: -0.5px; color: var(--primary); word-break: break-word; }
+.cvd { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.cvd figure { background: var(--card); border-radius: 14px; padding: 14px; box-shadow: var(--shadow-card); }
+.cvd figcaption { font-size: 13px; color: var(--on-surface-variant); margin-bottom: 10px; font-weight: 500; }
+.pair { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { height: 40px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
+.pill.correct { background: var(--correct-container); color: var(--on-correct-container); box-shadow: inset 0 0 0 2px var(--correct); }
+.pill.wrong { background: var(--wrong-container); color: var(--on-wrong-container); box-shadow: inset 0 0 0 2px var(--wrong); }
+.pill.correct .ms { color: var(--correct); } .pill.wrong .ms { color: var(--wrong); }
+.pill.solid-correct { background: var(--correct); color: var(--on-correct); }
+.pill.solid-wrong { background: var(--wrong); color: var(--on-wrong); }
+.shape { height: 88px; background: var(--primary-container); color: var(--on-primary-container); box-shadow: inset 0 0 0 1px var(--primary);
+  display: flex; align-items: flex-end; padding: 10px; font-size: 13px; font-weight: 600; }
+.depth { height: 120px; border-radius: 20px; background: var(--card); padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
+.glass-demo { position: relative; height: 200px; border-radius: 20px; overflow: hidden; background: var(--card); box-shadow: var(--shadow-card); }
+.glass-demo .content { position: absolute; inset: 0; padding: 60px 16px 16px; display: flex; flex-direction: column; gap: 10px; animation: drift 6s ease-in-out infinite alternate; }
+.reduce .glass-demo .content { animation: none; }
+@keyframes drift { to { transform: translateY(-60px); } }
+.glass-demo .content div { height: 48px; border-radius: 12px; flex: none; }
+.glass-demo .glass-bar { position: absolute; top: 0; left: 0; right: 0; height: 52px; display: flex; align-items: center; justify-content: center; z-index: 2;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--outline-variant); }
+.spacing-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; }
+.spacing-row i { display: block; height: 16px; border-radius: 4px; background: var(--tertiary); }
+.spacing-row span { width: 72px; font-size: 13px; font-weight: 600; }
+.icons { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+.icons div { background: var(--card); border-radius: 14px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; box-shadow: var(--shadow-card); }
+.icons .t-caption2 { color: var(--on-surface-variant); }
+.illos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.illos figure { background: var(--card); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: var(--shadow-card); }
+.springs { display: flex; flex-direction: column; gap: 14px; }
+.spring { display: grid; grid-template-columns: 150px 1fr 120px; gap: 16px; align-items: center; background: var(--card); border-radius: 20px; padding: 14px 16px; box-shadow: var(--shadow-card); }
+.phone .spring { grid-template-columns: 1fr; }
+.track { height: 44px; position: relative; background: var(--surface-container); border-radius: 999px; }
+.ball { position: absolute; left: 4px; top: 4px; width: 36px; height: 36px; border-radius: 999px; background: var(--primary); }
+.curve { width: 120px; height: 64px; }
+.curve polyline { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; }
+.curve line { stroke: var(--outline-variant); stroke-dasharray: 3 3; }
+.durations { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-top: 16px; }
+.durations div { background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow-card); }
+.demo-tiles { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin-top: 16px; }
+.demo-tiles .card { padding: 16px; min-height: 160px; display: flex; flex-direction: column; gap: 12px; }
+.demo-stage { flex: 1; position: relative; border-radius: 14px; background: var(--surface-container); overflow: hidden; min-height: 96px; perspective: 600px; }
+.mini-card { position: absolute; inset: 14px 30%; border-radius: 10px; background: var(--card); box-shadow: var(--shadow-raised); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Style tile</strong><span>Mockup · <a href="../README.md">design direction</a> · kiểu chữ, màu (tương phản tính trực tiếp), hình khối, biểu tượng, lò xo; bấm Chạy để xem chuyển động</span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Phần</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const intervals = new Set();
+const STATES = [['all', 'Tất cả'], ['type', 'Chữ'], ['color', 'Màu'], ['shape', 'Hình khối'], ['icons', 'Biểu tượng'], ['motion', 'Chuyển động']];
+const ui = { theme: 'both', frame: 'desktop', state: 'all' };
+
+const CVD = {
+  protan: '0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0',
+  deutan: '0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.01182 0.04294 0.968881 0 0  0 0 0 1 0',
+  tritan: '1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.3039 0 0  0 0 0 1 0',
+};
+document.body.insertAdjacentHTML('beforeend', `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${Object.entries(CVD).map(([id, values]) => `<filter id="${id}" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="${values}"/></filter>`).join('')}</svg>`);
+
+const ROLES = [
+  ['primary', 'Primary · indigo “mực tím”'], ['secondary', 'Secondary · slate'], ['tertiary', 'Tertiary · lotus'],
+  ['correct', 'Correct · jade'], ['wrong', 'Wrong · vermilion'], ['warning', 'Warning · amber'], ['info', 'Info · sky'],
+];
+const NEUTRALS = [['surface', 'surface'], ['card', 'card'], ['surface-low', 'containerLow'], ['surface-container', 'container'], ['surface-high', 'containerHigh'], ['surface-highest', 'containerHighest'], ['outline-variant', 'outlineVariant'], ['outline', 'outline'], ['on-surface-variant', 'onSurfaceVariant'], ['on-surface', 'onSurface']];
+const TYPE = [
+  ['t-display tnum', 'display', '56 / 64 · 700', 'Band 7.5'],
+  ['t-large-title', 'largeTitle', '32 / 40 · 700', 'Hôm nay'],
+  ['t-title1', 'title1', '26 / 34 · 700', 'Hoàn thành bài Reading'],
+  ['t-title2', 'title2', '22 / 30 · 600', 'Cambridge 18 · Test 2'],
+  ['t-title3', 'title3', '19 / 26 · 600', 'Kế hoạch hôm nay'],
+  ['t-headline', 'headline', '17 / 24 · 600', 'Ôn 24 thẻ đến hạn'],
+  ['t-body', 'body', '17 / 26 · 400', 'Câu này hay bẫy ở chữ however — đáp án nằm ở câu ngay sau đó.'],
+  ['t-reading', 'reading', '18 / 30 · 400', 'Most animals slow down as they age. Muscles weaken, memory fades and reactions become less precise.'],
+  ['t-callout', 'callout', '16 / 24 · 400', 'Làm một bài Reading 20 phút để biết bạn đang ở đâu.'],
+  ['t-subheadline', 'subheadline', '15 / 22 · 400', 'Reading · Passage 2 · Câu 18/40'],
+  ['t-label', 'label', '15 / 20 · 600', 'TRUE   FALSE   NOT GIVEN'],
+  ['t-footnote', 'footnote', '13 / 18 · 400', 'Còn 34 phút · 17 câu đã làm'],
+  ['t-caption', 'caption', '12 / 16 · 500', 'Hôm nay · Luyện đề · Từ vựng'],
+  ['t-caption2', 'caption2', '11 / 14 · 500', 'T2 T3 T4 T5 T6 T7 CN'],
+];
+const ICONS = [
+  ['wb_sunny', 'Hôm nay'], ['menu_book', 'Luyện đề'], ['style', 'Từ vựng'], ['monitoring', 'Tiến độ'], ['person', 'Tôi'],
+  ['check_circle', 'Đúng'], ['cancel', 'Sai'], ['warning', 'Cảnh báo'], ['info', 'Thông tin'], ['local_fire_department', 'Chuỗi ngày'],
+  ['timer', 'Hẹn giờ'], ['flag', 'Đánh dấu'], ['ink_highlighter', 'Tô sáng'], ['sticky_note_2', 'Ghi chú'], ['volume_up', 'Nghe'],
+  ['play_arrow', 'Phát'], ['undo', 'Hoàn tác'], ['close', 'Đóng'], ['arrow_back_ios_new', 'Quay lại'], ['cloud_off', 'Ngoại tuyến'],
+];
+const ILLOS = [
+  ['Sách mở', 'Trống: chưa làm bài nào', `<svg width="140" height="140" viewBox="0 0 120 120" aria-hidden="true"><circle class="i3" cx="60" cy="50" r="32"/><path class="i1" d="M12 68 Q36 58 60 70 Q84 58 108 68 V98 Q84 88 60 100 Q36 88 12 98 Z"/><path class="i2" d="M12 98 Q36 88 60 100 Q84 88 108 98 V104 Q84 94 60 106 Q36 94 12 104 Z"/><path class="is" d="M60 70 V100 M22 76 Q36 71 50 77 M22 84 Q36 79 50 85 M70 77 Q84 71 98 76 M70 85 Q84 79 98 84"/></svg>`],
+  ['Chồng thẻ', 'Không có thẻ đến hạn', `<svg width="140" height="140" viewBox="0 0 120 120" aria-hidden="true"><rect class="i3" x="26" y="30" width="58" height="72" rx="10" transform="rotate(-10 55 66)"/><rect class="i1" x="36" y="26" width="58" height="72" rx="10" transform="rotate(7 65 62)"/><rect class="i0" x="31" y="22" width="58" height="74" rx="10"/><path class="is" d="M43 44 H77 M43 54 H69"/><circle class="i2" cx="76" cy="80" r="9"/><path d="M71.5 80 l3 3 l5.5 -6" fill="none" stroke="var(--on-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`],
+  ['Máy bay giấy', 'Trống: chưa có bài viết', `<svg width="140" height="140" viewBox="0 0 120 120" aria-hidden="true"><circle class="i1" cx="62" cy="58" r="38"/><path class="i0" d="M20 60 L100 28 L80 92 L60 70 Z"/><path class="is" d="M100 28 L60 70 L58 90 L68 77"/><path class="is" stroke-dasharray="2 7" d="M16 94 Q30 102 44 88"/><circle class="i3" cx="98" cy="96" r="8"/></svg>`],
+  ['Bình minh trên vở', 'Giới thiệu: bắt đầu ngày mới', `<svg width="140" height="140" viewBox="0 0 120 120" aria-hidden="true"><rect class="i1" x="16" y="28" width="88" height="74" rx="12"/><path class="i3" d="M36 76 A24 24 0 0 1 84 76 Z"/><path class="is" d="M26 76 H94 M34 88 H70 M34 96 H58"/><path class="i2" d="M30 22 h8 v14 h-8 Z M56 22 h8 v14 h-8 Z M82 22 h8 v14 h-8 Z"/><path class="is" d="M60 42 V36 M42 50 L38 46 M78 50 L82 46"/></svg>`],
+];
+
+function hexLuminance(hex) {
+  const value = hex.replace('#', '');
+  const channels = [0, 2, 4].map((i) => parseInt(value.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [hexLuminance(a), hexLuminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+function section(id, eyebrow, title, lead, body) {
+  if (ui.state !== 'all' && ui.state !== id) return '';
+  return `<section class="section" data-section="${id}"><p class="eyebrow">${eyebrow}</p><h2 class="t-title1">${title}</h2><p class="lead t-callout muted">${lead}</p>${body}</section>`;
+}
+
+function heroHTML() {
+  if (ui.state !== 'all') return '';
+  return `<div class="hero"><div><p class="eyebrow" style="color:inherit;opacity:.8">Luyện IELTS · Design direction</p>
+      <h1 class="t-large-title" style="margin-top:8px">Người huấn luyện thân thiện trong một phòng thi tĩnh lặng.</h1>
+      <p class="t-callout" style="margin-top:12px;opacity:.9">Mực tím trên giấy trắng: một màu thương hiệu tự tin, bề mặt trung tính, chữ Be Vietnam Pro đủ dấu tiếng Việt, chuyển động lò xo mượt.</p>
+      <div class="words"><span>Rõ ràng</span><span>Thân thiện</span><span>Tĩnh lặng</span><span>Mượt mà</span><span>Dễ tiếp cận</span></div></div>
+    <div class="hero-card"><div style="display:flex;justify-content:space-between;align-items:center"><span class="tag primary">Đang làm</span><span class="t-footnote muted">Hôm qua, 21:40</span></div>
+      <h3 class="t-title2" style="margin-top:12px">Cambridge 18 · Test 2</h3><p class="t-subheadline muted">Reading · Passage 2 · Câu 18/40</p>
+      <div class="pbar" style="margin:14px 0"><i style="width:45%"></i></div><button class="btn btn-primary btn-block"><span class="ms">play_arrow</span>Làm tiếp</button></div></div>`;
+}
+
+function typeHTML() {
+  return section('type', 'Typography', 'Be Vietnam Pro', 'SIL Open Font License 1.1, đủ dấu tiếng Việt kể cả dấu chồng; bốn độ đậm 400/500/600/700; số dạng bảng cho đồng hồ và điểm.',
+    `<div class="card" style="padding:24px"><div class="diacritics">Ấn tượng · Ữ Ậ Ỗ Ợ · ặ ẫ ỹ ộ</div>
+      <p class="t-reading muted" style="margin-top:8px">Những câu hỏi khó nhất thường ẩn trong đoạn văn ngắn nhất — đọc chậm lại một nhịp.</p>
+      <div style="margin-top:16px">${TYPE.map(([cls, name, spec, sample]) => `<div class="type-row"><div class="spec"><span class="t-headline">${name}</span><span class="t-footnote muted tnum">${spec}</span></div><div class="${cls}">${sample}</div></div>`).join('')}</div></div>`);
+}
+
+function colorHTML() {
+  const swatches = ROLES.map(([role, label]) => `<div class="swatch">
+      <div class="chipc" style="background:var(--${role});color:var(--on-${role})"><span class="t-label">${role}</span><span class="ratio" data-pair="on-${role}|${role}"></span></div>
+      <div class="chipc" style="background:var(--${role}-container);color:var(--on-${role}-container)"><span class="t-footnote" style="font-weight:600">${role}Container</span><span class="ratio" data-pair="on-${role}-container|${role}-container"></span></div>
+      <div class="meta"><span class="t-footnote" style="font-weight:600">${label}</span><span class="t-caption2 muted hex" data-hex="${role}"></span><span class="ratio muted" data-pair="${role}|surface" data-prefix="trên surface "></span></div></div>`).join('');
+  const ladder = `<div class="ladder">${NEUTRALS.map(([v, name], i) => `<div style="background:var(--${v});color:${i < 7 ? 'var(--on-surface)' : 'var(--surface)'}">${name}<span class="hex tnum" data-hex="${v}"></span></div>`).join('')}</div>`;
+  const cvd = `<div class="cvd">${[['none', 'Bình thường'], ['protan', 'Protanopia (mù đỏ)'], ['deutan', 'Deuteranopia (mù lục)'], ['tritan', 'Tritanopia (mù lam)']].map(([id, label]) => `<figure style="${id === 'none' ? '' : `filter:url(#${id})`}"><figcaption>${label}</figcaption>
+      <div class="pair"><span class="pill correct"><span class="ms fill sm">check_circle</span>Đúng</span><span class="pill wrong"><span class="ms fill sm">cancel</span>Sai</span></div>
+      <div class="pair" style="margin-top:8px"><span class="pill solid-correct">TRUE</span><span class="pill solid-wrong">FALSE</span></div></figure>`).join('')}</div>`;
+  return section('color', 'Colour', 'Mực tím, giấy trắng, đêm yên tĩnh', 'Tỉ lệ tương phản tính trực tiếp từ token đang hiển thị (WCAG AA: chữ thường ≥ 4.5:1). Đúng/sai dùng jade và vermilion để vẫn phân biệt được khi mù màu, và luôn kèm biểu tượng.',
+    `<div class="grid">${swatches}</div><h3 class="t-title3" style="margin:28px 0 12px">Bề mặt và chữ</h3>${ladder}<h3 class="t-title3" style="margin:28px 0 12px">Kiểm tra mù màu (mô phỏng Machado 2009)</h3>${cvd}`);
+}
+
+function shapeHTML() {
+  const radii = [['xs', 6], ['sm', 10], ['md', 14], ['lg', 20], ['xl', 28], ['full', 999]];
+  const spacing = [['xs', 4], ['sm', 8], ['md', 12], ['lg', 16], ['xl', 24], ['xxl', 32], ['xxxl', 48]];
+  return section('shape', 'Shape · depth · space', 'Bo góc mềm, chiều sâu nhẹ', 'Bề mặt nổi bằng độ sáng trước, bóng sau. Thanh điều hướng mờ đục khi nội dung cuộn bên dưới.',
+    `<div class="grid">${radii.map(([n, r]) => `<div class="shape" style="border-radius:${Math.min(r, 44)}px">radius.${n} · ${r}</div>`).join('')}</div>
+    <div class="grid wide" style="margin-top:16px">
+      <div class="depth" style="box-shadow:var(--shadow-card)"><span class="t-headline">shadow.card</span><span class="t-footnote muted">Thẻ trên nền nhóm. Tối: không bóng, thẻ sáng hơn nền.</span></div>
+      <div class="depth" style="box-shadow:var(--shadow-raised)"><span class="t-headline">shadow.raised</span><span class="t-footnote muted">Flashcard, phần tử đang kéo, menu.</span></div>
+      <div class="glass-demo"><div class="glass-bar t-headline">Thanh mờ · 78% + blur 24</div><div class="content">${['primary-container', 'tertiary-container', 'correct-container', 'info-container', 'warning-container', 'primary-container'].map((c) => `<div style="background:var(--${c})"></div>`).join('')}</div></div></div>
+    <div class="card" style="padding:16px 20px;margin-top:16px">${spacing.map(([n, v]) => `<div class="spacing-row"><span>space.${n}</span><i style="width:${v * 4}px"></i><span class="t-footnote muted tnum">${v}</span></div>`).join('')}</div>`);
+}
+
+function iconsHTML() {
+  return section('icons', 'Icons · illustration', 'Material Symbols Rounded · SF Symbols', 'Một bộ biểu tượng bo tròn, nét 400, đầy khi được chọn. Hình minh hoạ chỉ dùng cho trạng thái trống và giới thiệu.',
+    `<div class="icons">${ICONS.map(([icon, label]) => `<div><span class="ms lg">${icon}</span><span class="t-caption2">${label}</span><span class="t-caption2">${icon}</span></div>`).join('')}</div>
+    <div class="illos" style="margin-top:16px">${ILLOS.map(([name, use, svg]) => `<figure>${svg}<span class="t-headline">${name}</span><span class="t-footnote muted">${use}</span></figure>`).join('')}</div>`);
+}
+
+function curvePoints(name) {
+  const { easing } = springTiming(name);
+  const values = easing.slice(7, -1).split(', ').map(Number);
+  return values.map((v, i) => `${(i / (values.length - 1)) * 120},${60 - (v / 1.1) * 52}`).join(' ');
+}
+
+function motionHTML() {
+  const springs = Object.entries(SPRINGS).map(([name, [response, damping]]) => `<div class="spring">
+      <div><div class="t-headline">spring.${name}</div><div class="t-footnote muted tnum">${response}s · damping ${damping} · ${springTiming(name).duration} ms</div></div>
+      <div class="track" data-spring="${name}"><span class="ball"></span></div>
+      <svg class="curve" viewBox="0 0 120 64" aria-hidden="true"><line x1="0" y1="${60 - 52 / 1.1}" x2="120" y2="${60 - 52 / 1.1}"/><polyline points="${curvePoints(name)}"/></svg></div>`).join('');
+  const durations = Object.entries(DURATION).map(([name, ms]) => `<div><div class="t-headline">duration.${name}</div><div class="t-footnote muted tnum">${ms} ms</div></div>`).join('');
+  const demos = [
+    ['push', 'Push / pop', 'spring.smooth · parallax −30%'],
+    ['fade', 'Tab fade-through', '90 ms ra · 160 ms vào, scale 0.98'],
+    ['sheet', 'Sheet', 'spring.smooth · scrim 32%'],
+    ['flip', 'Lật flashcard', 'rotateY 180° · spring.smooth'],
+    ['chip', 'Chọn đáp án', 'spring.snappy · scale 0.96'],
+    ['ring', 'Vòng tiến độ + số', 'spring.gentle'],
+  ].map(([id, title, spec]) => `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div class="t-headline">${title}</div><div class="t-footnote muted">${spec}</div></div><button class="btn btn-secondary" data-demo="${id}" style="height:40px;padding:0 14px">Chạy</button></div><div class="demo-stage" data-stage="${id}">${demoStage(id)}</div></div>`).join('');
+  return section('motion', 'Motion', 'Lò xo, không phải đồng hồ', 'Mọi chuyển động dùng lò xo theo response + damping; Compose dùng stiffness = (2π / response)². Bật “Giảm chuyển động” để xem phương án thay thế bằng cross-fade.',
+    `<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary" data-action="run-springs" style="height:44px"><span class="ms">play_arrow</span>Chạy các lò xo</button></div>
+    <div class="springs">${springs}</div><div class="durations">${durations}</div><div class="demo-tiles">${demos}</div>`);
+}
+
+function demoStage(id) {
+  if (id === 'push') return '<div class="mini-card" data-el="a" style="inset:14px 16px">Danh sách</div><div class="mini-card" data-el="b" style="inset:14px 16px;transform:translateX(120%)">Chi tiết</div>';
+  if (id === 'fade') return '<div class="mini-card" data-el="a" style="inset:14px 16px">Hôm nay</div>';
+  if (id === 'sheet') return '<div data-el="scrim" style="position:absolute;inset:0;background:var(--scrim);opacity:0"></div><div data-el="sheet" style="position:absolute;left:12px;right:12px;bottom:0;height:64px;border-radius:14px 14px 0 0;background:var(--card);transform:translateY(100%);display:grid;place-items:center;font-weight:600">Giải thích</div>';
+  if (id === 'flip') return '<div data-el="card" style="position:absolute;inset:14px 30%;transform-style:preserve-3d"><div class="mini-card" style="inset:0;backface-visibility:hidden">word</div><div class="mini-card" style="inset:0;backface-visibility:hidden;transform:rotateY(180deg);color:var(--primary)">từ</div></div>';
+  if (id === 'chip') return '<div style="position:absolute;inset:0;display:flex;gap:8px;align-items:center;justify-content:center"><span class="pill" data-el="chip" style="background:var(--card);box-shadow:inset 0 0 0 1px var(--outline)">TRUE</span><span class="pill" style="background:var(--card);box-shadow:inset 0 0 0 1px var(--outline)">FALSE</span></div>';
+  return `<div style="position:absolute;inset:0;display:flex;gap:16px;align-items:center;justify-content:center"><div style="position:relative;width:84px;height:84px">${ring(84, 10, 0.75)}</div><span class="t-title1">${roller('75%')}</span></div>`;
+}
+
+const demoState = new WeakMap();
+async function runDemo(device, id) {
+  const stage = device.querySelector(`[data-stage="${id}"]`);
+  const el = (name) => stage.querySelector(`[data-el="${name}"]`);
+  const on = !demoState.get(stage);
+  demoState.set(stage, on);
+  if (id === 'push') {
+    play(el('b'), on ? [{ transform: 'translateX(120%)' }, { transform: 'translateX(0)' }] : [{ transform: 'translateX(0)' }, { transform: 'translateX(120%)' }], 'smooth', { fallback: on ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }] });
+    play(el('a'), on ? [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }] : [{ transform: 'translateX(-30%)' }, { transform: 'translateX(0)' }], 'smooth');
+  }
+  if (id === 'fade') {
+    const card = el('a');
+    await play(card, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
+    card.textContent = on ? 'Từ vựng' : 'Hôm nay';
+    play(card, [{ opacity: 0, transform: 'scale(0.98)' }, { opacity: 1, transform: 'none' }], { duration: 160, easing: EASING.decelerate }, { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  }
+  if (id === 'sheet') {
+    play(el('scrim'), on ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }], 'smooth');
+    play(el('sheet'), on ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ transform: 'none' }, { transform: 'translateY(100%)' }], 'smooth', { fallback: on ? [{ opacity: 0, transform: 'none' }, { opacity: 1, transform: 'none' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'none' }] });
+  }
+  if (id === 'flip') {
+    const card = el('card');
+    if (reduceMotion) {
+      const [front, back] = card.children;
+      card.style.transform = 'none';
+      [front, back].forEach((face) => { face.style.backfaceVisibility = 'visible'; face.style.transform = 'none'; });
+      play(on ? front : back, [{ opacity: 1 }, { opacity: 0 }]);
+      play(on ? back : front, [{ opacity: 0 }, { opacity: 1 }]);
+    } else {
+      play(card, on ? [{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }] : [{ transform: 'rotateY(180deg)' }, { transform: 'rotateY(0deg)' }], 'smooth');
+    }
+  }
+  if (id === 'chip') {
+    const chip = el('chip');
+    chip.style.background = on ? 'var(--primary-container)' : 'var(--card)';
+    chip.style.boxShadow = on ? 'inset 0 0 0 2px var(--primary)' : 'inset 0 0 0 1px var(--outline)';
+    chip.style.color = on ? 'var(--on-primary-container)' : '';
+    play(chip, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+    haptic(device, 'selection · CLOCK_TICK');
+  }
+  if (id === 'ring') {
+    stage.innerHTML = demoStage('ring');
+    enter(stage);
+  }
+}
+
+function runSprings(device) {
+  device.querySelectorAll('[data-spring]').forEach((track) => {
+    const ball = track.querySelector('.ball');
+    const distance = track.clientWidth - 44;
+    const at = ball.dataset.at === 'end';
+    ball.dataset.at = at ? 'start' : 'end';
+    const frames = at ? [{ transform: `translateX(${distance}px)` }, { transform: 'translateX(0)' }] : [{ transform: 'translateX(0)' }, { transform: `translateX(${distance}px)` }];
+    play(ball, frames, track.dataset.spring, { fallback: [{ opacity: 0.2, transform: frames[1].transform }, { opacity: 1, transform: frames[1].transform }] });
+  });
+}
+
+function screen(frame) {
+  const board = `<div class="board"><div class="board-inner">${heroHTML()}${typeHTML()}${colorHTML()}${shapeHTML()}${iconsHTML()}${motionHTML()}</div></div>`;
+  return frame === 'phone'
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">wifi</span><span class="ms">battery_full</span></span></div>${board}<div class="home-ind"></div>`
+    : `<div class="win-bar"><i></i><i></i><i></i><span>Style tile — Luyện IELTS</span></div>${board}`;
+}
+
+function mount(device) {
+  const styles = getComputedStyle(device);
+  const value = (name) => styles.getPropertyValue(`--${name}`).trim();
+  device.querySelectorAll('[data-hex]').forEach((el) => { el.textContent = value(el.dataset.hex); });
+  device.querySelectorAll('[data-pair]').forEach((el) => {
+    const [fg, bg] = el.dataset.pair.split('|');
+    const ratio = contrast(value(fg), value(bg));
+    el.textContent = `${el.dataset.prefix || ''}${ratio.toFixed(1)}:1`;
+    el.classList.add(ratio >= 4.5 ? 'pass' : 'fail');
+  });
+  device.addEventListener('click', (event) => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    if (button.dataset.demo) runDemo(device, button.dataset.demo);
+    if (button.dataset.action === 'run-springs') runSprings(device);
+  });
+  enter(device);
+}
+
+function handleKey() { }
+
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (device.classList.contains('desktop')) return;
+  const log = document.querySelector('.haptic-log');
+  log.innerHTML = `<span class="ms sm">vibration</span> Rung: ${kind}`;
+  log.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(haptic.timer);
+  haptic.timer = setTimeout(() => { log.textContent = ''; }, 2000);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function enter(root) {
+  root.querySelectorAll('[data-stagger]').forEach((el, i) => {
+    play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER });
+  });
+  root.querySelectorAll('.ring .fill').forEach((circle) => {
+    const length = Number(circle.dataset.length);
+    play(circle, [{ strokeDashoffset: length }, { strokeDashoffset: circle.dataset.offset }], 'gentle', { delay: 120 });
+  });
+  root.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle', { delay: 120 }));
+  root.querySelectorAll('.roller').forEach(roll);
+}
+
+function roller(text) {
+  const parts = [...String(text)].map((ch) => (/\d/.test(ch)
+    ? `<span class="digit" aria-hidden="true"><span class="digits" data-digit="${ch}">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
+    : `<span aria-hidden="true">${ch}</span>`));
+  return `<span class="roller tnum">${parts.join('')}<span class="sr">${text}</span></span>`;
+}
+
+function roll(el) {
+  el.querySelectorAll('.digits').forEach((col, i) => {
+    const target = `translateY(-${Number(col.dataset.digit) * 1.2}em)`;
+    col.style.transform = target;
+    play(col, [{ transform: 'translateY(0)' }, { transform: target }], 'gentle', { delay: 150 + i * 40 });
+  });
+}
+
+function ring(size, stroke, fraction, tone = '') {
+  const radius = (size - stroke) / 2;
+  const length = 2 * Math.PI * radius;
+  const offset = length * (1 - fraction);
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+    <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"/>
+    <circle class="fill ${tone}" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"
+      stroke-dasharray="${length}" stroke-dashoffset="${offset}" data-length="${length}" data-offset="${offset}"/></svg>`;
+}
+
+const illustrationSize = (frame) => (frame === 'desktop' ? 160 : 120);
+
+function push(device, html) {
+  const host = device.querySelector('.nav-host');
+  const base = host.querySelector('.layer.base');
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10;
+  page.innerHTML = html;
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  base.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(base, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  page.querySelectorAll('[data-action="back"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); pop(page, base, dim, 0); }));
+  enableEdgeSwipe(page, base, dim, host);
+  return page;
+}
+
+function pop(page, base, dim, fromProgress) {
+  const width = page.offsetWidth;
+  const start = fromProgress * width;
+  play(page, [{ transform: `translateX(${start}px)` }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+  play(base, [{ transform: `translateX(${-0.3 * width * (1 - fromProgress)}px)` }, { transform: 'translateX(0)' }], 'smooth');
+  play(dim, [{ opacity: 0.08 * (1 - fromProgress) }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+}
+
+function enableEdgeSwipe(page, base, dim, host) {
+  let startX = null, lastX = 0, lastT = 0, velocity = 0;
+  const scale = () => Number(host.closest('.device').dataset.scale);
+  page.addEventListener('pointerdown', (event) => {
+    const x = (event.clientX - page.getBoundingClientRect().left) / scale();
+    if (x > 28) return;
+    startX = event.clientX; lastX = event.clientX; lastT = event.timeStamp;
+    page.setPointerCapture(event.pointerId);
+    [page, base, dim].forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+  });
+  page.addEventListener('pointermove', (event) => {
+    if (startX === null) return;
+    const dx = Math.max(0, (event.clientX - startX) / scale());
+    velocity = (event.clientX - lastX) / scale() / Math.max(1, event.timeStamp - lastT);
+    lastX = event.clientX; lastT = event.timeStamp;
+    const progress = dx / page.offsetWidth;
+    page.style.transform = `translateX(${dx}px)`;
+    base.style.transform = `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)`;
+    dim.style.opacity = 0.08 * (1 - progress);
+  });
+  page.addEventListener('pointerup', (event) => {
+    if (startX === null) return;
+    const progress = Math.max(0, (event.clientX - startX) / scale()) / page.offsetWidth;
+    startX = null;
+    if (progress > 0.35 || velocity > 0.5) return pop(page, base, dim, progress);
+    play(page, [{ transform: `translateX(${progress * page.offsetWidth}px)` }, { transform: 'translateX(0)' }], 'smooth');
+    play(base, [{ transform: `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)` }, { transform: 'translateX(-30%)' }], 'smooth');
+    dim.style.opacity = 0.08;
+  });
+}
+
+function morphTarget(device, frame) {
+  return frame === 'phone' ? { x: 0, y: 0, w: 390, h: 844, r: 54 } : { x: 0, y: 38, w: 1280, h: 762, r: 0 };
+}
+
+function clipFor(from, to, radius) {
+  return `inset(${from.y - to.y}px ${to.x + to.w - from.x - from.w}px ${to.y + to.h - from.y - from.h}px ${from.x - to.x}px round ${radius}px)`;
+}
+
+function openSheet(device, frame, html, label, { dismissible = true, onClose = () => { } } = {}) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const initial = sheet.querySelector('[data-autofocus]') || sheet.querySelector('h2');
+  if (!initial.matches('button')) initial.setAttribute('tabindex', '-1');
+  initial.focus({ preventScroll: true });
+  const close = (fromY = 0) => {
+    onClose();
+    play(scrim, [{ opacity: Math.max(0, 1 - fromY / sheet.offsetHeight) }, { opacity: 0 }], 'smooth');
+    play(sheet, phone ? [{ transform: `translateY(${fromY}px)` }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && dismissible) return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button, input, [tabindex="0"]')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  if (dismissible) scrim.addEventListener('click', () => close());
+  sheet.querySelectorAll('[data-action="close-sheet"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); close(); }));
+  if (!phone || !dismissible) return close;
+  let startY = null, lastY = 0, lastT = 0, velocity = 0;
+  const scale = Number(device.dataset.scale);
+  sheet.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button')) return;
+    startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
+    sheet.setPointerCapture(event.pointerId);
+    sheet.getAnimations().forEach((a) => a.cancel());
+  });
+  sheet.addEventListener('pointermove', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    velocity = (event.clientY - lastY) / scale / Math.max(1, event.timeStamp - lastT);
+    lastY = event.clientY; lastT = event.timeStamp;
+    sheet.style.transform = `translateY(${dy}px)`;
+    scrim.style.opacity = 1 - dy / sheet.offsetHeight;
+  });
+  sheet.addEventListener('pointerup', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    startY = null;
+    if (dy > sheet.offsetHeight * 0.3 || velocity > 0.6) return close(dy);
+    play(sheet, [{ transform: `translateY(${dy}px)` }, { transform: 'none' }], 'smooth');
+    play(scrim, [{ opacity: 1 - dy / sheet.offsetHeight }, { opacity: 1 }], 'smooth');
+  });
+  return close;
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const width = frame === 'phone' ? 390 : 1280, height = frame === 'phone' ? 844 : 800;
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  intervals.forEach(clearInterval);
+  intervals.clear();
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, ui.state)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  const stateGroup = document.querySelector('[data-control="state"]');
+  stateGroup.insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  window.addEventListener('keydown', handleKey);
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>

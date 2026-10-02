@@ -13,12 +13,15 @@ and only owners can see it.
 ~/LanguagePlatform/content/   CONTENT_DIR (default)
 ├── reading/                  reading tests as JSON (same schema as content/reading)
 ├── listening/                listening tests as JSON (same schema as content/listening)
-├── writing/                  writing prompts (not served yet)
-└── audio/
-    └── <test-id>/section-<n>.mp3
+├── writing/                  writing prompts as JSON (same schema as content/writing)
+├── audio/
+│   └── <test-id>/section-<n>.mp3
+└── images/
+    └── <prompt-id>/<file name>   charts and diagrams for writing prompts
 ```
 
-In a private listening test, `audioUrl` is the path relative to `audio/`, e.g. `my-test-01/section-1.mp3`.
+In a private listening test, `audioUrl` is the path relative to `audio/`, e.g. `my-test-01/section-1.mp3`. In a private
+writing prompt, `imageUrl` is the path relative to `images/`, e.g. `my-task-1/chart.png`.
 
 ### Seeding
 
@@ -61,6 +64,20 @@ Public tests keep their audio at `AUDIO_BASE_URL`. Private audio comes from `AUD
 A private listening test's `audioUrl` must be `<test-id>/<file name>` (letters, digits, `.`, `_`, `-`); seeding rejects
 any other shape, and also rejects a test id that exists in both `content/` and `CONTENT_DIR`. Upload private audio to R2
 with the same layout as `CONTENT_DIR/audio`, using an API token that has read access to that bucket only.
+
+### Private writing images
+
+Writing prompt images are stored like audio. Public prompts keep theirs at `AUDIO_BASE_URL`; private ones come from
+`AUDIO_STORAGE`: `local` serves `CONTENT_DIR/images` at `GET /api/v1/writing/images/{promptId}/{fileName}` to owners,
+`r2` presigns the object `images/<imageUrl>` in the same bucket as private audio, mirroring `CONTENT_DIR/images`. A
+private prompt's `imageUrl` must be `<folder>/<file name>`, conventionally `<prompt-id>/<file name>`; seeding rejects any
+other shape before writing anything.
+
+### Writing submissions
+
+`/api/v1/writing/*` needs a signed-in user. Essays are stored in `writing_submissions` with the word count computed on the
+server (`core/exam-engine` `WritingWordCounter`: numbers and hyphenated words count as one word) and start as `pending`;
+grading moves them through `grading` to `graded` or `failed`. Users only ever see their own submissions.
 
 ### Keeping material out of git
 

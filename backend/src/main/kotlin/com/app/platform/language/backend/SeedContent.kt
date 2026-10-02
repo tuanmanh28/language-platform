@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
   val logger = LoggerFactory.getLogger("SeedContent")
   val publicDir =
     args.singleOrNull()?.let(::Path) ?: run {
-      logger.error("Usage: SeedContent <public content directory with reading/ and listening/>")
+      logger.error("Usage: SeedContent <public content directory with reading/, listening/ and writing/>")
       exitProcess(1)
     }
   val privateDir = AppConfig.contentDirFromEnvironment()
@@ -36,11 +36,18 @@ fun main(args: Array<String>) {
       logger.error(error.message, error.cause)
       exitProcess(1)
     }
-  logger.info("Seeded {} reading and {} listening public tests from {}", public.reading, public.listening, publicDir)
   logger.info(
-    "Seeded {} reading and {} listening private tests from {}",
+    "Seeded {} reading and {} listening tests and {} writing prompts as public from {}",
+    public.reading,
+    public.listening,
+    public.writing,
+    publicDir,
+  )
+  logger.info(
+    "Seeded {} reading and {} listening tests and {} writing prompts as private from {}",
     private.reading,
     private.listening,
+    private.writing,
     privateDir,
   )
 }

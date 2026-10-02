@@ -6,6 +6,7 @@ import com.app.platform.language.backend.database.AppDatabase
 import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeTokenVerifier
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.backend.reading.DatabaseContentStore
 import com.app.platform.language.backend.reading.ReadingContentSeeder
@@ -56,6 +57,7 @@ class AttemptsFromDatabaseTest {
           FakeDatabaseHealth(),
           DatabaseUserStore(database),
           DatabaseAttemptStore(database),
+          FakeWritingSubmissionStore(),
           contentStore = DatabaseContentStore(database),
           tokenVerifier = FakeTokenVerifier(mapOf(TOKEN to learner)),
         )

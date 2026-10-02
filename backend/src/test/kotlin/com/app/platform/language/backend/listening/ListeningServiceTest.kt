@@ -1,11 +1,11 @@
 package com.app.platform.language.backend.listening
 
-import com.app.platform.language.backend.audio.PublicAudioStorage
 import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.content.ContentAccessPolicy
 import com.app.platform.language.backend.content.Visibility
-import com.app.platform.language.backend.fake.FakeAudioStorage
 import com.app.platform.language.backend.fake.FakeListeningContentStore
+import com.app.platform.language.backend.fake.FakeMediaStorage
+import com.app.platform.language.backend.media.PublicMediaStorage
 import com.app.platform.language.core.model.BundledListeningTests
 import com.app.platform.language.core.model.ListeningError
 import com.app.platform.language.core.model.SubmitAnswersRequest
@@ -25,12 +25,12 @@ class ListeningServiceTest {
   private val ownerEmail = "owner@example.com"
   private val owner = AuthIdentity("owner-uid", ownerEmail, "Owner", isEmailVerified = true)
   private val store = FakeListeningContentStore(listOf(StoredListeningTest(sample, 3, Visibility.PUBLIC)))
-  private val privateAudio = FakeAudioStorage()
+  private val privateAudio = FakeMediaStorage()
   private val access = ContentAccessPolicy(setOf(ownerEmail))
   private val service = serviceWithPublicAudioAt("https://cdn.example.com/audio")
 
   private fun serviceWithPublicAudioAt(baseUrl: String) =
-    ListeningService(store, PublicAudioStorage(baseUrl), privateAudio, access)
+    ListeningService(store, PublicMediaStorage(baseUrl), privateAudio, access)
 
   @Test
   fun testVersionChangesWhenTheStoredVersionChanges() =

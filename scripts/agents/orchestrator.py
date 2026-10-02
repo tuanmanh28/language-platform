@@ -65,7 +65,7 @@ LOCAL_FILES = ["local.properties", "app-android/google-services.json"]
 
 AUTO_RETRIES = 1
 LIMIT_WAIT_SECONDS = 30 * 60
-LIMIT_PATTERN = re.compile(r"usage limit|limit reached|rate.?limit|overloaded|resets? at", re.IGNORECASE)
+LIMIT_PATTERN = re.compile(r"usage limit|session limit|limit reached|hit your .*limit|rate.?limit|overloaded", re.IGNORECASE)
 CONFLICT_ROUNDS = 2
 CI_ROUNDS = 2
 CI_NO_CHECKS_SECONDS = 20 * 60
@@ -192,6 +192,7 @@ class Orchestrator:
 
         prompt = self.prompt_template.format(id=task_id, title=task["title"], spec=task["spec"],
                                              verify=task["verify"], branch=br, type=task.get("type", "feat"))
+        extra = extra or e.pop("instructions", None)
         if extra:
             prompt += extra
         cmd = ["claude", "-p", prompt,
@@ -236,8 +237,8 @@ class Orchestrator:
         e = self.entry(task_id)
         wt = Path(e["worktree"])
         e["finished_at"] = now()
-        if self.hit_limit(Path(e["log"])):
-            e.update(status="pending", not_before=time.time() + LIMIT_WAIT_SECONDS,
+        if until := self.hit_limit(Path(e["log"])):
+            e.update(status="pending", not_before=until,
                      note="Claude usage limit reached — continuing on the same branch later")
         elif (wt / "BLOCKED.md").exists():
             e.update(status="blocked", note="Agent wrote BLOCKED.md")
@@ -298,8 +299,8 @@ class Orchestrator:
         log = self.review_log(task_id)
         stage = e.get("review_stage", 0)
         verdict = self.read_verdict(log)
-        if verdict is None and self.hit_limit(log):
-            e.update(status="verified", not_before=time.time() + LIMIT_WAIT_SECONDS,
+        if verdict is None and (until := self.hit_limit(log)):
+            e.update(status="verified", not_before=until,
                      note="Claude usage limit reached during review — reviewing again later")
         elif verdict is None:
             e.update(status="failed", note=f"Review output unreadable, see {log.name}")
@@ -326,23 +327,33 @@ class Orchestrator:
         print(f"■ {task_id}: {e['status']} — {e.get('note')}")
 
     @staticmethod
-    def hit_limit(log: Path) -> bool:
-        """True when the run's final result is an error caused by a usage or rate limit."""
+    def hit_limit(log: Path) -> float | None:
+        """When the run ended on a usage or rate limit, the time to try again; otherwise None."""
         try:
             with open(log, "rb") as fh:
-                fh.seek(max(0, log.stat().st_size - 16384))
+                fh.seek(max(0, log.stat().st_size - 32768))
                 lines = fh.read().decode("utf-8", "replace").splitlines()
         except OSError:
-            return False
-        for line in reversed(lines):
+            return None
+        events = []
+        for line in lines:
             try:
                 event = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if isinstance(event, dict) and event.get("type") == "result":
-                failed = event.get("is_error") or event.get("subtype", "success") != "success"
-                return bool(failed and LIMIT_PATTERN.search(str(event.get("result", ""))))
-        return False
+            if isinstance(event, dict):
+                events.append(event)
+        results = [ev for ev in events if ev.get("type") == "result"]
+        if not results or not (results[-1].get("is_error") or results[-1].get("subtype", "success") != "success"):
+            return None
+        resets = [ev["rate_limit_info"].get("resetsAt") for ev in events if ev.get("type") == "rate_limit_event"
+                  and ev.get("rate_limit_info", {}).get("status") == "rejected"]
+        limited = (resets or any(ev.get("error") == "rate_limit" for ev in events)
+                   or LIMIT_PATTERN.search(str(results[-1].get("result", ""))))
+        if not limited:
+            return None
+        known = [r for r in resets if isinstance(r, (int, float))]
+        return max(known) + 60 if known else time.time() + LIMIT_WAIT_SECONDS
 
     @staticmethod
     def read_verdict(path: Path) -> dict | None:
@@ -708,7 +719,7 @@ class Orchestrator:
                 return text
         return text[:budget].rsplit(" ", 1)[0]
 
-    def retry(self, task_id: str, fresh: bool, auto_retries: int = 0) -> None:
+    def retry(self, task_id: str, fresh: bool, auto_retries: int = 0, note: str | None = None) -> None:
         e = self.entry(task_id)
         if e.get("status") in ACTIVE:
             sys.exit(f"{task_id} is still running.")
@@ -721,6 +732,8 @@ class Orchestrator:
                 print("Note: BLOCKED.md is still in the worktree; remove it once the blocker is solved.")
         keep = {} if fresh else {k: v for k, v in e.items() if k == "branch"}
         self.state[task_id] = {"status": "pending", **keep, **({"auto_retries": auto_retries} if auto_retries else {})}
+        if note:
+            self.state[task_id]["instructions"] = f"\n\nDecision from the owner for this attempt: {note}\n"
         self.save()
         print(f"{task_id} reset to pending" + (" (fresh branch from main)" if fresh else " (keeps its branch)"))
 
@@ -782,6 +795,7 @@ def main() -> None:
     rt.add_argument("task")
     rt.add_argument("--rebase", "--fresh", dest="fresh", action="store_true",
                     help="Discard the old branch and start again from main")
+    rt.add_argument("--note", help="Decision or instruction the agent receives on its next run (e.g. for BLOCKED.md)")
     c = sub.add_parser("clean", help="Remove a task's worktree and branch")
     c.add_argument("task")
 
@@ -822,7 +836,7 @@ def main() -> None:
         except MergeError as err:
             sys.exit(str(err))
     elif a.cmd == "retry":
-        o.retry(task, a.fresh)
+        o.retry(task, a.fresh, note=a.note)
     elif a.cmd == "ship":
         path = o.state_dir / "ship-queue.json"
         queue = json.loads(path.read_text()) if path.exists() else []

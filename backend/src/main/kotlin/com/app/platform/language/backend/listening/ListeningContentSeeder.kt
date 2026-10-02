@@ -1,13 +1,14 @@
 package com.app.platform.language.backend.listening
 
-import com.app.platform.language.backend.audio.isPrivateAudioPath
 import com.app.platform.language.backend.common.SeedError
 import com.app.platform.language.backend.common.loadContentFiles
 import com.app.platform.language.backend.content.Visibility
 import com.app.platform.language.backend.database.AppDatabase
+import com.app.platform.language.backend.media.isPrivateMediaPath
 import com.app.platform.language.core.model.ContentJson
 import com.app.platform.language.core.model.ListeningTest
 import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.coroutines.runSuspendCatching
@@ -30,21 +31,24 @@ class ListeningContentSeeder(
   suspend fun seed(
     tests: List<ListeningTest>,
     visibility: Visibility,
-  ): Result<Int, SeedError> {
-    if (visibility == Visibility.PRIVATE) invalidPrivateAudioPath(tests)?.let { return Err(it) }
-    return runSuspendCatching { database.tx { tests.forEach { upsert(it, visibility) } } }
-      .map { tests.size }
-      .mapError(SeedError::WriteFailed)
-  }
+  ): Result<Int, SeedError> =
+    (if (visibility == Visibility.PRIVATE) validatePrivate(tests) else Ok(Unit)).andThen {
+      runSuspendCatching { database.tx { tests.forEach { upsert(it, visibility) } } }
+        .map { tests.size }
+        .mapError(SeedError::WriteFailed)
+    }
 
   // Private audio is served from <test-id>/<file name> in CONTENT_DIR/audio or the R2 bucket, so other paths never play.
-  private fun invalidPrivateAudioPath(tests: List<ListeningTest>): SeedError? =
-    tests.firstNotNullOfOrNull { test ->
-      test.sections
-        .map { it.audioUrl }
-        .find { !isPrivateAudioPath(it) }
-        ?.let { SeedError.InvalidPrivateAudioPath(test.id, it) }
-    }
+  fun validatePrivate(tests: List<ListeningTest>): Result<Unit, SeedError> {
+    val invalid =
+      tests.firstNotNullOfOrNull { test ->
+        test.sections
+          .map { it.audioUrl }
+          .find { !isPrivateMediaPath(it) }
+          ?.let { SeedError.InvalidPrivateAudioPath(test.id, it) }
+      }
+    return if (invalid == null) Ok(Unit) else Err(invalid)
+  }
 
   private fun JdbcTransaction.upsert(
     test: ListeningTest,

@@ -1,0 +1,9 @@
+{
+  "id": "writing-sample-task-1-general-01",
+  "schemaVersion": 1,
+  "module": "general_training",
+  "task": "task_1_general",
+  "instructions": "You recently joined an evening cooking class at a community centre, but the class has been moved to a different day that you cannot attend.\n\nWrite a letter to the course organiser. In your letter\n\n- explain why you joined the class\n- describe the problem the new day causes for you\n- suggest what the organiser could do to help\n\nBegin your letter as follows:\n\nDear Sir or Madam,",
+  "minWords": 150,
+  "timeLimitMinutes": 20
+}

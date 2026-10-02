@@ -7,6 +7,7 @@ import com.app.platform.language.backend.database.PostgresTestDatabase
 import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.exam.ListeningScorer
 import com.app.platform.language.core.model.BundledListeningTests
@@ -52,6 +53,7 @@ class ListeningFromDatabaseTest {
           FakeDatabaseHealth(),
           FakeUserStore(),
           FakeAttemptStore(),
+          FakeWritingSubmissionStore(),
           config,
           listeningContentStore = DatabaseListeningContentStore(database),
         )

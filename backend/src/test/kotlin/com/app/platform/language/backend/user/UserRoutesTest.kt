@@ -6,6 +6,7 @@ import com.app.platform.language.backend.fake.FakeAttemptStore
 import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeTokenVerifier
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.module
 import com.app.platform.language.core.model.ApiError
 import com.app.platform.language.core.model.ContentJson
@@ -29,7 +30,9 @@ class UserRoutesTest {
   private val store = FakeUserStore()
 
   private fun ApplicationTestBuilder.start() {
-    application { module(FakeDatabaseHealth(), store, FakeAttemptStore(), tokenVerifier = verifier) }
+    application {
+      module(FakeDatabaseHealth(), store, FakeAttemptStore(), FakeWritingSubmissionStore(), tokenVerifier = verifier)
+    }
   }
 
   private fun ApplicationTestBuilder.jsonClient() = createClient { install(ContentNegotiation) { json(ContentJson) } }

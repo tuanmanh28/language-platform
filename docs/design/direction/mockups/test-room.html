@@ -1,0 +1,1200 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phòng thi Reading — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<style>
+.light {
+  --primary: #4B44C8; --on-primary: #FFFFFF; --primary-container: #E4E2FF; --on-primary-container: #16105A;
+  --secondary: #515771; --on-secondary: #FFFFFF; --secondary-container: #DFE2F2; --on-secondary-container: #151A2E;
+  --tertiary: #A3306B; --on-tertiary: #FFFFFF; --tertiary-container: #FFD8E7; --on-tertiary-container: #3D0022;
+  --correct: #006B5E; --on-correct: #FFFFFF; --correct-container: #C2F0E7; --on-correct-container: #00201B;
+  --wrong: #A52E17; --on-wrong: #FFFFFF; --wrong-container: #FFDBD1; --on-wrong-container: #3D0700;
+  --warning: #844F00; --on-warning: #FFFFFF; --warning-container: #FFDDB5; --on-warning-container: #2B1700;
+  --info: #005E9F; --on-info: #FFFFFF; --info-container: #D3E4FF; --on-info-container: #001C38;
+  --surface: #F4F4F7; --card: #FFFFFF; --surface-low: #FAFAFC; --surface-container: #EDEDF1;
+  --surface-high: #E7E7EC; --surface-highest: #E1E1E7; --surface-bright: #FAFAFC;
+  --on-surface: #18181D; --on-surface-variant: #55555F; --outline: #81818C; --outline-variant: #D3D3DA;
+  --inverse-surface: #2C2C33; --inverse-on-surface: #F0F0F4; --inverse-primary: #BDB8FF;
+  --bar: rgba(244, 244, 247, 0.78); --scrim: rgba(0, 0, 0, 0.32); --highlight: rgba(255, 221, 181, 0.7);
+  --shadow-card: 0 1px 2px #0000000A, 0 4px 16px #0000000F;
+  --shadow-raised: 0 2px 6px #0000000F, 0 12px 32px #0000001A;
+  --shadow-sheet: 0 -4px 24px #00000014;
+  --shimmer: rgba(255, 255, 255, 0.55);
+  color-scheme: light;
+}
+.dark {
+  --primary: #BDB8FF; --on-primary: #221A84; --primary-container: #342CA6; --on-primary-container: #E4E2FF;
+  --secondary: #BCC2DE; --on-secondary: #262C42; --secondary-container: #3C4259; --on-secondary-container: #DFE2F2;
+  --tertiary: #FFB0D2; --on-tertiary: #600038; --tertiary-container: #841650; --on-tertiary-container: #FFD8E7;
+  --correct: #5ADACB; --on-correct: #003730; --correct-container: #005046; --on-correct-container: #C2F0E7;
+  --wrong: #FF8E6B; --on-wrong: #611300; --wrong-container: #7D1B06; --on-wrong-container: #FFDBD1;
+  --warning: #FFB960; --on-warning: #482900; --warning-container: #673D00; --on-warning-container: #FFDDB5;
+  --info: #A2C9FF; --on-info: #003259; --info-container: #00487D; --on-info-container: #D3E4FF;
+  --surface: #0B0B0E; --card: #1B1B20; --surface-low: #141418; --surface-container: #1B1B20;
+  --surface-high: #25252B; --surface-highest: #303037; --surface-bright: #303037;
+  --on-surface: #E1E1E7; --on-surface-variant: #B4B4BF; --outline: #8A8A96; --outline-variant: #3A3A42;
+  --inverse-surface: #E1E1E7; --inverse-on-surface: #2C2C33; --inverse-primary: #4B44C8;
+  --bar: rgba(11, 11, 14, 0.72); --scrim: rgba(0, 0, 0, 0.48); --highlight: rgba(103, 61, 0, 0.7);
+  --shadow-card: none;
+  --shadow-raised: 0 12px 32px #00000066;
+  --shadow-sheet: none;
+  --shimmer: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: #E4E4EA; color: #18181D; min-height: 100vh; }
+button, input { font: inherit; color: inherit; background: none; border: 0; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1;
+  display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; flex: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.ms.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.sm { font-size: 20px; } .ms.lg { font-size: 28px; }
+
+.toolbar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  padding: 12px 20px; background: rgba(250, 250, 252, 0.85); backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid #D3D3DA; font-size: 13px; }
+.tb-title { display: flex; flex-direction: column; margin-right: auto; }
+.tb-title strong { font-size: 15px; } .tb-title span { color: #55555F; font-size: 12px; }
+.tb-title a { color: #4B44C8; }
+.tb-group { display: flex; align-items: center; background: #E7E7EC; border-radius: 10px; padding: 2px; }
+.tb-group > span { padding: 0 8px; color: #55555F; font-size: 12px; }
+.tb-group button { padding: 6px 10px; border-radius: 8px; font-size: 13px; color: #55555F; font-weight: 500; }
+.tb-group button[aria-pressed="true"] { background: #FFFFFF; color: #18181D; box-shadow: 0 1px 2px #0000001A; }
+.tb-toggle { display: flex; gap: 6px; align-items: center; }
+.tb-btn { padding: 7px 12px; border-radius: 10px; background: #4B44C8; color: #FFFFFF; font-weight: 600; font-size: 13px; }
+.haptic-log { min-width: 190px; font-size: 12px; color: #55555F; display: flex; gap: 6px; align-items: center; }
+.stage { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 20px 80px; }
+.cell { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.cell-label { font-size: 13px; color: #55555F; font-weight: 500; }
+.scaler { position: relative; }
+.scaler > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+.device { font-family: 'Be Vietnam Pro', system-ui, sans-serif; background: var(--surface); color: var(--on-surface);
+  overflow: hidden; position: relative; -webkit-font-smoothing: antialiased; isolation: isolate; }
+.device.phone { width: 390px; height: 844px; border-radius: 54px;
+  box-shadow: 0 0 0 10px #0E0E10, 0 0 0 11px #3A3A42, 0 30px 60px -10px #00000055; }
+.device.desktop { width: 1280px; height: 800px; border-radius: 12px; box-shadow: 0 0 0 1px #00000026, 0 30px 80px -20px #00000066; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 32px 0; display: flex;
+  justify-content: space-between; font-size: 16px; font-weight: 600; z-index: 60; pointer-events: none; }
+.status .icons { display: flex; gap: 4px; } .status .ms { font-size: 18px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px;
+  background: var(--on-surface); z-index: 60; pointer-events: none; }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--surface-low);
+  border-bottom: 1px solid var(--outline-variant); position: relative; z-index: 60; }
+.win-bar i { width: 12px; height: 12px; border-radius: 999px; background: var(--outline-variant); }
+.win-bar span { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--on-surface-variant); pointer-events: none; }
+.win-body { position: absolute; top: 38px; left: 0; right: 0; bottom: 0; display: flex; }
+
+.t-display { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+.t-large-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+.t-title1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.t-title2 { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.2px; }
+.t-title3 { font-size: 19px; line-height: 26px; font-weight: 600; letter-spacing: -0.1px; }
+.t-headline { font-size: 17px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 17px; line-height: 26px; }
+.t-reading { font-size: 18px; line-height: 30px; }
+.t-callout { font-size: 16px; line-height: 24px; }
+.t-subheadline { font-size: 15px; line-height: 22px; }
+.t-label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.t-footnote { font-size: 13px; line-height: 18px; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.2px; }
+.t-caption2 { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.tnum { font-variant-numeric: tabular-nums; }
+.muted { color: var(--on-surface-variant); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.device :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px;
+  border-radius: 14px; font-size: 17px; line-height: 24px; font-weight: 600; position: relative; user-select: none;
+  transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
+.btn::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0;
+  transition: opacity 100ms; pointer-events: none; }
+.btn:hover::after { opacity: 0.08; } .btn:active::after { opacity: 0.12; }
+.btn::before, .hit::before { content: ''; position: absolute; left: 0; right: 0; top: min(0px, calc(50% - 24px)); bottom: min(0px, calc(50% - 24px)); }
+.btn:active { transform: scale(0.97); }
+.reduce .btn:active { transform: none; }
+.desktop .btn { height: 44px; font-size: 15px; padding: 0 20px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { height: 48px; padding: 0 12px; color: var(--primary); font-size: 15px; font-weight: 600; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.38; pointer-events: none; }
+.icon-btn { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; position: relative; }
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.icon-btn.selected { color: var(--primary); background: var(--primary-container); }
+
+.card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-card); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px;
+  line-height: 16px; font-weight: 500; letter-spacing: 0.2px; background: var(--surface-high); color: var(--on-surface-variant); }
+.tag .ms { font-size: 20px; margin-left: -4px; }
+.tag.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tag.success { background: var(--correct-container); color: var(--on-correct-container); }
+.tag.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.pbar { height: 6px; border-radius: 999px; background: var(--surface-high); overflow: hidden; }
+.pbar > i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transform-origin: 0 50%; }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; }
+.list { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 16px; position: relative; width: 100%; text-align: left; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 60px; right: 0; border-top: 1px solid var(--outline-variant); }
+button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transparent); }
+.tile { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.tile .ms { font-size: 20px; }
+.tile.primary { background: var(--primary-container); color: var(--on-primary-container); }
+.tile.tertiary { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+.tile.correct { background: var(--correct-container); color: var(--on-correct-container); }
+.tile.info { background: var(--info-container); color: var(--on-info-container); }
+.grow { flex: 1; min-width: 0; }
+.chev { color: var(--outline); }
+.row.done .t-headline { color: var(--on-surface-variant); }
+.done-mark { color: var(--correct); }
+.banner { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px;
+  background: var(--info-container); color: var(--on-info-container); }
+.banner .ms { color: var(--info); }
+.skel { background: var(--surface-high); border-radius: 10px; position: relative; overflow: hidden; }
+.skel::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent); animation: shimmer 1.2s cubic-bezier(0.2, 0, 0, 1) infinite; }
+.reduce .skel::after { animation: none; display: none; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 24px; }
+.empty .btn { margin-top: 16px; }
+.error-icon { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; margin-bottom: 8px;
+  background: var(--wrong-container); color: var(--on-wrong-container); }
+.ring { display: block; transform: rotate(-90deg); }
+.ring .track { fill: none; stroke: var(--surface-high); }
+.ring .fill { fill: none; stroke: var(--primary); stroke-linecap: round; }
+.ring .fill.tertiary { stroke: var(--tertiary); }
+.roller { display: inline-flex; overflow: hidden; line-height: 1.2; height: 1.2em; vertical-align: bottom; }
+.roller .digit { display: inline-block; height: 1.2em; overflow: hidden; }
+.roller .digits { display: flex; flex-direction: column; }
+.roller .digits span { height: 1.2em; }
+.i0 { fill: var(--card); stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linejoin: round; }
+.i1 { fill: var(--primary-container); } .i2 { fill: var(--primary); } .i3 { fill: var(--tertiary-container); }
+.is { fill: none; stroke: var(--on-surface); stroke-opacity: 0.7; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
+.desktop .sheet-layer { align-items: center; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px;
+  box-shadow: var(--shadow-sheet); touch-action: none; }
+.desktop .sheet { width: 480px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.desktop .handle { display: none; }
+
+.nav-host { position: absolute; inset: 0; overflow: hidden; }
+.layer { position: absolute; inset: 0; background: var(--surface); display: flex; flex-direction: column; }
+.layer .dim { position: absolute; inset: 0; background: #000000; opacity: 0.08; pointer-events: none; z-index: 30; }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.phone .screen { padding: 50px 0 100px; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.phone .topbar { height: 94px; padding-top: 50px; }
+.desktop .topbar { height: 52px; }
+.topbar .bar-title { opacity: 0; transition: opacity 150ms; }
+.scrolled > .topbar, .topbar.solid { background: var(--bar); backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom-color: var(--outline-variant); }
+.scrolled > .topbar .bar-title, .topbar.solid .bar-title { opacity: 1; }
+.topbar .back { position: absolute; left: 4px; bottom: 0; display: flex; align-items: center; height: 44px; padding: 0 8px; color: var(--primary); font-size: 17px; }
+.desktop .topbar .back { bottom: 4px; }
+
+.exam { display: flex; flex-direction: column; }
+.phone .exam { padding-top: 50px; }
+.exam-bar { display: flex; align-items: center; gap: 4px; height: 56px; padding: 0 8px 0 4px; flex: none; position: relative; z-index: 5;
+  background: var(--card); border-bottom: 1px solid var(--outline-variant); }
+.desktop .exam-bar { height: 60px; padding: 0 16px 0 8px; gap: 8px; }
+.exam-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.desktop .exam-title { flex: none; }
+.desktop .timer-slot { position: absolute; left: 50%; transform: translateX(-50%); }
+.timer { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 999px;
+  background: var(--surface-high); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums;
+  transition: background-color 250ms cubic-bezier(0.2, 0, 0, 1), color 250ms cubic-bezier(0.2, 0, 0, 1); }
+.timer .ms { font-size: 20px; }
+.timer.warning { background: var(--warning-container); color: var(--on-warning-container); }
+.timer.critical { background: var(--warning); color: var(--on-warning); }
+.tools { display: flex; gap: 2px; margin-left: auto; align-items: center; }
+.offline-pill { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border-radius: 999px;
+  background: var(--surface-high); color: var(--on-surface-variant); font-size: 13px; margin-right: 8px; }
+.seg-wrap { padding: 10px 16px; flex: none; background: var(--surface); }
+.seg { display: flex; position: relative; background: var(--surface-high); border-radius: 14px; padding: 4px; }
+.seg button { flex: 1; height: 40px; position: relative; z-index: 1; font-size: 15px; font-weight: 600; color: var(--on-surface-variant);
+  display: flex; align-items: center; justify-content: center; gap: 6px; }
+.seg button[aria-selected="true"] { color: var(--on-surface); }
+.seg .ind { position: absolute; top: 4px; bottom: 4px; left: 4px; border-radius: 10px; background: var(--surface-bright); box-shadow: var(--shadow-card); }
+.count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--surface-highest); font-size: 12px; display: inline-grid; place-items: center; }
+.panes { flex: 1; position: relative; overflow: hidden; }
+.pane { position: absolute; inset: 0; overflow-y: auto; padding: 8px 20px 24px; scrollbar-width: thin; }
+.passage-pane { background: var(--card); }
+.desktop .panes { display: flex; }
+.desktop .pane { position: relative; inset: auto; flex: 1; padding: 32px 40px 48px; }
+.desktop .pane > .measure { max-width: 680px; margin: 0 auto; }
+.divider { width: 1px; background: var(--outline-variant); position: relative; flex: none; cursor: col-resize; }
+.divider::after { content: ''; position: absolute; top: 50%; left: -3px; width: 7px; height: 40px; margin-top: -20px; border-radius: 999px; background: var(--outline); }
+.passage p + p { margin-top: 16px; }
+.passage .para { font-weight: 700; margin-right: 6px; }
+mark { background: var(--highlight); color: inherit; border-radius: 4px; padding: 0 2px; }
+mark.evidence { background: var(--info-container); color: var(--on-info-container); box-shadow: 0 2px 0 var(--info); }
+.q-group + .q-group { margin-top: 32px; }
+.q { display: flex; gap: 12px; padding: 14px 12px; margin: 0 -12px; border-radius: 14px; align-items: flex-start; transition: background-color 250ms; }
+.q.current { background: var(--card); box-shadow: var(--shadow-card); }
+.qn { width: 28px; height: 28px; border-radius: 6px; background: var(--surface-high); display: grid; place-items: center;
+  font-size: 13px; font-weight: 600; flex: none; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.q.current .qn { background: var(--primary); color: var(--on-primary); }
+.q .flag { margin: -10px -10px 0 auto; color: var(--on-surface-variant); }
+.q .flag.on { color: var(--primary); }
+.q .flag.on .ms { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.chip { height: 48px; padding: 0 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline);
+  font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+  transition: background-color 150ms, border-color 150ms, color 150ms; }
+.chip:hover { background: color-mix(in srgb, var(--on-surface) 8%, var(--card)); }
+.chip.selected { background: var(--primary-container); color: var(--on-primary-container); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.chip.correct { background: var(--correct-container); color: var(--on-correct-container); border-color: var(--correct); box-shadow: inset 0 0 0 1px var(--correct); }
+.chip.wrong { background: var(--wrong-container); color: var(--on-wrong-container); border-color: var(--wrong); box-shadow: inset 0 0 0 1px var(--wrong); }
+.chip.missed { border: 1px dashed var(--correct); color: var(--correct); }
+.chip.correct .ms { color: var(--correct); } .chip.wrong .ms { color: var(--wrong); }
+.review .chip:not(.correct):not(.wrong):not(.missed) { opacity: 0.6; }
+.verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 10px; font-size: 15px; font-weight: 600; }
+.verdict .ok, .verdict .bad { display: inline-flex; align-items: center; gap: 4px; }
+.verdict .ok { color: var(--correct); } .verdict .bad { color: var(--wrong); }
+.verdict .btn-text { height: 32px; padding: 0 4px; }
+.gap-input { display: inline-block; width: 168px; height: 48px; margin: 2px 4px; padding: 0 12px; border-radius: 10px; vertical-align: middle;
+  background: var(--surface-high); border: 1px solid var(--outline); font-size: 17px; color: var(--on-surface); }
+.gap-input:focus, .gap-input.focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.gap-input.over { border-color: var(--warning); box-shadow: 0 0 0 1px var(--warning); }
+.gap-input.correct { border-color: var(--correct); background: var(--correct-container); color: var(--on-correct-container); }
+.gap-input.wrong { border-color: var(--wrong); background: var(--wrong-container); color: var(--on-wrong-container); }
+.counter { display: block; margin-top: 4px; }
+.counter.over { color: var(--warning); font-weight: 600; }
+.option { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 56px; padding: 12px 14px; margin-top: 8px; text-align: left;
+  border-radius: 14px; background: var(--card); border: 1px solid var(--outline); transition: background-color 150ms, border-color 150ms; }
+.option:hover { background: color-mix(in srgb, var(--on-surface) 8%, var(--card)); }
+.option .letter { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--outline); display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+.option.selected { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-container); color: var(--on-primary-container); }
+.option.selected .letter { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.option.correct { border-color: var(--correct); box-shadow: inset 0 0 0 1px var(--correct); background: var(--correct-container); color: var(--on-correct-container); }
+.option.correct .letter { background: var(--correct); color: var(--on-correct); border-color: var(--correct); }
+.option.wrong { border-color: var(--wrong); box-shadow: inset 0 0 0 1px var(--wrong); background: var(--wrong-container); color: var(--on-wrong-container); }
+.option.wrong .letter { background: var(--wrong); color: var(--on-wrong); border-color: var(--wrong); }
+.option.missed { border: 1px dashed var(--correct); }
+.nav-strip { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px 38px; position: relative; z-index: 5;
+  background: var(--bar); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--outline-variant); }
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; flex: 1; padding: 6px 4px; scrollbar-width: none; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.navigator { flex: none; height: 68px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--card); border-top: 1px solid var(--outline-variant); }
+.part { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.part.collapsed { color: var(--on-surface-variant); }
+.part.collapsed:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.part-qs { display: flex; gap: 8px; }
+.nav-q { width: 40px; height: 40px; border-radius: 6px; flex: none; border: 1px solid var(--outline); background: var(--card);
+  font-size: 13px; font-weight: 600; position: relative; font-variant-numeric: tabular-nums; transition: background-color 150ms; }
+.desktop .nav-q { width: 36px; height: 36px; }
+.nav-q.answered { background: var(--primary-container); border-color: transparent; color: var(--on-primary-container); }
+.nav-q.current { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.nav-q.correct { background: var(--correct-container); color: var(--on-correct-container); border-color: transparent; }
+.nav-q.wrong { background: var(--wrong-container); color: var(--on-wrong-container); border-color: transparent; }
+.nav-q .badge { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 999px; display: grid; place-items: center;
+  background: var(--primary); color: var(--on-primary); box-shadow: 0 0 0 2px var(--card); }
+.nav-q .badge .ms { font-size: 12px; font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 20; }
+.nav-q.correct .badge { background: var(--correct); color: var(--on-correct); }
+.nav-q.wrong .badge { background: var(--wrong); color: var(--on-wrong); }
+.nav-strip .btn, .navigator .btn { height: 40px; padding: 0 16px; font-size: 15px; }
+.result { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 20px 48px; }
+.phone .result { padding-top: 110px; }
+.result-ring { position: relative; width: 168px; height: 168px; margin: 16px 0 8px; }
+.result-ring .center { position: absolute; inset: 0; display: grid; place-items: center; }
+.result-ring .t-display { color: var(--primary); }
+.result .card { width: 100%; max-width: 520px; padding: 4px 0; text-align: left; margin-top: 24px; }
+.result .actions { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+.desktop .result .actions { flex-direction: row; justify-content: center; }
+.part-row { display: flex; flex-direction: column; gap: 8px; padding: 14px 20px; }
+.part-row + .part-row { border-top: 1px solid var(--outline-variant); }
+.part-row .top { display: flex; justify-content: space-between; }
+.explain-quote { margin: 12px 0; padding: 12px 14px; border-radius: 14px; background: var(--surface-high); }
+.save-words { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.save-words button { height: 40px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; position: relative;
+  background: var(--secondary-container); color: var(--on-secondary-container); font-size: 15px; font-weight: 600; }
+.save-words button.saved { background: var(--primary-container); color: var(--on-primary-container); }
+.tag.wrong { background: var(--wrong-container); color: var(--on-wrong-container); }
+.tag.wrong .ms { color: var(--wrong); }
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="tb-title"><strong>Phòng thi Reading</strong><span>Mockup · <a href="../README.md">design direction</a> · chọn đáp án, đánh dấu, chuyển câu ở thanh dưới, nộp bài; máy tính: ←/→, T/F/N, A–D, M đánh dấu, ⌘↵ nộp</span></div>
+  <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="desktop">Máy tính</button><button data-value="both">Cả hai</button></div>
+  <div class="tb-group" data-control="state"><span>Trạng thái</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
+  <button class="tb-btn" id="replay">Phát lại</button>
+  <div class="haptic-log" aria-live="polite"></div>
+</header>
+<main class="stage" id="stage"></main>
+<script>
+const SPRINGS = { snappy: [0.30, 0.88], smooth: [0.40, 1], bouncy: [0.45, 0.72], gentle: [0.60, 1] };
+const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 700 };
+const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
+const STAGGER = 30;
+const intervals = new Set();
+const STATES = [['exam', 'Đang làm'], ['warning', 'Sắp hết giờ'], ['timeup', 'Hết giờ'], ['submit', 'Xác nhận nộp'], ['exit', 'Thoát bài'], ['result', 'Kết quả'], ['review', 'Xem lại'], ['loading', 'Đang tải'], ['error', 'Lỗi'], ['offline', 'Ngoại tuyến']];
+const ui = { theme: 'light', frame: 'both', state: 'exam' };
+
+const PASSAGE = [
+  ['A', 'Most animals slow down as they age. Muscles weaken, memory fades and reactions become less precise. Yet a small number of species appear to escape this pattern for most of their lives, and biologists have begun to ask what they have in common.'],
+  ['B', 'One candidate is a species of ant found in the forests of the south-eastern United States. Colonies are founded by a single queen, and the workers she produces may survive for well over a year, a long time for an insect of their size. Remarkably, <mark>workers near the end of their lives seem to perform their duties just as well as those that have only recently emerged</mark>.'],
+  ['C', 'To test this impression, a team of researchers set up colonies in the laboratory and compared workers of known ages. Each ant was given a series of tasks: caring for larvae, attacking a prey insect and following a chemical trail laid by a nestmate. The older workers were not only as successful as the younger ones; in some tasks they were noticeably more active.'],
+  ['D', 'The team then examined the ants’ brains. In many animals, ageing is accompanied by the death of nerve cells and a fall in levels of chemical messengers such as dopamine. In the ants, however, the researchers found no evidence of either change, even in individuals that were close to the natural end of their lives.'],
+  ['E', 'Exactly why the ants remain so capable is still unclear. One suggestion is that, because a colony depends on every worker, natural selection has favoured individuals that stay productive until they die suddenly rather than gradually. The researchers now intend to compare these findings with species whose workers are known to decline with age.'],
+];
+const TFNG = [
+  [14, 'The workers of this ant species have an unusually long life for insects of their size.', 'TRUE'],
+  [15, 'Older workers were less successful at caring for larvae than younger ones.', 'FALSE'],
+  [16, 'The colonies used in the study were collected from several different forests.', 'NOT GIVEN'],
+  [17, 'In some tasks, older ants were more active than younger ones.', 'TRUE'],
+  [18, 'The researchers found lower levels of dopamine in the brains of older ants.', 'FALSE'],
+  [19, 'The researchers plan to study ants whose workers decline with age.', 'TRUE'],
+];
+const GAPS = [
+  [20, 'Each colony is started by one', '.', 'queen'],
+  [21, 'The ants had to follow a', 'left by another ant.', 'chemical trail'],
+  [22, 'In many animals, ageing causes the loss of', '.', 'nerve cells'],
+  [23, 'Workers may stay productive until they die', '.', 'suddenly'],
+];
+const MCQ = [24, 'What is the main purpose of paragraph E?', [['A', 'To describe a new experiment'], ['B', 'To suggest a possible explanation'], ['C', 'To criticise earlier research'], ['D', 'To compare ants with other insects']], 'B'];
+const PART_QUESTIONS = Array.from({ length: 13 }, (_, i) => 14 + i);
+const CORRECT = { ...Object.fromEntries(TFNG.map(([n, , a]) => [n, a])), ...Object.fromEntries(GAPS.map(([n, , , a]) => [n, a])), 24: 'B', 25: 'iii', 26: 'vi' };
+const EXAM_ANSWERS = { 14: 'TRUE', 15: 'FALSE', 16: 'TRUE', 17: 'TRUE' };
+const FULL_ANSWERS = { 14: 'TRUE', 15: 'FALSE', 16: 'TRUE', 17: 'TRUE', 18: 'TRUE', 19: 'TRUE', 20: 'queen', 21: 'scent trail', 22: 'nerve cells', 24: 'B' };
+const EXPLAIN = {
+  16: { para: 'C', evidence: 'a team of researchers set up colonies in the laboratory', text: 'Bài chỉ nói các tổ kiến được nuôi trong phòng thí nghiệm, không nói chúng được lấy từ đâu. Câu này hay bẫy ở chữ <em>forests</em>: đoạn B có nhắc tới rừng nhưng chỉ để nói nơi loài kiến này sống.', words: ['colony', 'laboratory', 'nestmate'] },
+  18: { para: 'D', evidence: 'the researchers found no evidence of either change', text: 'Đoạn D nói không thấy dopamine giảm ở kiến già, nên câu hỏi trái với thông tin trong bài. Bẫy ở chỗ đoạn này mở đầu bằng việc nhiều loài <em>có</em> giảm dopamine.', words: ['dopamine', 'accompanied by'] },
+  21: { para: 'C', evidence: 'following a chemical trail laid by a nestmate', text: 'Bài dùng đúng cụm <em>chemical trail</em>. “Scent trail” gần nghĩa nhưng đề yêu cầu lấy từ trong bài, nên không được chấp nhận.', words: ['trail', 'nestmate'] },
+  23: { para: 'E', evidence: 'stay productive until they die suddenly rather than gradually', text: 'Câu hỏi diễn đạt lại cụm “stay productive until they die”, nên từ cần điền nằm ngay sau cụm này: <em>suddenly</em>.', words: ['productive', 'gradually'] },
+};
+const deviceState = new WeakMap();
+
+function createState(state) {
+  const review = state === 'review';
+  return {
+    review,
+    answers: { ...(review || state === 'submit' ? FULL_ANSWERS : EXAM_ANSWERS) },
+    flagged: new Set([16]),
+    current: review ? 16 : 18,
+    seconds: { warning: 302, timeup: 4 }[state] ?? 34 * 60 + 12,
+    paused: false,
+    pane: 'passage',
+    part3Answered: review || state === 'submit' ? 14 : 0,
+  };
+}
+
+const isCorrect = (n, answer) => answer !== undefined && String(answer).trim().toLowerCase() === CORRECT[n];
+const wordCount = (text) => text.trim().split(/\s+/).filter(Boolean).length;
+const clock = (seconds) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+const timerTone = (seconds) => (seconds <= 60 ? 'critical' : seconds <= 300 ? 'warning' : '');
+
+function passageHTML() {
+  return `<div class="passage t-reading">
+    <p class="t-caption muted" style="margin-bottom:8px">READING PASSAGE 2</p>
+    <h2 class="t-title2" style="margin-bottom:6px">Ageing without decline</h2>
+    <p class="t-subheadline muted" style="margin-bottom:20px">You should spend about 20 minutes on Questions 14–26.</p>
+    ${PASSAGE.map(([letter, text]) => `<p data-para="${letter}"><span class="para">${letter}</span>${text}</p>`).join('')}</div>`;
+}
+
+function verdictHTML(st, n) {
+  if (!st.review) return '';
+  const answer = st.answers[n];
+  if (isCorrect(n, answer)) return '<div class="verdict"><span class="ok"><span class="ms fill sm">check_circle</span>Đúng</span></div>';
+  const label = answer === undefined ? 'Bỏ trống' : 'Sai';
+  const explain = EXPLAIN[n] ? `<button class="btn btn-text" data-explain="${n}">Giải thích</button>` : '';
+  return `<div class="verdict"><span class="bad"><span class="ms fill sm">cancel</span>${label} — đáp án: ${CORRECT[n]}</span>${explain}</div>`;
+}
+
+function flagHTML(st, n) {
+  if (st.review) return '';
+  const on = st.flagged.has(n);
+  return `<button class="icon-btn flag ${on ? 'on' : ''}" data-flag="${n}" aria-pressed="${on}" aria-label="Đánh dấu câu ${n}"><span class="ms sm">flag</span></button>`;
+}
+
+function chipClass(st, n, choice) {
+  const answer = st.answers[n];
+  if (!st.review) return answer === choice ? 'selected' : '';
+  if (choice === answer) return isCorrect(n, answer) ? 'correct' : 'wrong';
+  return choice === CORRECT[n] ? 'missed' : '';
+}
+
+function chipIcon(cls) {
+  if (cls === 'correct') return '<span class="ms fill sm">check_circle</span>';
+  if (cls === 'wrong') return '<span class="ms fill sm">cancel</span>';
+  return '';
+}
+
+function questionsHTML(st) {
+  const current = (n) => (n === st.current ? 'current' : '');
+  const tfng = TFNG.map(([n, text]) => `<div class="q ${current(n)}" data-q="${n}"><span class="qn">${n}</span><div class="grow">
+      <p class="t-body">${text}</p>
+      <div class="chips" role="radiogroup" aria-label="Câu ${n}">${['TRUE', 'FALSE', 'NOT GIVEN'].map((choice) => {
+        const cls = chipClass(st, n, choice);
+        return `<button class="chip ${cls}" role="radio" aria-checked="${st.answers[n] === choice}" data-answer="${choice}" ${st.review ? 'aria-disabled="true"' : ''}>${chipIcon(cls)}${choice}</button>`;
+      }).join('')}</div>${verdictHTML(st, n)}</div>${flagHTML(st, n)}</div>`).join('');
+  const gaps = GAPS.map(([n, before, after]) => {
+    const value = st.answers[n] || '';
+    const words = wordCount(value);
+    const cls = st.review ? (isCorrect(n, value) ? 'correct' : 'wrong') : words > 2 ? 'over' : '';
+    const counter = st.review ? '' : `<span class="counter t-footnote muted ${words > 2 ? 'over' : ''}">${words > 2 ? 'Quá giới hạn · ' : ''}${words}/2 từ</span>`;
+    return `<div class="q ${current(n)}" data-q="${n}"><span class="qn">${n}</span><div class="grow">
+      <p class="t-body">${before} <input class="gap-input ${cls}" data-gap="${n}" value="${value}" aria-label="Câu ${n}" autocomplete="off" spellcheck="false" ${st.review ? 'readonly' : ''}> ${after}</p>
+      ${counter}${verdictHTML(st, n)}</div>${flagHTML(st, n)}</div>`;
+  }).join('');
+  const [mn, prompt, options] = MCQ;
+  const mcq = `<div class="q ${current(mn)}" data-q="${mn}"><span class="qn">${mn}</span><div class="grow"><p class="t-body">${prompt}</p>
+    <div role="radiogroup" aria-label="Câu ${mn}">${options.map(([letter, text]) => {
+      const chosen = st.answers[mn] === letter;
+      const reviewClass = letter === CORRECT[mn] ? (chosen ? 'correct' : 'missed') : chosen ? 'wrong' : '';
+      const cls = st.review ? reviewClass : chosen ? 'selected' : '';
+      const icon = { correct: '<span class="ms fill" style="color:var(--correct)">check_circle</span>', wrong: '<span class="ms fill" style="color:var(--wrong)">cancel</span>' }[cls] || '';
+      return `<button class="option ${cls}" role="radio" aria-checked="${chosen}" data-option="${letter}"><span class="letter">${letter}</span><span class="t-body grow">${text}</span>${icon}</button>`;
+    }).join('')}</div>${verdictHTML(st, mn)}</div>${flagHTML(st, mn)}</div>`;
+  return `<div class="${st.review ? 'review' : ''}">
+    <section class="q-group"><h3 class="t-headline">Questions 14–19</h3>
+      <p class="t-subheadline muted" style="margin:4px 0 6px">Do the following statements agree with the information given in Reading Passage 2? Choose TRUE, FALSE or NOT GIVEN.</p>${tfng}</section>
+    <section class="q-group"><h3 class="t-headline">Questions 20–23</h3>
+      <p class="t-subheadline muted" style="margin:4px 0 6px">Complete the sentences below. Choose NO MORE THAN TWO WORDS from the passage for each answer.</p>${gaps}</section>
+    <section class="q-group"><h3 class="t-headline">Question 24</h3>
+      <p class="t-subheadline muted" style="margin:4px 0 6px">Choose the correct letter, A, B, C or D.</p>${mcq}</section></div>`;
+}
+
+function navItemHTML(st, n) {
+  const answer = st.answers[n];
+  let cls = '', badge = '', label = `Câu ${n}`;
+  if (st.review) {
+    const ok = isCorrect(n, answer);
+    cls = ok ? 'correct' : 'wrong';
+    badge = `<span class="badge"><span class="ms">${ok ? 'check' : 'close'}</span></span>`;
+    label += ok ? ', đúng' : ', sai';
+  } else {
+    cls = answer !== undefined && answer !== '' ? 'answered' : '';
+    label += cls ? ', đã trả lời' : ', chưa trả lời';
+    if (st.flagged.has(n)) { badge = '<span class="badge"><span class="ms">flag</span></span>'; label += ', đã đánh dấu'; }
+  }
+  if (n === st.current) { cls += ' current'; label += ', đang xem'; }
+  return `<button class="nav-q ${cls}" data-nav="${n}" aria-label="${label}">${n}${badge}</button>`;
+}
+
+function examBarHTML(frame, st, state) {
+  const close = `<button class="icon-btn" data-action="exit" aria-label="Thoát bài thi"><span class="ms">close</span></button>`;
+  const tone = timerTone(st.seconds);
+  const timer = st.review
+    ? '<span class="tag primary" style="height:32px;font-size:15px;font-weight:700">Band 7.0</span>'
+    : state === 'loading' ? '<span class="skel" style="width:96px;height:36px;border-radius:999px"></span>'
+      : `<span class="timer ${tone}" role="timer" aria-label="Thời gian còn lại ${clock(st.seconds)}"><span class="ms ${tone ? 'fill' : ''}">timer</span><span class="time">${clock(st.seconds)}</span></span>`;
+  const offline = state === 'offline'
+    ? (frame === 'phone'
+      ? '<span class="ms muted" role="img" aria-label="Đang ngoại tuyến · Câu trả lời được lưu trên máy" title="Đang ngoại tuyến · Câu trả lời được lưu trên máy" style="margin:0 6px">cloud_off</span>'
+      : '<span class="offline-pill" role="status"><span class="ms sm">cloud_off</span>Đang ngoại tuyến · Câu trả lời được lưu trên máy</span>')
+    : '';
+  const title = st.review ? 'Xem lại · Cambridge 18 · Test 2' : frame === 'phone' ? 'Passage 2' : 'Cambridge 18 · Test 2 · Reading';
+  const subtitle = frame === 'phone' ? 'Câu 14–26' : 'Passage 2 / 3';
+  if (frame === 'phone') {
+    return `<div class="exam-bar">${close}<div class="exam-title"><span class="t-headline">${title}</span><span class="t-caption muted">${subtitle}</span></div>${offline}${state === 'error' ? '' : timer}</div>`;
+  }
+  const submitTone = tone ? 'btn-primary' : 'btn-secondary';
+  const tools = st.review || state === 'error' ? '' : `
+    <button class="icon-btn" aria-label="Tô sáng (⌘H)" title="Tô sáng (⌘H)"><span class="ms">ink_highlighter</span></button>
+    <button class="icon-btn" aria-label="Ghi chú" title="Ghi chú"><span class="ms">sticky_note_2</span></button>
+    <button class="icon-btn" aria-label="Cỡ chữ (⌘+ / ⌘−)" title="Cỡ chữ (⌘+ / ⌘−)"><span class="ms">format_size</span></button>
+    <span style="width:8px"></span>${offline}<button class="btn ${submitTone}" data-action="submit" style="height:40px">Nộp bài</button>`;
+  return `<div class="exam-bar">${close}<div class="exam-title"><span class="t-headline">${title}</span><span class="t-caption muted">${subtitle}</span></div>
+    <div class="timer-slot">${state === 'error' ? '' : timer}</div><div class="tools">${tools}</div></div>`;
+}
+
+function navigatorHTML(frame, st) {
+  const items = PART_QUESTIONS.map((n) => navItemHTML(st, n)).join('');
+  const tone = timerTone(st.seconds);
+  if (frame === 'phone') {
+    const submit = st.review ? '' : `<button class="btn ${tone ? 'btn-primary' : 'btn-secondary'}" data-action="submit">Nộp bài</button>`;
+    return `<div class="nav-strip"><div class="nav-scroll" aria-label="Danh sách câu hỏi">${items}</div>${submit}</div>`;
+  }
+  return `<div class="navigator" aria-label="Danh sách câu hỏi">
+    <button class="part collapsed">Part 1 <span class="t-footnote tnum">13/13</span></button>
+    <span class="part">Part 2</span><div class="part-qs">${items}</div>
+    <button class="part collapsed">Part 3 <span class="t-footnote tnum">${st.part3Answered}/14</span></button>
+    <div style="margin-left:auto;display:flex;gap:4px">
+      <button class="icon-btn" data-action="prev" aria-label="Câu trước (←)" title="Câu trước (←)"><span class="ms">arrow_back</span></button>
+      <button class="icon-btn" data-action="next" aria-label="Câu sau (→)" title="Câu sau (→)"><span class="ms">arrow_forward</span></button></div></div>`;
+}
+
+function skeletonPane(lines) {
+  return Array.from({ length: lines }, (_, i) => `<div class="skel" style="height:16px;margin:14px 0;width:${[92, 100, 96, 70, 100, 88, 94, 60][i % 8]}%"></div>`).join('');
+}
+
+function bodyHTML(frame, st, state) {
+  if (state === 'loading') {
+    const sr = '<span class="sr" role="status">Đang mở bài thi</span>';
+    if (frame === 'phone') return `${sr}<div class="panes"><div class="pane passage-pane"><div class="skel" style="height:28px;width:70%;margin:12px 0 20px"></div>${skeletonPane(14)}</div></div>`;
+    return `${sr}<div class="panes"><div class="pane passage-pane"><div class="measure"><div class="skel" style="height:28px;width:60%;margin-bottom:20px"></div>${skeletonPane(16)}</div></div><div class="divider"></div><div class="pane"><div class="measure">${skeletonPane(4)}<div class="skel" style="height:48px;width:70%;margin:20px 0"></div>${skeletonPane(4)}</div></div></div>`;
+  }
+  if (state === 'error') {
+    return `<div class="empty" style="flex:1;justify-content:center" role="alert"><div class="error-icon"><span class="ms lg">error</span></div>
+      <h2 class="t-title2">Không mở được bài thi</h2><p class="t-callout muted">Bài làm của bạn không bị mất. Thử lại sau giây lát nhé.</p>
+      <button class="btn btn-primary" data-action="retry"><span class="ms">refresh</span>Thử lại</button></div>`;
+  }
+  if (frame === 'phone') {
+    const unanswered = PART_QUESTIONS.filter((n) => st.answers[n] === undefined).length;
+    return `<div class="seg-wrap"><div class="seg" role="tablist" aria-label="Chế độ xem"><span class="ind"></span>
+        <button role="tab" data-pane="passage" aria-selected="true">Bài đọc</button>
+        <button role="tab" data-pane="questions" aria-selected="false" aria-label="${st.review ? 'Câu hỏi, 13 câu' : `Câu hỏi, còn ${unanswered} câu chưa trả lời`}">Câu hỏi <span class="count tnum" aria-hidden="true">${st.review ? 13 : unanswered}</span></button></div></div>
+      <div class="panes"><div class="pane passage-pane" data-pane-el="passage">${passageHTML()}</div>
+        <div class="pane" data-pane-el="questions" style="visibility:hidden">${questionsHTML(st)}</div></div>
+      ${navigatorHTML(frame, st)}`;
+  }
+  return `<div class="panes"><div class="pane passage-pane"><div class="measure">${passageHTML()}</div></div>
+      <div class="divider" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Kéo hoặc dùng phím mũi tên để đổi độ rộng"></div>
+      <div class="pane questions-pane"><div class="measure">${questionsHTML(st)}</div></div></div>
+    ${navigatorHTML(frame, st)}`;
+}
+
+function resultHTML(frame) {
+  const parts = [['Passage 1', 11, 13], ['Passage 2', 7, 13], ['Passage 3', 12, 14]];
+  return `<div class="topbar solid"><button class="back" data-action="back" aria-label="Đóng kết quả"><span class="ms">close</span></button><span class="t-headline bar-title">Kết quả</span></div>
+  <div class="result" style="${frame === 'desktop' ? 'padding-top:84px' : ''}">
+    <p class="t-footnote muted">Cambridge 18 · Test 2 · Reading</p>
+    <h1 class="t-title1">Hoàn thành bài Reading</h1>
+    <div class="result-ring" role="img" aria-label="Band ước tính 7.0, 30 trên 40 câu đúng">${ring(168, 14, 30 / 40)}<div class="center"><div><div class="t-display tnum">${roller('7.0')}</div><div class="t-subheadline muted">Band ước tính</div></div></div></div>
+    <p class="t-headline">30/40 câu đúng</p><p class="t-subheadline muted">Cao hơn lần trước 0.5 band</p>
+    <div class="card">${parts.map(([name, ok, total]) => `<div class="part-row"><div class="top"><span class="t-headline">${name}</span><span class="t-subheadline tnum">${ok}/${total}</span></div><div class="pbar"><i style="width:${(ok / total) * 100}%"></i></div></div>`).join('')}
+      <div class="part-row"><div class="top"><span class="t-headline">Cần luyện thêm</span><span class="t-subheadline muted">TRUE / FALSE / NOT GIVEN · 3/6</span></div></div></div>
+    <div class="actions"><button class="btn btn-primary" data-action="to-review"><span class="ms">fact_check</span>Xem lại bài</button><button class="btn btn-text" data-action="back">Về Hôm nay</button></div>
+  </div>`;
+}
+
+function submitSheetHTML(st) {
+  const unanswered = PART_QUESTIONS.filter((n) => st.answers[n] === undefined || st.answers[n] === '');
+  const missing = unanswered.length + (14 - st.part3Answered);
+  const flagged = [...st.flagged];
+  return `<div class="handle"></div>
+    <h2 class="t-title2">Nộp bài?</h2>
+    <p class="t-callout muted" style="margin-top:6px">Bạn còn ${missing} câu chưa trả lời. Sau khi nộp sẽ không sửa được.</p>
+    <div class="list" style="margin-top:16px;box-shadow:none;background:var(--surface-container)">
+      <div class="row"><span class="tile info"><span class="ms">help</span></span><div class="grow"><div class="t-headline">Chưa trả lời</div><div class="t-subheadline muted">Câu ${unanswered.join(', ')}${st.part3Answered < 14 ? ' và Part 3' : ''}</div></div></div>
+      <div class="row"><span class="tile primary"><span class="ms fill">flag</span></span><div class="grow"><div class="t-headline">Đã đánh dấu</div><div class="t-subheadline muted">Câu ${flagged.join(', ') || '—'}</div></div></div></div>
+    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-secondary" data-action="close-sheet" style="flex:1">Làm tiếp</button><button class="btn btn-primary" data-action="confirm-submit" style="flex:1">Nộp bài</button></div>`;
+}
+
+function explainSheetHTML(st, n) {
+  const info = EXPLAIN[n];
+  const answer = st.answers[n];
+  return `<div class="handle"></div>
+    <p class="t-footnote muted">Câu ${n} · Đoạn ${info.para}</p>
+    <h2 class="t-title2">Đáp án: ${CORRECT[n]}</h2>
+    <span class="tag wrong" style="margin-top:8px"><span class="ms fill">cancel</span>${answer === undefined ? 'Bạn bỏ trống' : `Bạn chọn: ${answer}`}</span>
+    <div class="explain-quote t-reading">“…${info.evidence}…”</div>
+    <p class="t-body">${info.text}</p>
+    <p class="t-headline" style="margin-top:16px">Lưu từ vào bộ thẻ</p>
+    <div class="save-words">${info.words.map((w) => `<button class="hit" data-save="${w}" aria-pressed="false"><span class="ms sm">add</span>${w}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-secondary" data-action="show-evidence" data-q="${n}" style="flex:1">Xem trong bài đọc</button><button class="btn btn-primary" data-action="close-sheet" style="flex:1">Đã hiểu</button></div>`;
+}
+
+function exitSheetHTML() {
+  return `<div class="handle"></div>
+    <h2 class="t-title2">Thoát bài thi?</h2>
+    <p class="t-callout muted" style="margin-top:6px">Bài làm được lưu. Đồng hồ tạm dừng, bạn làm tiếp được từ Hôm nay.</p>
+    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-text" data-action="confirm-exit" style="flex:1">Thoát</button><button class="btn btn-primary" data-action="close-sheet" data-autofocus style="flex:1">Làm tiếp</button></div>`;
+}
+
+function timeUpSheetHTML() {
+  return `<div style="display:flex;align-items:center;gap:12px;padding-top:16px"><span class="tile" style="width:48px;height:48px;border-radius:14px;background:var(--warning-container);color:var(--on-warning-container)"><span class="ms fill">timer_off</span></span>
+      <h2 class="t-title2">Hết giờ</h2></div>
+    <p class="t-callout muted" style="margin-top:12px">Bài làm đã được lưu. Các câu chưa trả lời được tính là bỏ trống.</p>
+    <button class="btn btn-primary btn-block" data-action="see-result" data-autofocus style="margin-top:24px">Xem kết quả</button>`;
+}
+
+function screen(frame, state) {
+  const st = createState(state);
+  const exam = state === 'result'
+    ? `<div class="layer base">${resultHTML(frame)}</div>`
+    : `<div class="layer base exam">${examBarHTML(frame, st, state)}${bodyHTML(frame, st, state)}</div>`;
+  const chrome = frame === 'phone'
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">wifi</span><span class="ms">battery_full</span></span></div>`
+    : `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS — Cambridge 18 · Test 2</span></div>`;
+  const host = `<div class="nav-host">${exam}</div>`;
+  return frame === 'phone'
+    ? `${chrome}${host}<div class="home-ind"></div>`
+    : `${chrome}<div class="win-body"><div class="main">${host}</div></div>`;
+}
+
+function cssVar(device, name) {
+  return getComputedStyle(device).getPropertyValue(name).trim();
+}
+
+function refreshNav(device, st) {
+  device.querySelectorAll('[data-nav]').forEach((item) => { item.outerHTML = navItemHTML(st, Number(item.dataset.nav)); });
+  const count = device.querySelector('.seg .count');
+  if (!count || st.review) return;
+  const unanswered = PART_QUESTIONS.filter((n) => st.answers[n] === undefined).length;
+  count.textContent = unanswered;
+  count.parentElement.setAttribute('aria-label', `Câu hỏi, còn ${unanswered} câu chưa trả lời`);
+}
+
+function setPane(device, st, pane) {
+  if (st.pane === pane) return;
+  const seg = device.querySelector('.seg');
+  if (!seg) return;
+  const order = ['passage', 'questions'];
+  const direction = order.indexOf(pane) > order.indexOf(st.pane) ? 1 : -1;
+  const from = device.querySelector(`[data-pane-el="${st.pane}"]`), to = device.querySelector(`[data-pane-el="${pane}"]`);
+  st.pane = pane;
+  seg.querySelectorAll('[data-pane]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pane === pane)));
+  moveIndicator(seg, order.indexOf(pane), true);
+  haptic(device, 'selection · CLOCK_TICK');
+  to.style.visibility = 'visible';
+  play(from, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-24 * direction}px)` }], 'snappy').then(() => {
+    from.style.visibility = st.pane === from.dataset.paneEl ? 'visible' : 'hidden';
+  });
+  play(to, [{ opacity: 0, transform: `translateX(${24 * direction}px)` }, { opacity: 1, transform: 'none' }], 'snappy');
+}
+
+function moveIndicator(seg, index, animate) {
+  const indicator = seg.querySelector('.ind');
+  const width = (seg.clientWidth - 8) / 2;
+  indicator.style.width = `${width}px`;
+  const target = `translateX(${index * width}px)`;
+  const from = indicator.style.transform || 'translateX(0px)';
+  indicator.style.transform = target;
+  if (animate) play(indicator, [{ transform: from }, { transform: target }], 'snappy');
+}
+
+function setCurrent(device, frame, st, n) {
+  st.current = n;
+  device.querySelectorAll('.q').forEach((q) => q.classList.toggle('current', Number(q.dataset.q) === n));
+  refreshNav(device, st);
+  const q = device.querySelector(`.q[data-q="${n}"]`);
+  if (!q) return;
+  if (frame === 'phone') setPane(device, st, 'questions');
+  const pane = q.closest('.pane');
+  pane.scrollTo({ top: q.offsetTop - pane.clientHeight / 2 + q.offsetHeight / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+  play(q, [{ backgroundColor: cssVar(device, '--primary-container') }, { backgroundColor: getComputedStyle(q).backgroundColor }], { duration: 1000, easing: EASING.standard })
+    .then(() => { q.style.backgroundColor = ''; });
+  const item = device.querySelector(`[data-nav="${n}"]`);
+  const strip = item && item.closest('.nav-scroll');
+  if (strip) strip.scrollTo({ left: item.offsetLeft - strip.clientWidth / 2 + item.offsetWidth / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
+function selectAnswer(device, st, n, value, button) {
+  st.answers[n] = value;
+  button.parentElement.querySelectorAll('button').forEach((b) => {
+    const on = b === button;
+    b.classList.toggle('selected', on);
+    b.setAttribute('aria-checked', String(on));
+  });
+  play(button, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+  haptic(device, 'selection · CLOCK_TICK');
+  refreshNav(device, st);
+}
+
+function toggleFlag(device, st, n) {
+  const button = device.querySelector(`[data-flag="${n}"]`);
+  if (st.flagged.has(n)) st.flagged.delete(n); else st.flagged.add(n);
+  const on = st.flagged.has(n);
+  button.classList.toggle('on', on);
+  button.setAttribute('aria-pressed', String(on));
+  if (on) play(button.querySelector('.ms'), [{ transform: 'rotate(-12deg) scale(1.15)' }, { transform: 'none' }], 'bouncy');
+  refreshNav(device, st);
+}
+
+function showEvidence(device, frame, st, n) {
+  const info = EXPLAIN[n];
+  if (frame === 'phone') setPane(device, st, 'passage');
+  const paragraph = device.querySelector(`[data-para="${info.para}"]`);
+  device.querySelectorAll('mark.evidence').forEach((mark) => mark.replaceWith(...mark.childNodes));
+  paragraph.innerHTML = paragraph.innerHTML.replace(info.evidence, `<mark class="evidence">${info.evidence}</mark>`);
+  const pane = paragraph.closest('.pane');
+  pane.scrollTo({ top: paragraph.offsetTop - 80, behavior: reduceMotion ? 'auto' : 'smooth' });
+  play(paragraph.querySelector('mark.evidence'), [{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.medium, easing: EASING.standard });
+}
+
+function renderTimer(timer, st) {
+  const tone = st.paused ? '' : timerTone(st.seconds);
+  timer.className = `timer ${tone}`;
+  timer.querySelector('.time').textContent = clock(st.seconds);
+  timer.setAttribute('aria-label', st.paused ? `Đã tạm dừng, còn ${clock(st.seconds)}` : `Thời gian còn lại ${clock(st.seconds)}`);
+  const icon = timer.querySelector('.ms');
+  icon.textContent = st.paused ? 'pause' : 'timer';
+  icon.classList.toggle('fill', Boolean(tone));
+}
+
+function startTimer(device, frame, st) {
+  const timer = device.querySelector('.timer');
+  if (!timer) return;
+  const interval = setInterval(() => {
+    if (!device.isConnected) return clearInterval(interval);
+    if (st.paused) return;
+    st.seconds = Math.max(0, st.seconds - 1);
+    renderTimer(timer, st);
+    if (st.seconds === 0) {
+      clearInterval(interval);
+      haptic(device, 'warning · LONG_PRESS');
+      return openTimeUp(device, frame);
+    }
+    if (st.seconds === 300 || st.seconds === 60) {
+      play(timer, [{ transform: 'scale(1)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: DURATION.long * 2, easing: EASING.standard });
+      haptic(device, 'warning · LONG_PRESS');
+      device.querySelectorAll('[data-action="submit"]').forEach((b) => { b.classList.remove('btn-secondary'); b.classList.add('btn-primary'); });
+      const live = document.createElement('span');
+      live.className = 'sr';
+      live.setAttribute('role', 'status');
+      live.textContent = st.seconds === 300 ? 'Còn 5 phút' : 'Còn 1 phút';
+      device.append(live);
+    }
+  }, 1000);
+  intervals.add(interval);
+}
+
+function enableDivider(device) {
+  const divider = device.querySelector('.divider[role="separator"]');
+  if (!divider) return;
+  const left = divider.previousElementSibling;
+  const panes = divider.parentElement;
+  let dragging = false;
+  const setRatio = (ratio) => { left.style.flex = `0 0 ${Math.min(0.7, Math.max(0.3, ratio)) * 100}%`; };
+  divider.addEventListener('pointerdown', (event) => { dragging = true; divider.setPointerCapture(event.pointerId); });
+  divider.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    const rect = panes.getBoundingClientRect();
+    setRatio((event.clientX - rect.left) / rect.width);
+  });
+  divider.addEventListener('pointerup', () => { dragging = false; });
+  divider.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.stopPropagation();
+    const ratio = left.getBoundingClientRect().width / panes.getBoundingClientRect().width;
+    setRatio(ratio + (event.key === 'ArrowRight' ? 0.05 : -0.05));
+  });
+}
+
+function showResult(device, frame) {
+  intervals.forEach(clearInterval);
+  const page = push(device, resultHTML(frame));
+  enter(page);
+}
+
+function openSubmit(device, frame, st) {
+  const close = openSheet(device, frame, submitSheetHTML(st), 'Xác nhận nộp bài');
+  device.querySelector('[data-action="confirm-submit"]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    close();
+    haptic(device, 'impact medium · CONFIRM');
+    showResult(device, frame);
+  });
+}
+
+function openTimeUp(device, frame) {
+  const close = openSheet(device, frame, timeUpSheetHTML(), 'Hết giờ', { dismissible: false });
+  device.querySelector('[data-action="see-result"]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    close();
+    showResult(device, frame);
+  });
+}
+
+function openExit(device, frame, st) {
+  const timer = device.querySelector('.timer');
+  st.paused = true;
+  if (timer) renderTimer(timer, st);
+  openSheet(device, frame, exitSheetHTML(), 'Thoát bài thi', {
+    onClose: () => {
+      st.paused = false;
+      if (timer) renderTimer(timer, st);
+    },
+  });
+  device.querySelector('[data-action="confirm-exit"]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    window.location.href = 'home.html';
+  });
+}
+
+function openExplain(device, frame, st, n) {
+  const close = openSheet(device, frame, explainSheetHTML(st, n), `Giải thích câu ${n}`);
+  const layer = [...device.querySelectorAll('.sheet-layer')].pop();
+  layer.querySelectorAll('[data-save]').forEach((button) => button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const saved = button.classList.toggle('saved');
+    button.querySelector('.ms').textContent = saved ? 'check' : 'add';
+    button.setAttribute('aria-pressed', String(saved));
+    play(button, [{ transform: 'scale(0.96)' }, { transform: 'none' }], 'snappy');
+    haptic(device, 'impact light · SEGMENT_TICK');
+  }));
+  layer.querySelector('[data-action="show-evidence"]').addEventListener('click', (event) => {
+    event.stopPropagation();
+    close();
+    showEvidence(device, frame, st, n);
+  });
+}
+
+function mount(device, frame) {
+  const st = createState(ui.state);
+  deviceState.set(device, st);
+  const seg = device.querySelector('.seg');
+  if (seg) moveIndicator(seg, 0, false);
+  enableDivider(device);
+  device.addEventListener('click', (event) => {
+    const target = event.target.closest('button, [data-nav]');
+    if (!target || !device.contains(target) || target.closest('.sheet-layer')) return;
+    const q = target.closest('.q');
+    if (target.dataset.pane) return setPane(device, st, target.dataset.pane);
+    if (target.dataset.nav) return setCurrent(device, frame, st, Number(target.dataset.nav));
+    if (target.dataset.flag) return toggleFlag(device, st, Number(target.dataset.flag));
+    if (target.dataset.explain) return openExplain(device, frame, st, Number(target.dataset.explain));
+    if (!st.review && target.dataset.answer) return selectAnswer(device, st, Number(q.dataset.q), target.dataset.answer, target);
+    if (!st.review && target.dataset.option) return selectAnswer(device, st, Number(q.dataset.q), target.dataset.option, target);
+    const action = target.dataset.action;
+    if (action === 'submit') openSubmit(device, frame, st);
+    if (action === 'prev' || action === 'next') step(device, frame, st, action === 'next' ? 1 : -1);
+    if (action === 'to-review') { ui.state = 'review'; syncControls(); render(); }
+    if (action === 'exit' && !st.review && device.querySelector('.timer')) return openExit(device, frame, st);
+    if (action === 'exit' || action === 'back') window.location.href = 'home.html';
+    if (action === 'retry') { ui.state = 'loading'; syncControls(); render(); setTimeout(() => { ui.state = 'exam'; syncControls(); render(); }, 1400); }
+  });
+  device.addEventListener('input', (event) => {
+    const input = event.target.closest('[data-gap]');
+    if (!input) return;
+    const n = Number(input.dataset.gap);
+    st.answers[n] = input.value.trim() ? input.value : undefined;
+    const words = wordCount(input.value);
+    input.classList.toggle('over', words > 2);
+    const counter = input.closest('.grow').querySelector('.counter');
+    counter.classList.toggle('over', words > 2);
+    counter.textContent = `${words > 2 ? 'Quá giới hạn · ' : ''}${words}/2 từ`;
+    refreshNav(device, st);
+  });
+  device.addEventListener('focusin', (event) => {
+    const q = event.target.closest('.q');
+    if (q && Number(q.dataset.q) !== st.current) {
+      st.current = Number(q.dataset.q);
+      device.querySelectorAll('.q').forEach((el) => el.classList.toggle('current', el === q));
+      refreshNav(device, st);
+    }
+  });
+  if (['exam', 'warning', 'timeup', 'offline', 'exit'].includes(ui.state)) startTimer(device, frame, st);
+  if (ui.state === 'submit') setTimeout(() => openSubmit(device, frame, st), 300);
+  if (ui.state === 'exit') setTimeout(() => openExit(device, frame, st), 300);
+  if (ui.state === 'review' && frame === 'desktop') setTimeout(() => openExplain(device, frame, st, 16), 500);
+  if (ui.state === 'result') enter(device);
+}
+
+function step(device, frame, st, delta) {
+  const index = PART_QUESTIONS.indexOf(st.current) + delta;
+  if (index >= 0 && index < PART_QUESTIONS.length) setCurrent(device, frame, st, PART_QUESTIONS[index]);
+}
+
+function handleKey(event) {
+  const typing = event.target.closest && event.target.closest('input');
+  document.querySelectorAll('.device.desktop').forEach((device) => {
+    const st = deviceState.get(device);
+    if (!st || device.querySelector('.sheet-layer')) return;
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter' && !st.review) { event.preventDefault(); return openSubmit(device, 'desktop', st); }
+    if (typing) return;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); return step(device, 'desktop', st, event.key === 'ArrowRight' ? 1 : -1); }
+    if (st.review) return;
+    const q = device.querySelector(`.q[data-q="${st.current}"]`);
+    if (!q) return;
+    const key = event.key.toLowerCase();
+    if (event.metaKey || event.ctrlKey) return;
+    if (key === 'm') return toggleFlag(device, st, st.current);
+    const choice = { t: 'TRUE', f: 'FALSE', n: 'NOT GIVEN' }[key] || (key === 'a' || key === 'b' || key === 'c' || key === 'd' ? key.toUpperCase() : null);
+    const button = choice && (q.querySelector(`[data-answer="${choice}"]`) || q.querySelector(`[data-option="${choice}"]`));
+    if (button) selectAnswer(device, st, st.current, choice, button);
+  });
+}
+
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const springCache = new Map();
+function springTiming(name) {
+  if (springCache.has(name)) return springCache.get(name);
+  const [response, damping] = SPRINGS[name];
+  const omega = (2 * Math.PI) / response;
+  const values = [];
+  let x = 0, v = 0, settle = 0;
+  for (let step = 0; step < 3000; step++) {
+    v += (-omega * omega * (x - 1) - 2 * damping * omega * v) / 1000;
+    x += v / 1000;
+    values.push(x);
+    if (Math.abs(x - 1) > 0.001 || Math.abs(v) > 0.01) settle = step + 1;
+  }
+  const count = Math.max(settle, 100);
+  const points = Array.from({ length: 61 }, (_, i) => (i === 0 ? 0 : i === 60 ? 1 : values[Math.round((i / 60) * count) - 1]));
+  const timing = { duration: count, easing: `linear(${points.map((p) => p.toFixed(4)).join(', ')})` };
+  springCache.set(name, timing);
+  return timing;
+}
+
+function play(el, keyframes, motion = 'smooth', options = {}) {
+  if (!el) return Promise.resolve();
+  const { fallback, ...extra } = options;
+  let frames = keyframes, timing = typeof motion === 'string' ? springTiming(motion) : motion;
+  if (reduceMotion) {
+    frames = fallback || keyframes.map(({ transform, ...rest }) => rest);
+    timing = frames.some((f) => 'opacity' in f) ? { duration: DURATION.short, easing: EASING.standard } : { duration: 0 };
+  }
+  const animation = el.animate(frames, { ...timing, fill: 'both', ...extra });
+  return animation.finished.then(() => {
+    if (!el.isConnected) return;
+    try { animation.commitStyles(); } catch (e) { }
+    animation.cancel();
+  }).catch(() => { });
+}
+
+function haptic(device, kind) {
+  if (device.classList.contains('desktop')) return;
+  const log = document.querySelector('.haptic-log');
+  log.innerHTML = `<span class="ms sm">vibration</span> Rung: ${kind}`;
+  log.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION.short });
+  clearTimeout(haptic.timer);
+  haptic.timer = setTimeout(() => { log.textContent = ''; }, 2000);
+}
+
+function localRect(device, el) {
+  const scale = Number(device.dataset.scale);
+  const d = device.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - d.left) / scale, y: (r.top - d.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+
+function enter(root) {
+  root.querySelectorAll('[data-stagger]').forEach((el, i) => {
+    play(el, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], 'smooth', { delay: Math.min(i, 8) * STAGGER });
+  });
+  root.querySelectorAll('.ring .fill').forEach((circle) => {
+    const length = Number(circle.dataset.length);
+    play(circle, [{ strokeDashoffset: length }, { strokeDashoffset: circle.dataset.offset }], 'gentle', { delay: 120 });
+  });
+  root.querySelectorAll('.pbar > i').forEach((bar) => play(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 'gentle', { delay: 120 }));
+  root.querySelectorAll('.roller').forEach(roll);
+}
+
+function roller(text) {
+  const parts = [...String(text)].map((ch) => (/\d/.test(ch)
+    ? `<span class="digit" aria-hidden="true"><span class="digits" data-digit="${ch}">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
+    : `<span aria-hidden="true">${ch}</span>`));
+  return `<span class="roller tnum">${parts.join('')}<span class="sr">${text}</span></span>`;
+}
+
+function roll(el) {
+  el.querySelectorAll('.digits').forEach((col, i) => {
+    const target = `translateY(-${Number(col.dataset.digit) * 1.2}em)`;
+    col.style.transform = target;
+    play(col, [{ transform: 'translateY(0)' }, { transform: target }], 'gentle', { delay: 150 + i * 40 });
+  });
+}
+
+function ring(size, stroke, fraction, tone = '') {
+  const radius = (size - stroke) / 2;
+  const length = 2 * Math.PI * radius;
+  const offset = length * (1 - fraction);
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+    <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"/>
+    <circle class="fill ${tone}" cx="${size / 2}" cy="${size / 2}" r="${radius}" stroke-width="${stroke}"
+      stroke-dasharray="${length}" stroke-dashoffset="${offset}" data-length="${length}" data-offset="${offset}"/></svg>`;
+}
+
+const illustrationSize = (frame) => (frame === 'desktop' ? 160 : 120);
+
+function push(device, html) {
+  const host = device.querySelector('.nav-host');
+  const base = host.querySelector('.layer.base');
+  const page = document.createElement('div');
+  page.className = 'layer page';
+  page.style.zIndex = 10;
+  page.innerHTML = html;
+  const dim = document.createElement('div');
+  dim.className = 'dim';
+  base.append(dim);
+  host.append(page);
+  play(page, [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(base, [{ transform: 'translateX(0)' }, { transform: 'translateX(-30%)' }], 'smooth');
+  play(dim, [{ opacity: 0 }, { opacity: 0.08 }], 'smooth');
+  page.querySelectorAll('[data-action="back"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); pop(page, base, dim, 0); }));
+  enableEdgeSwipe(page, base, dim, host);
+  return page;
+}
+
+function pop(page, base, dim, fromProgress) {
+  const width = page.offsetWidth;
+  const start = fromProgress * width;
+  play(page, [{ transform: `translateX(${start}px)` }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => page.remove());
+  play(base, [{ transform: `translateX(${-0.3 * width * (1 - fromProgress)}px)` }, { transform: 'translateX(0)' }], 'smooth');
+  play(dim, [{ opacity: 0.08 * (1 - fromProgress) }, { opacity: 0 }], 'smooth').then(() => dim.remove());
+}
+
+function enableEdgeSwipe(page, base, dim, host) {
+  let startX = null, lastX = 0, lastT = 0, velocity = 0;
+  const scale = () => Number(host.closest('.device').dataset.scale);
+  page.addEventListener('pointerdown', (event) => {
+    const x = (event.clientX - page.getBoundingClientRect().left) / scale();
+    if (x > 28) return;
+    startX = event.clientX; lastX = event.clientX; lastT = event.timeStamp;
+    page.setPointerCapture(event.pointerId);
+    [page, base, dim].forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+  });
+  page.addEventListener('pointermove', (event) => {
+    if (startX === null) return;
+    const dx = Math.max(0, (event.clientX - startX) / scale());
+    velocity = (event.clientX - lastX) / scale() / Math.max(1, event.timeStamp - lastT);
+    lastX = event.clientX; lastT = event.timeStamp;
+    const progress = dx / page.offsetWidth;
+    page.style.transform = `translateX(${dx}px)`;
+    base.style.transform = `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)`;
+    dim.style.opacity = 0.08 * (1 - progress);
+  });
+  page.addEventListener('pointerup', (event) => {
+    if (startX === null) return;
+    const progress = Math.max(0, (event.clientX - startX) / scale()) / page.offsetWidth;
+    startX = null;
+    if (progress > 0.35 || velocity > 0.5) return pop(page, base, dim, progress);
+    play(page, [{ transform: `translateX(${progress * page.offsetWidth}px)` }, { transform: 'translateX(0)' }], 'smooth');
+    play(base, [{ transform: `translateX(${-0.3 * page.offsetWidth * (1 - progress)}px)` }, { transform: 'translateX(-30%)' }], 'smooth');
+    dim.style.opacity = 0.08;
+  });
+}
+
+function morphTarget(device, frame) {
+  return frame === 'phone' ? { x: 0, y: 0, w: 390, h: 844, r: 54 } : { x: 0, y: 38, w: 1280, h: 762, r: 0 };
+}
+
+function clipFor(from, to, radius) {
+  return `inset(${from.y - to.y}px ${to.x + to.w - from.x - from.w}px ${to.y + to.h - from.y - from.h}px ${from.x - to.x}px round ${radius}px)`;
+}
+
+function openSheet(device, frame, html, label, { dismissible = true, onClose = () => { } } = {}) {
+  const opener = document.activeElement;
+  const layer = document.createElement('div');
+  layer.className = 'sheet-layer';
+  layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${label}">${html}</div>`;
+  device.append(layer);
+  const sheet = layer.querySelector('.sheet'), scrim = layer.querySelector('.scrim');
+  const phone = frame === 'phone';
+  play(scrim, [{ opacity: 0 }, { opacity: 1 }], 'smooth');
+  play(sheet, phone ? [{ transform: 'translateY(100%)' }, { transform: 'none' }] : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const initial = sheet.querySelector('[data-autofocus]') || sheet.querySelector('h2');
+  if (!initial.matches('button')) initial.setAttribute('tabindex', '-1');
+  initial.focus({ preventScroll: true });
+  const close = (fromY = 0) => {
+    onClose();
+    play(scrim, [{ opacity: Math.max(0, 1 - fromY / sheet.offsetHeight) }, { opacity: 0 }], 'smooth');
+    play(sheet, phone ? [{ transform: `translateY(${fromY}px)` }, { transform: 'translateY(100%)' }] : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      layer.remove();
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+    });
+  };
+  layer.addEventListener('keydown', (event) => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && dismissible) return close();
+    if (event.key !== 'Tab') return;
+    const focusable = [...sheet.querySelectorAll('button, input, [tabindex="0"]')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  if (dismissible) scrim.addEventListener('click', () => close());
+  sheet.querySelectorAll('[data-action="close-sheet"]').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); close(); }));
+  if (!phone || !dismissible) return close;
+  let startY = null, lastY = 0, lastT = 0, velocity = 0;
+  const scale = Number(device.dataset.scale);
+  sheet.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button')) return;
+    startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
+    sheet.setPointerCapture(event.pointerId);
+    sheet.getAnimations().forEach((a) => a.cancel());
+  });
+  sheet.addEventListener('pointermove', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    velocity = (event.clientY - lastY) / scale / Math.max(1, event.timeStamp - lastT);
+    lastY = event.clientY; lastT = event.timeStamp;
+    sheet.style.transform = `translateY(${dy}px)`;
+    scrim.style.opacity = 1 - dy / sheet.offsetHeight;
+  });
+  sheet.addEventListener('pointerup', (event) => {
+    if (startY === null) return;
+    const dy = Math.max(0, (event.clientY - startY) / scale);
+    startY = null;
+    if (dy > sheet.offsetHeight * 0.3 || velocity > 0.6) return close(dy);
+    play(sheet, [{ transform: `translateY(${dy}px)` }, { transform: 'none' }], 'smooth');
+    play(scrim, [{ opacity: 1 - dy / sheet.offsetHeight }, { opacity: 1 }], 'smooth');
+  });
+  return close;
+}
+
+const FRAME_NAMES = { phone: 'Điện thoại 390 × 844', desktop: 'Máy tính 1280 × 800' };
+const THEME_NAMES = { light: 'Sáng', dark: 'Tối' };
+
+function fit(scaler, device, frame) {
+  const width = frame === 'phone' ? 390 : 1280, height = frame === 'phone' ? 844 : 800;
+  const scale = Math.min(1, (window.innerWidth - 64) / width);
+  scaler.style.width = `${width * scale}px`;
+  scaler.style.height = `${height * scale}px`;
+  device.style.transform = `scale(${scale})`;
+  device.dataset.scale = scale;
+}
+
+function render() {
+  const stage = document.getElementById('stage');
+  const themes = ui.theme === 'both' ? ['light', 'dark'] : [ui.theme];
+  const frames = ui.frame === 'both' ? ['phone', 'desktop'] : [ui.frame];
+  intervals.forEach(clearInterval);
+  intervals.clear();
+  stage.innerHTML = '';
+  for (const frame of frames) {
+    for (const theme of themes) {
+      const cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.innerHTML = `<div class="cell-label">${FRAME_NAMES[frame]} · ${THEME_NAMES[theme]}</div><div class="scaler"><div class="device ${frame} ${theme}${reduceMotion ? ' reduce' : ''}">${screen(frame, ui.state)}</div></div>`;
+      stage.append(cell);
+      const device = cell.querySelector('.device');
+      fit(cell.querySelector('.scaler'), device, frame);
+      mount(device, frame);
+    }
+  }
+}
+
+function syncControls() {
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', String(ui[group.dataset.control] === button.dataset.value)));
+  });
+}
+
+function setupControls() {
+  const stateGroup = document.querySelector('[data-control="state"]');
+  stateGroup.insertAdjacentHTML('beforeend', STATES.map(([value, label]) => `<button data-value="${value}">${label}</button>`).join(''));
+  document.querySelectorAll('.tb-group[data-control]').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      ui[group.dataset.control] = button.dataset.value;
+      syncControls();
+      render();
+    });
+  });
+  const reduce = document.getElementById('reduce');
+  reduce.checked = reduceMotion;
+  reduce.addEventListener('change', () => { reduceMotion = reduce.checked; render(); });
+  document.getElementById('replay').addEventListener('click', render);
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 200); });
+  window.addEventListener('keydown', handleKey);
+  syncControls();
+}
+
+setupControls();
+document.fonts.ready.then(render);
+</script>
+</body>
+</html>

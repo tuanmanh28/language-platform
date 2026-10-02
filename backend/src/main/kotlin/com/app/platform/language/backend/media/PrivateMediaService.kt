@@ -1,4 +1,4 @@
-package com.app.platform.language.backend.audio
+package com.app.platform.language.backend.media
 
 import com.app.platform.language.backend.auth.AuthIdentity
 import com.app.platform.language.backend.content.ContentAccessPolicy
@@ -12,19 +12,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.file.Path
 
-class AudioService(
-  private val storage: LocalAudioStorage,
+class PrivateMediaService(
+  private val storage: LocalMediaStorage,
   private val access: ContentAccessPolicy,
 ) {
-  // Every file under CONTENT_DIR/audio belongs to private content, so only owners may stream it.
-  suspend fun audioFile(
+  // Every media file under CONTENT_DIR belongs to private content, so only owners may load it.
+  suspend fun file(
     viewer: AuthIdentity?,
-    testId: String,
+    contentId: String,
     fileName: String,
-  ): Result<Path, AudioError> {
-    if (!access.isOwner(viewer)) return Err(AudioError.NotFound)
-    return runSuspendCatching { withContext(Dispatchers.IO) { storage.file(testId, fileName) } }
-      .mapError(AudioError::Unexpected)
-      .andThen { file -> file.toResultOr { AudioError.NotFound } }
+  ): Result<Path, MediaError> {
+    if (!access.isOwner(viewer)) return Err(MediaError.NotFound)
+    return runSuspendCatching { withContext(Dispatchers.IO) { storage.file(contentId, fileName) } }
+      .mapError(MediaError::Unexpected)
+      .andThen { file -> file.toResultOr { MediaError.NotFound } }
   }
 }

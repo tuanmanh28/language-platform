@@ -10,6 +10,7 @@ import com.app.platform.language.backend.fake.FakeDatabaseHealth
 import com.app.platform.language.backend.fake.FakeListeningContentStore
 import com.app.platform.language.backend.fake.FakeTokenVerifier
 import com.app.platform.language.backend.fake.FakeUserStore
+import com.app.platform.language.backend.fake.FakeWritingSubmissionStore
 import com.app.platform.language.backend.listening.StoredListeningTest
 import com.app.platform.language.backend.module
 import com.app.platform.language.backend.reading.StoredReadingTest
@@ -84,6 +85,7 @@ class PrivateContentRoutesTest {
         FakeDatabaseHealth(),
         FakeUserStore(),
         FakeAttemptStore(),
+        FakeWritingSubmissionStore(),
         config,
         contentStore =
           FakeContentStore(
