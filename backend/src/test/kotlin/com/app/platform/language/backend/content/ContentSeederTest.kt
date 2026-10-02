@@ -128,6 +128,7 @@ class ContentSeederTest {
         publicDir,
         ownerReading.copy(id = "public-reading-01"),
         ownerListening.copy(id = "public-listening-01"),
+        ownerWriting.copy(id = "public-writing-01"),
       )
       writeContent(privateDir, ownerReading, ownerListening, prompt)
 
