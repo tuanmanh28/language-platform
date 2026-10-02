@@ -575,6 +575,14 @@ function closeIntensive(device, frame, st) {
   if (!il || st.busy) return;
   st.busy = true;
   const base = device.querySelector('.screen.base');
+  const icon = il.querySelector('.pb .play .ms');
+  if (!icon || icon.textContent !== 'pause') {
+    const existing = device.querySelector('.mini:not(.static)');
+    if (existing) existing.remove();
+    play(base, [{ transform: 'translateX(-30%)' }, { transform: 'none' }], 'smooth').then(() => { base.style.transform = ''; });
+    play(il, [{ transform: 'none' }, { transform: 'translateX(100%)' }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => { il.remove(); st.busy = false; });
+    return;
+  }
   const mini = ensureMini(device, frame);
   mini.style.visibility = 'hidden';
   const done = () => {
@@ -604,6 +612,11 @@ function wireIntensive(device, frame, st, il) {
       play(banner, [{ opacity: 1 }, { opacity: 0 }], { duration: DURATION.short, easing: EASING.standard }).then(() => banner.remove());
       il.querySelectorAll('.sent.evidence').forEach((s) => s.classList.remove('evidence', 'looped'));
       il.querySelectorAll('.bracket').forEach((b) => b.remove());
+      il.querySelectorAll('.pb .chip.on').forEach((chip) => {
+        if (chip.textContent.includes('Lặp')) chip.remove();
+        else { chip.classList.remove('on'); chip.textContent = '1×'; }
+      });
+      il.querySelectorAll('.pb .icon-btn.selected').forEach((b) => { b.classList.remove('selected'); b.querySelector('.ms').textContent = 'repeat'; });
       return;
     }
     if (action === 'toggle' || button.classList.contains('play')) return togglePlay(device, st, button);
