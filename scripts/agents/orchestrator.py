@@ -62,6 +62,8 @@ DISALLOWED_TOOLS = [
 ]
 
 LOCAL_FILES = ["local.properties", "app-android/google-services.json"]
+# Headless claude kills background subagents after 10 minutes, before the agent can commit their work.
+AGENT_ENV = {**os.environ, "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0"}
 
 AUTO_RETRIES = 1
 LIMIT_WAIT_SECONDS = 30 * 60
@@ -208,7 +210,7 @@ class Orchestrator:
 
         log = self.logs_dir / f"{task_id}.jsonl"
         with open(log, "a" if extra else "w") as fh:
-            proc = subprocess.Popen(cmd, cwd=wt, stdout=fh, stderr=subprocess.STDOUT,
+            proc = subprocess.Popen(cmd, cwd=wt, stdout=fh, stderr=subprocess.STDOUT, env=AGENT_ENV,
                                     stdin=subprocess.DEVNULL, start_new_session=True)
         e.pop("not_before", None)
         e.update(status="running", pid=proc.pid, branch=br, worktree=str(wt), log=str(log),
