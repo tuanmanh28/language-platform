@@ -336,14 +336,15 @@ Components: `LpLargeTitleBar`, `LpIconButton`, `LpStreakBadge`, `LpBanner`, `LpC
 | New day, nothing in progress | Plan hero "Bắt đầu" | "Bắt đầu kế hoạch hôm nay" / "3 việc · 20 phút" / "Bắt đầu" |
 | Plan done | Calm done hero with small illustration (sunrise), every row ✓, ring advanced by one | "Xong kế hoạch hôm nay" / "Bạn đã học 22 phút. Hẹn bạn ngày mai nhé." / "Học thêm" |
 | Goal reached | Ring full in `tertiary` with ✓, one-time success haptic | "Đạt mục tiêu tuần!" / "5/5 buổi · tuần sau giữ nhịp này nhé" |
-| Welcome back (≥ 2 days missed) | Hero says hello, plan shortened to 10 minutes; streak pill shows the new count without warning colour | "Chào bạn quay lại" / "Làm 5 phút để lấy lại nhịp nhé." / "Bắt đầu 5 phút" |
+| Welcome back (≥ 2 days missed) | Hero says hello, plan shortened to 5 minutes (due cards + quick dictation); streak pill turns neutral (outlined flame, no number, no warning colour) | "Chào bạn quay lại" / "Làm 5 phút để lấy lại nhịp nhé." / "Bắt đầu 5 phút" |
 | New learner (no attempts) | Empty state with book illustration; goal card only if onboarding set a goal | "Chào bạn!" / "Làm một bài Reading 20 phút để biết bạn đang ở đâu. Kế hoạch hằng ngày sẽ dựa trên kết quả này." / "Làm bài đầu tiên" · "Xem các bộ đề" |
 | Loading (> 300 ms) | Skeletons in the shape of hero, plan rows and ring | screen reader: "Đang tải kế hoạch hôm nay" |
-| Error | Error state replaces content; bars stay | "Chưa tải được kế hoạch hôm nay" / "Kiểm tra kết nối rồi thử lại nhé." / "Thử lại" |
+| Error (local data unreadable) | Error state replaces content; bars stay | "Chưa mở được kế hoạch hôm nay" / "Có lỗi khi đọc dữ liệu trên máy. Thử lại nhé." / "Thử lại" |
+| Error (first sync, no cache) | Same layout | "Chưa tải được kế hoạch hôm nay" / "Kiểm tra kết nối rồi thử lại nhé." / "Thử lại" |
 | Offline | Cached content + banner; items that need the network (none on home) would show "Cần có mạng" | "Đang ngoại tuyến · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng." |
 
-The plan, ring and streak are computed on the device from local data, so home works offline; the error state only
-appears if the local database cannot be read (rare) or on first sync with no cache.
+The plan, ring and streak are computed on the device from local data, so home works offline; the error states only
+appear if the local database cannot be read (rare) or on the first sync of a new device with no cache.
 
 Accessibility: hero is one card with a single button; the card's text is read before the button ("Đang làm, Cambridge 18
 Test 2, câu 18 trên 40, còn 34 phút. Làm tiếp, nút"). Plan rows are single focusable elements with title, subtitle and
@@ -394,12 +395,22 @@ hints, scoring) is DS-04's; this spec defines the entry and container.
 | Ready | "Nghe chép nhanh", "Câu 1/3", "Chạm để nghe" |
 | Playing | play icon → pause, waveform progress (DS-04) |
 | Checked | Word-level feedback (DS-04) + "Câu tiếp" |
-| Done | "Xong 3 câu!" / "92% từ đúng · 1 từ cần ôn: *deteriorate*" / "Lưu từ" · "Xong" |
+| Done | "Xong 3 câu!" / "92% từ đúng · 1 từ cần ôn: *exhibition*" / "Lưu từ" · "Xong" |
 | Offline, audio not downloaded | "Câu này chưa được tải về máy. Kết nối mạng để nghe nhé." / "Đóng" |
 | Error | "Chưa phát được âm thanh" / "Thử lại" |
+| Closed midway | The row subtitle becomes "Đang làm · 1/3 câu"; reopening continues at the next sentence |
 
-Closing midway keeps progress ("Câu 2/3" shown on the row: "Đang làm · 1/3 câu"). Accessibility: focus starts on the
-play button; feedback is announced per word count ("Đúng 11 trên 12 từ"); the sheet title is the dialog name.
+The hint under "Câu 1/3" is "Chạm để nghe" on touch and "Nhấn Space để nghe" with a keyboard. Accessibility: focus
+starts on the play button; feedback is announced per word count ("Đúng 11 trên 12 từ"); wrong or missing words carry a
+wavy underline and a spoken "(sai hoặc thiếu)" besides their colour; the sheet title is the dialog name; Esc and swipe
+down close it.
+
+| Element | Trigger | Animation | Token | Reduce Motion |
+| --- | --- | --- | --- | --- |
+| Open | ▶ | Sheet rises; the row's ▶ moves and scales into the sheet's play button | `spring.smooth` | Fade |
+| Feedback | Kiểm tra | Feedback rises 8 + fades in | `spring.smooth` | Fade |
+| Next sentence | Câu tiếp | Content fades out 90, next sentence slides in 24 from the trailing edge with fade; step dots fill | `spring.smooth` | Cross-fade |
+| Summary | After sentence 3 | Summary replaces the content like a sentence change; check badge pops; `success` haptic | `spring.bouncy` | Static check |
 
 ### 5.4 Streak sheet
 
@@ -411,8 +422,14 @@ Opened from the streak pill (phone, tablet rail) or the sidebar streak row (desk
   chuỗi vẫn được giữ."
 - "Xem lịch học" text button → Tiến độ, scrolled to the streak calendar; "Đã hiểu" primary.
 
-States: active today ("Hôm nay bạn đã học 14 phút"), not yet today ("Học 5 phút hôm nay để lên 13 ngày"), rest day used
-("Tuần này bạn đã dùng ngày nghỉ"), no streak ("Bắt đầu chuỗi mới hôm nay nhé."). Never a "lost" message.
+States: active today ("Hôm nay bạn đã học 22 phút."), not yet today ("Học 5 phút hôm nay để lên 13 ngày."), rest day
+used (extra line "Tuần này bạn đã dùng ngày nghỉ."), no streak ("Bắt đầu chuỗi mới hôm nay nhé."; the pill is the
+neutral `LpStreakBadge` "none" state). Never a "lost" message.
+
+Accessibility: the dialog is named "Chuỗi ngày" and focus moves to "Đã hiểu"; the week row is one element ("Tuần này: đã
+học thứ Hai, thứ Ba, thứ Năm; thứ Tư nghỉ"); the rest day is marked by a moon icon besides its outline; Esc, scrim tap,
+Android back and swipe down close it and focus returns to the streak pill. Motion: `LpSheet` (phone sheet / desktop
+dialog, `spring.smooth`, fade under Reduce Motion); no extra animation inside.
 
 ### 5.5 Onboarding
 
@@ -440,7 +457,7 @@ disabled until a choice is made (steps 1–3); step 4 has two actions.
 | Phone | Full screen, title `title1` top-left under the bar, controls below, primary button pinned above the home indicator. |
 | Tablet / desktop | No navigation suite; a centred column 560 wide on `surface`, illustration 160; primary button inline under the controls (not pinned). |
 
-Components: `LpTopBar` (back + skip), `LpProgressBar` (segmented variant, new), `LpChoiceChip` (`LpAnswerChip` style,
+Components: `LpTopBar` (new: back + trailing action, §8.2), `LpProgressBar` (segmented variant, new), `LpChoiceChip` (`LpAnswerChip` style,
 radio semantics), `LpOptionRow`, `LpChoiceCard` (new), `LpPrimaryButton`, `LpTextButton`, `LpListRow`, `LpSheet`
 (sign-in), platform date/time pickers.
 
@@ -486,8 +503,10 @@ Content (phone order):
    minutes, total "2 giờ 20 phút tuần này · trung bình 20 phút/ngày".
 5. **Độ chính xác theo dạng câu hỏi**: inset list sorted weakest first; each row: type name, accuracy % (tabular), mini
    bar, trend arrow + delta; tap → question type detail (§5.7).
-6. **Chuỗi ngày**: month calendar (`LpStreakCalendar`), studied days filled `tertiary` (intensity by minutes in two steps),
-   rest days outlined with the moon, today ringed; "Chuỗi 12 ngày · kỷ lục 21 ngày".
+6. **Chuỗi ngày**: five-week calendar (`LpStreakCalendar`). Days without study have no fill (number only); studied days
+   are filled **and** marked with dots so they never rely on colour: under 30 minutes `tertiaryContainer` + one dot,
+   30 minutes or more `tertiary` + two dots; rest days are outlined with a moon; future days are dimmed; today is
+   ringed; legend below; "Chuỗi 12 ngày · kỷ lục 21 ngày".
 7. **Lịch sử bài làm**: last five attempts (test name, date, band/score) → result screen (DS-03); "Xem tất cả".
 
 | Size class | Layout |
@@ -535,8 +554,17 @@ Pushed from Hôm nay's plan, Hôm nay's weakest tile, Tiến độ's accuracy li
 - "Câu sai gần đây": rows → review of that question (DS-03).
 - "Bộ câu gợi ý": sets with done state.
 
-States: content, no attempts yet ("Bạn chưa làm câu Matching Headings nào. Bắt đầu với 6 câu nhé."), loading, error,
-offline (sets not downloaded show "Cần có mạng" tag and are disabled). Motion: push/pop; the progress bar fills on enter.
+| State | What the learner sees | Copy |
+| --- | --- | --- |
+| Content | As above | "58% đúng · 31 câu trong 30 ngày" |
+| No attempts yet | Lead without a bar, primary still available | "Bạn chưa làm câu Matching Headings nào. Bắt đầu với 6 câu nhé." |
+| Loading | Skeleton of the title card and two lists | screen reader: "Đang tải Matching Headings" |
+| Error | Error state under the bar | "Chưa tải được dạng bài này" / "Thử lại" |
+| Offline | Cached content; sets not downloaded show the tag and are disabled | Tag "Cần có mạng" |
+
+Accessibility: heading order title (h1) → "Mẹo", "Câu sai gần đây", "Bộ câu gợi ý" (h2); the bar is labelled "Độ chính
+xác 58 phần trăm"; disabled sets announce "Cần có mạng"; back returns focus to the row that opened it. Motion: push/pop
+with parallax (`spring.smooth`); the bar fills on enter (`spring.gentle`). Reduce Motion: cross-fade, bar at its value.
 
 ### 5.8 Tôi and settings
 
@@ -551,7 +579,8 @@ Root (phone):
      thiết bị." · **Đăng nhập** (secondary tonal, not primary — signing in is optional).
    - Signed in: avatar initial, name, email, sync line "Đã đồng bộ · 2 phút trước" with `cloud_done`.
 3. **Mục tiêu**: Band mục tiêu · 7.0; Ngày thi · 12/12 (còn 71 ngày); Mỗi ngày · 20 phút; Số buổi mỗi tuần · 5;
-   Nhắc học · 20:00. Each pushes a detail that reuses the onboarding step control.
+   Nhắc học · 20:00. Each pushes a detail that reuses the onboarding step control (same 5.0–8.5 band grid, same
+   reminder chips); the reminder detail adds an on/off switch and "Chỉ nhắc khi hôm nay bạn chưa học."
 4. **Giao diện**: Giao diện · Theo hệ thống (detail with segmented Sáng/Tối/Theo hệ thống); Cỡ chữ bài đọc · Vừa;
    Giảm chuyển động (inline `LpSwitch`); Rung phản hồi (inline switch, phone only).
 5. **Học tập**: Flashcard (limits/retention, DS-05 detail); Giọng đọc Listening mặc định; Hiện đáp án khi luyện tập.
@@ -574,7 +603,8 @@ Components: `LpAccountCard` (new), `LpListRow` (value, navigation, switch varian
 | Syncing | Spinner + "Đang đồng bộ…" |
 | Sync error | `warning` icon + "Chưa đồng bộ được · Thử lại" (text button), data stays on the device |
 | Offline | `cloud_off` + "Ngoại tuyến · sẽ đồng bộ khi có mạng" |
-| Sign out confirm | Sheet: "Đăng xuất?" / "Dữ liệu đã đồng bộ vẫn an toàn trong tài khoản. Dữ liệu trên máy này sẽ được xoá." / "Đăng xuất" (`error` text) · "Huỷ" (primary, autofocus) |
+| Sign out confirm (all synced) | Sheet: "Đăng xuất?" / "Dữ liệu đã đồng bộ vẫn an toàn trong tài khoản. Dữ liệu trên máy này sẽ được xoá." / "Đăng xuất" (`error` text) · "Huỷ" (primary, autofocus) |
+| Sign out with unsynced changes (sync error, offline) | Sheet with a warning icon; signing out never deletes unsynced work silently | "Còn 3 bài làm chưa đồng bộ" / "Đăng xuất bây giờ sẽ xoá chúng khỏi máy này. Kết nối mạng để đồng bộ trước nhé." / "Đồng bộ rồi đăng xuất" (primary, disabled offline with "Cần có mạng") · "Vẫn đăng xuất" (`error` text) · "Huỷ" (autofocus) |
 | Setting saved | Value updates in place; no toast (the control shows it) |
 
 Accessibility: switches are rows with `role=switch` ("Giảm chuyển động, tắt"); value rows read "Band mục tiêu, 7.0, mở";
@@ -753,7 +783,7 @@ No colour, type, radius, spacing or motion token changes beyond DS-01. Add to `l
 | `layout.settingsListWidth` | 320px | Tôi two-pane list |
 | `layout.onboardingMaxWidth` | 560px | Onboarding column on tablet/desktop |
 | `layout.paletteWidth` | 640px | Search palette |
-| `size.tabBar` | 84px (incl. 34 home indicator on iOS; Android uses 50 + gesture inset) | Bottom bar |
+| `size.tabBar` | 84px on iOS (50 + 34 home indicator); 80px + gesture inset on Android (Material 3 bar) | Bottom bar |
 | `size.railIndicator` | 56 × 32px (`size.railIndicatorWidth`, `size.railIndicatorHeight`) | Rail selected pill |
 | `size.badge` | 18px min, `caption2` | Tab badge |
 | `size.chart.compact` / `size.chart.expanded` | 160px / 200px | Chart height |
@@ -788,6 +818,10 @@ New:
 | `LpBarChart` | Bars with goal line, focusable bars | content, empty days |
 | `LpStreakCalendar` | Month grid of study days | studied (2 intensities), rest day, today, future |
 | `LpAvatar` | Initial or generic person | initial, generic |
+| `LpTopBar` | Compact bar for pushed screens and flows: back (label or icon), centred title, one trailing action; the collapsed form of `LpLargeTitleBar` | default, with trailing action, translucent (scrolled) |
+
+`LpStreakBadge` gains a **none** state (neutral `surfaceContainerHigh` pill, outlined flame, no number, 48 min width)
+for "no current streak".
 
 ## 9. Accessibility checklist
 
@@ -818,4 +852,8 @@ New:
   platforms; macOS may later map it to a `Settings` scene.
 - iPad has no rail: the medium Android rail corresponds to the iPadOS adaptable tab bar.
 - Exam countdown appears only when an exam date is set and is phrased as information, never as pressure.
+- **Home order changes from DS-01 §7.1:** the plan now sits above the weekly goal, because the order on Hôm nay is the
+  priority (act first, then see progress). Accuracy bars use `primary` everywhere; `tertiary` stays reserved for streak,
+  celebration and the weekly ring.
+- **Signing out never silently deletes unsynced work** (§5.8): with pending changes the sheet offers to sync first.
 - Sample dates in the mockups use Friday 2 October 2026 with an exam on 12 December 2026 (71 days).

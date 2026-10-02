@@ -272,7 +272,7 @@ button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transpar
   background: var(--tertiary-container); color: var(--on-tertiary-container); font-weight: 700; font-size: 15px; position: relative; margin: 6px 0; }
 .streak::before { content: ''; position: absolute; inset: -6px 0; }
 .streak .ms { color: var(--tertiary); font-size: 20px; }
-.streak.none { background: var(--surface-high); color: var(--on-surface-variant); padding: 0 8px; }
+.streak.none { background: var(--surface-high); color: var(--on-surface-variant); padding: 0; min-width: 48px; justify-content: center; }
 .streak.none .ms { color: var(--on-surface-variant); }
 .hero { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
 .hero-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
@@ -289,14 +289,14 @@ button.row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transpar
 .week span { width: 26px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--on-surface-variant); }
 .week i { width: 12px; height: 12px; border-radius: 999px; background: var(--surface-high); display: grid; place-items: center; }
 .week i.on { background: var(--tertiary); }
-.week i.rest { background: none; box-shadow: inset 0 0 0 1.5px var(--outline); }
-.week i.rest::after { content: 'bedtime'; font-family: 'Material Symbols Rounded'; font-size: 9px; color: var(--on-surface-variant); }
+.week i.rest { width: 16px; height: 16px; margin: -2px 0; background: none; box-shadow: inset 0 0 0 1.5px var(--outline); }
+.week i.rest::after { content: 'bedtime'; font-family: 'Material Symbols Rounded'; font-size: 12px; line-height: 1; color: var(--on-surface-variant); }
+.sheet .week i.rest::after { font-size: 18px; }
 .week .today { color: var(--on-surface); font-weight: 700; }
 .stat { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
 .stat-row { display: flex; flex-direction: column; gap: 6px; }
 .stat-row .top { display: flex; justify-content: space-between; align-items: baseline; }
 .trend { display: inline-flex; align-items: center; gap: 2px; color: var(--correct); font-weight: 600; }
-.stat .pbar > i { background: var(--tertiary); }
 .two { display: grid; grid-template-columns: 7fr 5fr; gap: 24px; align-items: start; }
 .tablet .two { grid-template-columns: 1fr 1fr; }
 .two .goal { margin-top: 0; }
@@ -348,6 +348,9 @@ mark { background: var(--highlight); color: inherit; border-radius: 4px; padding
 .w-bad { color: var(--wrong); text-decoration: underline wavy; text-underline-offset: 4px; }
 .dict-actions { display: flex; gap: 8px; margin-top: 20px; }
 .dict-actions .btn { flex: 1; }
+.note-error { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 14px; border-radius: 14px; background: var(--wrong-container); color: var(--on-wrong-container); font-size: 15px; line-height: 22px; }
+.note-error .ms { color: var(--wrong); }
+.note-error .btn-text { color: var(--on-wrong-container); }
 .steps { display: flex; gap: 4px; }
 .steps i { width: 24px; height: 4px; border-radius: 999px; background: var(--surface-high); }
 .steps i.on { background: var(--primary); }
@@ -359,6 +362,7 @@ mark { background: var(--highlight); color: inherit; border-radius: 4px; padding
   <div class="tb-group" data-control="theme"><span>Giao diện</span><button data-value="light">Sáng</button><button data-value="dark">Tối</button><button data-value="both">Cả hai</button></div>
   <div class="tb-group" data-control="frame"><span>Khung</span><button data-value="phone">Điện thoại</button><button data-value="tablet">Máy tính bảng</button><button data-value="desktop">Máy tính</button><button data-value="both">Điện thoại + máy tính</button></div>
   <div class="tb-group" data-control="state"><span>Trạng thái</span></div>
+  <label class="tb-toggle"><input type="checkbox" id="audio-error"> Âm thanh lỗi (nghe chép)</label>
   <label class="tb-toggle"><input type="checkbox" id="reduce"> Giảm chuyển động</label>
   <button class="tb-btn" id="replay">Phát lại</button>
   <div class="haptic-log" aria-live="polite"></div>
@@ -566,13 +570,17 @@ function plan(s) {
     <div class="list" data-stagger>${items.map((item, i) => planRow(item, s.done[i])).join('')}</div>`;
 }
 
+function weekLabel(week) {
+  const names = ['thứ Hai', 'thứ Ba', 'thứ Tư', 'thứ Năm', 'thứ Sáu', 'thứ Bảy', 'Chủ nhật'];
+  const studied = week.map((v, i) => (v === 1 || v === 'today-on' ? names[i] : null)).filter(Boolean);
+  const rest = week.map((v, i) => (v === 'rest' ? names[i] : null)).filter(Boolean);
+  return `Tuần này: ${studied.length ? `đã học ${studied.join(', ')}` : 'chưa học ngày nào'}${rest.length ? `; ${rest.join(', ')} nghỉ` : ''}`;
+}
+
 function goalCard(s) {
   const target = 5;
   const reached = s.sessions >= target;
   const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-  const names = ['thứ Hai', 'thứ Ba', 'thứ Tư', 'thứ Năm', 'thứ Sáu', 'thứ Bảy', 'Chủ nhật'];
-  const studied = s.week.map((v, i) => (v === 1 || v === 'today-on' ? names[i] : null)).filter(Boolean);
-  const rest = s.week.map((v, i) => (v === 'rest' ? names[i] : null)).filter(Boolean);
   const center = reached
     ? '<span class="ms fill lg" style="color:var(--tertiary)" data-goal-center>check</span>'
     : `<div data-goal-center><div class="t-title3">${roller(`${s.sessions}/${target}`)}</div><div class="t-caption2 muted">buổi</div></div>`;
@@ -582,7 +590,7 @@ function goalCard(s) {
     <div class="goal-ring">${ring(84, 10, Math.min(1, s.sessions / target), 'tertiary')}<div class="center">${center}</div></div>
     <div class="grow"><h2 class="t-headline">${reached ? 'Đạt mục tiêu tuần!' : 'Mục tiêu tuần'}</h2>
       <p class="t-subheadline muted" data-goal-text>${text}</p>
-      <div class="week" role="img" aria-label="Tuần này: ${studied.length ? `đã học ${studied.join(', ')}` : 'chưa học ngày nào'}${rest.length ? `; ${rest.join(', ')} nghỉ` : ''}">${s.week.map((v, i) => `<span class="${String(v).startsWith('today') ? 'today' : ''}"><i class="${v === 1 || v === 'today-on' ? 'on' : v === 'rest' ? 'rest' : ''}"></i>${labels[i]}</span>`).join('')}</div>
+      <div class="week" role="img" aria-label="${weekLabel(s.week)}">${s.week.map((v, i) => `<span class="${String(v).startsWith('today') ? 'today' : ''}"><i class="${v === 1 || v === 'today-on' ? 'on' : v === 'rest' ? 'rest' : ''}"></i>${labels[i]}</span>`).join('')}</div>
     </div></article>`;
 }
 
@@ -612,8 +620,8 @@ function homeBody(frame, state) {
   if (state === 'loading') return skeleton(frame);
   if (state === 'error') {
     return `<div class="empty" data-stagger style="padding-top:${frame === 'phone' ? 120 : 160}px" role="alert">
-      <div class="error-icon"><span class="ms lg">cloud_off</span></div><h2 class="t-title2">Chưa tải được kế hoạch hôm nay</h2>
-      <p class="t-callout muted">Kiểm tra kết nối rồi thử lại nhé.</p>
+      <div class="error-icon"><span class="ms lg">error</span></div><h2 class="t-title2">Chưa mở được kế hoạch hôm nay</h2>
+      <p class="t-callout muted">Có lỗi khi đọc dữ liệu trên máy. Thử lại nhé.</p>
       <button class="btn btn-primary" data-action="retry"><span class="ms">refresh</span>Thử lại</button></div>`;
   }
   if (state === 'empty') {
@@ -644,7 +652,7 @@ function stubView(key, frame) {
 }
 
 function screen(frame, state) {
-  const due = (SCENARIOS[state] || SCENARIOS.progress).due;
+  const due = SCENARIOS[state] ? SCENARIOS[state].due : 0;
   const badge = (key) => (key === 'vocab' && due ? `<span class="badge" aria-hidden="true">${due}</span>` : '');
   const label = (key, name) => (key === 'vocab' && due ? `${name}, ${due} thẻ đến hạn` : name);
   const s = SCENARIOS[state];
@@ -774,7 +782,7 @@ function typeDetail(frame) {
   return `<div class="topbar solid"><button class="back" data-action="back" aria-label="Quay lại Hôm nay"><span class="ms">chevron_left</span>Hôm nay</button><span class="t-headline bar-title">Matching Headings</span></div>
   <div class="screen" style="padding-top:${top}px"><div class="${frame === 'desktop' ? 'content' : ''}" style="padding:0 ${frame === 'phone' ? 20 : 0}px">
     <article class="card" style="padding:20px;display:flex;flex-direction:column;gap:6px"><h1 class="t-title1">Matching Headings</h1>
-      <p class="t-subheadline muted">58% đúng · 31 câu trong 30 ngày</p><div class="pbar" style="margin:8px 0"><i style="width:58%;background:var(--tertiary)"></i></div>
+      <p class="t-subheadline muted">58% đúng · 31 câu trong 30 ngày</p><div class="pbar" style="margin:8px 0" role="progressbar" aria-label="Độ chính xác 58 phần trăm" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100"><i style="width:58%"></i></div>
       <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}" data-action="finish-drill" style="margin-top:8px;align-self:flex-start"><span class="ms">play_arrow</span>Bắt đầu luyện 12 phút</button></article>
     <div class="section-h"><h2 class="t-title3">Mẹo</h2></div>
     <div class="list"><div class="row"><span class="tile info"><span class="ms">lightbulb</span></span><div class="grow t-subheadline">Đọc câu đầu và câu cuối của đoạn trước, rồi mới xem danh sách heading.</div></div>
@@ -925,13 +933,14 @@ const SENTENCES = [
 ];
 const tokens = (text) => text.toLowerCase().replace(/[^a-z' ]/g, ' ').split(/\s+/).filter(Boolean);
 
-function dictationStep(index) {
+function dictationStep(index, frame) {
+  const hint = frame === 'phone' ? 'Chạm để nghe' : 'Nhấn Space để nghe · ⌘↩ để kiểm tra';
   return `<div class="handle"></div>
     <div class="dict-head"><span class="tile correct" style="width:40px;height:40px;border-radius:12px"><span class="ms">headphones</span></span>
       <div class="grow"><h2 class="t-title2" id="dict-title">Nghe chép nhanh</h2><p class="t-footnote muted">Cambridge 17 · Test 3 · Section 2</p></div>
       <div class="steps" aria-label="Câu ${index + 1} trên 3">${[0, 1, 2].map((i) => `<i class="${i <= index ? 'on' : ''}"></i>`).join('')}</div></div>
     <div class="dict-player"><button class="audio" data-dict="play" aria-label="Nghe câu ${index + 1}" data-autofocus><span class="ms fill">play_arrow</span></button>
-      <div class="grow"><div class="t-label tnum">Câu ${index + 1}/3</div><div class="pbar" style="margin-top:8px"><i data-manual></i></div></div>
+      <div class="grow"><div style="display:flex;justify-content:space-between;gap:8px"><span class="t-label tnum">Câu ${index + 1}/3</span><span class="t-footnote muted" data-hint>${hint}</span></div><div class="pbar" style="margin-top:8px"><i data-manual></i></div></div>
       <button class="speed" data-dict="speed" aria-label="Tốc độ phát">1×</button></div>
     <input class="dict-field" data-dict="field" placeholder="Gõ những gì bạn nghe…" aria-label="Câu bạn nghe được" autocomplete="off" spellcheck="false">
     <div class="dict-feedback" aria-live="polite"></div>
@@ -950,9 +959,25 @@ function openDictation(device, frame, opener) {
   if (ui.state === 'offline') {
     return openSheet(device, frame, `<div class="handle"></div><h2 class="t-title2">Nghe chép nhanh</h2><p class="t-callout muted" style="margin-top:6px">Câu này chưa được tải về máy. Kết nối mạng để nghe nhé.</p><button class="btn btn-primary btn-block" data-action="close-sheet" data-autofocus style="margin-top:24px">Đóng</button>`, 'Nghe chép nhanh');
   }
-  let index = 0, correct = 0, total = 0, finished = false;
-  const close = openSheet(device, frame, dictationStep(0), 'Nghe chép nhanh', { onClose: () => { if (!finished && index > 0) log(`Đã lưu tiến độ: hàng hiện "Đang làm · ${index}/3 câu"`); } });
+  const saved = device.dictation || { index: 0, correct: 0, total: 0 };
+  let { index, correct, total } = saved;
+  let finished = false;
+  const onClose = () => {
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    if (finished || index === 0) return;
+    if (index >= 3) { device.dictation = null; setTimeout(() => completePlan(device, frame, 'dictation'), 300); return; }
+    device.dictation = { index, correct, total };
+    const subtitle = device.querySelector('[data-plan="dictation"] .t-subheadline');
+    if (subtitle) subtitle.textContent = `Đang làm · ${index}/3 câu`;
+    const playInline = device.querySelector('[data-plan="dictation"] .play-inline');
+    if (playInline) playInline.setAttribute('aria-label', `Nghe chép nhanh, đang làm ${index} trên 3 câu. Làm tiếp`);
+  };
+  const close = openSheet(device, frame, dictationStep(index, frame), 'Nghe chép nhanh', { onClose });
   const sheet = device.querySelector('.sheet-layer:last-of-type .sheet');
+  sheet.addEventListener('keydown', (event) => {
+    if (event.key === ' ' && !event.target.closest('input, button:not([data-dict="play"])')) { event.preventDefault(); const p = sheet.querySelector('[data-dict="play"]'); if (p) p.click(); }
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { event.preventDefault(); const c = sheet.querySelector('[data-dict="check"]:not([disabled]), [data-dict="next"]'); if (c) c.click(); }
+  });
   const playButton = sheet.querySelector('[data-dict="play"]');
   if (opener && !reduceMotion) {
     const from = localRect(device, opener), to = localRect(device, playButton);
@@ -962,7 +987,7 @@ function openDictation(device, frame, opener) {
     const field = sheet.querySelector('[data-dict="field"]');
     const check = sheet.querySelector('[data-dict="check"]');
     if (field) field.addEventListener('input', () => { check.disabled = !field.value.trim(); });
-    if (field) field.addEventListener('keydown', (event) => { if (event.key === 'Enter' && field.value.trim()) check.click(); });
+    if (field) field.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.metaKey && !event.ctrlKey && field.value.trim()) check.click(); });
   };
   wire();
   sheet.addEventListener('click', (event) => {
@@ -992,31 +1017,51 @@ function openDictation(device, frame, opener) {
     }
     if (kind === 'next') {
       index += 1;
-      const html = index < 3 ? dictationStep(index) : dictationDone(Math.round((correct / total) * 100));
+      const html = index < 3 ? dictationStep(index, frame) : dictationDone(Math.round((correct / total) * 100));
       play(sheet, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate }).then(() => {
         sheet.innerHTML = html;
         play(sheet, [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
         wire();
         (sheet.querySelector('[data-autofocus]') || sheet).focus();
-        if (index === 3) haptic(device, 'success · CONFIRM');
+        if (index < 3) return;
+        play(sheet.querySelector('.empty .tile'), [{ transform: 'scale(0.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], 'bouncy', { delay: 120, fallback: [{ opacity: 1 }, { opacity: 1 }] });
+        haptic(device, 'success · CONFIRM');
       });
     }
     if (kind === 'save') { button.textContent = 'Đã lưu'; button.disabled = true; }
-    if (kind === 'finish') { finished = true; close(); setTimeout(() => completePlan(device, frame, 'dictation'), 300); }
+    if (kind === 'finish') { finished = true; device.dictation = null; close(); setTimeout(() => completePlan(device, frame, 'dictation'), 300); }
   });
 }
 
 function playSentence(sheet, text) {
   const button = sheet.querySelector('[data-dict="play"]');
   const bar = sheet.querySelector('.dict-player .pbar > i');
+  const feedback = sheet.querySelector('.dict-feedback');
+  if (button.dataset.playing) {
+    bar.getAnimations().forEach((a) => a.pause());
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    delete button.dataset.playing;
+    button.querySelector('.ms').textContent = 'play_arrow';
+    button.setAttribute('aria-label', 'Nghe lại câu này');
+    return;
+  }
+  if (document.getElementById('audio-error').checked) {
+    feedback.innerHTML = '<div class="note-error" role="alert"><span class="ms sm">error</span><span class="grow">Chưa phát được âm thanh</span><button class="btn btn-text" style="height:36px;padding:0 8px" data-dict="play">Thử lại</button></div>';
+    play(feedback.firstElementChild, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 'smooth');
+    return;
+  }
+  if (feedback.querySelector('.note-error')) feedback.innerHTML = '';
   const slow = sheet.querySelector('[data-dict="speed"]').textContent !== '1×';
   const duration = text.split(' ').length * (slow ? 420 : 320);
+  button.dataset.playing = '1';
   button.querySelector('.ms').textContent = 'pause';
   button.setAttribute('aria-label', 'Tạm dừng');
+  bar.getAnimations().forEach((a) => a.cancel());
   bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration, easing: 'linear', fill: 'forwards' }).finished.then(() => {
+    delete button.dataset.playing;
     button.querySelector('.ms').textContent = 'replay';
     button.setAttribute('aria-label', 'Nghe lại');
-  });
+  }).catch(() => { });
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -1031,11 +1076,12 @@ function streakSheet(s) {
   const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   const active = st.week.includes('today-on');
   const text = !st.streak ? 'Bắt đầu chuỗi mới hôm nay nhé.' : active ? 'Hôm nay bạn đã học 22 phút.' : `Học 5 phút hôm nay để lên ${st.streak + 1} ngày.`;
+  const rest = st.week.includes('rest') ? '<p class="t-subheadline muted" style="margin-top:2px">Tuần này bạn đã dùng ngày nghỉ.</p>' : '';
   return `<div class="handle"></div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><span class="tile tertiary" style="width:48px;height:48px;border-radius:14px"><span class="ms fill lg">local_fire_department</span></span>
       <div><h2 class="t-title2">${st.streak ? `Chuỗi ${st.streak} ngày` : 'Chuỗi mới'}</h2><p class="t-subheadline muted">Kỷ lục của bạn: 21 ngày</p></div></div>
-    <p class="t-headline" style="margin-top:8px">${text}</p>
-    <div class="week" style="justify-content:space-between;margin:16px 0 20px" role="img" aria-label="Tuần này">${st.week.map((v, i) => `<span class="${String(v).startsWith('today') ? 'today' : ''}" style="width:40px"><i class="${v === 1 || v === 'today-on' ? 'on' : v === 'rest' ? 'rest' : ''}" style="width:28px;height:28px"></i>${labels[i]}</span>`).join('')}</div>
+    <p class="t-headline" style="margin-top:8px">${text}</p>${rest}
+    <div class="week" style="justify-content:space-between;margin:16px 0 20px" role="img" aria-label="${weekLabel(st.week)}">${st.week.map((v, i) => `<span class="${String(v).startsWith('today') ? 'today' : ''}" style="width:40px"><i class="${v === 1 || v === 'today-on' ? 'on' : v === 'rest' ? 'rest' : ''}" style="width:28px;height:28px"></i>${labels[i]}</span>`).join('')}</div>
     <p class="t-callout muted">Học ít nhất 5 phút mỗi ngày để giữ chuỗi. Lỡ một ngày cũng không sao: mỗi tuần bạn có một ngày nghỉ mà chuỗi vẫn được giữ.</p>
     <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-text" style="flex:1" data-action="see-all">Xem lịch học</button><button class="btn btn-primary" data-action="close-sheet" data-autofocus style="flex:1">Đã hiểu</button></div>`;
 }

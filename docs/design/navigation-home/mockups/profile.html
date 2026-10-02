@@ -181,6 +181,15 @@ label.row { cursor: pointer; }
 .side-search kbd { margin-left: auto; font: inherit; font-size: 12px; padding: 1px 6px; border-radius: 6px; background: var(--card); }
 .side-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--on-surface-variant); width: 100%; text-align: left; }
 .side-item[aria-selected="true"] { background: var(--primary-container); color: var(--on-primary-container); font-weight: 600; }
+.side-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.side-item kbd { margin-left: auto; font: inherit; font-size: 12px; opacity: 0; transition: opacity 100ms; }
+.side-item:hover kbd, .side-item:focus-visible kbd { opacity: 0.7; }
+.tab { position: relative; }
+.badge { position: absolute; top: 0; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 11px; line-height: 18px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+.side-item .badge { position: static; margin-left: auto; }
+.side-item .badge + kbd { margin-left: 8px; }
+.bands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.bands .choice { height: 48px; font-size: 17px; }
 .side-foot { margin-top: auto; }
 .sync-line { display: flex; align-items: center; gap: 8px; padding: 0 12px; color: var(--on-surface-variant); font-size: 13px; line-height: 18px; }
 .sync-line .ms { font-size: 18px; }
@@ -316,6 +325,9 @@ function log(html) {
 }
 
 const DESTINATIONS = [['home', 'Hôm nay', 'wb_sunny'], ['practice', 'Luyện đề', 'menu_book'], ['vocab', 'Từ vựng', 'style'], ['progress', 'Tiến độ', 'monitoring'], ['me', 'Tôi', 'person']];
+const navBadge = (key) => (key === 'vocab' ? '<span class="badge" aria-hidden="true">24</span>' : '');
+const navLabel = (key, name) => (key === 'vocab' ? `${name}, 24 thẻ đến hạn` : name);
+const TIMES = [['7:00', '7:00 sáng'], ['12:30', '12:30 trưa'], ['20:00', '20:00 tối'], ['custom', 'Giờ khác…']];
 const SECTIONS = [['goal', 'Mục tiêu', 'flag', 'primary'], ['reminder', 'Nhắc học', 'notifications', 'tertiary'], ['appearance', 'Giao diện', 'contrast', 'info'], ['study', 'Học tập', 'school', 'correct'], ['data', 'Dữ liệu', 'cloud_download', 'neutral'], ['about', 'Thông tin', 'info', 'neutral']];
 const FONT_SIZES = [['small', 'Nhỏ', 16, 26], ['medium', 'Vừa', 18, 30], ['large', 'Lớn', 21, 34], ['xlarge', 'Rất lớn', 24, 38]];
 
@@ -354,7 +366,7 @@ function rootList(device, account) {
   return `${account === 'offline' ? '<div class="banner" data-stagger role="status"><span class="ms">cloud_off</span><div class="t-subheadline"><strong>Đang ngoại tuyến</strong> · Bài làm vẫn được lưu và sẽ đồng bộ khi có mạng.</div></div>' : ''}
     <div data-stagger>${accountCard(account)}</div>
     <h2 class="t-title3 section-h" style="margin-top:28px" data-stagger>Mục tiêu</h2>
-    <div class="list" data-stagger>${valueRow('goal', 'flag', 'primary', 'Band mục tiêu', s.band)}${valueRow('goal', 'event', 'primary', 'Ngày thi', '12/12 · còn 71 ngày')}${valueRow('goal', 'schedule', 'primary', 'Mỗi ngày', `${s.minutes} phút`)}${valueRow('goal', 'date_range', 'primary', 'Số buổi mỗi tuần', s.sessions)}${valueRow('reminder', 'notifications', 'tertiary', 'Nhắc học', s.reminder ? s.time : 'Tắt')}</div>
+    <div class="list" data-stagger>${valueRow('goal', 'flag', 'primary', 'Band mục tiêu', s.band)}${valueRow('goal', 'event', 'primary', 'Ngày thi', '12/12 · còn 71 ngày')}${valueRow('goal', 'schedule', 'primary', 'Mỗi ngày', `${s.minutes} phút`)}${valueRow('goal', 'date_range', 'primary', 'Số buổi mỗi tuần', s.sessions)}${valueRow('reminder', 'notifications', 'tertiary', 'Nhắc học', s.reminder ? (s.time === 'custom' ? 'Giờ khác' : s.time) : 'Tắt')}</div>
     <h2 class="t-title3 section-h" data-stagger>Giao diện</h2>
     <div class="list" data-stagger>${valueRow('appearance', 'contrast', 'info', 'Giao diện', theme)}${valueRow('appearance', 'text_fields', 'info', 'Cỡ chữ bài đọc', FONT_SIZES.find(([k]) => k === s.font)[1])}${switchRow('reduce', 'animation', 'info', 'Giảm chuyển động', s.reduce)}${switchRow('haptics', 'vibration', 'info', 'Rung phản hồi', s.haptics)}</div>
     <h2 class="t-title3 section-h" data-stagger>Học tập</h2>
@@ -372,7 +384,7 @@ function seg(name, options, current) {
 function detail(device, section) {
   const s = device.settings;
   if (section === 'goal') {
-    return `<h2 class="t-title3 section-h">Band mục tiêu</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Band mục tiêu" data-chips="band">${['5.5', '6.0', '6.5', '7.0', '7.5', '8.0'].map((b) => `<button class="choice" role="radio" aria-checked="${b === s.band}" data-value="${b}">${b}</button>`).join('')}</div></div>
+    return `<h2 class="t-title3 section-h">Band mục tiêu</h2><div class="card box"><div class="bands" role="radiogroup" aria-label="Band mục tiêu" data-chips="band">${['5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5'].map((b) => `<button class="choice" role="radio" aria-checked="${b === s.band}" data-value="${b}">${b}</button>`).join('')}</div></div>
       <h2 class="t-title3 section-h">Lịch học</h2><div class="list plain">
         <button class="row plain"><span class="grow t-headline">Ngày thi</span><span class="value">12/12/2026 · còn 71 ngày</span><span class="ms chev">chevron_right</span></button>
         <div class="row plain"><span class="grow t-headline">Mỗi ngày</span><div class="chips" role="radiogroup" aria-label="Mỗi ngày" data-chips="minutes">${['10', '20', '30', '60'].map((m) => `<button class="choice" role="radio" aria-checked="${m === s.minutes}" data-value="${m}">${m} phút</button>`).join('')}</div></div>
@@ -381,8 +393,7 @@ function detail(device, section) {
   if (section === 'reminder') {
     return `<div class="list plain">${sw('reminder', 'Nhắc học mỗi ngày', s.reminder)}</div>
       <p class="t-footnote muted" style="padding:8px 4px 0">Chỉ nhắc khi hôm nay bạn chưa học. Không có thông báo nào khác.</p>
-      <h2 class="t-title3 section-h">Giờ nhắc</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Giờ nhắc" data-chips="time">${['7:00', '12:30', '20:00', '21:30'].map((t) => `<button class="choice" role="radio" aria-checked="${t === s.time}" data-value="${t}" ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${t}</button>`).join('')}</div></div>
-      <h2 class="t-title3 section-h">Ngày nhắc</h2><div class="card box"><div class="chips">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d, i) => `<button class="choice" role="checkbox" aria-checked="${i < 6}" data-toggle ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${d}</button>`).join('')}</div></div>`;
+      <h2 class="t-title3 section-h">Giờ nhắc</h2><div class="card box"><div class="chips" role="radiogroup" aria-label="Giờ nhắc" data-chips="time">${TIMES.map(([v, t]) => `<button class="choice" role="radio" aria-checked="${v === s.time}" data-value="${v}" ${s.reminder ? '' : 'disabled style="opacity:0.38"'}>${t}</button>`).join('')}</div></div>`;
   }
   if (section === 'appearance') {
     const size = FONT_SIZES.find(([k]) => k === s.font);
@@ -414,11 +425,11 @@ function screen(frame, device) {
     return `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${device.account === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>
       <div class="nav-host"><div class="layer base"><div class="topbar"><span class="t-headline bar-title">Tôi</span></div>
         <div class="screen"><div class="lt" data-stagger><h1 class="t-large-title">Tôi</h1><button class="icon-btn" aria-label="Tìm kiếm"><span class="ms">search</span></button></div><div class="pad" data-root>${rootList(device, device.account)}</div></div></div></div>
-      <nav class="tabbar" role="tablist" aria-label="Điều hướng chính">${DESTINATIONS.map(([k, n, i]) => `<button class="tab" role="tab" aria-selected="${k === 'me'}"><span class="ms">${i}</span>${n}</button>`).join('')}</nav><div class="home-ind"></div>`;
+      <nav class="tabbar" role="tablist" aria-label="Điều hướng chính">${DESTINATIONS.map(([k, n, i]) => `<button class="tab" role="tab" aria-selected="${k === 'me'}" aria-label="${navLabel(k, n)}"><span class="ms">${i}</span>${n}${navBadge(k)}</button>`).join('')}</nav><div class="home-ind"></div>`;
   }
   return `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS</span></div><div class="win-body"><nav class="sidebar" aria-label="Điều hướng chính">
     <div class="brand"><span class="brand-mark">L</span><span class="t-headline">Luyện IELTS</span></div><button class="side-search"><span class="ms sm">search</span>Tìm kiếm<kbd>⌘K</kbd></button>
-    <div role="tablist">${DESTINATIONS.map(([k, n, i]) => `<button class="side-item" role="tab" aria-selected="${k === 'me'}"><span class="ms">${i}</span>${n}</button>`).join('')}</div>
+    <div role="tablist">${DESTINATIONS.map(([k, n, i], index) => `<button class="side-item" role="tab" aria-selected="${k === 'me'}" aria-label="${navLabel(k, n)}" aria-keyshortcuts="Meta+${index + 1}"><span class="ms">${i}</span>${n}${navBadge(k)}<kbd>⌘${index + 1}</kbd></button>`).join('')}</div>
     <div class="side-foot"><div class="sync-line" data-side-sync>${sideSync(device.account)}</div></div></nav>
     <div class="main"><div class="settings"><div class="set-list"><h1 class="t-large-title" style="margin-bottom:16px">Tôi</h1><div data-account-host>${accountCard(device.account)}</div>
       <div class="set-nav" role="listbox" aria-label="Cài đặt"><span class="set-ind"></span>${SECTIONS.map(([k, n, i, tone]) => `<button class="row" role="option" aria-selected="${k === device.section}" data-section="${k}"><span class="tile ${tone}"><span class="ms">${i}</span></span><span class="grow t-headline">${n}</span></button>`).join('')}
@@ -613,12 +624,35 @@ function signIn(device, frame) {
 }
 
 function signOut(device, frame) {
+  if (device.account === 'syncError' || device.account === 'offline') return signOutUnsynced(device, frame);
   const { sheet, close } = openSheet(device, frame, `<div class="handle"></div><h2 class="t-title2">Đăng xuất?</h2>
     <p class="t-callout muted" style="margin-top:6px">Dữ liệu đã đồng bộ vẫn an toàn trong tài khoản. Dữ liệu trên máy này sẽ được xoá.</p>
     <div style="display:flex;gap:8px;margin-top:24px"><button class="btn btn-text btn-danger" data-confirm style="flex:1">Đăng xuất</button><button class="btn btn-primary" data-cancel data-autofocus style="flex:1">Huỷ</button></div>`, 'Đăng xuất');
   sheet.addEventListener('click', (event) => {
     if (event.target.closest('[data-cancel]')) return close();
     if (event.target.closest('[data-confirm]')) close().then(() => setAccount(device, frame, 'signedOut'));
+  });
+}
+
+function signOutUnsynced(device, frame) {
+  const offline = device.account === 'offline';
+  const { sheet, close } = openSheet(device, frame, `<div class="handle"></div>
+    <div style="display:flex;gap:12px;align-items:center"><span class="tile" style="width:44px;height:44px;border-radius:12px;background:var(--warning-container);color:var(--on-warning-container)"><span class="ms fill">warning</span></span><h2 class="t-title2">Còn 3 bài làm chưa đồng bộ</h2></div>
+    <p class="t-callout muted" style="margin-top:10px">Đăng xuất bây giờ sẽ xoá chúng khỏi máy này. Kết nối mạng để đồng bộ trước nhé.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">
+      <button class="btn btn-primary btn-block" data-sync-first ${offline ? 'disabled aria-describedby="need-net"' : ''}>Đồng bộ rồi đăng xuất</button>
+      ${offline ? '<p class="t-footnote muted" id="need-net" style="text-align:center">Cần có mạng</p>' : ''}
+      <button class="btn btn-text btn-danger btn-block" data-confirm>Vẫn đăng xuất</button>
+      <button class="btn btn-text btn-block" data-cancel data-autofocus>Huỷ</button></div>`, 'Đăng xuất');
+  sheet.addEventListener('click', (event) => {
+    if (event.target.closest('[data-cancel]')) return close();
+    if (event.target.closest('[data-confirm]')) return close().then(() => setAccount(device, frame, 'signedOut'));
+    const sync = event.target.closest('[data-sync-first]');
+    if (sync) {
+      sync.innerHTML = '<span class="spinner" aria-hidden="true"></span>Đang đồng bộ…';
+      sync.disabled = true;
+      setTimeout(() => close().then(() => { setAccount(device, frame, 'signedOut'); snackbar(device, 'Đã đồng bộ 3 bài làm và đăng xuất'); }), 1500);
+    }
   });
 }
 
@@ -710,8 +744,6 @@ function mount(device, frame, theme) {
       haptic(device, 'selection · CLOCK_TICK');
       return;
     }
-    const toggle = target.closest('[data-toggle]');
-    if (toggle) { toggle.setAttribute('aria-checked', String(toggle.getAttribute('aria-checked') !== 'true')); return; }
     const step = target.closest('[data-step]');
     if (step) {
       s.sessions = Math.max(1, Math.min(7, s.sessions + Number(step.dataset.step)));
@@ -729,7 +761,7 @@ function mount(device, frame, theme) {
     haptic(device, 'selection · CLOCK_TICK');
     if (key === 'reminder') {
       const pane = input.closest('[data-detail]');
-      if (pane) pane.querySelectorAll('[data-chips="time"] button, [data-toggle]').forEach((b) => { b.disabled = !input.checked; b.style.opacity = input.checked ? '' : '0.38'; });
+      if (pane) pane.querySelectorAll('[data-chips="time"] button').forEach((b) => { b.disabled = !input.checked; b.style.opacity = input.checked ? '' : '0.38'; });
     }
   });
 }

@@ -193,7 +193,8 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .welcome .t-large-title { max-width: 320px; }
 .desktop .welcome .t-large-title { max-width: 440px; }
 .ob-foot .signin { text-align: center; padding-top: 4px; }
-.desktop .ob-foot .signin { display: none; }
+.desktop .ob-foot[data-step="welcome"], .desktop .ob-foot[data-step="ready"] { justify-content: center; flex-wrap: wrap; }
+.desktop .ob-foot .signin { flex-basis: 100%; padding-top: 12px; }
 .alert-layer { position: absolute; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(0, 0, 0, 0.3); }
 .alert { width: 270px; border-radius: 14px; background: var(--alert); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); text-align: center; overflow: hidden; }
 .alert .body { padding: 18px 16px 14px; display: flex; flex-direction: column; gap: 4px; }
@@ -455,6 +456,7 @@ function mount(device, frame) {
       topEl.innerHTML = top(model.step);
       bodyEl.innerHTML = body(model.step, model.data, frame);
       footEl.innerHTML = foot(model.step, model.data, frame);
+      footEl.dataset.step = model.step;
       bodyEl.scrollTop = 0;
     };
     if (!direction) { swap(); afterPaint(device, model, 0); return; }

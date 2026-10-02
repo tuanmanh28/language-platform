@@ -323,7 +323,14 @@ button.row:active { background: color-mix(in srgb, var(--on-surface) 12%, transp
 .r-row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 12px; width: 100%; text-align: left; border-radius: 12px; position: relative; z-index: 1; }
 .r-row b { font-weight: 700; color: var(--primary); }
 .phone .r-row:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
-.r-ind { position: absolute; left: 0; right: 0; top: 0; border-radius: 12px; background: color-mix(in srgb, var(--primary) 14%, transparent); z-index: 0; pointer-events: none; }
+.r-ind { position: absolute; left: 0; right: 0; top: 0; border-radius: 12px; background: color-mix(in srgb, var(--on-surface) 12%, transparent); z-index: 0; pointer-events: none; }
+.morph { position: absolute; z-index: 66; background: var(--surface); overflow: hidden; }
+.morph .ghost { position: absolute; pointer-events: none; margin: 0; }
+.stub { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
+.phone .stub { padding-top: 50px; }
+.tablet .stub { padding-top: 28px; }
+.stub-bar { display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 8px 0 4px; border-bottom: 1px solid var(--outline-variant); background: var(--card); }
+.stub-body { flex: 1; display: grid; place-items: center; text-align: center; padding: 24px; }
 .recent { display: flex; gap: 8px; flex-wrap: wrap; }
 .r-empty { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .palette-layer { position: absolute; inset: 0; z-index: 65; display: flex; justify-content: center; align-items: flex-start; }
@@ -484,22 +491,22 @@ function bannerHTML(state) {
 }
 
 function homeView(frame) {
-  const hero = `<article class="card continue" data-stagger>
+  const hero = `<article class="card continue" data-stagger data-source="continue">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span class="tag primary"><span class="ms">edit</span>Đang làm</span><span class="t-footnote muted">Hôm qua, 21:40</span></div>
     <h2 class="t-title2">Cambridge 18 · Test 2</h2><p class="t-subheadline muted">Reading · Passage 2 · Câu 18/40</p>
     <div class="pbar" aria-hidden="true"><i style="width:45%"></i></div>
     <div class="continue-foot t-footnote muted"><span class="ms sm">timer</span>Còn 34 phút · 17 câu đã làm</div>
-    <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}"><span class="ms">play_arrow</span>Làm tiếp</button></article>`;
+    <button class="btn btn-primary ${frame === 'phone' ? 'btn-block' : ''}" data-action="continue"><span class="ms">play_arrow</span>Làm tiếp</button></article>`;
   const plan = `<div class="section-h" data-stagger><h2 class="t-title3">Kế hoạch hôm nay</h2><span class="t-footnote muted tnum">1/3 · 20 phút</span></div>
     <div class="list" data-stagger>
-      <button class="row"><span class="tile primary"><span class="ms">style</span></span><div class="grow"><div class="t-headline">Ôn ${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Từ vựng · khoảng 5 phút</div></div><span class="ms chev">chevron_right</span></button>
+      <button class="row" data-action="review"><span class="tile primary"><span class="ms">style</span></span><div class="grow"><div class="t-headline">Ôn ${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Từ vựng · khoảng 5 phút</div></div><span class="ms chev">chevron_right</span></button>
       <button class="row" data-action="push" data-detail="type"><span class="tile tertiary"><span class="ms">target</span></span><div class="grow"><div class="t-headline">Luyện Matching Headings</div><div class="t-subheadline muted">Dạng bạn hay sai nhất · 12 phút</div></div><span class="ms chev">chevron_right</span></button>
       <div class="row done"><span class="tile correct"><span class="ms">headphones</span></span><div class="grow"><div class="t-headline">Nghe chép nhanh</div><div class="t-subheadline muted">3 câu · 3 phút</div></div><span class="ms fill done-mark" aria-label="Đã xong">check_circle</span></div>
     </div>`;
   const goal = `<article class="card goal" data-stagger aria-label="Mục tiêu tuần: 3 trên 5 buổi"><div class="goal-ring">${ring(84, 10, 3 / 5, 'tertiary')}<div class="center"><div><div class="t-title3">${roller('3/5')}</div><div class="t-caption2 muted">buổi</div></div></div></div>
     <div class="grow"><h2 class="t-headline">Mục tiêu tuần</h2><p class="t-subheadline muted">Còn 2 buổi nữa là đạt mục tiêu tuần</p></div></article>`;
   const fillers = `<div class="section-h" data-stagger><h2 class="t-title3">Cần luyện thêm</h2></div>
-    <article class="card" data-stagger style="padding:16px 20px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span class="t-headline">Matching Headings</span><span class="t-subheadline tnum">58% đúng</span></div><div class="pbar"><i style="width:58%;background:var(--tertiary)"></i></div><span class="t-footnote muted">+6% so với tuần trước</span></article>`;
+    <article class="card" data-stagger style="padding:16px 20px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span class="t-headline">Matching Headings</span><span class="t-subheadline tnum">58% đúng</span></div><div class="pbar"><i style="width:58%"></i></div><span class="t-footnote muted">+6% so với tuần trước</span></article>`;
   if (frame === 'phone') return `${hero}${plan}<div style="height:16px"></div>${goal}${fillers}`;
   return `<div class="two"><div>${hero}${plan}</div><div class="stack">${goal}${fillers}</div></div>`;
 }
@@ -519,7 +526,7 @@ function practiceView() {
 
 function vocabView(frame) {
   const decks = [['Cambridge 18 · Reading', '86 từ · 14 đến hạn'], ['Chủ đề Môi trường', '42 từ · 6 đến hạn'], ['Từ hay sai chính tả', '19 từ · 4 đến hạn'], ['Collocations Writing', '57 từ'], ['Linking words', '33 từ']];
-  return `<article class="card" data-stagger style="padding:20px;display:flex;align-items:center;gap:16px"><span class="tile primary" style="width:48px;height:48px;border-radius:14px"><span class="ms">style</span></span><div class="grow"><div class="t-headline">${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Khoảng 5 phút</div></div><button class="btn btn-primary" style="height:44px">Ôn ngay</button></article>
+  return `<article class="card" data-stagger data-source="review" style="padding:20px;display:flex;align-items:center;gap:16px"><span class="tile primary" style="width:48px;height:48px;border-radius:14px"><span class="ms">style</span></span><div class="grow"><div class="t-headline">${DUE} thẻ đến hạn</div><div class="t-subheadline muted">Khoảng 5 phút</div></div><button class="btn btn-primary" style="height:44px" data-action="review">Ôn ngay</button></article>
     <div class="section-h" data-stagger><h2 class="t-title3">Bộ thẻ</h2></div>
     <div class="list" data-stagger>${decks.map(([t, s]) => `<button class="row" data-action="push" data-detail="deck"><span class="tile info"><span class="ms">folder</span></span><div class="grow"><div class="t-headline">${t}</div><div class="t-subheadline muted">${s}</div></div><span class="ms chev">chevron_right</span></button>`).join('')}</div>
     <div class="section-h" data-stagger><h2 class="t-title3">Từ mới lưu gần đây</h2></div>
@@ -659,12 +666,58 @@ function mount(device, frame) {
     if (target.dataset.tab) return selectTab(device, frame, target.dataset.tab);
     const action = target.dataset.action;
     if (action === 'push') push(device, frame, target.dataset.detail);
+    if (action === 'continue' || action === 'review') openFlow(device, frame, action, target.closest('[data-source]') || target);
     if (action === 'search') openSearch(device, frame, target);
     if (action === 'streak') log('<span class="ms sm">local_fire_department</span> Sheet chuỗi ngày — xem home.html');
   });
   moveIndicator(device, false);
   enter(device.querySelector('.pane[data-pane="home"]'));
   if (ui.state === 'reconnected') reconnect(device);
+}
+
+function flowTarget(frame) {
+  if (frame === 'phone') return { x: 0, y: 0, w: 390, h: 844, r: 54 };
+  if (frame === 'tablet') return { x: 0, y: 0, w: 834, h: 1112, r: 36 };
+  return { x: 0, y: 38, w: 1280, h: 762, r: 0 };
+}
+
+function clipFor(from, to, radius) {
+  return `inset(${from.y - to.y}px ${to.x + to.w - from.x - from.w}px ${to.y + to.h - from.y - from.h}px ${from.x - to.x}px round ${radius}px)`;
+}
+
+function openFlow(device, frame, kind, source) {
+  const from = localRect(device, source);
+  const to = flowTarget(frame);
+  const radius = Number.parseFloat(getComputedStyle(source).borderTopLeftRadius) || 14;
+  const title = kind === 'continue' ? 'Cambridge 18 · Test 2 · Reading' : 'Ôn 24 thẻ đến hạn';
+  const note = kind === 'continue' ? 'Phòng thi (DS-03) mở bằng container transform từ thẻ "Làm tiếp".' : 'Phiên ôn flashcard (DS-05) mở bằng container transform từ hàng thẻ đến hạn.';
+  const morph = document.createElement('div');
+  morph.className = 'morph';
+  Object.assign(morph.style, { left: `${to.x}px`, top: `${to.y}px`, width: `${to.w}px`, height: `${to.h}px` });
+  morph.innerHTML = `<div class="stub"><div class="stub-bar"><button class="icon-btn" data-close-flow aria-label="Đóng"><span class="ms">close</span></button><span class="t-headline grow">${title}</span></div>
+    <div class="stub-body"><div><p class="t-title2">${kind === 'continue' ? 'Passage 2 · Câu 18' : 'meticulous'}</p><p class="t-subheadline muted" style="margin-top:8px;max-width:320px">${note} Xem đầy đủ trong <a href="home.html" style="color:var(--primary)">home.html</a>.</p></div></div></div>`;
+  const content = morph.firstElementChild;
+  const ghost = source.cloneNode(true);
+  ghost.classList.add('ghost');
+  Object.assign(ghost.style, { left: `${from.x - to.x}px`, top: `${from.y - to.y}px`, width: `${from.w}px`, height: `${from.h}px`, background: 'var(--card)', borderRadius: `${radius}px` });
+  morph.append(ghost);
+  device.append(morph);
+  haptic(device, 'impact light · CONTEXT_CLICK');
+  play(morph, [{ clipPath: clipFor(from, to, radius) }, { clipPath: `inset(0px 0px 0px 0px round ${to.r}px)` }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  play(ghost, [{ opacity: 1 }, { opacity: 0, offset: 0.35 }, { opacity: 0 }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 0 }] });
+  play(content, [{ opacity: 0 }, { opacity: 0, offset: 0.25 }, { opacity: 1, offset: 0.7 }, { opacity: 1 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] });
+  const closeButton = morph.querySelector('[data-close-flow]');
+  closeButton.focus({ preventScroll: true });
+  closeButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const back = source.isConnected ? localRect(device, source) : from;
+    play(morph, [{ clipPath: `inset(0px 0px 0px 0px round ${to.r}px)` }, { clipPath: clipFor(back, to, radius) }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 0 }] }).then(() => {
+      morph.remove();
+      if (source.isConnected) (source.querySelector('[data-action]') || source).focus({ preventScroll: true });
+    });
+    play(ghost, [{ opacity: 0 }, { opacity: 0, offset: 0.5 }, { opacity: 1 }], 'smooth', { fallback: [{ opacity: 0 }, { opacity: 0 }] });
+    play(content, [{ opacity: 1 }, { opacity: 0, offset: 0.5 }, { opacity: 0 }], 'smooth', { fallback: [{ opacity: 1 }, { opacity: 1 }] });
+  });
 }
 
 function reconnect(device) {
@@ -678,7 +731,7 @@ function reconnect(device) {
       if (sync) sync.innerHTML = syncLine('online');
       setTimeout(() => {
         const height = wrap.offsetHeight;
-        play(wrap, [{ height: `${height}px`, opacity: 1 }, { height: '0px', opacity: 0 }], 'smooth', { fallback: [{ height: `${height}px`, opacity: 1 }, { height: '0px', opacity: 0 }] }).then(() => wrap.remove());
+        play(wrap, [{ height: `${height}px`, opacity: 1 }, { height: '0px', opacity: 0 }], 'smooth', { fallback: [{ height: `${height}px`, opacity: 1 }, { height: `${height}px`, opacity: 0 }] }).then(() => wrap.remove());
       }, 3000);
     });
   }, 1200);
@@ -693,13 +746,19 @@ async function selectTab(device, frame, key) {
   haptic(device, 'selection · CLOCK_TICK');
   const out = device.querySelector(`.pane[data-pane="${current}"]`);
   const next = device.querySelector(`.pane[data-pane="${key}"]`);
-  await play(out, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
-  out.style.display = 'none';
-  out.style.opacity = '';
-  next.style.display = '';
   const first = !next.dataset.seen && key !== 'home';
   next.dataset.seen = '1';
-  play(next, [{ opacity: 0, transform: 'scale(0.98)' }, { opacity: 1, transform: 'none' }], { duration: 160, easing: EASING.decelerate }, { fallback: [{ opacity: 0 }, { opacity: 1 }] });
+  const hideOut = () => { out.style.display = 'none'; out.style.opacity = ''; };
+  if (reduceMotion) {
+    next.style.display = '';
+    play(out, [{ opacity: 1 }, { opacity: 0 }]).then(hideOut);
+    play(next, [{ opacity: 0 }, { opacity: 1 }]);
+  } else {
+    await play(out, [{ opacity: 1 }, { opacity: 0 }], { duration: 90, easing: EASING.accelerate });
+    hideOut();
+    next.style.display = '';
+    play(next, [{ opacity: 0, transform: 'scale(0.98)' }, { opacity: 1, transform: 'none' }], { duration: 160, easing: EASING.decelerate });
+  }
   if (first) { seg(next, device); enter(next); }
 }
 
@@ -707,8 +766,11 @@ function reselect(device, host) {
   const pages = host.querySelectorAll('.layer.page');
   if (pages.length) return pages[pages.length - 1].popPage();
   const scroller = host.querySelector('.layer.base .screen');
-  if (scroller.scrollTop === 0) return log('Đã ở đầu trang · bấm lại tab không làm gì thêm');
-  scrollTop(scroller);
+  if (scroller.scrollTop > 0) return scrollTop(scroller);
+  const tab = currentTab(device);
+  if (tab !== 'practice' && tab !== 'vocab') return log('Đã ở đầu trang · bấm lại tab không làm gì thêm');
+  const frame = FRAMES.find((f) => device.classList.contains(f));
+  openSearch(device, frame, device.querySelector(`.pane[data-pane="${tab}"] [data-action="search"]`) || device.querySelector('[data-action="search"]'));
 }
 
 function scrollTop(scroller) {
@@ -772,8 +834,8 @@ function androidBack() {
 }
 
 const INDEX = [
-  ['action', 'Ôn 24 thẻ đến hạn', 'Từ vựng · khoảng 5 phút', 'style', 'vocab'],
-  ['action', 'Làm tiếp Cambridge 18 · Test 2', 'Reading · Câu 18/40', 'play_arrow', 'home'],
+  ['action', 'Ôn 24 thẻ đến hạn', 'Từ vựng · khoảng 5 phút', 'style', 'flow:review'],
+  ['action', 'Làm tiếp Cambridge 18 · Test 2', 'Reading · Câu 18/40', 'play_arrow', 'flow:continue'],
   ['action', 'Chuyển giao diện tối', 'Giao diện', 'dark_mode', 'theme'],
   ['test', 'Cambridge 18 · Test 2 · Reading', 'Đang làm · Câu 18/40', 'menu_book', 'practice:book'],
   ['test', 'Ageing without decline', 'Cambridge 18 · Test 2 · Passage 2', 'article', 'practice:book'],
@@ -924,7 +986,13 @@ function openSearch(device, frame, opener) {
     const [tab, detail] = row.dataset.target.split(':');
     close().then(async () => {
       if (tab === 'theme') return toggleTheme(device);
-      await selectTab(device, frame, tab);
+      if (tab === 'flow') {
+        const home = detail === 'continue' ? 'home' : 'vocab';
+        if (currentTab(device) !== home) await selectTab(device, frame, home);
+        const source = device.querySelector(`.pane[data-pane="${home}"] [data-source="${detail}"]`);
+        return setTimeout(() => openFlow(device, frame, detail, source), 180);
+      }
+      if (currentTab(device) !== tab) await selectTab(device, frame, tab);
       if (detail) setTimeout(() => push(device, frame, detail), 120);
     });
   });
