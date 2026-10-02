@@ -90,7 +90,7 @@ data class Question(
   val number: Int,
   val prompt: String,
   val options: List<ChoiceOption> = emptyList(),
-  // Empty in API test payloads: the answer key is only revealed in the submit result.
+  // Shipped in test payloads so the apps score and explain offline.
   val acceptedAnswers: List<String>,
   @Serializable(with = LegacyExplanationSerializer::class)
   val explanation: Explanation? = null,

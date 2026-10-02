@@ -37,7 +37,7 @@
           "items": { "$ref": "#/$defs/transcriptSegment" }
         },
         "questionGroups": {
-          "description": "Question explanations use transcriptEvidence from reading-test.schema.json.",
+          "description": "Question explanations should use transcriptEvidence; BundledListeningContentTest enforces it.",
           "type": "array",
           "minItems": 1,
           "items": { "$ref": "reading-test.schema.json#/$defs/questionGroup" }
