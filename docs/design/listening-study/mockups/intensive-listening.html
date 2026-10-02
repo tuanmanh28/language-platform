@@ -181,6 +181,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .reduce .seg .ind { transition: none; }
 .switch { width: 52px; height: 32px; border-radius: 999px; position: relative; flex: none; background: var(--surface-highest); box-shadow: inset 0 0 0 2px var(--outline); transition: background-color 150ms, box-shadow 150ms; }
 .switch::after { content: ''; position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-radius: 999px; background: var(--outline); transition: transform var(--snappy), background-color 150ms, width var(--snappy), height var(--snappy), top var(--snappy); }
+.reduce .switch::after { transition: none; }
 .switch[aria-checked="true"] { background: var(--primary); box-shadow: none; }
 .switch[aria-checked="true"]::after { transform: translateX(16px); background: var(--on-primary); width: 24px; height: 24px; top: 4px; left: 4px; }
 .slider { position: relative; height: 48px; touch-action: none; }
@@ -188,6 +189,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .slider .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--primary); }
 .slider .stop { position: absolute; top: 0; width: 4px; height: 4px; margin-left: -2px; border-radius: 999px; background: var(--on-surface-variant); }
 .slider .thumb { position: absolute; top: 12px; width: 24px; height: 24px; margin-left: -12px; border-radius: 999px; background: var(--surface-bright); box-shadow: var(--shadow-raised); border: 1px solid var(--outline-variant); }
+.dark .slider .thumb { background: var(--on-surface); border-color: transparent; }
 .slider-labels { display: flex; justify-content: space-between; padding: 0 4px; }
 
 .ls-shell { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface); }
@@ -221,16 +223,18 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .sent.current .w { color: var(--on-surface-variant); }
 .sent.current .w.spoken { color: var(--on-surface); }
 .sent.current .w.now { color: var(--on-primary-container); }
-.pill { position: absolute; left: 0; top: 0; height: 28px; border-radius: 7px; background: var(--primary-container); z-index: 0; opacity: 0;
-  transition: transform var(--snappy), width var(--snappy), opacity 150ms; pointer-events: none; }
+.pill { position: absolute; left: 0; top: 0; height: 28px; border-radius: 6px; background: var(--primary-container); z-index: 0; opacity: 0;
+  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1), width 150ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms; pointer-events: none; }
 .reduce .pill { transition: opacity 150ms; }
 .vi { margin-top: 4px; font-size: 16px; line-height: 24px; color: var(--on-surface-variant); }
 .sent.evidence { background: var(--info-container); color: var(--on-info-container); box-shadow: none; }
 .sent.evidence.current .w, .sent.evidence.current .w.spoken { color: var(--on-info-container); }
 .sent.evidence .vi { color: var(--on-info-container); opacity: 0.85; }
 .w.answer { box-shadow: 0 2px 0 var(--info); border-radius: 0; }
-.hidden-mode .sent:not(.revealed) .w { color: transparent !important; background: var(--surface-high); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.hidden-mode .sent.current:not(.revealed) .w.spoken, .hidden-mode .sent.current:not(.revealed) .w.now { background: var(--primary-container); }
+.hidden-mode .sent:not(.revealed) .w { color: transparent !important; background: var(--surface-highest); box-shadow: inset 0 0 0 1px var(--outline-variant); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.dark .hidden-mode .sent:not(.revealed) .w { background: var(--outline-variant); box-shadow: none; }
+.hidden-mode .sent.current:not(.revealed) .w.spoken { background: var(--primary-container); box-shadow: none; }
+.hidden-mode .sent.current:not(.revealed) .w.now { background: var(--primary); box-shadow: none; }
 .hidden-mode .sent:not(.revealed) .pill { display: none; }
 .hidden-mode .sent:not(.revealed) .vi { display: none; }
 .reveal-btn { display: none; }
@@ -262,7 +266,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .desktop .pb-controls .side.right { margin-left: auto; }
 .play { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; position: relative; flex: none;
   background: var(--primary); color: var(--on-primary); transition: transform 100ms cubic-bezier(0.2, 0, 0, 1); }
-.play:active { transform: scale(0.95); }
+.play:active { transform: scale(0.97); }
 .reduce .play:active { transform: none; }
 .desktop .play { width: 56px; height: 56px; }
 .play.large { width: 72px; height: 72px; }
@@ -282,7 +286,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .wave .head { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; border-radius: 2px; background: var(--on-surface); pointer-events: none; }
 .wave .head::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 999px; background: var(--on-surface); transform: scale(0); transition: transform var(--snappy); }
 .wave.scrubbing .head::after { transform: scale(1.66); }
-.wave .bubble { position: absolute; bottom: calc(100% + 10px); transform: translateX(-50%); padding: 4px 8px; border-radius: 8px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 150ms; pointer-events: none; white-space: nowrap; }
+.wave .bubble { position: absolute; bottom: calc(100% + 10px); transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: var(--inverse-surface); color: var(--inverse-on-surface); font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 150ms; pointer-events: none; white-space: nowrap; }
 .wave.scrubbing .bubble { opacity: 1; }
 .wave .ab { position: absolute; top: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; z-index: 2; }
 .wave .ab span { width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: 11px; font-weight: 700; box-shadow: 0 0 0 3px var(--card); }
@@ -292,7 +296,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 
 .side-panel { width: 280px; flex: none; border-right: 1px solid var(--outline-variant); background: var(--surface-low); display: flex; flex-direction: column; overflow-y: auto; padding: 20px 12px; gap: 4px; }
 .side-panel h2 { padding: 0 8px; }
-.nav-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 10px 12px; border-radius: 12px; min-height: 56px; position: relative; }
+.nav-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 10px 12px; border-radius: 10px; min-height: 56px; position: relative; }
 .nav-row:hover { background: color-mix(in srgb, var(--on-surface) 6%, transparent); }
 .nav-row.on { background: var(--primary-container); color: var(--on-primary-container); }
 .nav-row.on .muted { color: var(--on-primary-container); opacity: 0.8; }
@@ -304,7 +308,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .q-row .ok { color: var(--correct); } .q-row .bad { color: var(--wrong); }
 .side-label { padding: 16px 12px 6px; }
 .main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
-.desktop .ls-top { height: 60px; padding: 0 16px 0 28px; border-bottom: 1px solid var(--outline-variant); gap: 8px; }
+.desktop .ls-top { height: 60px; padding: 0 16px 0 8px; border-bottom: 1px solid var(--outline-variant); gap: 8px; }
 .desktop .ls-title { align-items: flex-start; text-align: left; }
 .tool-btn { height: 36px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--on-surface); position: relative; }
 .tool-btn::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
@@ -316,7 +320,7 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .popover { position: absolute; width: 300px; padding: 8px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow-raised); transform-origin: 50% 100%; }
 .dark .popover { background: var(--surface-high); }
 .popover h3 { padding: 8px 12px 4px; }
-.menu-item { display: flex; align-items: center; gap: 12px; width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; text-align: left; font-size: 16px; font-variant-numeric: tabular-nums; }
+.menu-item { display: flex; align-items: center; gap: 12px; width: 100%; height: 44px; padding: 0 12px; border-radius: 10px; text-align: left; font-size: 16px; font-variant-numeric: tabular-nums; }
 .menu-item:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
 .menu-item .ms { visibility: hidden; color: var(--primary); }
 .menu-item[aria-checked="true"] .ms { visibility: visible; }
@@ -329,10 +333,18 @@ kbd { font: inherit; font-weight: 600; font-size: 12px; padding: 1px 6px; border
 .sheet-layer { position: absolute; inset: 0; z-index: 70; display: flex; align-items: flex-end; }
 .desktop .sheet-layer { align-items: center; justify-content: center; }
 .scrim { position: absolute; inset: 0; background: var(--scrim); }
-.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); touch-action: none; max-height: 800px; overflow-y: auto; scrollbar-width: none; }
+.sheet { position: relative; width: 100%; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 20px 40px; box-shadow: var(--shadow-sheet); touch-action: pan-y; max-height: 800px; overflow-y: auto; scrollbar-width: none; }
 .dark .sheet { background: var(--surface-container); }
 .desktop .sheet { width: 480px; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-raised); }
-.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; }
+.handle { width: 36px; height: 5px; border-radius: 3px; background: var(--outline-variant); margin: 0 auto 16px; position: relative; touch-action: none; cursor: grab; }
+.handle::before { content: ''; position: absolute; left: -60px; right: -60px; top: -14px; bottom: -14px; }
+.loop-chip { min-width: 0; flex: 0 1 auto; }
+.loop-chip .loop-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inline-error { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 12px; margin-bottom: 12px; border-radius: 14px; background: var(--card); box-shadow: var(--shadow-card); }
+.dark .inline-error { background: var(--surface-container); }
+.inline-error .error-icon { width: 40px; height: 40px; margin: 0; flex: none; }
+.speed-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.speed-presets .chip { justify-content: center; height: 44px; }
 .desktop .handle { display: none; }
 .group { background: var(--surface-high); border-radius: 14px; margin-top: 16px; }
 .group .setting + .setting { border-top: 1px solid var(--outline-variant); }
@@ -364,7 +376,7 @@ const DURATION = { instant: 100, short: 150, medium: 250, long: 400, extraLong: 
 const EASING = { standard: 'cubic-bezier(0.2, 0, 0, 1)', decelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)', accelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)' };
 const STAGGER = 30;
 const STATES = [['play', 'Đang phát'], ['pause', 'Tạm dừng'], ['loop', 'Lặp A–B'], ['hidden', 'Ẩn lời thoại'], ['evidence', 'Đoạn đáp án'],
-  ['full', 'Trình phát đầy đủ'], ['end', 'Hết section'], ['none', 'Chưa có lời thoại'], ['loading', 'Đang tải'], ['error', 'Lỗi âm thanh'], ['offline', 'Ngoại tuyến']];
+  ['full', 'Trình phát đầy đủ'], ['end', 'Hết section'], ['none', 'Chưa có lời thoại'], ['loading', 'Đang tải'], ['error', 'Lỗi âm thanh'], ['offline-ok', 'Ngoại tuyến · đã tải'], ['offline', 'Ngoại tuyến · chưa tải']];
 const ui = { theme: 'light', frame: 'both', state: 'play' };
 
 const TEST_NAME = 'Listening Test 1 (mẫu)';
@@ -445,7 +457,7 @@ function createState(state) {
     hidden: false, translate: false, follow: true, revealed: new Set(), evidence: null, range: 'all', buffering: false, mode: state, cur: -1, word: -1 };
   const s = TIMELINES[2];
   if (state === 'play') { st.t = s[5].end - 0.6; st.playing = true; }
-  if (state === 'pause') { st.t = s[6].words[7].start + 0.05; }
+  if (state === 'pause' || state === 'offline-ok') { st.t = s[6].words[7].start + 0.05; }
   if (state === 'loop') { setLoop(st, 3, 4); st.repeatN = 3; st.passes = 1; st.t = s[3].start + 1.8; st.playing = true; }
   if (state === 'hidden') { st.hidden = true; st.revealed = new Set([0, 1, 2]); st.t = s[3].start + 0.2; st.playing = true; }
   if (state === 'evidence') { st.evidence = 14; st.speed = 0.75; setLoop(st, 6, 6); st.t = s[6].start; st.playing = true; }
@@ -465,7 +477,7 @@ function loopLabel(st) {
   const { loop } = st;
   if (!loop) return '';
   const base = loop.free ? `Lặp ${fmtFine(loop.a)} – ${fmtFine(loop.b)}` : loop.from === loop.to ? `Lặp câu ${loop.from + 1}` : `Lặp câu ${loop.from + 1}–${loop.to + 1}`;
-  const count = st.repeatN > 1 && st.repeatN !== Infinity ? ` · Lần ${Math.min(st.passes + 1, st.repeatN)}/${st.repeatN}` : st.passes > 0 ? ` · Lần ${st.passes + 1}` : '';
+  const count = st.repeatN > 1 && st.repeatN !== Infinity ? ` · ${Math.min(st.passes + 1, st.repeatN)}/${st.repeatN}` : st.passes > 0 ? ` · lần ${st.passes + 1}` : '';
   return base + count;
 }
 
@@ -510,8 +522,9 @@ function sentenceHTML(s, st, frame, prevSpeaker) {
   const words = s.words.map((w, i) => `<span class="w${answerWords.includes(w.text) ? ' answer' : ''}" data-w="${i}">${w.text}</span>`).join(' ');
   const tags = s.q.map((n) => `<span class="tag ${evidence && n === st.evidence ? 'info' : ''}">Câu ${n}</span>`).join('');
   const reveal = `<button class="reveal-btn btn-text btn" data-action="reveal" data-index="${s.index}" style="height:28px;padding:0 4px;font-size:13px"><span class="ms sm">visibility</span>Hiện câu này</button>`;
-  return `<div class="sent${evidence ? ' evidence' : ''}${st.revealed.has(s.index) ? ' revealed' : ''}" role="button" tabindex="0" data-index="${s.index}"
-      aria-label="Câu ${s.index + 1}, ${s.speaker}: ${s.text}. ${frame === 'desktop' ? 'Nhấn Enter để nghe' : 'Chạm hai lần để nghe'}">
+  const hiddenNow = st.hidden && !st.revealed.has(s.index);
+  return `<div class="sent${evidence ? ' evidence' : ''}${st.revealed.has(s.index) ? ' revealed' : ''}" role="listitem" tabindex="0" data-index="${s.index}"
+      aria-label="Câu ${s.index + 1}, ${s.speaker}: ${hiddenNow ? 'lời thoại đang ẩn' : s.text}. ${frame === 'desktop' ? 'Nhấn Enter để nghe' : 'Chạm hai lần để nghe'}">
     <div class="sent-head">${showSpeaker ? `<span class="spk">${s.speaker}</span>` : ''}${frame === 'desktop' ? `<span class="time tnum">${fmt(s.start)}</span>` : ''}${tags || st.hidden ? `<span class="tags">${reveal}${tags}</span>` : ''}</div>
     <div class="txt" lang="en"><i class="pill" aria-hidden="true"></i>${words}</div>
     ${st.translate && s.vi ? `<p class="vi" lang="vi">${s.vi}</p>` : ''}</div>`;
@@ -528,19 +541,26 @@ function transcriptHTML(st, frame) {
   const list = TIMELINES[st.section];
   let prev = null;
   const sentences = list.map((s) => { const html = sentenceHTML(s, st, frame, prev); prev = s.speaker; return html; }).join('');
-  const errorBlock = st.mode === 'error' ? `<div class="banner warning" role="alert" style="margin-bottom:12px"><span class="ms">error</span><div class="grow"><div class="t-label">Chưa phát được âm thanh</div><div class="t-footnote">Kiểm tra kết nối rồi thử lại nhé.</div></div><button class="btn btn-text" data-action="retry">Thử lại</button></div>` : '';
+  const errorBlock = st.mode === 'error' ? `<div class="inline-error" role="alert"><span class="error-icon"><span class="ms sm">volume_off</span></span><div class="grow"><div class="t-label">Chưa phát được âm thanh</div><div class="t-footnote muted">Kiểm tra kết nối rồi thử lại nhé. Lời thoại vẫn đọc được.</div></div><button class="btn btn-secondary btn-small" data-action="retry"><span class="ms sm">refresh</span>Thử lại</button></div>` : '';
   const offline = st.mode === 'offline' ? `<div class="banner" role="status" style="margin-bottom:12px"><span class="ms">cloud_off</span><div class="grow"><div class="t-label">Chưa tải âm thanh của section này</div><div class="t-footnote">Kết nối mạng để nghe, hoặc tải về khi có mạng.</div></div></div>` : '';
-  const evidence = st.evidence ? `<div class="banner" role="status" style="margin-bottom:12px"><span class="ms">hearing</span><div class="grow"><div class="t-label">Đoạn chứa đáp án câu ${st.evidence}</div><div class="t-footnote tnum">Bạn chọn “eight weeks” · đang phát ${fmtSpeed(st.speed)}</div></div><button class="btn btn-text" data-action="exit-evidence">Thoát đoạn này</button></div>` : '';
+  const evidence = st.evidence ? `<div class="banner" role="status" style="margin-bottom:12px"><span class="ms">hearing</span><div class="grow"><div class="t-label">Đoạn chứa đáp án câu ${st.evidence}</div><div class="t-footnote tnum">Bạn điền “eight weeks” · đang phát ${fmtSpeed(st.speed)}</div></div><button class="btn btn-text" data-action="exit-evidence">Thoát đoạn này</button></div>` : '';
   const hidden = st.hidden ? `<div class="banner" role="status" style="margin-bottom:12px;background:var(--surface-high);color:var(--on-surface)"><span class="ms" style="color:var(--on-surface-variant)">visibility_off</span><div class="grow t-footnote">Lời thoại đang ẩn · Nghe trước, rồi hiện từng câu để kiểm tra</div><button class="btn btn-text" data-action="toggle-hidden" style="color:var(--primary);text-decoration:none">Hiện lời thoại</button></div>` : '';
   const coach = `<p class="coach t-footnote"><span class="ms sm">${frame === 'desktop' ? 'mouse' : 'touch_app'}</span>${frame === 'desktop' ? 'Nhấn đúp vào một từ để lưu vào thẻ' : 'Giữ một từ để lưu vào thẻ'}</p>`;
   const next = st.section < 4 ? `<button class="btn btn-primary btn-small" data-action="next-section">Sang Section ${st.section + 1}</button>` : '';
   const end = `<div class="end-card" data-end><span class="ms lg" style="color:var(--correct)">check_circle</span><h3 class="t-headline">Hết Section ${st.section}</h3><p class="t-footnote muted">Nghe lại chỗ còn chưa rõ, hoặc sang phần tiếp theo.</p>
     <div class="actions"><button class="btn btn-secondary btn-small" data-action="restart"><span class="ms sm">replay</span>Nghe lại từ đầu</button>${next}</div></div>`;
-  return `${evidence}${errorBlock}${offline}${hidden}<div class="sent-list">${sentences}</div>${coach}${end}`;
+  return `${evidence}${errorBlock}${offline}${hidden}<div class="sent-list" role="list" aria-label="Lời thoại">${sentences}</div>${coach}${end}`;
 }
 
 function controlsDisabled(st) {
-  return ['offline', 'loading'].includes(st.mode);
+  return ['offline', 'loading', 'error'].includes(st.mode);
+}
+
+function offlineBadge(st, frame) {
+  if (st.mode !== 'offline-ok') return '';
+  return frame === 'phone'
+    ? '<span class="icon-btn" role="img" aria-label="Đang ngoại tuyến · Âm thanh đã tải về máy" title="Đang ngoại tuyến · Âm thanh đã tải về máy" style="color:var(--on-surface-variant)"><span class="ms">cloud_done</span></span>'
+    : '<span class="tag" style="margin-right:4px"><span class="ms">cloud_done</span>Đang ngoại tuyến · Âm thanh đã tải về máy</span>';
 }
 
 function playButtonHTML(st, size = '') {
@@ -560,7 +580,7 @@ function barHTML(st, frame) {
   const replay = `<button class="icon-btn" data-action="replay" aria-label="Nghe lại câu (R)" title="Nghe lại câu (R)" ${disabled}><span class="ms">replay</span></button>`;
   const prev = `<button class="icon-btn" data-action="prev" aria-label="Câu trước (←)" title="Câu trước (←)" ${disabled}><span class="ms">skip_previous</span></button>`;
   const next = `<button class="icon-btn" data-action="next" aria-label="Câu sau (→)" title="Câu sau (→)" ${disabled}><span class="ms">skip_next</span></button>`;
-  const pos = st.mode === 'none' ? '' : `<span class="t-label tnum pos">Câu ${Math.max(1, st.cur + 1)}/${count}</span>`;
+  const pos = st.mode === 'none' ? '' : `<span class="t-label tnum pos" ${frame === 'phone' && loopOn ? 'hidden' : ''}>Câu ${Math.max(1, st.cur + 1)}/${count}</span>`;
   const time = `<span class="t-footnote muted tnum time-label" ${loopOn ? 'hidden' : ''}>${fmt(st.t)} / ${fmt(total)}</span>`;
   if (frame === 'phone') {
     return `<div class="pb" role="region" aria-label="Trình phát">
@@ -580,7 +600,7 @@ function phoneScreen(st) {
   const seg = `<div class="seg" role="radiogroup" aria-label="Section">${[1, 2, 3, 4].map((n) => `<button role="radio" aria-checked="${n === st.section}" data-section="${n}">Section ${n}</button>`).join('')}<span class="ind"></span></div>`;
   return `<div class="ls-shell">
     <div class="ls-top"><button class="icon-btn" data-action="back" aria-label="Quay lại"><span class="ms">arrow_back_ios_new</span></button>
-      <div class="ls-title"><span class="t-headline">Nghe kỹ</span><span class="t-caption muted">${TEST_NAME}</span></div>
+      <div class="ls-title"><span class="t-headline">Nghe kỹ</span><span class="t-caption muted">${TEST_NAME}</span></div>${offlineBadge(st, 'phone')}
       <button class="icon-btn hide-btn ${st.hidden ? 'selected' : ''}" data-action="toggle-hidden" aria-pressed="${st.hidden}" aria-label="Ẩn lời thoại"><span class="ms">${st.hidden ? 'visibility_off' : 'visibility'}</span></button>
       <button class="icon-btn tr-btn ${st.translate ? 'selected' : ''}" data-action="toggle-translate" aria-pressed="${st.translate}" aria-label="Bản dịch tiếng Việt"><span class="ms">translate</span></button></div>
     <div class="ls-sub">${seg}${rangeChips(st)}</div>
@@ -596,13 +616,14 @@ function sidePanel(st) {
   const sections = [1, 2, 3, 4].map((n) => `<button class="nav-row ${n === st.section ? 'on' : ''}" data-section="${n}" aria-current="${n === st.section}">
     <span class="num">${n}</span><span class="grow"><span class="t-label" style="display:block">Section ${n}</span><span class="t-footnote muted">${SECTIONS[n].range} · ${SECTIONS[n].title}</span></span></button>
     ${n === st.section && n === 2 ? QUESTIONS.map(([q, label, answer, ok, mine]) => `<button class="q-row ${st.evidence === q ? 'on' : ''}" data-question="${q}" aria-label="Câu ${q}, ${ok ? 'đúng' : 'sai'}. Nghe đoạn chứa đáp án">
-      <span class="ms sm ${ok ? 'ok' : 'bad'}">${ok ? 'check_circle' : 'cancel'}</span><span class="grow"><span class="t-subheadline" style="display:block">Câu ${q} · ${label}</span><span class="t-footnote muted">${ok ? answer : `Bạn chọn: ${mine} · Đáp án: ${answer}`}</span></span><span class="ms sm muted">hearing</span></button>`).join('') : ''}`).join('');
+      <span class="ms sm ${ok ? 'ok' : 'bad'}">${ok ? 'check_circle' : 'cancel'}</span><span class="grow"><span class="t-subheadline" style="display:block">Câu ${q} · ${label}</span><span class="t-footnote muted">${ok ? answer : `Bạn điền: ${mine} · Đáp án: ${answer}`}</span></span><span class="ms sm muted">hearing</span></button>`).join('') : ''}`).join('');
   return `<aside class="side-panel" aria-label="Mục lục"><span class="t-caption muted" style="padding:0 12px">${TEST_NAME}</span><h2 class="t-title3" style="padding:2px 12px 12px">Mục lục</h2>${sections}</aside>`;
 }
 
 function desktopScreen(st) {
   return `<div class="ls-shell" style="flex-direction:row">${sidePanel(st)}
-    <div class="main-col"><div class="ls-top"><div class="ls-title"><span class="t-headline">Section ${st.section} · ${SECTIONS[st.section].title}</span><span class="t-caption muted">${SECTIONS[st.section].range} · ${TIMELINES[st.section].length} câu</span></div>
+    <div class="main-col"><div class="ls-top"><button class="icon-btn" data-action="back" aria-label="Quay lại (Esc)" title="Quay lại (Esc)"><span class="ms">arrow_back</span></button>
+      <div class="ls-title"><span class="t-headline">Section ${st.section} · ${SECTIONS[st.section].title}</span><span class="t-caption muted">${SECTIONS[st.section].range} · ${TIMELINES[st.section].length} câu</span></div>${offlineBadge(st, 'desktop')}
       <button class="tool-btn hide-btn ${st.hidden ? 'on' : ''}" data-action="toggle-hidden" aria-pressed="${st.hidden}"><span class="ms sm">${st.hidden ? 'visibility_off' : 'visibility'}</span>Ẩn lời thoại <kbd>T</kbd></button>
       <button class="tool-btn tr-btn ${st.translate ? 'on' : ''}" data-action="toggle-translate" aria-pressed="${st.translate}"><span class="ms sm">translate</span>Bản dịch <kbd>V</kbd></button>
       <button class="icon-btn" data-action="shortcuts" aria-label="Phím tắt (?)" title="Phím tắt (?)"><span class="ms">keyboard</span></button></div>
@@ -611,7 +632,7 @@ function desktopScreen(st) {
 
 function screen(frame, st) {
   return frame === 'phone'
-    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${st.mode === 'offline' ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>${phoneScreen(st)}<div class="home-ind"></div>`
+    ? `<div class="status"><span>9:41</span><span class="icons"><span class="ms">signal_cellular_alt</span><span class="ms">${st.mode.startsWith('offline') ? 'wifi_off' : 'wifi'}</span><span class="ms">battery_full</span></span></div>${phoneScreen(st)}<div class="home-ind"></div>`
     : `<div class="win-bar"><i></i><i></i><i></i><span>Luyện IELTS — Nghe kỹ</span></div><div class="win-body">${desktopScreen(st)}</div>`;
 }
 
@@ -794,6 +815,8 @@ function refreshLoopUI(device, st) {
     if (on && wasHidden) play(chip, [{ opacity: 0, transform: 'translateY(6px) scale(0.96)' }, { opacity: 1, transform: 'none' }], 'snappy');
   }
   if (time) time.hidden = on;
+  const pos = device.querySelector('.pos');
+  if (pos && device.classList.contains('phone')) pos.hidden = on;
   if (btn) { btn.classList.toggle('selected', on); btn.setAttribute('aria-pressed', String(on)); btn.querySelector('.ms').textContent = on ? 'repeat_on' : 'repeat'; }
   updateWaves(device, st);
 }
@@ -1054,6 +1077,19 @@ function closePopover(device) {
 
 function speedMenu(device, st, anchor) {
   const presets = [0.5, 0.75, 0.85, 1, 1.25, 1.5];
+  if (device.classList.contains('phone')) {
+    const ctrl = openSheet(device, 'phone', `<div class="handle"></div><div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="t-title2">Tốc độ</h2><span class="t-title3 tnum speed-value" style="color:var(--primary)">${fmtSpeed(st.speed)}</span></div>
+      <div class="speed-presets" role="radiogroup" aria-label="Tốc độ có sẵn">${presets.map((v) => `<button class="chip" role="radio" data-speed="${v}" aria-checked="${v === st.speed}" aria-pressed="${v === st.speed}">${fmtSpeed(v)}</button>`).join('')}</div>
+      <div class="setting" style="padding:16px 0 0">${sliderHTML(st)}</div><p class="t-footnote muted" style="margin-top:8px">Giọng không bị méo khi đổi tốc độ. Tốc độ được nhớ cho các bài sau.</p>`, 'Tốc độ');
+    wireSettings(device, ctrl.sheet);
+    ctrl.sheet.querySelectorAll('[data-speed]').forEach((chip) => chip.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setSpeed(device, st, Number(chip.dataset.speed));
+      ctrl.sheet.querySelectorAll('[data-speed]').forEach((c) => { const on = Number(c.dataset.speed) === st.speed; c.setAttribute('aria-pressed', String(on)); c.setAttribute('aria-checked', String(on)); });
+      setTimeout(() => ctrl.close(), 160);
+    }));
+    return;
+  }
   const pop = openPopover(device, anchor, `<h3 class="t-label muted">Tốc độ</h3>${presets.map((v) => `<button class="menu-item" role="menuitemradio" data-speed="${v}" aria-checked="${v === st.speed}"><span class="ms sm">check</span>${fmtSpeed(v)}${v === 1 ? ' <span class="muted t-footnote">bình thường</span>' : ''}</button>`).join('')}
     <div class="menu-sep"></div><div class="setting" style="padding-top:4px"><div style="display:flex;justify-content:space-between"><span class="t-footnote muted">Tinh chỉnh${device.classList.contains('desktop') ? ' · phím − / =' : ''}</span><span class="t-label tnum speed-value" style="color:var(--primary)">${fmtSpeed(st.speed)}</span></div>${sliderHTML(st)}</div>`, 'Tốc độ');
   pop.querySelectorAll('[data-speed]').forEach((item) => item.addEventListener('click', () => { setSpeed(device, st, Number(item.dataset.speed)); setTimeout(() => closePopover(device), 120); }));
@@ -1157,7 +1193,7 @@ function changeSection(device, frame, st, section) {
     sync(device, true);
   };
   if (reduceMotion) { swap(); play(inner, [{ opacity: 0 }, { opacity: 1 }]); return; }
-  play(inner, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-24 * dir}px)` }], { duration: 90, easing: EASING.accelerate }).then(() => {
+  play(inner, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-24 * dir}px)` }], { duration: DURATION.instant, easing: EASING.accelerate }).then(() => {
     swap();
     play(inner, [{ opacity: 0, transform: `translateX(${24 * dir}px)` }, { opacity: 1, transform: 'none' }], 'snappy');
   });
@@ -1368,12 +1404,19 @@ function mount(device, frame) {
     const { sentence, long, moved } = press;
     press = null;
     if (long || moved || event.detail > 1) return;
-    playSentence(device, st, Number(sentence.dataset.index), event.shiftKey);
+    const index = Number(sentence.dataset.index), extend = event.shiftKey;
+    if (frame === 'desktop' && event.target.closest('.w')) {
+      clearTimeout(st.clickTimer);
+      st.clickTimer = setTimeout(() => playSentence(device, st, index, extend), 250);
+      return;
+    }
+    playSentence(device, st, index, extend);
   });
   scroller.addEventListener('dblclick', (event) => {
     const word = event.target.closest('.w');
     const sentence = event.target.closest('.sent');
     if (!word || !sentence || frame !== 'desktop') return;
+    clearTimeout(st.clickTimer);
     window.getSelection().removeAllRanges();
     wordSheet(device, st, frame, Number(sentence.dataset.index), Number(word.dataset.w));
   });
@@ -1601,6 +1644,7 @@ function openSheet(device, frame, html, label, { dismissible = true, onClose = (
   const scale = Number(device.dataset.scale);
   sheet.addEventListener('pointerdown', (event) => {
     if (event.target.closest('button, .wave, .slider, .seg')) return;
+    if (sheet.scrollHeight > sheet.clientHeight + 1 && sheet.scrollTop > 0 && !event.target.closest('.handle')) return;
     startY = event.clientY; lastY = event.clientY; lastT = event.timeStamp;
     sheet.setPointerCapture(event.pointerId);
     sheet.getAnimations().forEach((a) => a.cancel());
